@@ -1,0 +1,76 @@
+[
+    {
+        "student": {
+            "is_active": 1,
+            "user_id": 3,
+            "unique_id": "2023090001",
+            "name": "Achmad Sofyan Pratama",
+            "grade_id": 1,
+            "gender": "Male",
+            "religion": "Islam",
+            "place_birth": "Gresik",
+            "date_birth": "2000-01-19",
+            "id_or_passport": "1234512345123451",
+            "nationality": "Indonesia",
+            "place_of_issue": null,
+            "date_exp": null,
+            "created_at": "2023-09-30T02:53:38.000000Z",
+            "updated_at": "2023-09-30T06:58:53.000000Z",
+            "relationship": [
+                {
+                    "name": "Yitno",
+                    "relation": "father",
+                    "place_birth": "Gresik",
+                    "religion": "Islam",
+                    "date_birth": "1969-09-30",
+                    "occupation": null,
+                    "company_name": null,
+                    "company_address": null,
+                    "home_address": "Perumahana doro anom blok 9, Kecamatan Menganti, Kabupaten, Gresik",
+                    "telephone": null,
+                    "mobilephone": "0083837373123",
+                    "id_or_passport": "1234512345123451",
+                    "nationality": "Indonesia",
+                    "email": "papa@email.com",
+                    "created_at": "2023-09-30T02:53:38.000000Z",
+                    "updated_at": "2023-09-30T02:53:38.000000Z",
+                    "pivot": {
+                        "student_id": 3,
+                        "relation_id": 5
+                    }
+                },
+                {
+                    "name": "Supiatun",
+                    "relation": "mother",
+                    "place_birth": "Gresik",
+                    "religion": "Islam",
+                    "date_birth": "1979-09-18",
+                    "occupation": null,
+                    "company_name": null,
+                    "company_address": null,
+                    "home_address": "Perumahana doro anom blok 9, Kecamatan Menganti, Kabupaten, Gresik",
+                    "telephone": null,
+                    "mobilephone": "0821382382389",
+                    "id_or_passport": "1234512345123452",
+                    "nationality": "Indonesia",
+                    "email": "mom@email.com",
+                    "created_at": "2023-09-30T02:53:38.000000Z",
+                    "updated_at": "2023-09-30T02:53:38.000000Z",
+                    "pivot": {
+                        "student_id": 3,
+                        "relation_id": 6
+                    }
+                }
+            ],
+            "grade": {
+                "name": "Junior High School",
+                "class": "A",
+                "teacher_id": 1,
+                "created_at": "2023-09-30T00:00:00.000000Z",
+                "updated_at": null
+            }
+        },
+        "brother_or_sisters": [],
+        "after_create": false
+    }
+]

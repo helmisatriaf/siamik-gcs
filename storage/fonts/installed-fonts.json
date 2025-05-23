@@ -1,0 +1,19 @@
+{
+    "noto sans sc": {
+        "900": "C:\\inetpub\\wwwroot\\siamikgreat\\storage\\fonts\/noto_sans_sc_900_450df6eefd612ea2fcaecdb7b55a1f67",
+        "normal": "noto_sans_sc_normal_fa8130ed19d81fe718fc84ecaef9893a"
+    },
+    "ma shan zheng": {
+        "normal": "ma_shan_zheng_normal_bedc45753b5bffc0a21c5fc25848b649"
+    },
+    "noto serif sc": {
+        "200": "C:\\xampp\\htdocs\\siamikgreat\\storage\\fonts\/noto_serif_sc_200_9d2bc894af8dd1802ff2befdc7cf982d",
+        "300": "C:\\xampp\\htdocs\\siamikgreat\\storage\\fonts\/noto_serif_sc_300_1943aaeb204fdc46d679dd1324cb8ba0",
+        "normal": "C:\\xampp\\htdocs\\siamikgreat\\storage\\fonts\/noto_serif_sc_normal_5a91e103b7731902b45d61717f190382",
+        "500": "C:\\xampp\\htdocs\\siamikgreat\\storage\\fonts\/noto_serif_sc_500_00dff3d16ca6bff84aaa185d98dfcbc6",
+        "600": "C:\\xampp\\htdocs\\siamikgreat\\storage\\fonts\/noto_serif_sc_600_f99f3f65e2fc5ff3a3c33fb1ef265d41",
+        "bold": "C:\\xampp\\htdocs\\siamikgreat\\storage\\fonts\/noto_serif_sc_bold_4d01788eb3f9348bcd57158137447226",
+        "800": "C:\\xampp\\htdocs\\siamikgreat\\storage\\fonts\/noto_serif_sc_800_30b0e5c7c90bf8ed32dc6cfb295efae2",
+        "900": "noto_serif_sc_900_91f6d8bc5279f770192be3dea18ff7f8"
+    }
+}
