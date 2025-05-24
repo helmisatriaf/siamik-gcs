@@ -128,7 +128,7 @@ class SuperAdminController extends Controller
          // ->take(10);
 
          // dd($parents);
-         dd($data);
+         // dd($data);
 
          return view('components.super.data-user', [
             "data" => $data,
