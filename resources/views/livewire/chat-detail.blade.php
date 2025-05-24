@@ -71,7 +71,11 @@
         </div>
     </div>
     
-    @livewire('chat-message-box', ['chatId' => $chat->id], key($chat->id))
+    @if ($chat != null)
+        @livewire('chat-message-box', ['chatId' => $chat->id], key($chat->id))
+    @else
+        @livewire('chat-message-box', ['chatId' => null])
+    @endif
     
     <script>
         $(document).ready(function () {
@@ -84,8 +88,7 @@
                 {
                     $('#sub-topic-chat').hide(); // Show sub-topic section
                     $('#answer-sub-chat').hide(); // Hide answer section   
-                    $('#other').show(); // Hide answer section   
-                    
+                    $('#other').show(); // Hide answer section  
                 }
                 else
                 {
