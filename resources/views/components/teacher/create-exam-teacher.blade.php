@@ -169,7 +169,7 @@
                               <div class="form-group row" id="model-form">
                                  <div class="col-md-12">
                                     <label for="model">Model <span style="color: red">*</span></label>
-                                    <select required name="model" class="form-control" id="model">
+                                    <select name="model" class="form-control" id="model">
                                           <option selected disabled value="">--- SELECT MODEL ---</option>
                                           <option value="mce">Multiple Choice & Essay</option>
                                           <option value="mc">Multiple Choice</option>

@@ -8,7 +8,7 @@ $typelogo = pathinfo($pathlogo, PATHINFO_EXTENSION);
 $datalogo = file_get_contents($pathlogo);
 $logo = 'data:image/' . $typelogo . ';base64,' . base64_encode($datalogo);
 
-$pathcambridge = public_path('images/lcn.png');
+$pathcambridge = public_path('images/lcnew.png');
 $typecambridge = pathinfo($pathcambridge, PATHINFO_EXTENSION);
 $datacambridge = file_get_contents($pathcambridge);
 $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($datacambridge);
@@ -57,7 +57,6 @@ $grade_name = $student->grade_name;
 
         .header {
             margin: 0;
-            margin-top: 100px;
             width: 100%;
             text-align: center;
         }
@@ -227,9 +226,9 @@ $grade_name = $student->grade_name;
                 <p class="watermark-school">Great Crystal School</p> 
                 @endif
                 <div class="header">
-                    {{-- <div style="padding-left:50px;padding-right:50px;">
+                    <div style="padding-left:50px;padding-right:50px;">
                         <img src="<?= $logo ?>" style="width:100%;height:10%;" alt="Sample image">
-                    </div> --}}
+                    </div>
                     <h5>MID-SEMESTER REPORT</h5>
                 </div>
     
@@ -611,15 +610,13 @@ $grade_name = $student->grade_name;
                     <tr>
                         <td style="text-align:center;padding-top:5px;font-size:8px;font-color:orange;"><i>This report card is for internal circulation only.</i></td>
                     </tr>
-                    {{-- <tr>
+                    <tr>
                         <td style="text-align:center;padding-top:5px;"> <img src="<?= $cambridge ?>" style="width:23%;height:4%;"></td>
-                    </tr> --}}
+                    </tr>
                 </table>
             </div>
 
             {{-- END PAGE 2 --}}
-
-
         </div>
     </div>
 </body>

@@ -4575,6 +4575,7 @@ class ReportController extends Controller
                             'phonic' => $score->phonic,
                             'science' => $score->science,
                             'art_and_craft' => $score->art_and_craft,
+                            'character_building' => $score->character_building,
                             'physical_education' => $score->physical_education,
                             'able_to_sit_quietly' => $score->able_to_sit_quietly,
                             'willingness_to_listen' => $score->willingness_to_listen,
