@@ -25,7 +25,7 @@
                         <div class="col-sm-6 d-flex">
                             <i>
                                <img loading="lazy"
-                                src="{{ asset('images/' . ucwords(optional(session('page'))->page ?? 'Customer-service') . '.png') }}"
+                                src="{{ asset('images/' . strtolower(optional(session('page'))->page ?? 'Customer-service') . '.png') }}"
                                 class="" alt="User Image"
                                 style="width: 42px; height: 42px; object-fit: cover;">
                             </i>
