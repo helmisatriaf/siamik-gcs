@@ -220,6 +220,7 @@ class ServiceController extends Controller
         $topics = Pages::get();
 
         return view('components.care.create', compact('topics'));
+        
     }
 
     public function actionCreate(Request $request){
