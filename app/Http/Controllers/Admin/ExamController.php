@@ -783,8 +783,6 @@ class ExamController extends Controller
                }
             }
             $questions = Question::with(['answer'])->where('exam_id', $id)->get();
-
-            // dd($status);
             return view('components.teacher.detail-exam-teacher', [
                'data' => $data,
                'status' => $status,
@@ -834,7 +832,6 @@ class ExamController extends Controller
                ->first();
          }
 
-
          $data = Exam::select('exams.*', 'grades.name as grade_name', 'subjects.name_subject')
             ->join('grade_exams', 'exams.id', '=', 'grade_exams.exam_id')
             ->join('grades', 'grade_exams.grade_id', '=', 'grades.id')
@@ -846,8 +843,6 @@ class ExamController extends Controller
             ->where('exams.academic_year', session('academic_year'))
             ->select('exams.*', 'grades.name as grade_name', 'grades.class as grade_class', 'subjects.name_subject as subject_name', 'teachers.name as teacher_name', 'type_exams.name as type_exam')
             ->first();
-
-         // dd($statusQuestion);
 
          return view('components.student.detail-exam-student', [
             'data' => $data,
@@ -1419,7 +1414,6 @@ class ExamController extends Controller
 
    public function uploadAnswer(Request $request)
    {
-      // dd($request);
       $id   = session('exam_id');
       $file = $request->file('upload_file');
       $exam = Exam::where('id', $id)->first();
@@ -1433,25 +1427,19 @@ class ExamController extends Controller
 
       // Simpan file sementara
       $tempPath = $file->storeAs('temp', $fileName);
+      $source = storage_path("app/" . $tempPath);
+      $destination = storage_path("app/public/file/answers/" . $fileName);
 
-      // Kompres file PDF
-      $compressedFilePath = storage_path("app/public/file/answers/" . $fileName);
-      $this->compressPdf(storage_path("app/" . $tempPath), $compressedFilePath);
+      // Kompres file PDF (jika gagal, copy saja)
+      $compressed = $this->compressPdf($source, $destination);
+      if (!$compressed) {
+         \Illuminate\Support\Facades\File::copy($source, $destination);
+      }
 
       // Hapus file sementara
-      // Storage::delete($tempPath);
+      Storage::delete($tempPath);
 
-      // Cek apakah file lama ada
-      // $checkFile = Score::where('exam_id', $id)
-      //    ->where('student_id', $student->id)
-      //    ->value('file_name');
-
-      // if ($checkFile !== null) {
-      //    if (Storage::exists('public/file/answers/' . $checkFile)) {
-      //       Storage::delete('public/file/answers/' . $checkFile);
-      //    }
-      // }
-
+      // Update database
       $data = [
          'hasFile' => true,
          'file_name' => $fileName,
@@ -1467,26 +1455,31 @@ class ExamController extends Controller
       return redirect()->back();
    }
 
+
    /**
     * Fungsi untuk mengompres PDF menggunakan FPDI + TCPDF
     */
    private function compressPdf($inputPath, $outputPath)
    {
-      $pdf = new FPDI();
+      try {
+         $pdf = new FPDI();
 
-      $pageCount = $pdf->setSourceFile($inputPath);
+         $pageCount = $pdf->setSourceFile($inputPath);
 
-      for ($i = 1; $i <= $pageCount; $i++) {
-         $tplIdx = $pdf->importPage($i);
-         $pdf->AddPage();
-         $pdf->useTemplate($tplIdx, 10, 10, 190); // Mengurangi ukuran halaman
+         for ($i = 1; $i <= $pageCount; $i++) {
+               $tplIdx = $pdf->importPage($i);
+               $pdf->AddPage();
+               $pdf->useTemplate($tplIdx, 10, 10, 190);
+               $pdf->SetCompression(true);
+         }
 
-         // Kompres gambar dalam PDF
-         $pdf->SetCompression(true);
+         $pdf->Output($outputPath, 'F');
+         return true;
+      } catch (\Exception $e) {
+         return false; // Jika gagal compress
       }
-
-      $pdf->Output($outputPath, 'F');
    }
+
 
    public function detailWorkplace(){
       try{

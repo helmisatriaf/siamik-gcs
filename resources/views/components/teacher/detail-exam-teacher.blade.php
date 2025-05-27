@@ -67,7 +67,7 @@ $days = floor($diff / (60 * 60 * 24)); // Konversi detik ke hari
               @if($data->hasFile == true)
                 <div class="row">
                   <div class="col-12">
-                    <iframe src="{{ asset('storage/file/assessment/'.$data->file_name) }}" width="100%" height="500px"></iframe>
+                    <iframe src="{{ asset('storage/file/assessment/'.$data->file_name) }}#toolbar=0 " width="100%" height="500px"></iframe>
                   </div>
                 </div>
                 <div class="row">

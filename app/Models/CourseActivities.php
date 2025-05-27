@@ -11,9 +11,4 @@ class CourseActivities extends Model
 
     protected $guarded = ['id'];
 
-    public function section()
-    {
-        return $this->belongsTo(Section::class);
-    }
-
 }

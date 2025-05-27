@@ -22,7 +22,7 @@ $grade_name = $student->grade_name;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Report Card</title>
+    <title>Report Card Semester 1</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC&display=swap');
 

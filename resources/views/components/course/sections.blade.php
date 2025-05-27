@@ -603,7 +603,7 @@
                                             </span>
 
                                             <i class="fas fa-info-circle"></i>
-                                            Model : 
+                                            Model : {{$assessment->model}} 
                                             <span>
                                                 @switch($assessment->model)
                                                     @case("mce")
@@ -616,7 +616,7 @@
                                                         CBT (Essay)
                                                         @break
                                                     @case("upload")
-                                                        Non-CBT
+                                                        Non-CBT / Upload File
                                                         @break
                                                     @default
                                                 @endswitch
@@ -676,7 +676,7 @@
                                                     <br>
                                                 </span>
                                                 <i class="fas fa-info-circle"></i>
-                                                Model : 
+                                                Model {{$assessment->model}} : 
                                                 <span>
                                                     @switch($assessment->model)
                                                         @case("mce")

@@ -79,7 +79,10 @@
                 <div class="row">
                   <div class="col-12">
                     <p class="text-bold">Question :</p> 
-                    <div id="pdf-container" style="width: 100%; max-width: 100vw; overflow-x: auto;">
+                    {{-- <div id="pdf-container" style="width: 100%; max-width: 100vw; overflow-x: auto;">
+                    </div> --}}
+                    <div class="col-12">
+                      <iframe src="{{ asset('storage/file/assessment/'.$data->file_name) }}#toolbar=0 " width="100%" height="500px"></iframe>
                     </div>
                    </div>
                 </div>  
@@ -497,6 +500,21 @@
       text: 'Successfully Upload Answer',
       timer: 1000, // Swal akan hilang dalam 2000ms (2 detik)
       showConfirmButton: false // Sembunyikan tombol "OK",
+    });
+</script>
+@endif
+
+@if(session('error_handling_file_pdf')) 
+  <script>
+    Swal.fire({
+      icon: 'error',
+      title: 'error',
+      html: `Sorry, the type of pdf you uploaded is not supported by our system.<br><br>
+      <strong>Please compress your file in:</strong> <br>
+      <a href="https://www.ilovepdf.com/compress_pdf" target="_blank" style="color: #3085d6; text-decoration: underline;">
+          iLovePDF - Compress PDF
+      </a>`,
+      showConfirmButton: true // Sembunyikan tombol "OK",
     });
 </script>
 @endif

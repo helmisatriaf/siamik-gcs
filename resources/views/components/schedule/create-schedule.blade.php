@@ -162,7 +162,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="overflow-x: auto;">
                         <div class="row">
                             <div class="col-2">
                                 <div class="form-group">
@@ -200,7 +200,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="scheduleAll"></div>
+                        <div id="scheduleAll" style="overflow-x: auto;"></div>
                     </div>
                 </div>
             </div>
@@ -448,7 +448,7 @@
             table += `
                 <thead>
                     <tr>
-                        <th style="font-size:12px;">Waktu</th>
+                        <th style="font-size:12px;position: sticky; left: 0; background: white; z-index: 2;">Waktu</th>
                         <th style="font-size:12px;">Toddler</th>
                         <th style="font-size:12px;">Nursery</th>
                         <th style="font-size:12px;">KA</th>
@@ -483,7 +483,7 @@
                 });
 
                 timeSlots.forEach(timeSlot => {
-                    table += `<tr><td class="font-bold text-xs">${timeSlot}</td>`;
+                    table += `<tr><td class="font-bold text-xs" position: sticky; left: 0; background: white; z-index: 2;>${timeSlot}</td>`;
                     const timeSlotSchedules = {};
 
                     Object.keys(gradeSchedules).forEach(grade => {

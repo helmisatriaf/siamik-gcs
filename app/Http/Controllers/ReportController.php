@@ -7011,7 +7011,7 @@ class ReportController extends Controller
             }
             
             // Check if report exists
-            $checkReport = Report_card::where('student_id', $getIdStudent)
+            $checkReport = Mid_report::where('student_id', $getIdStudent)
                 ->where('semester', session('semester'))
                 ->where('academic_year', session('academic_year'))->exists();
             
@@ -7028,6 +7028,7 @@ class ReportController extends Controller
                 'status' => 'success',
                 'message' => 'Access granted',
             ]);
+
         } catch (Exception $err) {
             Log::error("Error in checkMidreportAccess: {$err->getMessage()}");
             return response()->json([
@@ -7128,7 +7129,7 @@ class ReportController extends Controller
                     return redirect($role . '/dashboard');
                 }
 
-                $checkReport = Report_card::where('student_id', $getIdStudent)
+                $checkReport = Mid_report::where('student_id', $getIdStudent)
                     ->where('semester', session('semester'))
                     ->where('academic_year', session('academic_year'))->exists();
                 
@@ -8301,6 +8302,13 @@ class ReportController extends Controller
 
             $monthlyActivity = MonthlyActivity::get();
 
+            if($gradeId <= 7){
+                $grades = 'lower';
+            }
+            elseif($gradeId > 7){
+                $grades = 'upper';
+            }
+
             $studentMonthlyActivity = Student_Monthly_Activity::join('students', 'students.id', '=', 'student_monthly_activities.student_id')
                 ->join('monthly_activities', 'monthly_activities.id', '=', 'student_monthly_activities.monthly_activity_id')
                 ->where('student_monthly_activities.student_id', $id)
@@ -8312,7 +8320,6 @@ class ReportController extends Controller
 
             // dd($studentMonthlyActivity);
 
-            // dd($scoresByStudent);
             $countMA = MonthlyActivity::count();
 
             $data = [
@@ -8332,7 +8339,7 @@ class ReportController extends Controller
                 'ls'            => $ls,
                 'les'           => $les,
                 'saed'          => $saed,
-                'monthlyAct'    => $monthlyActivity,
+                'monthlyAct'    => $studentMonthlyActivity,
                 'scoreMonthly'  => $studentMonthlyActivity,
                 'countMA'       => $countMA,
             ];

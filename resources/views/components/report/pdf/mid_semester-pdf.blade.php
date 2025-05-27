@@ -21,7 +21,9 @@ $grade_name = $student->grade_name;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Report Card</title>
+    <title>Mid Report Card Semester {{session('semester')}}</title>
+    <link rel="icon" href="{{ asset('great.png') }}" type="image/x-icon">
+    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -380,7 +382,7 @@ $grade_name = $student->grade_name;
                         <tr>
                             <td style="width:15%;text-align:center;"><b>Participation</b></td>
                             @foreach ($monthlyAct as $ma)
-                                <td style="text-align:center;"><b>{{$ma->name}}</b></td>
+                                <td style="text-align:center;"><b>{{$ma->name_activity}}</b></td>
                             @endforeach
                         </tr>
                         <tr>

@@ -468,7 +468,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="/{{ session('role') }}/dashboard/midreport" target="_blank"
+                                <a href="/{{ session('role') }}/dashboard/midreport" target=""
                                     rel="noopener noreferrer"
                                     class="nav-link {{ session('page') && session('page')->child ? (session('page')->child == 'mid report card' ? 'active' : '') : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
@@ -477,7 +477,7 @@
 
                             </li>
                             <li class="nav-item">
-                                <a href="/{{ session('role') }}/dashboard/report" target="_blank"
+                                <a href="/{{ session('role') }}/dashboard/report" target=""
                                     rel="noopener noreferrer"
                                     class="nav-link {{ session('page') && session('page')->child ? (session('page')->child == 'report card' ? 'active' : '') : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
@@ -821,7 +821,7 @@
                 <!-- END Page letter -->
 
 
-                @if (session('role') == 'student')
+                {{-- @if (session('role') == 'student')
                 <li class="nav-item">
                     <a href="/library-public" class="nav-link {{ session('page') && session('page')->child ? (session('page')->child == 'library-public' ? 'active' : '') : '' }}">
                         <i class="">
@@ -833,7 +833,7 @@
                         </p>
                     </a>
                 </li>
-                @endif
+                @endif --}}
                 
                 {{-- GREAT CARE --}}
                 @if (session('role') != 'teacher' && session('role') != 'library')
@@ -1033,7 +1033,7 @@
             e.preventDefault();
 
             // Get the target URL
-            const originalUrl = $(this).attr('href');
+            const originalUrl = $(this).attr('href'); 
 
             // Determine the check URL based on the clicked link
             let checkUrl;
@@ -1043,6 +1043,15 @@
                 checkUrl = originalUrl.replace('/report', '/check-report-access');
             }
 
+            Swal.fire({
+            title: 'Checking Access...',
+            text: 'Please wait a moment.',
+            allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
             // Make an AJAX request to check access
             $.ajax({
                 url: checkUrl,
@@ -1050,6 +1059,7 @@
                 dataType: 'json',
                 success: function(response) {
                     if (response.status === 'error') {
+                        Swal.close(); // Close loading
                         // Show SweetAlert error message
                         Swal.fire({
                             title: 'Access Denied',
@@ -1058,11 +1068,13 @@
                             confirmButtonText: 'OK'
                         });
                     } else {
+                        Swal.close(); // Close loading
                         // If access is granted, open the report in a new tab
                         window.open(originalUrl, '_blank');
                     }
                 },
                 error: function(xhr, status, error) {
+                    Swal.close(); // Close loading
                     console.error('Error checking report access:', error);
                     Swal.fire({
                         title: 'Error',
