@@ -20,7 +20,7 @@
         </div>
     </div>
     
-    <div class="container-fluid" style="overflow-x: auto;">
+    <div class="container-fluid" style="">
         <div class="row" style="width: 3000px;">
             <!-- Left column -->
             <div class="col-md-5">
@@ -153,7 +153,7 @@
 
             <!-- Right column -->
             <div class="col-md-7">
-                <div class="card card-dark">
+                <div class="card card-dark" style="min-width: full;">
                     <div class="card-header">
                         <h3 class="card-title">All Schedule</h3>
                         <div class="card-tools">
@@ -483,7 +483,7 @@
                 });
 
                 timeSlots.forEach(timeSlot => {
-                    table += `<tr><td class="font-bold text-xs" position: sticky; left: 0; background: white; z-index: 2;>${timeSlot}</td>`;
+                    table += `<tr><td style="position: sticky; left: 0; background: white; z-index: 2;" class="font-bold text-xs">${timeSlot}</td>`;
                     const timeSlotSchedules = {};
 
                     Object.keys(gradeSchedules).forEach(grade => {

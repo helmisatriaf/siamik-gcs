@@ -49,12 +49,15 @@ use App\Models\Schedule;
 use App\Models\Type_schedule;
 use App\Models\Page_Tutorials;
 use App\Models\Chat_bot;
+use App\Models\Subtitute_teacher;
 
 use App\Services\BillingService;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -116,9 +119,24 @@ Route::get('/get-grades/{teacherId}', function ($teacherId) {
 // Untuk melihat filter di add schedule subject teacher di menu grade
 Route::get('/get-all-schedule-filter/{teacher?}/{grade?}/{day?}', function ($teacher = null, $grade = null, $day = null) {
    $lesson = Type_schedule::where('name', '=', 'Lesson')->value('id');
+   
+   $substitutes = Subtitute_teacher::whereDate('date', Carbon::today())
+   ->join('teachers', 'subtitute_teachers.teacher_id', '=', 'teachers.id')
+   ->select('subtitute_teachers.*', 'teachers.name as substitute_teacher')
+   ->get()
+   ->keyBy('teacher_main'); 
+
+   $assistantSubs = Subtitute_teacher::whereDate('date', Carbon::today())
+   ->join('teachers', 'subtitute_teachers.teacher_companion', '=', 'teachers.id')
+   ->select('subtitute_teachers.*', 'teachers.name as substitute_teacher')
+   ->get()
+   ->keyBy('assistant_main');
+   
+   $getSubs = $substitutes->keys(); // ambil semua teacher_id dari koleksi yang sudah di-keyBy
+   $getAsst = $assistantSubs->keys(); // ambil semua teacher_companion dari koleksi yang sudah di-keyBy
 
    $query = Schedule::leftJoin('teachers', 'schedules.teacher_id', '=', 'teachers.id')
-      ->leftJoin('teachers as t2', 't2.id', '=', 'schedules.teacher_companion')
+      ->leftJoin('teachers as t2', 'schedules.teacher_companion', '=', 't2.id')
       ->leftJoin('grades', 'schedules.grade_id', '=', 'grades.id')
       ->leftJoin('subjects', 'schedules.subject_id', '=', 'subjects.id')
       ->where('type_schedule_id', $lesson)
@@ -129,7 +147,8 @@ Route::get('/get-all-schedule-filter/{teacher?}/{grade?}/{day?}', function ($tea
       ->orderBy('start_time', 'asc');
 
    if ($teacher !== 'null') {
-      $query->where('teacher_id', $teacher);
+      $query->where('teacher_id', $teacher)
+      ->orWhere('teacher_companion', $teacher);
    }
 
    if ($grade !== 'null') {
@@ -146,7 +165,30 @@ Route::get('/get-all-schedule-filter/{teacher?}/{grade?}/{day?}', function ($tea
       't2.name as assisstant',
       DB::raw("CONCAT(grades.name, ' - ', grades.class) as grade_name"),
       'subjects.name_subject as subject_name'
-   )->get();
+   )
+   ->get()
+   ->map(function ($item) use ($substitutes, $getSubs, $assistantSubs, $getAsst) {
+      if($item->teacher_companion == null){
+         $item->teacher_companion = 0;
+      }
+      // Substitute teacher
+      if ($getSubs->contains($item->teacher_id) && $substitutes[$item->teacher_id]->day == $item->day && $substitutes[$item->teacher_id]->grade_id == $item->grade_id && $substitutes[$item->teacher_id]->subject_id == $item->subject_id) {
+         $item->teacher_name = $substitutes[$item->teacher_id]->substitute_teacher;
+         $item->is_substitute = true;
+      } else {
+         $item->is_substitute = false;
+      }
+
+      // Substitute assistant teacher
+      if ($getAsst->contains($item->teacher_companion) && $assistantSubs[$item->teacher_companion]->day == $item->day && $assistantSubs[$item->teacher_companion]->grade_id == $item->grade_id && $assistantSubs[$item->teacher_companion]->subject_id == $item->subject_id) {
+         $item->assisstant = $assistantSubs[$item->teacher_companion]->substitute_teacher;
+         $item->is_subast = true;
+      } else {
+         $item->is_subast = false;
+      }
+      
+      return $item;
+   });
 
    // Define day names
    $dayNames = [
@@ -171,7 +213,9 @@ Route::get('/get-all-schedule-filter/{teacher?}/{grade?}/{day?}', function ($tea
                'day' => $schedule->day,
                'start_time' => $schedule->start_time,
                'end_time' => $schedule->end_time,
-               'notes' => $schedule->note
+               'notes' => $schedule->note,
+               'is_substitute' => $schedule->is_substitute,
+               'is_subast' => $schedule->is_subast,
             ];
          })->values();
       });

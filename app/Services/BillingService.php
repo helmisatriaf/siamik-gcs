@@ -11,7 +11,7 @@ class BillingService
 
     public function __construct()
     {
-        $this->baseUrl = 'http://192.168.74.31:83/api';
+        $this->baseUrl = 'http://145.79.12.50:8081/api';
     }
 
     public function checkPaymentStatus($uniqueId)

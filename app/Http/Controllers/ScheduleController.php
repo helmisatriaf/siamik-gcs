@@ -32,7 +32,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\Log;
 class ScheduleController extends Controller
 {
 
@@ -51,7 +51,14 @@ class ScheduleController extends Controller
          $masterAcademic = Master_academic::where('is_use', true)->first();
          $semester = Master_academic::first()->value('now_semester');
          $academic_year = Master_academic::first()->value('academic_year');
-         
+
+        $substitutes = Subtitute_teacher::whereDate('date', Carbon::today())
+         ->join('teachers', 'subtitute_teachers.teacher_id', '=', 'teachers.id')
+         ->select('subtitute_teachers.*', 'teachers.name as substitute_teacher')
+         ->get()
+         ->keyBy('teacher_id'); 
+         // dd($substitutes);
+
          $exams =  Exam::join('grade_exams', 'exams.id', '=', 'grade_exams.exam_id')
             ->join('grades', 'grade_exams.grade_id', '=', 'grades.id')
             ->join('subject_exams', 'exams.id', '=', 'subject_exams.exam_id')
@@ -72,20 +79,37 @@ class ScheduleController extends Controller
          // dd($typeSchedule);
 
          $gradeSchedules = Schedule::where('type_schedule_id', $typeSchedule)
+            ->where('grade_id', '=', 5)
             ->where('semester', '=', session('semester'))
             ->where('academic_year', session('academic_year'))
             ->leftJoin('grades', 'grades.id', '=', 'schedules.grade_id')
             ->leftJoin('subjects', 'subjects.id', '=', 'schedules.subject_id')
             ->leftJoin('teachers', 'teachers.id', '=', 'schedules.teacher_id')
-            ->select('schedules.*', 'schedules.semester as semester',
-            'grades.name as grade_name', 'grades.id as grade_id', 'grades.class as grade_class',
-            'subjects.id as subject_id', 'subjects.name_subject as subject_name',
-            'teachers.id as teacher_id', 'teachers.name as teacher_name')
-            ->orderBy('grades.id')       // Urutkan berdasarkan grade_id
-            ->orderBy('schedules.day')   // Kemudian urutkan berdasarkan day
+            ->select(
+               'grades.name as grade_name',
+               'grades.id as grade_id',
+               'grades.class as grade_class',
+               'subjects.id as subject_id',
+               'subjects.name_subject as subject_name',
+               'teachers.id as teacher_id',
+               'teachers.name as teacher_name'
+            )
+            ->orderBy('grades.id')
+            ->orderBy('schedules.day')
             ->orderBy('schedules.start_time')
             ->get()
-            ->groupBy(function($item) {
+            ->map(function ($item) use ($substitutes) {
+               // dd($substitutes->has($item->teacher_id));
+               // 3. Cek apakah jadwal ini ada penggantinya
+               if ($substitutes->has($item->teacher_id)) {
+                     $item->teacher_name = $substitutes[$item->teacher_id]->substitute_teacher; // Ganti nama guru
+                     $item->is_substitute = true;
+               } else {
+                     $item->is_substitute = false;
+               }
+               return $item;
+            })
+            ->groupBy(function ($item) {
                return $item->grade_name . '-' . $item->grade_class;
             });
 
@@ -112,7 +136,7 @@ class ScheduleController extends Controller
          $endsemester2 = Master_academic::where('is_use', true)->value('end_semester2');
 
          $grades = Grade::whereNotIn('name', ['IGCSE'])->get();
-         $teacher = Teacher::orderBy('name', 'asc')->get();
+         $teacher = Teacher::where('is_active', true)->orderBy('name', 'asc')->get();
          $subject = Subject::orderBy('name_subject', 'asc')->get();
          
          $data = [
@@ -495,7 +519,7 @@ class ScheduleController extends Controller
             ->select('grades.name as grade_name', 'grades.class as grade_class', 'grades.id as grade_id')
             ->first();
 
-         $teacher = Teacher::orderBy('name', 'asc')->get();
+         $teacher = Teacher::where('is_active', true)->orderBy('name', 'asc')->get();
          $grade   = Grade::get();
 
          // dd($subtituteTeacher);
@@ -1450,6 +1474,7 @@ class ScheduleController extends Controller
                if (Schedule::where('day', $request->day[$i])
                ->where('teacher_id', $request->teacher_id[$i])
                ->where('teacher_companion', $request->teacher_companion[$i])
+               ->where('grade_id', $request->grade_id)
                ->where('start_time', $request->start_time[$i])
                ->where('end_time', $request->end_time[$i])
                ->where('semester', $request->semester)
@@ -2329,13 +2354,36 @@ class ScheduleController extends Controller
 
    public function subtituteTeacher(Request $request)
    {
-      // Validate the request data
       $getSubjectId = Subject::where('name_subject', $request->subject_id)->value('id');
       $getTypeSchedule = Type_schedule::where('name', 'like', '%lesson%')->value('id');
+
+      $mainTeacher = Schedule::where('grade_id', $request->grade_id)
+         ->where('subject_id', $getSubjectId)
+         ->where('type_schedule_id', $getTypeSchedule)
+         ->where('day', $request->day)
+         ->where('start_time', $request->start_time)
+         ->where('end_time', $request->end_time)
+         ->value('teacher_id');
+
+      $mainAssistant = Schedule::where('grade_id', $request->grade_id)
+         ->where('subject_id', $getSubjectId)
+         ->where('type_schedule_id', $getTypeSchedule)
+         ->where('day', $request->day)
+         ->where('start_time', $request->start_time)
+         ->where('end_time', $request->end_time)
+         ->value('teacher_companion');
+
+      Log::info(['assistant' => $mainAssistant, 'teacher' => $mainTeacher, 'subject_id' => $getSubjectId, 'type_schedule_id' => $getTypeSchedule]);
+   
+      if($mainAssistant == null){
+         $mainAssistant = 0;
+      }
 
       $data = [
          'grade_id' => $request->grade_id,
          'subject_id' => $getSubjectId,
+         'teacher_main' => $mainTeacher ,
+         'assistant_main' => $mainAssistant,
          'teacher_id' => $request->teacher_id,
          'teacher_companion' => $request->teacher_companion,
          'type_schedule_id' =>  $getTypeSchedule,

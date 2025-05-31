@@ -105,222 +105,220 @@
                 @csrf
         
                 @if (!empty($data['students']))
-                
-                <table class="table table-striped table-bordered bg-white" style=" width: 3000px;">
-                    @if ($data['status'] == null)
-                        <!-- JIKA DATA BELUM DI SUBMIT OLEH TEACHER  -->
-                        <thead>
-                            <tr>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;" rowspan="2">S/N</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;" rowspan="2">First Name</th>
-                                @foreach ($data['monthly'] as $monthly)
-                                <th class="text-center" style="vertical-align : middle;text-align:center;" rowspan="2">{{$monthly['name']}}</th>
-                                @endforeach
-                                <th class="text-center" style="vertical-align : middle;text-align:center;" colspan="2">Able to Understand</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;" colspan="3">Able to Recognize</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Physical Skill / Motor Skill</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;" colspan="2">Able Art and Craft</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;" colspan="2">Chinese</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;" colspan="4">Self and Social Awareness</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;" rowspan="2">Remarks</th>
-                            </tr>
-                            <tr>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Songs</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Prayer</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Colour</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Number</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Object</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Body Movement</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Colouring</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Painting</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Songs</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Ability to recognize the objects</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Able to own up to mistakes</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Takes care of personal belongings and property</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Demonstrates importance of self-control</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Understands that having a temper is not acceptable behavior for problem-solving</th>
-                            </tr>
-                        </thead>
-        
-                        <!-- JIKA TEACHER MEMINTA EDIT SETELAH SUBMIT -->
-                        @if(!empty($data['result']))
-                            <tbody>
-                                @foreach ($data['result'] as $student)
+                    <table class="table table-striped table-bordered bg-white" style=" width: 5000px;">
+                        @if ($data['status'] == null)
+                            <!-- JIKA DATA BELUM DI SUBMIT OLEH TEACHER  -->
+                            <thead>
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $student['student_name'] }}</td>
-                                    @foreach ($student['scores'] as $index => $score)
-                                    @foreach (array_merge(['songs', 'prayer', 'colour', 'number', 'object', 'body_movement', 'colouring', 'painting', 'chinese_songs', 'ability_to_recognize_the_objects', 'able_to_own_up_to_mistakes', 'takes_care_of_personal_belongings_and_property', 'demonstrates_importance_of_self_control', 'management_emotional_problem_solving']
-                                        , $data['title']) as $field)
-                                            <td class="text-left text-xs">
-                                                <div class="form-check me-2 mx-2">
-                                                    <input id="{{ $field }}_excellent_{{ $student['student_id'] }}" name="{{ $field }}[{{ $student['student_id'] }}]" class="form-check-input status-type" type="radio" value="1" {{ $score[$field] == 1 ? "checked" : "" }}>
-                                                    <label class="form-check-label" for="{{ $field }}_excellent_{{ $student['student_id'] }}">
-                                                        Excellent
-                                                    </label>
-                                                </div>
-                                                <div class="form-check me-2 mx-2">
-                                                    <input id="{{ $field }}_satisfactory_{{ $student['student_id'] }}" name="{{ $field }}[{{ $student['student_id'] }}]" class="form-check-input status-type" type="radio" value="2" {{ $score[$field] == 2 ? "checked" : "" }}>
-                                                    <label class="form-check-label" for="{{ $field }}_satisfactory_{{ $student['student_id'] }}">
-                                                        Satisfactory
-                                                    </label>
-                                                </div>
-                                                <div class="form-check me-2 mx-2">
-                                                    <input id="{{ $field }}_weak_{{ $student['student_id'] }}" name="{{ $field }}[{{ $student['student_id'] }}]" class="form-check-input status-type" type="radio" value="3" {{ $score[$field] == 3 ? "checked" : "" }}>
-                                                    <label class="form-check-label" for="{{ $field }}_weak_{{ $student['student_id'] }}">
-                                                        Weak
-                                                    </label>
-                                                </div>
-                                            </td>
-        
-        
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;" rowspan="2">S/N</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;" rowspan="2">First Name</th>
+                                    @foreach ($data['monthly'] as $monthly)
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;" rowspan="2">{{$monthly['name']}}</th>
+                                    @endforeach
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;" colspan="2">Able to Understand</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;" colspan="3">Able to Recognize</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Physical Skill / Motor Skill</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;" colspan="2">Able Art and Craft</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;" colspan="2">Chinese</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;" colspan="4">Self and Social Awareness</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;width: 10%;" rowspan="2">Remarks</th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Songs</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Prayer</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Colour</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Number</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Object</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Body Movement</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Colouring</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Painting</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Songs</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Ability to recognize the objects</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Able to own up to mistakes</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Takes care of personal belongings and property</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Demonstrates importance of self-control</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Understands that having a temper is not acceptable behavior for problem-solving</th>
+                                </tr>
+                            </thead>
+            
+                            <!-- JIKA TEACHER MEMINTA EDIT SETELAH SUBMIT -->
+                            @if(!empty($data['result']))
+                                <tbody>
+                                    @foreach ($data['result'] as $student)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $student['student_name'] }}</td>
+                                        @foreach ($student['scores'] as $index => $score)
+                                            @foreach (array_merge(['songs', 'prayer', 'colour', 'number', 'object', 'body_movement', 'colouring', 'painting', 'chinese_songs', 'ability_to_recognize_the_objects', 'able_to_own_up_to_mistakes', 'takes_care_of_personal_belongings_and_property', 'demonstrates_importance_of_self_control', 'management_emotional_problem_solving']
+                                                , $data['title']) as $field)
+                                                <td class="text-left text-xs">
+                                                    <div class="form-check me-2 mx-2">
+                                                        <input id="{{ $field }}_excellent_{{ $student['student_id'] }}" name="{{ $field }}[{{ $student['student_id'] }}]" class="form-check-input status-type" type="radio" value="1" {{ $score[$field] == 1 ? "checked" : "" }}>
+                                                        <label class="form-check-label" for="{{ $field }}_excellent_{{ $student['student_id'] }}">
+                                                            Excellent
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check me-2 mx-2">
+                                                        <input id="{{ $field }}_satisfactory_{{ $student['student_id'] }}" name="{{ $field }}[{{ $student['student_id'] }}]" class="form-check-input status-type" type="radio" value="2" {{ $score[$field] == 2 ? "checked" : "" }}>
+                                                        <label class="form-check-label" for="{{ $field }}_satisfactory_{{ $student['student_id'] }}">
+                                                            Satisfactory
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check me-2 mx-2">
+                                                        <input id="{{ $field }}_weak_{{ $student['student_id'] }}" name="{{ $field }}[{{ $student['student_id'] }}]" class="form-check-input status-type" type="radio" value="3" {{ $score[$field] == 3 ? "checked" : "" }}>
+                                                        <label class="form-check-label" for="{{ $field }}_weak_{{ $student['student_id'] }}">
+                                                            Weak
+                                                        </label>
+                                                    </div>
+                                                </td>
                                             @endforeach
                                             <td class="text-center">
                                                 <input name="remarks[{{ $student['student_id'] }}]" type="text" class="form-control" autocomplete="off" value="{{ $student['remarks'] }}">
                                             </td>
-                                    @endforeach
+                                        @endforeach
                                         <input name="student_id[]" type="number" class="form-control d-none" id="student_id" value="{{ $student['student_id'] }}">
-                                </tr>
-                                @endforeach
-                            </tbody>
-                            <input name="grade_id" type="number" class="form-control d-none" id="grade_id" value="{{ $data['grade']->grade_id }}">    
-                            tndif
-                            @endif
-                        <!-- JIKA TEACHER BELUM INPUT NILAI -->
-                        @else 
-                        <tbody>
-                            @foreach ($data['students'] as $student)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $student['name'] }}</td>
-        
-                                @foreach (array_merge(['songs', 'prayer', 'colour', 'number', 'object', 'body_movement', 'colouring', 'painting', 'chinese_songs', 'ability_to_recognize_the_objects', 'able_to_own_up_to_mistakes', 'takes_care_of_personal_belongings_and_property', 'demonstrates_importance_of_self_control', 'management_emotional_problem_solving']
-                                , $data['title']) as $field)
-                                    <td class="text-left text-xs">
-                                        <div class="form-check me-2 mx-2">
-                                            <input id="{{ $field }}_excellent_{{ $student['id'] }}" name="{{ $field }}[{{ $student['id'] }}]" class="form-check-input status-type" type="radio" value="1">
-                                            <label class="form-check-label" for="{{ $field }}_excellent_{{ $student['id'] }}">
-                                                Excellent
-                                            </label>
-                                        </div>
-                                        <div class="form-check me-2 mx-2">
-                                            <input id="{{ $field }}_satisfactory_{{ $student['id'] }}" name="{{ $field }}[{{ $student['id'] }}]" class="form-check-input status-type" type="radio" value="2">
-                                            <label class="form-check-label" for="{{ $field }}_satisfactory_{{ $student['id'] }}">
-                                                Satisfactory
-                                            </label>
-                                        </div>
-                                        <div class="form-check me-2 mx-2">
-                                            <input id="{{ $field }}_weak_{{ $student['id'] }}" name="{{ $field }}[{{ $student['id'] }}]" class="form-check-input status-type" type="radio" value="3">
-                                            <label class="form-check-label" for="{{ $field }}_weak_{{ $student['id'] }}">
-                                                Weak
-                                            </label>
-                                        </div>
-                                    </td>
-                                @endforeach
-        
-                                <td class="text-center">
-                                    <input name="remarks[{{ $student['id'] }}]" type="text" class="form-control" autocomplete="off">
-                                </td>
-                                <input name="student_id[]" type="number" class="form-control d-none" value="{{ $student['id'] }}">
-                            </tr>
-                            @endforeach
-                        </tbody>
-                        <input name="grade_id" type="number" class="form-control d-none" value="{{ $data['grade']->grade_id }}">
-                        <input name="teacher_id" type="number" class="form-control d-none" value="{{ $data['classTeacher']->teacher_id }}">
-        
-                            @if ($data['mid'] == 0)
-                            <input name="semester" type="number" class="form-control d-none" value="{{ $data['semester'] }}">
-                            @else
-                                @if ($data['mid'] == 0.5)
-                                    <input name="semester" type="number" class="form-control d-none" value="0.5">
-                                @elseif ($data['mid'] == 1.5)
-                                    <input name="semester" type="number" class="form-control d-none" value="1.5">
-                                @endif
-                            @endif
-        
-                        @endif
-        
-        
-                    <!-- JIKA DATA SUDAH DI SUBMiT OLEH TEACHER -->
-                    @elseif ($data['status']->status != null && $data['status']->status == 1)
-                        <thead>
-                            <tr>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;" rowspan="2">S/N</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;" rowspan="2">First Name</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;" colspan="2">Able to Understand</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;" colspan="3">Able to Recognize</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Physical Skill / Motor Skill</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;" colspan="2">Able Art and Craft</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;" colspan="2">Chinese</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;" colspan="4">Self and Social Awareness</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;" rowspan="2">Remarks</th>
-                            </tr>
-                            <tr>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Songs</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Prayer</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Colour</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Number</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Object</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Body Movement</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Colouring</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Painting</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Songs</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Ability to recognize the objects</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Able to own up to mistakes</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Takes care of personal belongings and property</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Demonstrates importance of self-control</th>
-                                <th class="text-center" style="vertical-align : middle;text-align:center;">Understands that having a temper is not acceptable behavior for problem-solving</th>
-                            </tr>
-                        </thead>
-        
-                        <tbody>
-                        @if(!empty($data['result']))
-                            @foreach ($data['result'] as $student)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $student['student_name'] }}</td>
-                                    @foreach ($student['scores'] as $index => $score)
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                                <input name="grade_id" type="number" class="form-control d-none" id="grade_id" value="{{ $data['grade']->grade_id }}">    
+                            
+                                <!-- JIKA TEACHER BELUM INPUT NILAI -->
+                            @else 
+                                <tbody>
+                                    @foreach ($data['students'] as $student)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $student['name'] }}</td>
+                
                                         @foreach (array_merge(['songs', 'prayer', 'colour', 'number', 'object', 'body_movement', 'colouring', 'painting', 'chinese_songs', 'ability_to_recognize_the_objects', 'able_to_own_up_to_mistakes', 'takes_care_of_personal_belongings_and_property', 'demonstrates_importance_of_self_control', 'management_emotional_problem_solving']
                                         , $data['title']) as $field)
-                                            <td class="text-center">
-                                                @if ($score[$field] == 1)
-                                                    Excellent
-                                                @elseif ($score[$field] == 2)
-                                                    Satisfactory
-                                                @elseif ($score[$field] == 3)
-                                                    Weak
-                                                @endif
+                                            <td class="text-left text-xs">
+                                                <div class="form-check me-2 mx-2">
+                                                    <input id="{{ $field }}_excellent_{{ $student['id'] }}" name="{{ $field }}[{{ $student['id'] }}]" class="form-check-input status-type" type="radio" value="1">
+                                                    <label class="form-check-label" for="{{ $field }}_excellent_{{ $student['id'] }}">
+                                                        Excellent
+                                                    </label>
+                                                </div>
+                                                <div class="form-check me-2 mx-2">
+                                                    <input id="{{ $field }}_satisfactory_{{ $student['id'] }}" name="{{ $field }}[{{ $student['id'] }}]" class="form-check-input status-type" type="radio" value="2">
+                                                    <label class="form-check-label" for="{{ $field }}_satisfactory_{{ $student['id'] }}">
+                                                        Satisfactory
+                                                    </label>
+                                                </div>
+                                                <div class="form-check me-2 mx-2">
+                                                    <input id="{{ $field }}_weak_{{ $student['id'] }}" name="{{ $field }}[{{ $student['id'] }}]" class="form-check-input status-type" type="radio" value="3">
+                                                    <label class="form-check-label" for="{{ $field }}_weak_{{ $student['id'] }}">
+                                                        Weak
+                                                    </label>
+                                                </div>
                                             </td>
                                         @endforeach
-        
-                                        <td class="text-justify">
-                                            {{ $student['remarks'] }}
+                
+                                        <td class="text-center">
+                                            <input name="remarks[{{ $student['id'] }}]" type="text" class="form-control" autocomplete="off">
                                         </td>
-        
-                                        @if ($data['status'] !== null)
-                                            @if ($data['mid'] == 0)
-                                                <td>
-                                                    <a class="btn btn-primary btn"
-                                                        href="{{url('teacher/dashboard/report/toddler/print') . '/' . $student['student_id']}}">
-                                                        Print
-                                                    </a>
-                                                </td>
-                                            @else
-                                                <td>
-                                                    <a class="btn btn-primary btn"
-                                                        href="{{url('teacher/dashboard/report/mid/toddler/print') . '/' . $student['student_id']}}">
-                                                        Print
-                                                    </a>
-                                                </td>
-                                            @endif
-                                        @endif
+                                        <input name="student_id[]" type="number" class="form-control d-none" value="{{ $student['id'] }}">
+                                    </tr>
                                     @endforeach
-                            @endforeach
-                        @endif        
-                        </tbody>
-                    @endif
-        
-                </table>
+                                </tbody>
+                                <input name="grade_id" type="number" class="form-control d-none" value="{{ $data['grade']->grade_id }}">
+                                <input name="teacher_id" type="number" class="form-control d-none" value="{{ $data['classTeacher']->teacher_id }}">
+                
+                                @if ($data['mid'] == 0)
+                                <input name="semester" type="number" class="form-control d-none" value="{{ $data['semester'] }}">
+                                @else
+                                    @if ($data['mid'] == 0.5)
+                                        <input name="semester" type="number" class="form-control d-none" value="0.5">
+                                    @elseif ($data['mid'] == 1.5)
+                                        <input name="semester" type="number" class="form-control d-none" value="1.5">
+                                    @endif
+                                @endif
+                            @endif
+            
+            
+                        <!-- JIKA DATA SUDAH DI SUBMiT OLEH TEACHER -->
+                        @elseif ($data['status']->status != null && $data['status']->status == 1)
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;" rowspan="2">S/N</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;" rowspan="2">First Name</th>
+                                    @foreach ($data['monthly'] as $monthly)
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;" rowspan="2">{{$monthly['name']}}</th>
+                                    @endforeach
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;" colspan="2">Able to Understand</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;" colspan="3">Able to Recognize</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Physical Skill / Motor Skill</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;" colspan="2">Able Art and Craft</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;" colspan="2">Chinese</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;" colspan="4">Self and Social Awareness</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;width: 20%;" rowspan="2">Remarks</th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Songs</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Prayer</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Colour</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Number</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Object</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Body Movement</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Colouring</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Painting</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Songs</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Ability to recognize the objects</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Able to own up to mistakes</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Takes care of personal belongings and property</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Demonstrates importance of self-control</th>
+                                    <th class="text-center" style="vertical-align : middle;text-align:center;">Understands that having a temper is not acceptable behavior for problem-solving</th>
+                                </tr>
+                            </thead>
+            
+                            <tbody>
+                            @if(!empty($data['result']))
+                                @foreach ($data['result'] as $student)
+                                    <tr>
+                                        <td style="vertical-align : middle;text-align:center;">{{ $loop->iteration }}</td>
+                                        <td style="vertical-align : middle;text-align:center;">{{ $student['student_name'] }}</td>
+                                        @foreach ($student['scores'] as $index => $score)
+                                            @foreach (array_merge(['songs', 'prayer', 'colour', 'number', 'object', 'body_movement', 'colouring', 'painting', 'chinese_songs', 'ability_to_recognize_the_objects', 'able_to_own_up_to_mistakes', 'takes_care_of_personal_belongings_and_property', 'demonstrates_importance_of_self_control', 'management_emotional_problem_solving']
+                                            , $data['title']) as $field)
+                                                <td class="text-center" style="vertical-align : middle;text-align:center;">
+                                                    @if ($score[$field] == 1)
+                                                        Excellent
+                                                    @elseif ($score[$field] == 2)
+                                                        Satisfactory
+                                                    @elseif ($score[$field] == 3)
+                                                        Weak
+                                                    @endif
+                                                </td>
+                                            @endforeach
+            
+                                            <td class="text-justify">
+                                                {{ $student['remarks'] }}
+                                            </td>
+            
+                                            @if ($data['status'] !== null)
+                                                @if ($data['mid'] == 0)
+                                                    <td>
+                                                        <a class="btn btn-primary btn"
+                                                            href="{{url('teacher/dashboard/report/toddler/print') . '/' . $student['student_id']}}">
+                                                            Print
+                                                        </a>
+                                                    </td>
+                                                @else
+                                                    <td>
+                                                        <a class="btn btn-primary btn"
+                                                            href="{{url('teacher/dashboard/report/mid/toddler/print') . '/' . $student['student_id']}}">
+                                                            Print
+                                                        </a>
+                                                    </td>
+                                                @endif
+                                            @endif
+                                        @endforeach
+                                @endforeach
+                            @endif        
+                            </tbody>
+                        @endif
+            
+                    </table>
                 @else
                     <p>Empty Data Student !!!</p>
                 @endif

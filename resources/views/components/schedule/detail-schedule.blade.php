@@ -56,7 +56,7 @@
                 <p id="eventTitle"></p>
                 <p id="eventDescription"></p>
                 <div id="substituteTeacherBtnContainer" class="mb-2"></div>
-                <div id="substituteTeacherCompanionBtnContainer"></div> <!-- Container for Substitute Teacher button -->
+                <div id="substituteTeacherCompanionBtnContainer"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>    
@@ -80,15 +80,26 @@
                     <div class="row">
                         <div class="col-4">
                             <div class="form-group">
-                                <form id="confirmForm" method="POST" action={{route('subtitute.teacher')}}>
+                                <form id="confirmForm1" class="row" method="POST" action={{route('subtitute.teacher')}}>
                                     @csrf
-                                    <label>Select Substitute Teacher: <span style="color: red"></span></label>
-                                    <select id="select_teacher" name="select_teacher" class="form-control">
-                                        <option value="">-- Select Teacher --</option>
-                                        @foreach ($teacher as $tc)
-                                            <option value="{{ $tc->id }}">{{ $tc->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <div class="col-6">
+                                        <label>Select Substitute Teacher: <span style="color: red"></span></label>
+                                        <select id="select_teacher" name="select_teacher" class="form-control">
+                                            <option value="">-- Select Teacher --</option>
+                                            @foreach ($teacher as $tc)
+                                                <option value="{{ $tc->id }}">{{ $tc->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <label>Select Substitute Assistant: <span style="color: red"></span></label>
+                                        <select id="select_teacher_companion" name="select_teacher_companion" class="form-control">
+                                            <option value="">-- Select Assistant --</option>
+                                            @foreach ($teacher as $tc)
+                                                <option value="{{ $tc->id }}">{{ $tc->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                     <button type="button" class="btn btn-success w-100 mt-2" data-toggle="modal" id="submitSubstitute">Submit</button>
                                 </form>
                             </div>
@@ -119,7 +130,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card card-dark overflow-x-auto" style="min-width:2000px;">
+                <div class="card card-dark overflow-x-auto">
                     <div class="card-header">
                         <h3 class="card-title">All Schedule</h3>
                         <div class="card-tools">
@@ -166,7 +177,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="scheduleAll"></div>
+                        <div id="scheduleAll" style="width: full;overflow-x: auto;"></div>
                     </div>
                 </div>
                 <div class="text-center d-none">
@@ -193,88 +204,6 @@
     </div>
 </div>
 
-<!-- Modal for showing teacher companion list -->
-<div class="modal" id="substituteTeacherCompanionModal" tabindex="-1" aria-labelledby="substituteTeacherCompanionModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="substituteTeacherCompanionModalLabel">Select Substitute Assisstant</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <div class="modal-body">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-4">
-                            <div class="form-group">
-                                <form id="confirmForm" method="POST" action={{route('subtitute.teacher')}}>
-                                    @csrf
-                                    <label>Select Substitute Assisstant: <span style="color: red"></span></label>
-                                    <select id="select_teacher_companion" name="select_teacher_companion" class="form-control">
-                                        <option value="">-- Select Teacher --</option>
-                                        @foreach ($teacher as $tc)
-                                            <option value="{{ $tc->id }}">{{ $tc->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <button type="button" class="btn btn-success w-100 mt-2" data-toggle="modal" id="submitSubstituteCompanion">Submit</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label>Teacher: <span style="color: red"></span></label>
-                                <select id="teacher-select-companion" name="teacher_companion" class="form-control">
-                                    <option value="" selected>-- Select Teacher --</option>
-                                    @foreach ($teacher as $tc)
-                                        <option value="{{ $tc->id }}">{{ $tc->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label>Grade: <span style="color: red"></span></label>
-                                <select id="grade-select-companion" name="grade_companion" class="form-control">
-                                    <option value="" selected>-- Select Grade --</option>
-                                    @foreach ($grade as $gr)
-                                        <option value="{{ $gr->id }}">{{ $gr->name }} - {{ $gr->class }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="substituteTeacherCompanionTable">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Assisstant</th>
-                                <th>Grade Name</th>
-                                <th>Subject Name</th>
-                                <th>Start Time</th>
-                                <th>End Time</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Table rows will be inserted here -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 @else
     <p>Data Kosong</p>
 @endif
@@ -287,7 +216,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
-        schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+        // schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
         initialView: 'timeGridWeek',
         headerToolbar: {
             left: 'prev,next',
@@ -352,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 'end' => "{$st->date}T{$schedule->end_time}",
                                 'description' => "<br>Teacher: {$st->teacher_name} <span class='badge badge-danger'>substitute</span><br>Assisstant: {$schedule->teacher_companion} <br>Grade: {$schedule->grade_name} - {$schedule->grade_class}",
                                 'color' => 'darkblue',
-                                'teacherId' => $schedule->teacher_id,
+                                'teacherId' => $st->teacher_id,
                                 'teacherCompanion' => $schedule->teacher_companion_id,
                                 'day' => $schedule->day,
                             ];
@@ -365,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 'description' => "<br>Teacher: {$schedule->teacher_name}<br>Assisstant: {$st->teacher_companion} <span class='badge badge-danger'>substitute</span> <br>Grade: {$schedule->grade_name} - {$schedule->grade_class}",
                                 'color' => 'green',
                                 'teacherId' => $schedule->teacher_id,
-                                'teacherCompanion' => $schedule->teacher_companion_id,
+                                'teacherCompanion' => $st->teacher_companion_id,
                                 'day' => $schedule->day,
                             ];
                         }
@@ -376,8 +305,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                 'end' => "{$st->date}T{$schedule->end_time}",
                                 'description' => "<br>Teacher: {$st->teacher_name}<span class='badge badge-danger'>substitute</span><br>Assisstant: {$st->teacher_companion} <span class='badge badge-danger'>substitute</span> <br>Grade: {$schedule->grade_name} - {$schedule->grade_class}",
                                 'color' => 'pink',
-                                'teacherId' => $schedule->teacher_id,
-                                'teacherCompanion' => $schedule->teacher_companion_id,
+                                'teacherId' => $st->teacher_id,
+                                'teacherCompanion' => $st->teacher_companion_id,
                                 'day' => $schedule->day,
                             ];
                         }
@@ -398,16 +327,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 end_time: info.event.endStr,
                 teacher_companion:info.event.extendedProps.teacherCompanion,
             });
-
-            showSubstituteCompanionButton({
-                subject: info.event.title,
-                day: info.event.start,
-                start_time: info.event.startStr,
-                end_time: info.event.endStr,
-                teacher_id: info.event.extendedProps.teacherId,
-                teacher_companion:info.event.extendedProps.teacherCompanion,
-            });
-
+            
             var eventModal = new bootstrap.Modal(document.getElementById('eventModal'), {
                 keyboard: false
             });
@@ -432,6 +352,9 @@ document.addEventListener('DOMContentLoaded', function() {
             var selectTeacherElement = document.getElementById('select_teacher');
             var selectedTeacherId = selectTeacherElement.value;
             var teacherName = selectTeacherElement.options[selectTeacherElement.selectedIndex].text;
+            var selectTeacherCompanionElement = document.getElementById('select_teacher_companion');
+            var selectedTeacherCompanionId = selectTeacherCompanionElement.value;
+            var teacherCompanionName = selectTeacherCompanionElement.options[selectTeacherCompanionElement.selectedIndex].text;
     
             @foreach ($gradeSchedule as $gs)
                 var selectedGradeId = {{ $gs->grade_id }};
@@ -446,7 +369,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 Swal.fire({
                     title: 'Are you sure?',
-                    text: `Do you want to assign ${teacherName} as the substitute teacher?`,
+                    text: `Do you want to set substitute?`,
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonText: 'Yes, assign!',
@@ -460,7 +383,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 grade_id: selectedGradeId,
                                 subject_id: subject,
                                 teacher_id: selectedTeacherId,
-                                teacher_companion: teacherCompanion,
+                                teacher_companion: selectedTeacherCompanionId,
                                 date: date,
                                 day: day,
                                 start_time: startTime,
@@ -526,120 +449,6 @@ document.addEventListener('DOMContentLoaded', function() {
             substituteBtnContainer.appendChild(substituteBtn);
         }
     }
-    
-    function showSubstituteCompanionButton(scheduleData) {
-    
-        var substituteCompanionBtnContainer = document.getElementById('substituteTeacherCompanionBtnContainer');
-        substituteCompanionBtnContainer.innerHTML = '';
-    
-        var day = new Date(scheduleData.day).getDay();
-        var date = moment(scheduleData.day).format('YYYY-MM-DD');
-    
-        var startTime = moment(scheduleData.start_time).format('HH:mm');
-        var endTime = moment(scheduleData.end_time).format('HH:mm');
-        var subject = scheduleData.subject;
-        var teacherCompanion = scheduleData.teacher_companion;
-        var teacherId = scheduleData.teacher_id;
-        
-        document.getElementById('submitSubstituteCompanion').addEventListener('click', function() {
-            var selectTeacherCompanionElement = document.getElementById('select_teacher_companion');
-            var selectedTeacherCompanionId = selectTeacherCompanionElement.value;
-            var teacherCompanionName = selectTeacherCompanionElement.options[selectTeacherCompanionElement.selectedIndex].text;
-    
-            @foreach ($gradeSchedule as $gs)
-                var selectedGradeId = {{ $gs->grade_id }};
-            @endforeach
-    
-            if (selectedTeacherCompanionId === "") {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Please select a teacher!',
-                });
-            } else {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: `Do you want to assign ${teacherCompanionName} as the substitute Assisstant?`,
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, assign!',
-                    cancelButtonText: 'No, cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: '{{ route('subtitute.teacher') }}',
-                            type: 'POST',
-                            data: {
-                                grade_id: selectedGradeId,
-                                subject_id: subject,
-                                teacher_id: teacherId,
-                                teacher_companion: selectedTeacherCompanionId,
-                                date: date,
-                                day: day,
-                                start_time: startTime,
-                                end_time: endTime,
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function(response) {
-                                Swal.fire('Assigned!', 'The substitute Assisstant has been assigned.', 'success').then(() => {
-                                    location.reload();
-                                });
-                                console.log('success:', response);
-                            },
-                            error: function(xhr, status, error) {
-                                Swal.fire('Error!', 'There was an error assigning the substitute Assisstant.', 'error');
-                                console.error('Error saving:', error);
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    
-        if (!scheduleData.teacher_companion_id) {
-            var substituteCompanionBtn = document.createElement('button');
-            substituteCompanionBtn.setAttribute('type', 'button');
-            substituteCompanionBtn.setAttribute('class', 'btn btn-danger');
-            substituteCompanionBtn.innerText = 'Substitute Assisstant';
-    
-            substituteCompanionBtn.onclick = function() {
-                var selectedTeacher = document.querySelector('select[name="teacher"]').value;
-                var selectedGrade = document.querySelector('select[name="grade"]').value;
-    
-                fetch(`/get-schedule-companion/${day}/${startTime}/${endTime}?teacher=${selectedTeacher}&grade=${selectedGrade}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        var tableBody = document.querySelector('#substituteTeacherCompanionTable tbody');
-                        tableBody.innerHTML = '';
-    
-                        console.log("hasil:",data);
-                        data.forEach(teacher => {
-                            var row = document.createElement('tr');
-    
-                            ['teacher_companion', 'grade_name', 'subject_name', 'start_time', 'end_time'].forEach(key => {
-                                var td = document.createElement('td');
-                                if (key === 'grade_name' && teacher['grade_name'] && teacher['grade_class']) {
-                                    td.innerText = `${teacher['grade_name']} - ${teacher['grade_class']}`;
-                                } else {
-                                    td.innerText = teacher[key];
-                                }
-                                row.appendChild(td);
-                            });
-    
-                            tableBody.appendChild(row);
-                        });
-    
-                        var modal = new bootstrap.Modal(document.getElementById('substituteTeacherCompanionModal'));
-                        modal.show();
-                    })
-                    .catch(error => {
-                        console.error('Error fetching data:', error);
-                    });
-            };
-    
-            substituteCompanionBtnContainer.appendChild(substituteCompanionBtn);
-        }
-    }
 });
 </script>
 
@@ -652,9 +461,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         teacherSelect.addEventListener('change', validateAndFetchSchedule);
         gradeSelect.addEventListener('change', validateAndFetchSchedule);
-
-        teacherCompanionSelect.addEventListener('change', filterSchedulesCompanion);
-        gradeCompanionSelect.addEventListener('change', filterSchedulesCompanion);
 
         function validateAndFetchSchedule() {
             const teacher = teacherSelect.value || 'null';
@@ -687,38 +493,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
 
                     var modal = new bootstrap.Modal(document.getElementById('substituteTeacherModal'));
-                    modal.show();
-                })
-                .catch(error => {
-                    console.error('Error fetching data:', error);
-                });
-        }
-
-        function filterSchedulesCompanion(teacherAssist, gradeAssist) {
-            fetch(`/get-schedule-companion-filter/${teacherAssist}/${gradeAssist}`)
-                .then(response => response.json())
-                .then(data => {
-                    var tableBody = document.querySelector('#substituteTeacherCompanionTable tbody');
-                    tableBody.innerHTML = '';
-
-                    // console.log(data);
-                    data.forEach(teacher => {
-                        var row = document.createElement('tr');
-
-                        ['teacher_companion', 'grade_name', 'subject_name', 'start_time', 'end_time'].forEach(key => {
-                            var td = document.createElement('td');
-                            if (key === 'grade_name' && teacher['grade_name'] && teacher['grade_class']) {
-                                td.innerText = `${teacher['grade_name']} - ${teacher['grade_class']}`;
-                            } else {
-                                td.innerText = teacher[key];
-                            }
-                            row.appendChild(td);
-                        });
-
-                        tableBody.appendChild(row);
-                    });
-
-                    var modal = new bootstrap.Modal(document.getElementById('substituteTeacherCompanionModal'));
                     modal.show();
                 })
                 .catch(error => {
@@ -788,7 +562,7 @@ document.addEventListener('DOMContentLoaded', function() {
             table += `
                 <thead>
                     <tr>
-                        <th style="font-size:12px;">Waktu</th>
+                        <th style="font-size:12px;position: sticky; left: 0; background: white; z-index: 2;">Waktu</th>
                         <th style="font-size:12px;">Toddler</th>
                         <th style="font-size:12px;">Nursery</th>
                         <th style="font-size:12px;">KA</th>
@@ -823,7 +597,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 timeSlots.forEach(timeSlot => {
-                    table += `<tr><td class="font-bold text-xs">${timeSlot}</td>`;
+                    table += `<tr><td class="font-bold text-xs" style="position: sticky; left: 0; background: white; z-index: 2;">${timeSlot}</td>`;
                     const timeSlotSchedules = {};
 
                     Object.keys(gradeSchedules).forEach(grade => {

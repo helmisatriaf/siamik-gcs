@@ -19,10 +19,8 @@ IsFixedPitch false
 UnderlineThickness 49
 UnderlinePosition -72
 FontHeightOffset 0
-CapHeight 813
-XHeight 813
-Ascender 813
-Descender -63
+Ascender 875
+Descender -125
 FontBBox 0 -125 1250 875
 StartCharMetrics 199
 U 35 ; WX 875 ; N hashtag ; G 1

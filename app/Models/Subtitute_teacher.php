@@ -14,6 +14,8 @@ class Subtitute_teacher extends Model
         'grade_id',
         'subject_id',
         'teacher_id',
+        'teacher_main',
+        'assistant_main',
         'teacher_companion',
         'type_schedule_id',
         'note',

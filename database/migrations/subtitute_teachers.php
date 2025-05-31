@@ -23,6 +23,8 @@ return new class extends Migration
             $table->foreign('teacher_id')->references('id')->on('teachers')->cascadeOnDelete()->cascadeOnUpdate();
             $table->unsignedBigInteger('type_schedule_id');
             $table->foreign('type_schedule_id')->references('id')->on('type_schedules')->cascadeOnDelete()->cascadeOnUpdate();
+             $table->unsignedBigInteger('teacher_main');
+            $table->unsignedBigInteger('assistant_main');
             $table->string('note')->nullable();
             $table->date('date')->nullable();
             $table->integer('day')->nullable();

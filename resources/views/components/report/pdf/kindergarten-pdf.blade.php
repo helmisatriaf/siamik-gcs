@@ -128,12 +128,12 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
         <table class="" style="border:none;">
             <!-- STUDENT STATUS -->
             <tr>
-                <td style="text-align:left;padding-left:3px;padding-left:3px;"><b>Student Name</b> <span class="noto-serif-sc-chinese">姓名</span></td>
-                <td style="text-align:left;padding-left:3px;"><b>: {{ ucwords(strtolower($student->student_name)) }}</b></td>
+                <td style="padding:0px;text-align:left;padding-left:3px;padding-left:3px;"><b>Student Name</b> <span class="noto-serif-sc-chinese">姓名</span></td>
+                <td style="padding:0px;text-align:left;padding-left:3px;"><b>: {{ ucwords(strtolower($student->student_name)) }}</b></td>
             </tr>
             <tr>
-                <td style="text-align:left;padding-left:3px;"><b>Class</b> <span class="noto-serif-sc-chinese">班级</span></td>
-                <td style="text-align:left;padding-left:3px;"><b>: {{ $student->grade_name }} - {{ $student->grade_class }}</b></td>
+                <td style="padding:0px;text-align:left;padding-left:3px;"><b>Class</b> <span class="noto-serif-sc-chinese">班级</span></td>
+                <td style="padding:0px;text-align:left;padding-left:3px;"><b>: {{ $student->grade_name }} - {{ $student->grade_class }}</b></td>
             </tr>
             <!-- END STUDENT STATUS -->
         </table>
@@ -189,7 +189,7 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
                 </td>
             </tr>
             <tr>
-                <td style="text-align:left;padding-left:5px;" colspan="3"><small class="normal" style="font-size: 10px;"><b>*Grades </b><span class="noto-serif-sc-chinese">成绩</span> : A+ >95-99; A >85-94; B >75-84; C >65-74; D >45-64</small></td>
+                <td style="padding:0px;text-align:left;padding-left:5px;" colspan="3"><small class="normal" style="font-size: 10px;"><b>*Grades </b><span class="noto-serif-sc-chinese">成绩</span> : A+ >95-99; A >85-94; B >75-84; C >65-74; D >45-64</small></td>
             </tr>
         </table>
 
@@ -229,7 +229,7 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
         <table class="table">
             @if ($semester == 2)
             <tr>
-                <td style="text-align:right;" colspan="3"><small><b>Next Grade</b> <span class="noto-serif-sc-chinese">晋升</span><b>: {{ $promotionGrade }}</b></small></td>
+                <td style="padding:0px;text-align:right;" colspan="3"><small><b>Next Grade</b> <span class="noto-serif-sc-chinese">晋升</span><b>: {{ $promotionGrade }}</b></small></td>
             </tr>
             @endif
         </table>
@@ -238,14 +238,14 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
     <div class="footer">
         <table class="table">
             <tr>
-                <td style="text-align:center;"><small><b>Teacher's Signature</b></small></td>
-                <td style="text-align:center;"><small><b>Principal's Signature</b></small></td>
-                <td style="text-align:center;"><small><b>Parent's Signature</b></small></td>
+                <td style="padding:0px;text-align:center;"><small><b>Teacher's Signature</b></small></td>
+                <td style="padding:0px;text-align:center;"><small><b>Principal's Signature</b></small></td>
+                <td style="padding:0px;text-align:center;"><small><b>Parent's Signature</b></small></td>
             </tr>
             <tr>
-                <td style="text-align:center;"><span class="noto-serif-sc-chinese">老师签名</span></td>
-                <td style="text-align:center;"><span class="noto-serif-sc-chinese">校长签名</span></td>
-                <td style="text-align:center;"><span class="noto-serif-sc-chinese">家长签名</span></td>
+                <td style="padding:0px;text-align:center;"><span class="noto-serif-sc-chinese">老师签名</span></td>
+                <td style="padding:0px;text-align:center;"><span class="noto-serif-sc-chinese">校长签名</span></td>
+                <td style="padding:0px;text-align:center;"><span class="noto-serif-sc-chinese">家长签名</span></td>
             </tr>
             <tr>
                 <td style="height:30px;"></td>

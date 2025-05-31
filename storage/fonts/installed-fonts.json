@@ -1,19 +1,36 @@
 {
     "noto sans sc": {
-        "900": "C:\\inetpub\\wwwroot\\siamikgreat\\storage\\fonts\/noto_sans_sc_900_450df6eefd612ea2fcaecdb7b55a1f67",
-        "normal": "noto_sans_sc_normal_fa8130ed19d81fe718fc84ecaef9893a"
+        "900": "noto_sans_sc_900_d780e48b59ece5c1e195cf1976b17041",
+        "normal": "C:\\Users\\itgcs\\OneDrive\\Documents\\Templat Office Kustom\\siamiknew\\storage\\fonts\/noto_sans_sc_normal_fa8130ed19d81fe718fc84ecaef9893a"
     },
     "ma shan zheng": {
         "normal": "ma_shan_zheng_normal_bedc45753b5bffc0a21c5fc25848b649"
     },
     "noto serif sc": {
-        "200": "C:\\xampp\\htdocs\\siamikgreat\\storage\\fonts\/noto_serif_sc_200_9d2bc894af8dd1802ff2befdc7cf982d",
-        "300": "C:\\xampp\\htdocs\\siamikgreat\\storage\\fonts\/noto_serif_sc_300_1943aaeb204fdc46d679dd1324cb8ba0",
-        "normal": "C:\\xampp\\htdocs\\siamikgreat\\storage\\fonts\/noto_serif_sc_normal_5a91e103b7731902b45d61717f190382",
-        "500": "C:\\xampp\\htdocs\\siamikgreat\\storage\\fonts\/noto_serif_sc_500_00dff3d16ca6bff84aaa185d98dfcbc6",
-        "600": "C:\\xampp\\htdocs\\siamikgreat\\storage\\fonts\/noto_serif_sc_600_f99f3f65e2fc5ff3a3c33fb1ef265d41",
-        "bold": "C:\\xampp\\htdocs\\siamikgreat\\storage\\fonts\/noto_serif_sc_bold_4d01788eb3f9348bcd57158137447226",
-        "800": "C:\\xampp\\htdocs\\siamikgreat\\storage\\fonts\/noto_serif_sc_800_30b0e5c7c90bf8ed32dc6cfb295efae2",
-        "900": "noto_serif_sc_900_91f6d8bc5279f770192be3dea18ff7f8"
+        "200": "C:\\Users\\itgcs\\OneDrive\\Documents\\Templat Office Kustom\\siamiknew\\storage\\fonts\/noto_serif_sc_200_2b9374236fdd4b8ea9cb34d198a67da9",
+        "300": "C:\\Users\\itgcs\\OneDrive\\Documents\\Templat Office Kustom\\siamiknew\\storage\\fonts\/noto_serif_sc_300_357fed265c253d9c6560a31c7384551a",
+        "normal": "C:\\Users\\itgcs\\OneDrive\\Documents\\Templat Office Kustom\\siamiknew\\storage\\fonts\/noto_serif_sc_normal_396ade1c7a00882bf5bd1ab7d5e4e648",
+        "500": "C:\\Users\\itgcs\\OneDrive\\Documents\\Templat Office Kustom\\siamiknew\\storage\\fonts\/noto_serif_sc_500_0908b8966db9e5a30db87cc362376fb2",
+        "600": "C:\\Users\\itgcs\\OneDrive\\Documents\\Templat Office Kustom\\siamiknew\\storage\\fonts\/noto_serif_sc_600_3089f9696fb439d9e487801903328489",
+        "bold": "C:\\Users\\itgcs\\OneDrive\\Documents\\Templat Office Kustom\\siamiknew\\storage\\fonts\/noto_serif_sc_bold_36ebe7a74b8730af90b7b76d57368427",
+        "800": "C:\\Users\\itgcs\\OneDrive\\Documents\\Templat Office Kustom\\siamiknew\\storage\\fonts\/noto_serif_sc_800_8a458dfebcb674287f7846f92d40304c",
+        "900": "noto_serif_sc_900_d6fc7dfa1aa4c9a5fce4f2db28be8030"
+    },
+    "font awesome 6 brands": {
+        "normal": "font_awesome_6_brands_normal_31636509732b4298588040c87c3592c6"
+    },
+    "font awesome 6 free": {
+        "normal": "C:\\Users\\itgcs\\OneDrive\\Documents\\Templat Office Kustom\\siamiknew\\storage\\fonts\/font_awesome_6_free_normal_1321bfcfa727e01fd6f51a5f5864a82b",
+        "900": "font_awesome_6_free_900_a4b7023c0a078a27002a27fd500f100e"
+    },
+    "font awesome 5 brands": {
+        "normal": "font_awesome_5_brands_normal_31636509732b4298588040c87c3592c6"
+    },
+    "font awesome 5 free": {
+        "900": "C:\\Users\\itgcs\\OneDrive\\Documents\\Templat Office Kustom\\siamiknew\\storage\\fonts\/font_awesome_5_free_900_a4b7023c0a078a27002a27fd500f100e",
+        "normal": "font_awesome_5_free_normal_1321bfcfa727e01fd6f51a5f5864a82b"
+    },
+    "fontawesome": {
+        "normal": "fontawesome_normal_98ba43c5288785d68524e2de74fccc87"
     }
 }

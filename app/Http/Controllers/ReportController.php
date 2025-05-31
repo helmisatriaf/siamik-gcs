@@ -3923,6 +3923,14 @@ class ReportController extends Controller
                 ->select('student_monthly_activities.*', 'monthly_activities.name as name_activity')
                 ->get();
 
+            $studentMonthlyActivity = Student_Monthly_Activity::join('students', 'students.id', '=', 'student_monthly_activities.student_id')
+                ->join('monthly_activities', 'monthly_activities.id', '=', 'student_monthly_activities.monthly_activity_id')
+                ->where('student_monthly_activities.grade_id', $gradeId)
+                ->where('student_monthly_activities.semester', $semester)
+                ->where('student_monthly_activities.academic_year', $academic_year)
+                ->select('student_monthly_activities.*', 'monthly_activities.name as name_activity')
+                ->get();
+
             $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) use($studentMonthlyActivity){
                 $student = $scores->first();
                 $monthlyActivities = $studentMonthlyActivity->where('student_id', $scores[0]['student_id']);
@@ -3985,6 +3993,8 @@ class ReportController extends Controller
             }
             unset($title); // Hapus referensi untuk menghindari bug
 
+            // dd($monthlyTitle);
+            
             $data = [
                 'grade' => $grade,
                 'students' => $student,
@@ -3995,6 +4005,7 @@ class ReportController extends Controller
                 'status' => $status,
                 'monthly' => $monthly,
                 'title' => $monthlyTitle,
+                // 'scoreMonthly' => $studentMonthlyActivity,
             ];
 
             // dd($data);
@@ -4262,9 +4273,8 @@ class ReportController extends Controller
                 'status' => $status,
                 'monthly' => $monthly,
                 'monthlyTitle' => $monthlyTitle,
+                'scoreMonthly' => $studentMonthlyActivity,
             ];
-
-            // dd($data);
 
             return view('components.report.nursery')->with('data', $data);
 
@@ -6129,6 +6139,14 @@ class ReportController extends Controller
                 ];
             })->values()->all();
 
+            $studentMonthlyActivity = Student_Monthly_Activity::join('students', 'students.id', '=', 'student_monthly_activities.student_id')
+                ->join('monthly_activities', 'monthly_activities.id', '=', 'student_monthly_activities.monthly_activity_id')
+                ->where('student_monthly_activities.grade_id', $gradeId)
+                ->where('student_monthly_activities.semester', $semester)
+                ->where('student_monthly_activities.academic_year', $academic_year)
+                ->select('student_monthly_activities.*', 'monthly_activities.name as name_activity')
+                ->get();
+
             $academicYear = Master_academic::first()->value('academic_year');
 
             if ($semester == 1) {
@@ -6141,6 +6159,7 @@ class ReportController extends Controller
                     'semester' => $semester,
                     'mid' => 0,
                     'academicYear' => $academicYear,
+                    'scoreMonthly' => $studentMonthlyActivity,
                 ];
             } 
             elseif ($semester == 2) {
@@ -6154,6 +6173,7 @@ class ReportController extends Controller
                     'semester' => $semester,
                     'mid' => 0,
                     'academicYear' => $academicYear,
+                    'scoreMonthly' => $studentMonthlyActivity,
                 ];
             }
 

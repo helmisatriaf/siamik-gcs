@@ -45,9 +45,9 @@
         </div>
     </div>
 
-    <div class="card" style="min-width: full;">
+    <div class="card">
         <div class="card-body" style="overflow-x: auto;">
-            <div id="scheduleAll" style="overflow-x: auto;"></div>
+            <div id="scheduleAll" style="width:2800px;" class="p-0"></div>
         </div>
     </div>
 </div>
@@ -98,8 +98,8 @@
             };
 
             const classColors = {
-                "Toddler": "#FFCCCC",      // Light Pink
-                "Nursery": "#CCFFCC",      // Light Green
+                "Toddler - 1": "#FFCCCC",      // Light Pink
+                "Nursery - 1": "#CCFFCC",      // Light Green
                 "Kindergarten - A": "#CCCCFF",           // Light Blue
                 "Kindergarten - B": "#FFCC99",           // Light Orange
                 "Primary - 1": "#FF99CC",  // Pink
@@ -168,9 +168,9 @@
                                 timeSlotSchedules[grade] += `
                                     <div class="col p-0" style="background-color: ${classColor[grade]};">
                                         <p class="text-bold" style="font-size:12px;">${schedule.subject_name ? schedule.subject_name.toUpperCase() : ""}
-                                        <br>${schedule.teacher_name}
-                                        <br>${schedule.assisstant ? `${schedule.assisstant} (assisstant)` : ""}</p>
-                                    </div>
+                                        <br>${schedule.teacher_name ? `🧑‍🏫 ${schedule.teacher_name}` : ""} ${schedule.is_substitute ? `<span class="badge bg-danger text-dark">Substitute</span>` : ""}
+                                        <br>${schedule.assisstant ? `🙋‍♂️ ${schedule.assisstant} <span class="badge bg-warning text-dark">Assistant</span>` : ""} ${schedule.is_subast ? `<span class="badge bg-danger text-dark">Substitute</span>` : ""}</p> 
+                                        </div>
                                 `;
 
                                 if (!schedule.subject_name) {
@@ -180,7 +180,7 @@
                         });
                     });
 
-                    const grades = ["Toddler", "Nursery", "Kindergarten - A", "Kindergarten - B", "Primary - 1", "Primary - 2", "Primary - 3", "Primary - 4", "Primary - 5", "Primary - 6", "Secondary - 1", "Secondary - 2", "Secondary - 3"];
+                    const grades = ["Toddler - 1", "Nursery - 1", "Kindergarten - A", "Kindergarten - B", "Primary - 1", "Primary - 2", "Primary - 3", "Primary - 4", "Primary - 5", "Primary - 6", "Secondary - 1", "Secondary - 2", "Secondary - 3"];
 
                     grades.forEach(grade => {
                         table += `<td style="font-size:12px;background-color: ${classColors[grade]};">${timeSlotSchedules[grade] || ''}</td>`;
