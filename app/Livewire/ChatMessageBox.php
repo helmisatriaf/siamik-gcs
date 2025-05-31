@@ -18,10 +18,21 @@ class ChatMessageBox extends Component
     public function sendMessage()
     {
         if ($this->message) {
-            $this->chat->history()->create([
-                'user_id' => auth()->id(),
-                'text' => $this->message,
-            ]);
+            if($this->chat != null){
+                $this->chat->history()->create([
+                    'user_id' => auth()->id(),
+                    'text' => $this->message,
+                ]);
+            }
+            else{
+                $this->chat = Chat::create([
+                    'user_id' => auth()->id(),
+                ]);
+                $this->chat->history()->create([
+                    'user_id' => auth()->id(),
+                    'text' => $this->message,
+                ]);
+            }
     
             $this->message = '';
     
