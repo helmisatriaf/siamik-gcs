@@ -47,15 +47,15 @@
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            @if ($user->role_id == 3)
+                                            {{-- @if ($user->role_id == 3)
                                                 <span class="fw-medium">{{ strtolower(ucwords($user->teacher->name ?? $user->teacher->name)) }}</span>
                                             @elseif ($user->role_id == 4)
                                                 <span class="fw-medium">{{ strtolower(ucwords($user->student->name ?? $user->student->name)) }} ({{ $user->student->full_grade ?? '-' }})</span>
                                             @elseif($user->role_id == 5)
                                                 <span class="fw-medium">{{ strtolower(ucwords($user->relationship->name ?? $user->relationship->name)) }}</span>
-                                            @else
+                                            @else --}}
                                             <span class="fw-medium">{{ $user->username }}</span>
-                                            @endif
+                                            {{-- @endif --}}
                                         </div>
                                     </td>
                                     <td class="text-end">
