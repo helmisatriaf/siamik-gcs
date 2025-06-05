@@ -38,7 +38,7 @@ class Student extends Model
 
    public function relationship()
    {
-      return $this->belongsToMany(Relationship::class, 'student_relations');
+      return $this->belongsToMany(Relationship::class, 'student_relations', 'student_id', 'relation_id');
    }
 
    public function grade()
@@ -48,7 +48,7 @@ class Student extends Model
 
    public function brotherOrSister()
    {
-      return $this->hasMany(Brother_or_sister::class, 'student_id');
+      return $this->hasMany(Brothers_or_sister::class, 'student_id');
    }
 
    public function exam()

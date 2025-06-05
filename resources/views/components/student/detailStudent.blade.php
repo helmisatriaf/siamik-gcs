@@ -90,7 +90,7 @@
           </div>
         </div>
 
-        @if(empty($data->brother_or_sisters))
+        {{-- @if(empty($data->brother_or_sisters))
         <div class="card mb-4 mb-lg-0">
           <div class="card-body p-0">
             <p style="font-size: 1.4em;" class="mb-4 m-4"><span class="text-secondary font-italic me-1">Brothers Or Sisters</span>
@@ -127,7 +127,7 @@
             </table>
           </div>
         </div>
-        @endif
+        @endif --}}
 
       </div>
 
@@ -257,15 +257,16 @@
             </div>
           </div>
         </div>
-
-        {{-- <div class="row">
-            @foreach($data->student->relationship as $el)
-            <div class="col-md-6">
-            <div class="card mb-4 mb-md-0">
-              <div class="card-body">
-                  <p style="font-size: 1.4em;" class="mb-4"><span class="text-secondary font-italic me-1">{{$el->relation}}'s</span>
-                  </p>
-                    
+      </div>
+    </div>
+    <div class="row">
+      @foreach($data->student->relationship as $el)
+        <div class="col-6">
+          <div class="card mb-4 mb-md-0">
+            <div class="card-body">
+                <p style="font-size: 1.4em;" class="mb-4"><span class="text-secondary font-italic me-1">{{$el->relation}}'s</span>
+                </p>
+                  
             <div class="row">
               <div class="col-sm-4">
                 <p class="mb-0">Fullname</p>
@@ -275,120 +276,131 @@
               </div>
             </div>
             <hr>
+
             <div class="row">
               <div class="col-sm-4">
-                <p class="mb-0">Religion</p>
+                <p class="mb-0">Username</p>
               </div>
               <div class="col-sm-8">
-                <p class="text-muted mb-0">{{$el->religion}}</p>
+                @if ($el->user != null)
+                  <p class="text-muted mb-0">{{$el->user->username}}</p>
+                @endif
               </div>
             </div>
-            <hr>
-            
-            <div class="row">
-              <div class="col-sm-4">
-                  <p class="mb-0">Place of Birth</p>
-              </div>
-              <div class="col-sm-8">
-                <p class="text-muted mb-0">{{$el->place_birth}}</p>
-              </div>
+          <hr>
+
+          <div class="row">
+            <div class="col-sm-4">
+              <p class="mb-0">Religion</p>
             </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-4">
-                <p class="mb-0">Date of Birth</p>
-              </div>
-              <div class="col-sm-8">
-                <p class="text-muted mb-0">{{date("d/m/Y", strtotime($el->date_birth))}}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-4">
-                <p class="mb-0">Nationality</p>
-              </div>
-              <div class="col-sm-8">
-                <p class="text-muted mb-0">{{$el->nationality}}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-sm-4">
-                <p class="mb-0">Occupation</p>
-              </div>
-              <div class="col-sm-8">
-                <p class="text-muted mb-0">{{$el->occupation? $el->occupation : '-'}}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-sm-4">
-                <p class="mb-0">Company Name</p>
-              </div>
-              <div class="col-sm-8">
-                <p class="text-muted mb-0">{{$el->compant_name? $el->compant_name : '-'}}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-sm-4">
-                <p class="mb-0">Company Address</p>
-              </div>
-              <div class="col-sm-8">
-                <p class="text-muted mb-0">{{$el->company_address? $el->company_address : '-'}}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-sm-4">
-                <p class="mb-0">Company Number</p>
-              </div>
-              <div class="col-sm-8">
-                <p class="text-muted mb-0">{{$el->phone? $el->phone : '-'}}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-4">
-                  <p class="mb-0">Home Address</p>
-              </div>
-              <div class="col-sm-8">
-                <p class="text-muted mb-0">{{$el->home_address}}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-4">
-                  <p class="mb-0">Email</p>
-              </div>
-              <div class="col-sm-8">
-                  <p class="text-muted mb-0">{{$el->email}}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-sm-4">
-                  <p class="mb-0">Telephone</p>
-                  </div>
-                  <div class="col-sm-8">
-                    <p class="text-muted mb-0">{{$el->telephone? $el->telephone : '-'}}</p>
-                  </div>
-              </div>
-            <hr>
-            <div class="row">
-                <div class="col-sm-4">
-                  <p class="mb-0">Mobilephone</p>
-                  </div>
-                  <div class="col-sm-8">
-                    <p class="text-muted mb-0">{{$el->mobilephone? $el->mobilephone : '-'}}</p>
-                  </div>
-              </div>
-              </div>
+            <div class="col-sm-8">
+              <p class="text-muted mb-0">{{$el->religion}}</p>
             </div>
           </div>
-          @endforeach
-        </div> --}}
-      </div>
+          <hr>
+          
+          <div class="row">
+            <div class="col-sm-4">
+                <p class="mb-0">Place of Birth</p>
+            </div>
+            <div class="col-sm-8">
+              <p class="text-muted mb-0">{{$el->place_birth}}</p>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-4">
+              <p class="mb-0">Date of Birth</p>
+            </div>
+            <div class="col-sm-8">
+              <p class="text-muted mb-0">{{date("d/m/Y", strtotime($el->date_birth))}}</p>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-4">
+              <p class="mb-0">Nationality</p>
+            </div>
+            <div class="col-sm-8">
+              <p class="text-muted mb-0">{{$el->nationality}}</p>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+              <div class="col-sm-4">
+              <p class="mb-0">Occupation</p>
+            </div>
+            <div class="col-sm-8">
+              <p class="text-muted mb-0">{{$el->occupation? $el->occupation : '-'}}</p>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+              <div class="col-sm-4">
+              <p class="mb-0">Company Name</p>
+            </div>
+            <div class="col-sm-8">
+              <p class="text-muted mb-0">{{$el->compant_name? $el->compant_name : '-'}}</p>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+              <div class="col-sm-4">
+              <p class="mb-0">Company Address</p>
+            </div>
+            <div class="col-sm-8">
+              <p class="text-muted mb-0">{{$el->company_address? $el->company_address : '-'}}</p>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+              <div class="col-sm-4">
+              <p class="mb-0">Company Number</p>
+            </div>
+            <div class="col-sm-8">
+              <p class="text-muted mb-0">{{$el->phone? $el->phone : '-'}}</p>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-4">
+                <p class="mb-0">Home Address</p>
+            </div>
+            <div class="col-sm-8">
+              <p class="text-muted mb-0">{{$el->home_address}}</p>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-4">
+                <p class="mb-0">Email</p>
+            </div>
+            <div class="col-sm-8">
+                <p class="text-muted mb-0">{{$el->email}}</p>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+              <div class="col-sm-4">
+                <p class="mb-0">Telephone</p>
+                </div>
+                <div class="col-sm-8">
+                  <p class="text-muted mb-0">{{$el->telephone? $el->telephone : '-'}}</p>
+                </div>
+            </div>
+          <hr>
+          <div class="row">
+              <div class="col-sm-4">
+                <p class="mb-0">Mobilephone</p>
+                </div>
+                <div class="col-sm-8">
+                  <p class="text-muted mb-0">{{$el->mobilephone? $el->mobilephone : '-'}}</p>
+                </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      @endforeach
     </div>
   </div>
 </section>

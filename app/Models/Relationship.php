@@ -33,6 +33,11 @@ class Relationship extends Model
 
    public function student()
    {
-      return $this->belongsToMany(Student::class, 'student_relations');
+      return $this->belongsToMany(Student::class, 'student_relations', 'relation_id', 'student_id');
+   }
+
+   public function user()
+   {
+      return $this->belongsTo(User::class, 'user_id');
    }
 }

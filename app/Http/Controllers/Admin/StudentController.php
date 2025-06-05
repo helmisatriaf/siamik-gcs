@@ -7,7 +7,7 @@ use App\Models\Grade;
 use App\Models\Relationship;
 use App\Models\Student;
 use App\Models\Student_relation;
-use App\Models\Brother_or_sister;
+use App\Models\Brothers_or_sister;
 use App\Models\Roles;
 
 use Illuminate\Http\Request;
@@ -134,7 +134,7 @@ class StudentController extends Controller
          } 
          else 
          {
-            $student = Student::with(['grade', 'user'])->where('unique_id', $id)->first();
+            $student = Student::with(['grade', 'user', 'relationship.user'])->where('unique_id', $id)->first();
          
             if(!DB::table('students')->where('unique_id', $id)->first())
             {
@@ -148,11 +148,12 @@ class StudentController extends Controller
                $roleName = "";
             }
 
-            $brotherOrSister = Student::find($student->id);
-   
+            // $brotherOrSister = Student::find($student->id);
+            // dd($student);
             $data = (object) [
+
                'student' => $student,
-               'brother_or_sisters' => $brotherOrSister->brotherOrSister()->get(),
+               // 'brother_or_sisters' => $brotherOrSister->brotherOrSister()->get(),
                'after_create' => false,
                'roleName' => $roleName,
             ];
@@ -579,7 +580,7 @@ class StudentController extends Controller
       try {
 
          // dd($credentials);
-         Brother_or_sister::where('student_id', $id)->delete();
+         Brothers_or_sister::where('student_id', $id)->delete();
 
          $credentialsBrotherOrSister = [];
          
@@ -606,7 +607,7 @@ class StudentController extends Controller
 
          // dd($credentialsBrotherOrSister);
 
-         Brother_or_sister::insert($credentialsBrotherOrSister);
+         Brothers_or_sister::insert($credentialsBrotherOrSister);
 
          return (object)[
             'status' => true,
