@@ -2,9 +2,18 @@
 <html lang="en">
 
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Caveat+Brush&family=Chewy&family=DynaPuff&family=Lora:ital,wght@0,400..700;1,400..700&family=Patrick+Hand&family=Vollkorn:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
     @include('layouts.header')
     @livewireStyles
 </head>
+
+<style>
+    body {
+        font-family: "DynaPuff", system-ui !important;
+        font-weight: 400;
+        font-style: normal;
+    }
+</style>
 
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 {{-- <body class="layout-fixed layout-navbar-fixed layout-footer-fixed"> --}}
