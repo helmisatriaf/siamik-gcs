@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <div class="card" style="background-color:#ffde9e;border-radius:12px;">
+    <div class="card" style="border-radius:12px;">
         <div class="card-header">
             <div class="row">
                 <div class="col-6">
@@ -113,7 +113,7 @@
         
                 @if (!empty($data['students']))
                 
-                <table class="table table-striped table-borderer" style=" width: 3000px;background-color: #fff3c0;">
+                <table class="table table-striped table-borderer" style=" width: 3000px;">
                     @if ($data['status'] == null)   
                         <!-- JIKA DATA BELUM DI SUBMIT OLEH TEACHER  -->
                         <thead>

@@ -583,6 +583,11 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
                 <td style="width:30%;"></td>
                 <td style="text-align:center; font-size:13px;width:30%;"><b>Principal's Signature</b></td>
             </tr>
+            <tr>
+                <td style="text-align:center; font-size:10px;width:30%;"><span class="noto-serif-sc-chinese"><b>老师签名</b></span></td>
+                 <td style="width:30%;"></td>
+                <td style="text-align:center; font-size:10px;width:30%;"><span class="noto-serif-sc-chinese"><b>校长签名</b></span></td>
+            </tr>
         </table>
         <table class="table">
             <tr>
@@ -595,6 +600,9 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
             </tr> --}}
             <tr style="text-align: center;">
                 <td style="display: inline-block;padding:0px;text-align:center; width: 40%;border-top: 1px solid black;font-size:13px;" colspan="2"><b>Paren't Signature</b></td>
+            </tr>
+            <tr style="text-align: center;">
+                <td style="display: inline-block;padding:0px;text-align:center; width: 40%;font-size:10px;" colspan="2""><span class="noto-serif-sc-chinese"><b>家长签名</b></span></td>
             </tr>
         </table>
     </div>
