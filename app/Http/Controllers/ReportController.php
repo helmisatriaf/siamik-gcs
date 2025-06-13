@@ -7798,7 +7798,7 @@ class ReportController extends Controller
                 ->select('teachers.name as teacher_name')
                 ->first();
 
-            $relation = Student_relationship::where('Student_relations.student_id', $id)
+            $relation = Student_relationship::where('student_relations.student_id', $id)
                 ->join('relationships', 'relationships.id', '=', 'student_relations.relation_id')
                 ->select('relationships.name as relationship_name')
                 ->first();
