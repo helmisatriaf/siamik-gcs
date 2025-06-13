@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" style="height:70vh;overflow-y: auto;">
         <div class="card-header">
             <div class="row">
                 <div class="col-11 col-md-10">
@@ -80,8 +80,10 @@
                 <form id="confirmForm" method="POST" action={{route('actionTeacherPostReportCard1')}}>
             @endif
             @csrf
-            <div style="overflow-x: auto;">
-        
+            <div id="scroll-top" style="overflow-x: auto;">
+                <div style="width: 3000px; height: 1px;"></div> <!-- dummy scroll -->
+            </div>
+            <div id="scroll-bottom" style="overflow-x: auto;">
                 @if (!empty($data['students']))
                 
                 <table class="table table-striped table-bordered bg-white" style=" width: 2000px;">
@@ -115,7 +117,7 @@
                                 @foreach ($data['result'] as $student)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $student['student_name'] }}</td>
+                                    <td style="position: sticky; left: 0; background: #ffffff; z-index: 99;">{{ $student['student_name'] }}</td>
                                     @foreach ($student['scores'] as $index => $score)
                                         <!-- Independent_work -->
                                         <td class="text-center">
@@ -182,7 +184,7 @@
                                 @foreach ($data['students'] as $student)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $student['name'] }}</td>
+                                    <td style="position: sticky; left: 0; background: #ffffff; z-index: 99;">{{ $student['name'] }}</td>
                 
                                         <!-- Independent_work -->
                                         <td class="text-center">
@@ -273,7 +275,7 @@
                             @foreach ($data['result'] as $student)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $student['student_name'] }}</td>
+                                    <td style="position: sticky; left: 0; background: #ffffff; z-index: 99;">{{ $student['student_name'] }}</td>
                                     @foreach ($student['scores'] as $index => $score)
                                         <!-- Independent Work -->
                                         <td class="text-center">{{ $score['independent_work'] }}</td>

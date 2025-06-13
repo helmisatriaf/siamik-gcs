@@ -425,6 +425,19 @@
     {{-- <audio id="clickSound" src="{{ asset('music/click.mp3') }}" style="display: none;"></audio> --}}
     <!-- /.content-wrapper -->
     <script>
+        const topScroll = document.getElementById('scroll-top');
+        const bottomScroll = document.getElementById('scroll-bottom');
+
+        topScroll.addEventListener('scroll', () => {
+            bottomScroll.scrollLeft = topScroll.scrollLeft;
+        });
+
+        bottomScroll.addEventListener('scroll', () => {
+            topScroll.scrollLeft = bottomScroll.scrollLeft;
+        });
+    </script>
+
+    <script>
         let clickSound = document.getElementById("clickSound");
 
         // Event listener untuk semua klik di halaman

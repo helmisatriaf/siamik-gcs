@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <div class="card" style="background-color: #ffde9e;border-radius:12px;">
+    <div class="card" style="height:70vh;overflow-y: auto;border-radius:12px;">
         <div class="card-header position-relative">
             <div class="row">
                 <div class="col-6">
@@ -84,7 +84,10 @@
         </div>
 
         <div class="card-body">
-            <div style="overflow-x: auto;">
+            <div id="scroll-top" style="overflow-x: auto;position: sticky; top: 0; z-index: 100;">
+                <div style="width: 3000px; height: 1px;"></div> <!-- dummy scroll -->
+            </div>
+            <div id="scroll-bottom" style="overflow-x: auto;">
                 @if (session('role') == 'superadmin')
                     <form id="confirmForm" method="POST" action={{route('actionPostScoringMajorPrimary')}}>
                 @elseif (session('role') == 'admin')
@@ -144,7 +147,7 @@
                         @foreach ($data['students'] as $student)                    
                             <tr>
                                 <td class="text-center" style="vertical-align : middle;text-align:center;">{{ $loop->iteration }}</td>  <!-- nomer -->
-                                <td style="position: sticky; left: 0; background: #fff3c0; z-index: 99;">{{ $student['student_name'] }}</td> <!-- name -->
+                                <td style="position: sticky; left: 0; background: #ffffff; z-index: 99;">{{ $student['student_name'] }}</td> <!-- name -->
                             
         
                                 <!-- COUNT HOMEWORK -->
@@ -511,5 +514,18 @@
         });
     </script>
 @endif
+
+<script>
+    const topScroll = document.getElementById('scroll-top');
+    const bottomScroll = document.getElementById('scroll-bottom');
+
+    topScroll.addEventListener('scroll', () => {
+        bottomScroll.scrollLeft = topScroll.scrollLeft;
+    });
+
+    bottomScroll.addEventListener('scroll', () => {
+        topScroll.scrollLeft = bottomScroll.scrollLeft;
+    });
+</script>
 
 @endsection

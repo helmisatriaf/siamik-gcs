@@ -2618,6 +2618,7 @@ class ReportController extends Controller
                 'page' => 'reports',
                 'child' => 'report subject teacher',
             ]);
+            // dd($gradeId);
 
             $userId = session('id_user');
             $teacherId = Teacher::where('user_id', $userId)->value('id');

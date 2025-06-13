@@ -21,203 +21,220 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col">
-            <p class="font-bold">Academic Assessment Report</p>
-            <table>
-                <tr>
-                    <td>Class</td>
-                    <td> : {{ $data['grade']->grade_name }} - {{ $data['grade']->grade_class }}</td>
-                </tr>
-                <tr>
-                    <td>Teacher</td>
-                    <td> : {{ $data['classTeacher']->teacher_name }}</td>
-                </tr>
-                <tr>
-                    <td>Date</td>
-                    <td> : {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
-    @if (session('role') == 'superadmin')
-        <form id="confirmForm" method="POST" action={{route('actionPostScoringAcarSecondary')}}>
-    @elseif (session('role') == 'admin')
-        <form id="confirmForm" method="POST" action={{route('actionAdminPostScoringAcarSecondary')}}>
-    @elseif (session('role') == 'teacher')
-        <form id="confirmForm" method="POST" action={{route('actionTeacherPostScoringAcarSecondary')}}>
-    @endif
-    @csrf
-
-    @if ($data['status'] == null)
-        @if (!empty($data['students']))
-            <div class="row my-2">
-                <div class="input-group-append mx-2">
-                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#confirmModal">Submit ACAR</button>
+    <div class="card" style="height:70vh;overflow-y: auto;">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-11 col-md-10">
+                    <p class="font-bold">Academic Assessment Report</p>
+                    <table>
+                        <tr>
+                            <td>Class</td>
+                            <td> : {{ $data['grade']->grade_name }} - {{ $data['grade']->grade_class }}</td>
+                        </tr>
+                        <tr>
+                            <td>Teacher</td>
+                            <td> : {{ $data['classTeacher']->teacher_name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Date</td>
+                            <td> : {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</td>
+                        </tr>
+                        @if($data['status'] == null)
+                        @elseif ($data['status']->status != null && $data['status']->status == 1)  
+                        <tr>
+                            <td>Status</td>
+                            <td> : <span class="text-bold">
+                                Already Submitted on {{ \Carbon\Carbon::parse($data['status']->created_at)->format('l, d F Y') }}
+                                </span> 
+                            </td>
+                        </tr>
+                        @endif
+                    </table>
+                </div>
+                <div class="col-1 col-md-2 d-flex justify-content-end align-items-start text-end">
+                    @if ($data['status'] == null)
+                        @if (!empty($data['students']))
+                            <a class="btn btn-app bg-success" data-toggle="modal" data-target="#confirmModal">
+                                <i class="fas fa-save"></i>
+                                Submit
+                            </a>
+                        @endif
+                    @elseif ($data['status']->status != null && $data['status']->status == 1)       
+                        @if (session('role') == 'superadmin' || session('role') == 'admin' || session('role') == 'teacher')
+                            <a  class="btn btn-app bg-danger" data-toggle="modal" data-target="#modalDecline">
+                                <i class="fas fa-cancel"></i>
+                                Decline
+                            </a>
+                        @endif
+                    @endif
                 </div>
             </div>
-        @endif
-    @elseif ($data['status']->status != null && $data['status']->status == 1)       
-        <div class="row my-2">
-            <div class="input-group-append mx-2">
-                <a  class="btn btn-success">Already Submitted on {{ \Carbon\Carbon::parse($data['status']->created_at)->format('l, d F Y') }}</a>
-                @if (session('role') == 'superadmin' || session('role') == 'admin' || session('role') == 'teacher')
-                <a  class="btn btn-warning mx-2" data-toggle="modal" data-target="#modalDecline">Decline ACAR</a>
-                @endif
-            </div>
-        </div>  
-    @endif
-
-    <div style="overflow-x: auto;">
-
-        <table class="table table-striped table-bordered bg-white" style=" width: 2200px;">
-            <thead>
-                <tr>
-                    <th rowspan="3" class="text-center" style="vertical-align : middle;text-align:center;">S/N</th>
-                    <th rowspan="3" class="text-center" style="vertical-align : middle;text-align:center;">First Name</th>
-                    <th colspan="9" class="text-center" style="vertical-align : middle;text-align:center;">Major Subjects</th>
-                    <th colspan="9" class="text-center" style="vertical-align : middle;text-align:center;">Minor Subjects</th>
-                    <th colspan="11" class="text-center" style="vertical-align : middle;text-align:center;">Supplementary Subjects</th>
-                    <th class="text-center">Academic</th>
-                    <th rowspan="3" class="text-center" style="width:15%;vertical-align : middle;text-align:center;">Comment</th>
-                </tr>
-                <tr>
-                    <!-- Major Subjects -->
-                    <td class="text-center" colspan="2">English</td>
-                    <td class="text-center" colspan="2">Chinese</td>
-                    <td class="text-center" colspan="2">Math</td>
-                    <td class="text-center" colspan="2">Science</td>
-                    <td style="background-color:beige;" class="text-center">Avg</td>
-                    <!-- END MAJOR SUBJECTS -->
-                    
-                    <!-- MINOR SUBJECTS -->
-                    <td class="text-center" colspan="2">IPS</td>
-                    <td class="text-center" colspan="2">PPKN</td>
-                    <td class="text-center" colspan="2">Religion</td>
-                    <td class="text-center" colspan="2">BI</td>
-                    <td style="background-color:beige;" class="text-center">Avg</td>
-                    <!-- END MINOR SUBJECTS -->
-                    
-                    <!-- SUPPLEMENTARY SUBJECTS -->
-                    <td class="text-center" colspan="2">PE</td>
-                    <td class="text-center" colspan="2">IT</td>
-                    <td class="text-center" colspan="2">A/D</td>
-                    <td class="text-center" colspan="2">CB</td>
-                    <td class="text-center" colspan="2">FL</td>
-                    <td style="background-color:beige;" class="text-center">Avg</td>
-                    <!-- END SUPPLEMENTARY SUBJECTS -->
-
-                    <td style="background-color:beige;" class="text-center">Total</td>
-                </tr>
-
-                <tr>
-                    <!-- Major Subjects -->
-                    <td class="text-center">Mks</td>
-                    <td class="text-center">Grs</td>
-                    <td class="text-center">Mks</td>
-                    <td class="text-center">Grs</td>
-                    <td class="text-center">Mks</td>
-                    <td class="text-center">Grs</td>
-                    <td class="text-center">Mks</td>
-                    <td class="text-center">Grs</td>
-                    <td style="background-color:beige;" class="text-center">70%</td>
-                    <!-- END MAJOR SUBJECTS -->
-                    
-                    <!-- MINOR SUBJECTS -->
-                    <td class="text-center">Mks</td>
-                    <td class="text-center">Grs</td>
-                    <td class="text-center">Mks</td>
-                    <td class="text-center">Grs</td>
-                    <td class="text-center">Mks</td>
-                    <td class="text-center">Grs</td>
-                    <td class="text-center">Mks</td>
-                    <td class="text-center">Grs</td>
-                    <td style="background-color:beige;" class="text-center">20%</td>
-                    <!-- END MINOR SUBJECTS -->
-                    
-                    <!-- SUPPLEMENTARY SUBJECTS -->
-                    <td class="text-center">Mks</td>
-                    <td class="text-center">Grs</td>
-                    <td class="text-center">Mks</td>
-                    <td class="text-center">Grs</td>
-                    <td class="text-center">Mks</td>
-                    <td class="text-center">Grs</td>
-                    <td class="text-center">Mks</td>
-                    <td class="text-center">Grs</td>
-                    <td class="text-center">Mks</td>
-                    <td class="text-center">Grs</td>
-                    <td style="background-color:beige;" class="text-center">10%</td>
-                    <!-- END SUPPLEMENTARY SUBJECTS -->
-
-                    <td style="background-color:beige;" class="text-center">100%</td>
-                </tr>
-            </thead>
-
-            <tbody>
-                @if (!empty($data['students']))
-                    @foreach ($data['students'] as $dt)
+        </div>
+        <div class="card-body">
+            @if (session('role') == 'superadmin')
+                <form id="confirmForm" method="POST" action={{route('actionPostScoringAcarSecondary')}}>
+            @elseif (session('role') == 'admin')
+                <form id="confirmForm" method="POST" action={{route('actionAdminPostScoringAcarSecondary')}}>
+            @elseif (session('role') == 'teacher')
+                <form id="confirmForm" method="POST" action={{route('actionTeacherPostScoringAcarSecondary')}}>
+            @endif
+            @csrf
+        
+            <div id="scroll-top" style="overflow-x: auto;">
+                        <div style="width: 2200px; height: 1px;"></div> <!-- dummy scroll -->
+                    </div>
+                    <div id="scroll-bottom" style="overflow-x: auto;">
+        
+                <table class="table table-striped table-bordered bg-white" style=" width: 2200px;">
+                    <thead>
                         <tr>
-                            <td>{{ $loop->iteration }}</td>  <!-- nomer -->
-                            <td>{{ ucwords(strtolower($dt['student_name'])) }}</td> <!-- name -->
-
-                            @php
-                                $subjects = [3 => 'English', 1 => 'Chinese', 2 => 'Math', 5 => 'Science', 32 => 'IPS', 7 => 'PPKN', 20 => 'Religion', 4 => 'BI', 18 => 'PE', 6 => 'IT', 33 => 'A/D', 16 => 'CB', 62 => 'FL'];
-                                $subjectScores = array_fill_keys(array_keys($subjects), ['final_score' => '', 'grades' => '']);
-                                
-                                foreach ($dt['scores'] as $score) {
-                                    $subjectScores[$score['subject_id']] = $score;
-                                }
-                            @endphp
-
-                            @foreach ([3, 1, 2, 5] as $subjectId)
-                                <td class="text-center {{ $subjectScores[$subjectId]['final_score'] < 70 ? 'text-danger text-bold' : '' }}">{{ $subjectScores[$subjectId]['final_score'] }}</td>
-                                <td class="text-center">{{ $subjectScores[$subjectId]['grades'] }}</td>
-                            @endforeach
-                            <td style="background-color:beige;" class="text-center">{{ $dt['percent_majorSubjects'] }}</td>
-
-                            @foreach ([32, 7, 20, 4] as $subjectId)
-                                <td class="text-center {{ $subjectScores[$subjectId]['final_score'] < 70 ? 'text-danger text-bold' : '' }}">{{ $subjectScores[$subjectId]['final_score'] }}</td>
-                                <td class="text-center">{{ $subjectScores[$subjectId]['grades'] }}</td>
-                            @endforeach
-                            <td style="background-color:beige;" class="text-center">{{ $dt['percent_minorSubjects'] }}</td>
-
-                            @foreach ([18, 6, 33, 16, 62] as $subjectId)
-                                <td class="text-center {{ $subjectScores[$subjectId]['final_score'] < 70 ? 'text-danger text-bold' : '' }}">{{ $subjectScores[$subjectId]['final_score'] }}</td>
-                                <td class="text-center">{{ $subjectScores[$subjectId]['grades'] }}</td>
-                            @endforeach
-                            <td style="background-color:beige;" class="text-center">{{ $dt['percent_supplementarySubjects'] }}</td>
-                            <td style="background-color:beige;" class="text-center text-bold">{{ $dt['total_score'] }}</td>
-
-                            <!-- COMMENT -->
-                            <td class="project-actions text-left">
-                                <div class="input-group">
-                                    @if ($data['status'] == null)
-                                        <input name="comment[]" type="text" class="form-control" id="comment" placeholder="{{ $dt['comment'] ? '' : 'Maksimal 255 Character' }}" value="{{ $dt['comment'] ?: '' }}" autocomplete="off" required>
-                                    @else 
-                                        {{ $dt['comment'] }}
-                                    @endif
-                                    <input name="student_id[]" type="number" class="form-control d-none" id="student_id" value="{{ $dt['student_id'] }}">  
-                                    <input name="final_score[]" type="number" class="form-control d-none" id="final_score" value="{{ $dt['total_score'] }}"> 
-                                </div>
-                            </td>
-                            <!-- END COMMENT -->
+                            <th rowspan="3" class="text-center" style="vertical-align : middle;text-align:center;">S/N</th>
+                            <th rowspan="3" class="text-center" style="vertical-align : middle;text-align:center;">First Name</th>
+                            <th colspan="9" class="text-center" style="vertical-align : middle;text-align:center;">Major Subjects</th>
+                            <th colspan="9" class="text-center" style="vertical-align : middle;text-align:center;">Minor Subjects</th>
+                            <th colspan="11" class="text-center" style="vertical-align : middle;text-align:center;">Supplementary Subjects</th>
+                            <th class="text-center">Academic</th>
+                            <th rowspan="3" class="text-center" style="width:15%;vertical-align : middle;text-align:center;">Comment</th>
                         </tr>
-                    @endforeach
-                @else
-                    <tr>
-                        <td colspan="33" class="text-center text-danger">
-                            Data Empty     
-                        </td>    
-                    </tr>
-                @endif
-            </tbody>
-        </table>
-        <input name="semester" type="number" class="form-control d-none" id="semester" value="{{ $data['semester'] }}">  
-        <input name="grade_id" type="number" class="form-control d-none" id="grade_id" value="{{ $data['grade']->grade_id }}">    
-        <input name="class_teacher" type="number" class="form-control d-none" id="class_teacher" value="{{ $data['classTeacher']->teacher_id }}">  
-        </form>
+                        <tr>
+                            <!-- Major Subjects -->
+                            <td class="text-center" colspan="2">English</td>
+                            <td class="text-center" colspan="2">Chinese</td>
+                            <td class="text-center" colspan="2">Math</td>
+                            <td class="text-center" colspan="2">Science</td>
+                            <td style="background-color:beige;" class="text-center">Avg</td>
+                            <!-- END MAJOR SUBJECTS -->
+                            
+                            <!-- MINOR SUBJECTS -->
+                            <td class="text-center" colspan="2">IPS</td>
+                            <td class="text-center" colspan="2">PPKN</td>
+                            <td class="text-center" colspan="2">Religion</td>
+                            <td class="text-center" colspan="2">BI</td>
+                            <td style="background-color:beige;" class="text-center">Avg</td>
+                            <!-- END MINOR SUBJECTS -->
+                            
+                            <!-- SUPPLEMENTARY SUBJECTS -->
+                            <td class="text-center" colspan="2">PE</td>
+                            <td class="text-center" colspan="2">IT</td>
+                            <td class="text-center" colspan="2">A/D</td>
+                            <td class="text-center" colspan="2">CB</td>
+                            <td class="text-center" colspan="2">FL</td>
+                            <td style="background-color:beige;" class="text-center">Avg</td>
+                            <!-- END SUPPLEMENTARY SUBJECTS -->
+        
+                            <td style="background-color:beige;" class="text-center">Total</td>
+                        </tr>
+        
+                        <tr>
+                            <!-- Major Subjects -->
+                            <td class="text-center">Mks</td>
+                            <td class="text-center">Grs</td>
+                            <td class="text-center">Mks</td>
+                            <td class="text-center">Grs</td>
+                            <td class="text-center">Mks</td>
+                            <td class="text-center">Grs</td>
+                            <td class="text-center">Mks</td>
+                            <td class="text-center">Grs</td>
+                            <td style="background-color:beige;" class="text-center">70%</td>
+                            <!-- END MAJOR SUBJECTS -->
+                            
+                            <!-- MINOR SUBJECTS -->
+                            <td class="text-center">Mks</td>
+                            <td class="text-center">Grs</td>
+                            <td class="text-center">Mks</td>
+                            <td class="text-center">Grs</td>
+                            <td class="text-center">Mks</td>
+                            <td class="text-center">Grs</td>
+                            <td class="text-center">Mks</td>
+                            <td class="text-center">Grs</td>
+                            <td style="background-color:beige;" class="text-center">20%</td>
+                            <!-- END MINOR SUBJECTS -->
+                            
+                            <!-- SUPPLEMENTARY SUBJECTS -->
+                            <td class="text-center">Mks</td>
+                            <td class="text-center">Grs</td>
+                            <td class="text-center">Mks</td>
+                            <td class="text-center">Grs</td>
+                            <td class="text-center">Mks</td>
+                            <td class="text-center">Grs</td>
+                            <td class="text-center">Mks</td>
+                            <td class="text-center">Grs</td>
+                            <td class="text-center">Mks</td>
+                            <td class="text-center">Grs</td>
+                            <td style="background-color:beige;" class="text-center">10%</td>
+                            <!-- END SUPPLEMENTARY SUBJECTS -->
+        
+                            <td style="background-color:beige;" class="text-center">100%</td>
+                        </tr>
+                    </thead>
+        
+                    <tbody>
+                        @if (!empty($data['students']))
+                            @foreach ($data['students'] as $dt)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>  <!-- nomer -->
+                                    <td style="position: sticky; left: 0; background: #ffffff; z-index: 99;">{{ ucwords(strtolower($dt['student_name'])) }}</td> <!-- name -->
+        
+                                    @php
+                                        $subjects = [3 => 'English', 1 => 'Chinese', 2 => 'Math', 5 => 'Science', 32 => 'IPS', 7 => 'PPKN', 20 => 'Religion', 4 => 'BI', 18 => 'PE', 6 => 'IT', 33 => 'A/D', 16 => 'CB', 62 => 'FL'];
+                                        $subjectScores = array_fill_keys(array_keys($subjects), ['final_score' => '', 'grades' => '']);
+                                        
+                                        foreach ($dt['scores'] as $score) {
+                                            $subjectScores[$score['subject_id']] = $score;
+                                        }
+                                    @endphp
+        
+                                    @foreach ([3, 1, 2, 5] as $subjectId)
+                                        <td class="text-center {{ $subjectScores[$subjectId]['final_score'] < 70 ? 'text-danger text-bold' : '' }}">{{ $subjectScores[$subjectId]['final_score'] }}</td>
+                                        <td class="text-center">{{ $subjectScores[$subjectId]['grades'] }}</td>
+                                    @endforeach
+                                    <td style="background-color:beige;" class="text-center">{{ $dt['percent_majorSubjects'] }}</td>
+        
+                                    @foreach ([32, 7, 20, 4] as $subjectId)
+                                        <td class="text-center {{ $subjectScores[$subjectId]['final_score'] < 70 ? 'text-danger text-bold' : '' }}">{{ $subjectScores[$subjectId]['final_score'] }}</td>
+                                        <td class="text-center">{{ $subjectScores[$subjectId]['grades'] }}</td>
+                                    @endforeach
+                                    <td style="background-color:beige;" class="text-center">{{ $dt['percent_minorSubjects'] }}</td>
+        
+                                    @foreach ([18, 6, 33, 16, 62] as $subjectId)
+                                        <td class="text-center {{ $subjectScores[$subjectId]['final_score'] < 70 ? 'text-danger text-bold' : '' }}">{{ $subjectScores[$subjectId]['final_score'] }}</td>
+                                        <td class="text-center">{{ $subjectScores[$subjectId]['grades'] }}</td>
+                                    @endforeach
+                                    <td style="background-color:beige;" class="text-center">{{ $dt['percent_supplementarySubjects'] }}</td>
+                                    <td style="background-color:beige;" class="text-center text-bold">{{ $dt['total_score'] }}</td>
+        
+                                    <!-- COMMENT -->
+                                    <td class="project-actions text-left">
+                                        <div class="input-group">
+                                            @if ($data['status'] == null)
+                                                <input name="comment[]" type="text" class="form-control" id="comment" placeholder="{{ $dt['comment'] ? '' : 'Maksimal 255 Character' }}" value="{{ $dt['comment'] ?: '' }}" autocomplete="off" required>
+                                            @else 
+                                                {{ $dt['comment'] }}
+                                            @endif
+                                            <input name="student_id[]" type="number" class="form-control d-none" id="student_id" value="{{ $dt['student_id'] }}">  
+                                            <input name="final_score[]" type="number" class="form-control d-none" id="final_score" value="{{ $dt['total_score'] }}"> 
+                                        </div>
+                                    </td>
+                                    <!-- END COMMENT -->
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="33" class="text-center text-danger">
+                                    Data Empty     
+                                </td>    
+                            </tr>
+                        @endif
+                    </tbody>
+                </table>
+                <input name="semester" type="number" class="form-control d-none" id="semester" value="{{ $data['semester'] }}">  
+                <input name="grade_id" type="number" class="form-control d-none" id="grade_id" value="{{ $data['grade']->grade_id }}">    
+                <input name="class_teacher" type="number" class="form-control d-none" id="class_teacher" value="{{ $data['classTeacher']->teacher_id }}">  
+                </form>
+            </div>
+        </div>
     </div>
+    
 </div>
 
 <!-- Confirmation Modal -->

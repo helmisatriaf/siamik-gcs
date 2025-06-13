@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" style="height:70vh;overflow-y: auto;">
         <div class="card-header">
             <div class="row">
                 <div class="col-6">
@@ -76,7 +76,10 @@
             @csrf
             
            
-            <div style="overflow-x: auto;">
+            <div id="scroll-top" style="overflow-x: auto;position: sticky; top: 0; z-index: 99;">
+                <div style="width: 2000px; height: 1px;"></div> <!-- dummy scroll -->
+            </div>
+            <div id="scroll-bottom" style="overflow-x: auto;">
         
                 @if (!empty($data['students']))
                 
@@ -107,7 +110,7 @@
                                 @foreach ($data['result'] as $student)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $student['name'] }}</td>
+                                    <td style="position: sticky; left: 0; background: #ffffff; z-index: 99;">{{ $student['name'] }}</td>
                                     
                                     @foreach ($student['monthly_activities'] as $ma)
                                     <td class="text-center">
@@ -142,7 +145,7 @@
                                 @foreach ($data['students'] as $student)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $student['name'] }}</td>
+                                    <td style="position: sticky; left: 0; background: #ffffff; z-index: 99;">{{ $student['name'] }}</td>
                                     
                                     @foreach ($data['monthlyActivities'] as $ma)
                                     <td class="text-center">
@@ -209,7 +212,7 @@
                             @foreach ($data['result'] as $student)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $student['name'] }}</td>
+                                    <td style="position: sticky; left: 0; background: #ffffff; z-index: 99;">{{ $student['name'] }}</td>
                                     @foreach ($student['monthly_activities'] as $ma)
                                         <td>{{$ma['score']}}</td>
                                     @endforeach
