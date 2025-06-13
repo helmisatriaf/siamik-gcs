@@ -1,23 +1,8 @@
-/* body {
-    font-family: 'Caveat', cursive !important;
-} */
-
-body {
-    font-family: "DynaPuff", system-ui !important;
-    font-weight: 400;
-    font-style: normal;
-}
-
-/* Jika OS macOS, override CSS */
-@supports (-webkit-touch-callout: none) {
-    body {
-        font-family: unset !important;
-        font-weight: unset !important;
-    }
-}
-
 * {
     font-size: 12px;
+     font-family: "DynaPuff", system-ui;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .divider:after,
