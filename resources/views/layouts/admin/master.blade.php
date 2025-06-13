@@ -3,6 +3,7 @@
 
 <head>
     <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Caveat+Brush&family=Chewy&family=DynaPuff&family=Lora:ital,wght@0,400..700;1,400..700&family=Patrick+Hand&family=Vollkorn:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('/style.css')}}">
     @include('layouts.header')
     @livewireStyles
 </head>
@@ -74,7 +75,7 @@
         <!-- /.content -->
     </div>
 
-    <audio id="clickSound" src="{{ asset('music/click.mp3') }}" style="display: none;"></audio>
+    {{-- <audio id="clickSound" src="{{ asset('music/click.mp3') }}" style="display: none;"></audio> --}}
     <!-- /.content-wrapper -->
     <script>
         let clickSound = document.getElementById("clickSound");
