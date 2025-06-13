@@ -117,7 +117,7 @@
             table += `
                 <thead>
                     <tr>
-                        <th style="font-size:12px; position: sticky; left: 0; background: white; z-index: 2;">Waktu</th>
+                        <th style="font-size:12px; position: sticky; left: 0; background: white; z-index: 2;width:100px;">Waktu</th>
                         <th style="font-size:12px;">Toddler</th>
                         <th style="font-size:12px;">Nursery</th>
                         <th style="font-size:12px;">KA</th>

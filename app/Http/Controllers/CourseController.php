@@ -693,13 +693,12 @@ class CourseController extends Controller
             ]);
 
             if($update == true){
-                session()->flash('succes_edit_section');
                 $data = Section::where('sections.id', $request->id)
                     ->join('grade_subjects', 'grade_subjects.id', '=', 'sections.grade_subject_id')
                     ->select('grade_subjects.*')
                     ->first();
 
-                session()->flash('succes_edit_section');
+                session()->flash('success_edit_section');
                 return redirect(session('role') . '/course/' . $data->subject_id . '/sections/' . $data->grade_id );
             }
         }
@@ -824,7 +823,7 @@ class CourseController extends Controller
         return redirect()->route('course.sections.teacher', [  // Updated route name
             'id' => $id,
             'grade_id' => $grade_id
-        ])->with('success', 'Section berhasil ditambahkan');
+        ]);
     }
 
     public function editSectionTeacher($id)
@@ -854,13 +853,12 @@ class CourseController extends Controller
             ]);
 
             if($update == true){
-                session()->flash('succes_edit_section');
                 $data = Section::where('sections.id', $request->id)
                     ->join('grade_subjects', 'grade_subjects.id', '=', 'sections.grade_subject_id')
                     ->select('grade_subjects.*')
                     ->first();
 
-                session()->flash('succes_edit_section');
+                session()->flash('success_edit_section');
                 return redirect(session('role') . '/course/' . $data->subject_id . '/sections/' . $data->grade_id );
             }
         }
@@ -920,14 +918,13 @@ class CourseController extends Controller
                     'file_path' => $filePath,
                 ]);
                 if($update == true){
-                    session()->flash('succes_edit_file');
                     $data = CourseActivities::where('course_activities.id', $request->id)
                         ->join('sections', 'sections.id', '=', 'course_activities.section_id')
                         ->join('grade_subjects', 'grade_subjects.id', '=', 'sections.grade_subject_id')
                         ->select('grade_subjects.*')
                         ->first();
     
-                    session()->flash('succes_edit_activity');
+                    session()->flash('success_edit_activity');
                     return redirect(session('role') . '/course/' . $data->subject_id . '/sections/' . $data->grade_id );
                 }
             }
@@ -940,14 +937,13 @@ class CourseController extends Controller
                 ]);
     
                 if($update == true){
-                    session()->flash('succes_edit_activity');
                     $data = CourseActivities::where('course_activities.id', $request->id)
                         ->join('sections', 'sections.id', '=', 'course_activities.section_id')
                         ->join('grade_subjects', 'grade_subjects.id', '=', 'sections.grade_subject_id')
                         ->select('grade_subjects.*')
                         ->first();
     
-                    session()->flash('succes_edit_activity');
+                    session()->flash('success_edit_activity');
                     return redirect(session('role') . '/course/' . $data->subject_id . '/sections/' . $data->grade_id );
                 }
             }
@@ -974,7 +970,7 @@ class CourseController extends Controller
                         Storage::delete('public/' . $checkFile);
                     }
                 }
-                session()->flash('succes_delete_activity');
+                session()->flash('success_delete_activity');
                 return redirect(session('role') . '/course/' . $data->subject_id . '/sections/' . $data->grade_id );
             }
         } catch (Exception $err) {
@@ -1082,7 +1078,7 @@ class CourseController extends Controller
             return redirect()->route('course.sections.teacher', [  // Updated route name
                 'id' => $id,
                 'grade_id' => $grade_id
-            ])->with('success', 'Aktivitas berhasil ditambahkan');
+            ]);
         } catch (Exception $err) {
             dd($err);
         }
@@ -1120,13 +1116,12 @@ class CourseController extends Controller
                     'file_path' => $filePath,
                 ]);
                 if($update == true){
-                    session()->flash('succes_edit_file');
                     $data = CourseActivities::where('course_activities.id', $request->id)
                         ->join('grade_subjects', 'grade_subjects.id', '=', 'course_activities.grade_subject_id')
                         ->select('grade_subjects.*')
                         ->first();
     
-                    session()->flash('succes_edit_file_activity');
+                    session()->flash('success_edit_file_activity');
                     return redirect(session('role') . '/course/' . $data->subject_id . '/sections/' . $data->grade_id );
                 }
             }
@@ -1137,13 +1132,12 @@ class CourseController extends Controller
                 ]);
     
                 if($update == true){
-                    session()->flash('succes_edit_activity');
                     $data = CourseActivities::where('course_activities.id', $request->id)
                         ->join('grade_subjects', 'grade_subjects.id', '=', 'course_activities.grade_subject_id')
                         ->select('grade_subjects.*')
                         ->first();
     
-                    session()->flash('succes_edit_activity');
+                    session()->flash('success_edit_activity');
                     return redirect(session('role') . '/course/' . $data->subject_id . '/sections/' . $data->grade_id );
                 }
             }
@@ -1170,7 +1164,7 @@ class CourseController extends Controller
                         Storage::delete('public/' . $checkFile);
                     }
                 }
-                session()->flash('succes_delete_activity');
+                session()->flash('success_delete_activity');
                 return redirect(session('role') . '/course/' . $data->subject_id . '/sections/' . $data->grade_id );
             }
         } catch (Exception $err) {
@@ -1435,7 +1429,7 @@ class CourseController extends Controller
     public function deleteEbook(Request $request){
         try{
             Ebook::where('id', $request->ebook_id)->delete();
-            session()->flash('succes_delete_ebook');
+            session()->flash('success_delete_ebook');
             return redirect()->back();
         }
         catch(Exception $err){

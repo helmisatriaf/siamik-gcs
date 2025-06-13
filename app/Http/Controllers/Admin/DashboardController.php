@@ -316,7 +316,7 @@ class DashboardController extends Controller
                      $query->whereNotIn('subject_exams.subject_id', [34, 35, 36, 37]) // Eksklusi semua pelajaran agama
                      ->orWhere('subject_exams.subject_id', $cek); // Masukkan hanya pelajaran agama sesuai agama siswa
                   })  
-                  ->orderByRaw('is_active = 1 ASC, date_exam DESC')
+                  ->orderByRaw('is_active = 1 ASC, date_exam ASC')
                   ->get();
 
                foreach ($dataExam as $ed ) {

@@ -6,8 +6,8 @@
 <div class="container-fluid">
       <div class="row">
          <div class="col">
-            <nav aria-label="breadcrumb" class="bg-white rounded-3 p-3 mb-3">
-               <ol class="breadcrumb mb-0">
+            <nav aria-label="breadcrumb" class="p-3 mb-4" style="background-color: #ffde9e;border-radius:12px;">
+               <ol class="breadcrumb mb-0"  style="background-color: #fff3c0;">
                   <li class="breadcrumb-item">Home</li>
                   <li class="breadcrumb-item"><a href="{{url('/teacher/dashboard/attendance/class/teacher')}}">Attendance</a></li>
                   <li class="breadcrumb-item active" aria-current="page">Student Attend</li>
@@ -15,7 +15,7 @@
             </nav>
          </div>
       </div>
-      <div class="card card-dark mt-2">
+      <div class="card mt-2" style="background-color: #ffde9e;border-radius: 12px;">
          <div class="card-header">
             <h3 class="card-title">{{ $data['nameGrade'] }} / {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</h3>
             <div class="card-tools">
@@ -24,7 +24,7 @@
                </button>
             </div>
          </div>
-         <div class="card-body ">
+         <div class="card-body">
             <div id="calendar">
             </div>
          </div>

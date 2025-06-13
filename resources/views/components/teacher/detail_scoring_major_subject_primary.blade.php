@@ -11,8 +11,8 @@
 <div class="container-fluid" id="anjayani">
     <div class="row">
         <div class="col">
-            <nav aria-label="breadcrumb" class="bg-white rounded-3 p-3 mb-4">
-                <ol class="breadcrumb mb-0">
+            <nav aria-label="breadcrumb" class="p-3 mb-4" style="background-color: #ffde9e;border-radius:12px;">
+                <ol class="breadcrumb mb-0"  style="background-color: #fff3c0;">
                     <li class="breadcrumb-item">Home</li>
                     @if (session('role') == 'superadmin')
                         <li class="breadcrumb-item"><a href="{{url('/superadmin/reports')}}">Report</a></li>
@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <div class="card">
+    <div class="card" style="background-color: #ffde9e;border-radius:12px;">
         <div class="card-header position-relative">
             <div class="row">
                 <div class="col-6">
@@ -94,7 +94,7 @@
                 @endif
                 @csrf
             
-                <table class="table table-striped table-bordered bg-white" style="width:3000px;">
+                <table class="table table-striped table-bordered" style="width:3000px;">
                     <thead>
                         <tr>
                             <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">S/N</th>
@@ -143,8 +143,8 @@
                     @if (!empty($data['students']))
                         @foreach ($data['students'] as $student)                    
                             <tr>
-                                <td  class="text-center" style="vertical-align : middle;text-align:center;">{{ $loop->iteration }}</td>  <!-- nomer -->
-                                <td>{{ $student['student_name'] }}</td> <!-- name -->
+                                <td class="text-center" style="vertical-align : middle;text-align:center;">{{ $loop->iteration }}</td>  <!-- nomer -->
+                                <td style="position: sticky; left: 0; background: #fff3c0; z-index: 99;">{{ $student['student_name'] }}</td> <!-- name -->
                             
         
                                 <!-- COUNT HOMEWORK -->

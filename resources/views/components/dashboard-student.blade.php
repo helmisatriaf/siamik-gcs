@@ -78,11 +78,290 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            {{-- bill & payment --}}
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+                <!-- STUDENT ACTIVE -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-info" style="border-radius: 12px;">
+                        <div class="inner">
+                            <h3>{{ $data['totalStudent'] }}</h3>
+
+                            <p>Total Students</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <a href="#" class="small-box-footer" style="border-radius: 12px;">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+
+                <!-- GRADE ACTIVE -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-success" style="border-radius: 12px;">
+                        <div class="inner">
+                            <h3>{{ $data['totalAbsent'] }}
+                                {{-- <sup style="font-size: 20px">%</sup> --}}
+                            </h3>
+
+                            <p>Total Absence</p>
+                        </div>
+                    
+                        <div class="icon">
+                            <i class="fa-solid fa-chalkboard-user"></i>
+                        </div>
+                        <a href="#" class="small-box-footer" style="border-radius: 12px;">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+        </div>
+        <!-- ./col -->
+
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-warning" style="border-radius: 12px;">
+                <div class="inner">
+                    <h3>{{ $data['totalSubject'] }}
+                        {{-- <sup style="font-size: 20px">%</sup> --}}
+                    </h3>
+
+                    <p>Total Courses</p>
+                </div>
+                <div class="icon">
+                    {{-- <i class="ion ion-person-add"></i> --}}
+                    <i class="fa-solid fa-book"></i>
+                </div>
+
+                <a href="/student/course/" class="small-box-footer" style="border-radius: 12px;">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+
+        <!-- ASSESSMENT ACTIVE -->
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-danger" style="border-radius: 12px;">
+                <div class="inner">
+                    <h3>{{ $data['totalExam'] }}</h3>
+
+                    <p>Total Assessments</p>
+                </div>
+                <div class="icon">
+                <i class="fa-solid fa-book-open-reader"></i>
+                </div>
+            
+                <a href="/student/dashboard/exam" class="small-box-footer" style="border-radius: 12px;">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+      </div>
+
+
+        <div class="row">
+            <!-- Left col -->
+            <section class="col-lg-7 connectedSortable">
+
+                <!-- Custom tabs (Charts with tabs) List Exam-->
+                <div class="card bg-danger" style="border-radius: 12px;">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fa-solid fa-calendar-xmark mr-1"></i>
+                            Assessments Ongoing
+                        </h3>
+                    </div>
+
+                    <div class="card-body" style="position: relative; height: 500px; overflow-y: auto;">
+                        <!-- Morris chart - Sales -->
+                        <div class="chart tab-pane active" id="revenue-chart">
+
+                            @if (sizeof($data['dataStudent']->exam) == 0)
+                                <div class="d-flex justify-content-center">
+                                    <h2>There is no assessment</h2>
+                                </div>
+                            @else
+                                {{-- <canvas id="sales-chart-canvas" height="300" style="height: 300px;"></canvas> --}}
+                                @if (sizeof($data['exam']) !== 0)
+                                    <div>
+                                        <div>
+                                            <ul class="todo-list"  data-widget="todo-list">
+
+                                                @php
+                                                    $currentDate = date('y-m-d');
+                                                @endphp
+
+                                                @foreach ($data['exam'] as $el)
+                                                    <li id="view" data-id="{{ $el->id }}"
+                                                        class="hover:cursor-pointer"
+                                                        style="background-color: #ffde9e;border: 2px dashed #ffcc00;border-radius: 8px;"
+                                                        >
+                                                        <span class="handle">
+                                                            <i class="fas fa-ellipsis-v"></i>
+                                                            <i class="fas fa-ellipsis-v"></i>
+                                                        </span>
+                                                        <!-- checkbox -->
+                                                        <div class="icheck-primary d-inline ml-2">
+                                                            <span
+                                                                class="text-muted">[{{ date('d F Y', strtotime($el->date_exam)) }}]</span>
+                                                        </div>
+                                                        <!-- todo text -->
+                                                        <span class="text text-sm">( {{ $el->type_exam_name }} )
+                                                            ({{ $el->subject }})
+                                                            {{ $el->name_exam }} </span>
+
+                                                        <span>
+                                                            @if ($el->is_active)
+                                                            @php
+                                                                $currentDate = now(); // Tanggal saat ini
+                                                                $dateExam = $el->date_exam; // Tanggal ujian dari data
+
+                                                                // Buat objek DateTime dari tanggal saat ini dan tanggal ujian
+                                                                $currentDateTime = new DateTime($currentDate);
+                                                                $dateExamDateTime = new DateTime($dateExam);
+
+                                                                $currentDateOnly = $currentDateTime->format('Y-m-d');
+                                                                $dateExamOnly = $dateExamDateTime->format('Y-m-d');
+                                                                
+                                                                $interval = $currentDateTime->diff(
+                                                                    $dateExamDateTime,
+                                                                );
+
+                                                                // Ambil jumlah hari dari selisih tersebut
+                                                                $days = $interval->days;
+
+                                                                // Jika tanggal ujian lebih kecil dari tanggal saat ini, buat selisih menjadi negatif
+                                                                if ($currentDateOnly > $dateExamOnly) {
+                                                                $days = 'Past Deadline';
+                                                                } elseif (
+                                                                $dateExamOnly > $currentDateOnly &&
+                                                                $days == 0
+                                                                ) {
+                                                                // Jika tanggal ujian di masa depan dan selisih kurang dari 1 hari, anggap 1 hari
+                                                                $days = 1;
+                                                                }
+                                                                elseif ($currentDateOnly === $dateExamOnly) {
+                                                                // Jika tanggal ujian sama dengan tanggal saat ini, anggap 0 hari
+                                                                $days = 'Today';
+                                                                }
+                                                            @endphp
+
+                                                            @if ($days == 'Past Deadline')
+                                                                <span class="badge badge-warning">Past
+                                                                    Deadline</span>
+                                                            @elseif ($days == 'Today')
+                                                                <span class="badge badge-success">Today</span>
+                                                            @else
+                                                                <span
+                                                                class="badge badge-warning">{{ $days }}
+                                                                days again</span>
+                                                            @endif
+                                                            @else
+                                                            <span class="badge badge-success">Done</span>
+                                                            @endif
+                                                        </span>
+
+                                                        <div class="tools">
+                                                        <i class="fas fa-search hover:cursor-pointer"></i>
+                                                        </div>
+                                                    </li>
+                                                @endforeach
+                                            
+                                            </ul>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <div class="text-center">
+                                            <img loading="lazy" src="{{ asset('images/greta-no-assessment.png') }}" alt="" style="max-width: 180px; max-height: 180px;" loading="lazy">
+                                            <h2 class="text-light">There is no assessment</h2>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- /.Left col -->
+
+            <!-- right col (We are only adding the ID to make the widgets sortable)-->
+            <section class="col-lg-5 connectedSortable">
+                <div class="card bg-warning" style="border-radius: 12px;">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fa-solid fa-book mr-1"></i>
+                            Courses
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body" style="position: relative; height: 500px; overflow-y: auto;">
+                        <table class="table table-borderless">
+                            @if (sizeof($data['dataStudent']->subject) != 0)
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($data['dataStudent']->subject as $el)
+                                        <tr>
+                                            <td scope="row">{{ $loop->index + 1 }}</td>
+                                            <td><a 
+                                                    id="set-course-id"
+                                                    data-id="{{ $el->id }}"
+                                                    href="javascript:void(0)"
+                                                    class="text-decoration-none text-dark"
+                                                >
+                                                {{ $el->name_subject }}
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                @endif
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        
+        <div class="card bg-info" style="border-radius: 12px;">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fa-solid fa-user mr-1"></i>
+                    Profile Students {{$data['dataStudent']->name}}-{{$data['dataStudent']->class}}
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="grid col-12">
+                    <div class="d-flex flex-nowrap" style="overflow-x:auto;">
+                        {{-- @php
+                            dd($data['dataStudent']->student);
+                        @endphp --}}
+                        @foreach($data['dataStudent']->student as $el)
+                        <div class="custom-card-student col-4 col-md-3 col-lg-2">
+                            <div class="widget-user-image p-1">
+                                @if ($el->profil != null)
+                                <img class="img-circle" src="{{asset('storage/file/profile/'.$el->profil)}}" alt="" style="max-width:80px;max-height:80px;">
+                                @else
+                                <img class="img-circle" src="{{asset('images/user_unknown.png')}}" alt="" style="max-width:80px;max-height:80px;">
+                                @endif
+                            </div>
+                            <h2 class="text-sm pt-2 text-black ml-1">{{$el->name}}</h2>
+                            {{-- <p>Deskripsi singkat tentang siswa pertama.</p>
+                            <p><a class="btn btn-secondary" href="#">Lihat Profil »</a></p> --}}
+                        </div>
+                        @endforeach
+        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+          {{-- bill & payment --}}
             <div class="row">
                 <div class="col-md-12">
                     @if (isset($data['paymentStatus']) && $data['paymentStatus']['has_unpaid_bill'])
-                        <div class="card bg-gradient-warning animate__animated animate__fadeIn">
+                        <div class="card bg-gradient-warning animate__animated animate__fadeIn" style="border-radius: 12px;">
                             <div class="card-header border-0">
                                 <h3 class="card-title">
                                     <i class="fas fa-bell fa-shake mr-2"></i>
@@ -123,8 +402,8 @@
             <!-- Payment History Card -->
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header bg-light">
+                    <div class="card" style="border-radius: 12px;">
+                        <div class="card-header">
                             <h3 class="card-title">
                                 <i class="fas fa-history mr-2"></i>
                                 Payment History (Last 3 Months)
@@ -173,273 +452,7 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Small boxes (Stat box) -->
-            <div class="row">
-                <!-- STUDENT ACTIVE -->
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-info">
-                        <div class="inner">
-                            <h3>{{ $data['totalStudent'] }}</h3>
-
-                            <p>Total Students</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa-solid fa-graduation-cap"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- ./col -->
-
-                <!-- GRADE ACTIVE -->
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-success">
-                        <div class="inner">
-                            <h3>{{ $data['totalAbsent'] }}
-                                {{-- <sup style="font-size: 20px">%</sup> --}}
-                            </h3>
-
-                            <p>Total Absence</p>
-                        </div>
-                    
-                        <div class="icon">
-                            <i class="fa-solid fa-chalkboard-user"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-        </div>
-        <!-- ./col -->
-
-        <div class="col-lg-3 col-6">
-            <div class="small-box bg-warning">
-                <div class="inner">
-                    <h3>{{ $data['totalSubject'] }}
-                        {{-- <sup style="font-size: 20px">%</sup> --}}
-                    </h3>
-
-                    <p>Total Courses</p>
-                </div>
-                <div class="icon">
-                    {{-- <i class="ion ion-person-add"></i> --}}
-                    <i class="fa-solid fa-book"></i>
-                </div>
-
-                <a href="/student/course/" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-        </div>
-
-        <!-- ASSESSMENT ACTIVE -->
-        <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-danger">
-                <div class="inner">
-                    <h3>{{ $data['totalExam'] }}</h3>
-
-                    <p>Total Assessments</p>
-                </div>
-                <div class="icon">
-                <i class="fa-solid fa-book-open-reader"></i>
-                </div>
-            
-                <a href="/student/dashboard/exam" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-        </div>
-      </div>
-
-
-        <div class="row">
-            <!-- Left col -->
-            <section class="col-lg-7 connectedSortable">
-
-                <!-- Custom tabs (Charts with tabs) List Exam-->
-                <div class="card bg-danger">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fa-solid fa-calendar-xmark mr-1"></i>
-                            Assessments Ongoing
-                        </h3>
-                    </div>
-
-                    <div class="card-body" style="position: relative; height: 500px; overflow-y: auto;">
-                        <!-- Morris chart - Sales -->
-                        <div class="chart tab-pane active" id="revenue-chart">
-
-                            @if (sizeof($data['dataStudent']->exam) == 0)
-                                <div class="d-flex justify-content-center">
-                                    <h2>There is no assessment</h2>
-                                </div>
-                            @else
-                                {{-- <canvas id="sales-chart-canvas" height="300" style="height: 300px;"></canvas> --}}
-                                @if (sizeof($data['exam']) !== 0)
-                                    <div>
-                                        <div>
-                                            <ul class="todo-list bg-danger" data-widget="todo-list">
-
-                                                @php
-                                                    $currentDate = date('y-m-d');
-                                                @endphp
-
-                                                @foreach ($data['exam'] as $el)
-                                                    <li id="view" data-id="{{ $el->id }}"
-                                                        class="hover:cursor-pointer">
-                                                        <span class="handle">
-                                                            <i class="fas fa-ellipsis-v"></i>
-                                                            <i class="fas fa-ellipsis-v"></i>
-                                                        </span>
-                                                        <!-- checkbox -->
-                                                        <div class="icheck-primary d-inline ml-2">
-                                                            <span
-                                                                class="text-muted">[{{ date('d F Y', strtotime($el->date_exam)) }}]</span>
-                                                        </div>
-                                                        <!-- todo text -->
-                                                        <span class="text text-sm">( {{ $el->type_exam_name }} )
-                                                            ({{ $el->subject }})
-                                                            {{ $el->name_exam }} </span>
-
-                                                        <span>
-                                                            @if ($el->is_active)
-                                                                @php
-                                                                    $currentDate = now(); // Tanggal saat ini
-                                                                    $dateExam = $el->date_exam; // Tanggal ujian dari data
-
-                                                                    // Buat objek DateTime dari tanggal saat ini dan tanggal ujian
-                                                                    $currentDateTime = new DateTime($currentDate);
-                                                                    $dateExamDateTime = new DateTime($dateExam);
-
-                                                                    // Hitung selisih antara kedua tanggal
-                                                                    $interval = $currentDateTime->diff(
-                                                                        $dateExamDateTime,
-                                                                    );
-
-                                                                    // Ambil jumlah hari dari selisih tersebut
-                                                                    $days = $interval->days;
-
-                                                                    // Jika tanggal ujian lebih kecil dari tanggal saat ini, buat selisih menjadi negatif
-                                                                    if ($dateExamDateTime < $currentDateTime) {
-                                                                        $days = 'Past Deadline';
-                                                                    } elseif (
-                                                                        $dateExamDateTime > $currentDateTime &&
-                                                                        $days == 0
-                                                                    ) {
-                                                                        // Jika tanggal ujian di masa depan dan selisih kurang dari 1 hari, anggap 1 hari
-                                                                        $days = 1;
-                                                                    }
-                                                                @endphp
-
-                                                                @if ($days == 'Past Deadline')
-                                                                    <span class="badge badge-warning">Past
-                                                                        Deadline</span>
-                                                                @else
-                                                                    <span
-                                                                        class="badge badge-warning">{{ $days }}
-                                                                        days again</span>
-                                                                @endif
-                                                            @else
-                                                                <span class="badge badge-success">Done</span>
-                                                            @endif
-                                                        </span>
-
-                                                        <div class="tools">
-                                                            <i class="fas fa-search hover:cursor-pointer"></i>
-                                                        </div>
-                                                    </li>
-                                                @endforeach
-                                            
-                                            </ul>
-                                        </div>
-                                    </div>
-                                @else
-                                    <div class="d-flex justify-content-center align-items-center">
-                                        <div class="text-center">
-                                            <img loading="lazy" src="{{ asset('images/no-assessment.png') }}" alt="" style="max-width: 180px; max-height: 180px;" loading="lazy">
-                                            <h2>There is no assessment</h2>
-                                        </div>
-                                    </div>
-                                @endif
-                            @endif
-
-
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- /.Left col -->
-
-            <!-- right col (We are only adding the ID to make the widgets sortable)-->
-            <section class="col-lg-5 connectedSortable">
-                <div class="card bg-warning">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fa-solid fa-book mr-1"></i>
-                            Courses
-                        </h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body" style="position: relative; height: 500px; overflow-y: auto;">
-                        <table class="table table-borderless">
-                            @if (sizeof($data['dataStudent']->subject) != 0)
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Name</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($data['dataStudent']->subject as $el)
-                                        <tr>
-                                            <td scope="row">{{ $loop->index + 1 }}</td>
-                                            <td><a 
-                                                    id="set-course-id"
-                                                    data-id="{{ $el->id }}"
-                                                    href="javascript:void(0)"
-                                                    class="text-decoration-none text-dark"
-                                                >
-                                                {{ $el->name_subject }}
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @else
-                                @endif
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-        </div>
-
         
-        <div class="row">
-            <div class="grid col-12">
-                <div class="title text-center pb-2">
-                    <h1 class="text-lg">
-                    Profile Students {{$data['dataStudent']->name}}-{{$data['dataStudent']->class}}
-                    </h1>
-                </div>
-                <div class="d-flex flex-nowrap" style="overflow-x:auto;">
-                    @foreach($data['dataStudent']->student as $el)
-                    <div class="small-box bg-light col-md-2 text-center mx-2 p-3 rounded-sm shadow-md">
-                        <div class="widget-user-image">
-                            @if ($el->profil !== null)
-                            <img class="img-circle" src="{{asset('storage/file/profile/'.$el->profil)}}" alt="User Avatar" style="max-width:100px;max-height:100px;">
-                            @else
-                            <img class="img-circle" src="{{asset('images/user_unknown.png')}}" alt="User Avatar" style="max-width:100px;max-height:100px;">
-                            @endif
-                        </div>
-                        <h2 class="text-sm pt-2 text-black">{{$el->name}}</h2>
-                        {{-- <p>Deskripsi singkat tentang siswa pertama.</p>
-                        <p><a class="btn btn-secondary" href="#">Lihat Profil »</a></p> --}}
-                    </div>
-                    @endforeach
-    
-                </div>
-            </div>
-        </div>
-
     </div>
 </section>
 <!-- /.content-wrapper -->
@@ -450,9 +463,15 @@
 @if(session('password.success'))
     <script>
         Swal.fire({
-            icon: 'success',
-            title: 'Successfuly',
+            title: 'Successfully',
             text: 'Success change password',
+            imageUrl: '/images/happy.png', // pastikan path ini bisa diakses dari browser
+            imageWidth: 100,
+            imageHeight: 100,
+            imageAlt: 'Custom image',
+            customClass: {
+                popup: 'custom-swal-style'
+            }
         });
     </script>
 @endif

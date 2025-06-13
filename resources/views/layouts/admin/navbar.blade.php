@@ -20,14 +20,14 @@
 </style>
 
 <!-- Navbar -->
-<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+<nav class="main-header navbar navbar-expand navbar-white navbar-light" style="background-color: #fff3c0;">
   <!-- Left navbar links -->
   <ul class="navbar-nav" id="btn-custom-suzyan">
     <li class="nav-item">
       <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
     </li>
     <li class="nav-item d-none d-sm-inline-block shake">
-      <a class="nav-link text-black text-md">System Academic Periode {{ session('semester') }} Year {{ session('academic_year') }}</a>
+      <a class="dynapuff-regular hero-title">System Academic Periode {{ session('semester') }} Year {{ session('academic_year') }}</a>
     </li>
   </ul>
 
@@ -47,7 +47,7 @@
     </li>
     @endif
     <li class="nav-item">
-      <button href="javascript:void(0)" id="log-out" type="button" class="btn btn-danger">Exit</button>
+      <button href="javascript:void(0)" id="log-out" type="button" class="btn-menu-top">Exit</button>
     </li>
     <li class="nav-item">
       <a class="nav-link" data-widget="fullscreen" href="#" role="button">

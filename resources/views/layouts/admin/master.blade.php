@@ -7,7 +7,8 @@
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
-    <div class="wrapper pr-2">
+{{-- <body class="layout-fixed layout-navbar-fixed layout-footer-fixed"> --}}
+    <div class="wrapper">
         @if (session('preloader'))
             <div class="preloader flex-column justify-content-center align-items-center">
                 <img class="animation__shake" src="{{ asset('images') }}/logo-school.png" alt="SchoolLogo" height="120"
@@ -18,7 +19,11 @@
         @include('layouts.admin.navbar')
         @include('layouts.admin.sidebar')
 
+        {{-- @if (session('role') == 'student' || session('role') == 'parent') --}}
+        <div class="content-wrapper" style="background-color: #fff3c0;">
+        {{-- @else
         <div class="content-wrapper">
+        @endif --}}
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
@@ -59,7 +64,19 @@
 
         <!-- /.content -->
     </div>
+
+    <audio id="clickSound" src="{{ asset('music/click.mp3') }}" style="display: none;"></audio>
     <!-- /.content-wrapper -->
+    <script>
+        let clickSound = document.getElementById("clickSound");
+
+        // Event listener untuk semua klik di halaman
+        document.addEventListener("click", function () {
+            clickSound.volume = 1;
+            clickSound.currentTime = 0; // Reset audio ke awal
+            clickSound.play(); // Putar suara
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @livewireScripts
 </body>

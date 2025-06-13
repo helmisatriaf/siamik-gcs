@@ -3,15 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CBT Exam</title>
+    <title>CBT | Great Crystal School</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('/style.css') }}">
     <link rel="stylesheet" href="{{ asset('template') }}/dist/css/adminlte.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="{{asset('template')}}/plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="{{asset('fontawesome')}}/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Caveat+Brush&family=Chewy&family=DynaPuff&family=Lora:ital,wght@0,400..700;1,400..700&family=Patrick+Hand&family=Vollkorn:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
 
     <style>
+        body {
+            background-color: #ffde9e;
+            font-family: "DynaPuff", system-ui !important;
+            font-weight: 400;
+            font-style: normal;
+        }
         .question-number {
             width: 35px;
             height: 35px;
@@ -57,50 +64,50 @@
         {{-- HEADER --}}
         <div class="row">
             <div class="col-md-6 col-lg-1">
-                <div class="info-box small-box bg-danger px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center">
+                <div class="info-box small-box bg-danger px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center"  style="border-radius: 12px;">
                     <a href="#" data-bs-toggle="modal" data-bs-target="#backTo"
                         class="stretched-link d-flex flex-column p-2 text-center justify-content-center align-items-center">
                         <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
                             <div class="inner mt-2">
-                                <p class="mb-0 text-lg fw-bold text-center text-white">Back</p>
+                                <p class="mb-0 text-lg fw-bold text-center text-light">Back</p>
                             </div>
                         </div>
                     </a>
                 </div>
             </div>
             <div class="col-md-6 col-lg-4">
-                <div class="info-box bg-orange">
+                <div class="info-box" style="background-color: #fff3c0;border-radius: 12px;">
                   <div class="info-box-content d-flex flex-row justify-content-center align-items-center flex-grow-1">
-                    <div>
+                    {{-- <div>
                         <img loading="lazy" src="{{ asset('images/online-exam.png') }}" 
                           alt="avatar" class="profileImage img-fluid" 
                           style="width: 50px; height: 50px; cursor: pointer;">
-                    </div>
-                    <span class="info-box-text text-center text-white text-bold">{{ucwords(strtolower($assessment->name_exam))}}</span>
+                    </div> --}}
+                    <span class="info-box-text text-center text-dark text-bold text-lg">{{ucwords(strtolower($assessment->name_exam))}}</span>
                   </div>
                 </div>
             </div>
             <div class="col-md-6 col-lg-4">
-            <div class="info-box bg-orange">
+            <div class="info-box" style="background-color: #fff3c0;border-radius: 12px;">
                 <div class="info-box-content d-flex flex-row justify-content-center align-items-center flex-grow-1">
-                <div>
+                {{-- <div>
                     <img loading="lazy" src="{{ asset('images/elearning.png') }}" 
                         alt="avatar" class="profileImage img-fluid" 
                         style="width: 50px; height: 50px; cursor: pointer;">
-                </div>
-                <span class="info-box-text text-center text-white text-bold">{{ucwords($assessment->type_exam)}} - {{$assessment->subject_name}} <br> {{$assessment->grade_name}} - {{$assessment->grade_class}}</span>
+                </div> --}}
+                <span class="info-box-text text-center text-dark text-bold text-lg">{{ucwords($assessment->type_exam)}} - {{$assessment->subject_name}} <br> {{$assessment->grade_name}} - {{$assessment->grade_class}}</span>
                 </div>
             </div>
             </div>
             <div class="col-md-6 col-lg-3">
-                <div class="info-box bg-orange">
+                <div class="info-box" style="background-color: #fff3c0;border-radius: 12px;">
                   <div class="info-box-content d-flex flex-row justify-content-center align-items-center flex-grow-1">
-                    <div>
+                    {{-- <div>
                         <img loading="lazy" src="{{ asset('images/underline.png') }}" 
                           alt="avatar" class="profileImage img-fluid" 
                           style="width: 50px; height: 50px; cursor: pointer;">
-                    </div>
-                    <span class="info-box-text text-center text-white text-bold">Deadline {{ \Carbon\Carbon::parse($assessment->date_exam)->translatedFormat('d F Y') }} </span>
+                    </div> --}}
+                    <span class="info-box-text text-center text-dark text-bold text-lg">Deadline {{ \Carbon\Carbon::parse($assessment->date_exam)->translatedFormat('d F Y') }} </span>
                   </div>
                 </div>
             </div>
@@ -110,10 +117,10 @@
         <div class="row">
             <!-- Sidebar kiri untuk nomor soal -->
             <div class="col-md-3">
-                <div class="card p-3">
+                <div class="card p-3" style="background-color: #fff3c0; border-radius: 12px;">
+                    <img loading="lazy" src="{{ asset('/images') }}/logo-school.png" class="img-fluid bg-transparent" alt="Sample image">
                     <h5 class="text-center">Question Number</h5>
-                    
-                    <div class="d-flex flex-wrap gap-2">
+                    <div class="d-flex flex-wrap gap-1">
                         @foreach ($questions as $index => $question)
                             <div class="question-number
                                 @if (session('role') == 'parent' || session('role') == 'student')
@@ -133,7 +140,7 @@
             
             <!-- Konten soal di sebelah kanan -->
             <div class="col-md-9">
-                <div class="card p-4">
+                <div class="card p-4" style="background-color: #fff3c0; border-radius: 12px;">
                     @foreach ($questions as $question)
                     <div class="question-content" id="question-{{ $question->id }}" style="display: none;">
                         <h5 id="qn-{{ $question->id }}"></h5>
@@ -180,41 +187,50 @@
 
     {{-- Modal Welcome --}}
     <div class="modal fade" id="welcome" tabindex="-1" aria-labelledby="welcomeLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content bg-danger p-4 rounded">
-                <div class="alert-container d-flex flex-column align-items-center text-center gap-3">
-                    <!-- Logo -->
-                    <img loading="lazy" src="{{ asset('images/happy.png') }}" 
-                        alt="alert-icon" class="profileImage img-fluid"
-                        style="width: 120px; height: 120px;">
-            
+        <div class="modal-dialog modal-dialog-centered" style="max-width: fit-content;">
+            <div class="modal-content bg-danger p-4" style="border-radius: 48px;">
+                <div class="alert-container d-flex flex-column align-items-center text-center">
+                    <!-- Logo Container -->
+                    <div class="image-container mb-3" style="width: 150px; height: 150px;">
+                        <img loading="lazy" src="{{ asset('images/greta-greti-angkat-tangan.png') }}" alt="alert-icon"
+                            class="profileImage img-fluid" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+
                     <!-- Pesan -->
-                    <p class="fw-bold text-white">Welcome to Great Assessment</p>
+                    <p class="fw-bold text-white mb-0" style="font-size: 1.8rem;">Welcome to Great Assessment</p>
                 </div>
-            </div>            
+            </div>
         </div>
     </div>
 
     {{-- Modal Back --}}
     <div class="modal fade" id="backTo" tabindex="-1" aria-labelledby="backToLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content bg-danger p-4 rounded">
+            <div class="modal-content bg-danger p-4" style="border-radius: 96px;">
                 <div class="alert-container d-flex flex-column align-items-center text-center gap-3">
-                    <!-- Logo -->
-                    <img loading="lazy" src="{{ asset('images/happy.png') }}" 
-                        alt="alert-icon" class="profileImage img-fluid"
-                        style="width: 120px; height: 120px;">
-            
+
                     <!-- Pesan -->
-                    <p class="fw-bold">See you later</p>
-            
+                    @if (session('role') !== 'parent')
+                        <!-- Logo -->
+                        <img loading="lazy" src="{{ asset('images/greti-cina.png') }}" alt="alert-icon"
+                            class="profileImage img-fluid" style="width: 120px; height: 120px; object-fit: contain;">
+
+                        <p class="fw-bold" style="font-size: 1.6rem;">!! Your answers won't be saved if you leave now !!</p>
+                    @else
+                        <!-- Logo -->
+                        <img loading="lazy" src="{{ asset('images/greti-cina.png') }}" alt="alert-icon" class="profileImage img-fluid"
+                            style="width: 120px; height: 120px; object-fit: contain;">
+
+                        <p class="fw-bold" style="font-size: 1.6rem;">See you</p>
+                    @endif
+
                     <!-- Tombol -->
                     <div class="d-flex justify-content-center gap-3 w-100">
-                        <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-dark px-4" onclick="goBack()">Yes</button>
+                        <button type="button" class="btn-lg btn-light px-4" style="border-radius: 12px;" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn-lg btn-dark px-4" style="border-radius: 12px;" onclick="goBack()">Yes</button>
                     </div>
                 </div>
-            </div>            
+            </div>
         </div>
     </div>
     

@@ -1,8 +1,41 @@
+<style>
+    .custom-modal {
+        padding: ;
+        background-color: #ffde9e;
+        color: #000;
+        border-radius: 86% 64% 74% 76% / 76% 80% 80% 94% ;
+        border: 3px solid #ffcc00;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s;
+        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .input-custom {
+        padding: 10px 45px;
+        width: 100%;
+        height: 50px;
+        background-color: #fff3c0;
+        color: #000;
+        border-radius: 70% 60% 80% 70% / 70% 60% 80% 70%;
+        border: 3px solid #ffde9e;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s;
+        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-light-orange elevation-4">
+<aside class="main-sidebar sidebar-light-orange elevation-4" style="background-color: #fff3c0">
     <!-- Brand Logo -->
-    <a href="#" class="brand-link text-center">
-        <img loading="lazy" src="{{ asset('/images') }}/logo-school.png" class="img-fluid img-thumbnail" alt="Sample image">
+    <a href="#" class="brand-link text-center" style="background-color: #fff3c0;">
+        <img loading="lazy" src="{{ asset('/images') }}/logo-school.png" class="img-fluid img-thumbnail" alt="Sample image" style="background-color: #fff3c0;">
     </a>
 
     <div class="sidebar">
@@ -12,7 +45,7 @@
                     <img loading="lazy" src="{{ asset('images/admin.png') }}" class="img-circle elevation-2" alt="">
                 @else
                     @if ($profile == null)
-                        <img loading="lazy" src="{{asset('images/admin.png') }}" class="img-circle elevation-2" alt="">
+                        <img loading="lazy" src="{{asset('images/admin.png') }}" class="img-circle elevation-2" alt="" style="width: 40px;height: 40px;">
                     @else
                         <img loading="lazy" src="{{ asset('storage/file/profile/' . $profile) }}" class="img-circle elevation-2"
                             alt="" style="width: 40px;height: 40px;">
@@ -951,27 +984,21 @@
 
 <div class="modal fade" id="modal-change-password"
     data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modal-title">Change Password</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content custom-modal">
             <div class="modal-body">
                 <form method="POST" id="change-password-form" action="" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="form-group">
-                        <label for="cspassword">Password</label>
-                        <input name="password" type="password" class="form-control" id="cspassword"
+                        <label for="cspassword" class="text-xl">Change  Your Password</label>
+                        <input name="password" type="password" class="form-control input-custom" id="cspassword"
                         oninput="this.type='text'" onblur="this.type='password'">
                     </div>
 
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    <div class="form-group d-flex justify-content-center align-item-center text-center">
+                        <button type="button" class="btn btn-secondary" style="border-radius:16px;" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" style="border-radius:16px;margin-left:3px;" >Save Changes</button>
                     </div>
                 </form>
             </div>
@@ -1046,6 +1073,13 @@
             Swal.fire({
             title: 'Checking Access...',
             text: 'Please wait a moment.',
+            mageUrl: '/images/happy.png', // pastikan path ini bisa diakses dari browser
+            imageWidth: 100,
+            imageHeight: 100,
+            imageAlt: 'Custom image',
+            customClass: {
+                popup: 'custom-swal-style'
+            },
             allowOutsideClick: false,
                 didOpen: () => {
                     Swal.showLoading();
@@ -1059,13 +1093,16 @@
                 dataType: 'json',
                 success: function(response) {
                     if (response.status === 'error') {
-                        Swal.close(); // Close loading
-                        // Show SweetAlert error message
+                        Swal.close(); 
                         Swal.fire({
+
                             title: 'Access Denied',
                             text: response.message,
                             icon: 'error',
-                            confirmButtonText: 'OK'
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                popup: 'custom-swal-style'
+                            },
                         });
                     } else {
                         Swal.close(); // Close loading

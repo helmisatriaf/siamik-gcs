@@ -11,7 +11,7 @@
          <!-- STUDENT ACTIVE -->
          <div class="col-lg-3 col-6">
            <!-- small box -->
-           <div class="small-box bg-info">
+           <div class="small-box bg-info" style="border-radius: 12px;">
              <div class="inner">
                <h3>{{$data['totalStudent']}}</h3>
 
@@ -20,7 +20,7 @@
              <div class="icon">
               <i class="fa-solid fa-child"></i>
              </div>
-             <a href="/teacher/dashboard/grade" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+             <a href="/teacher/dashboard/grade" class="small-box-footer" style="border-radius: 12px;">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
          </div>
          <!-- ./col -->
@@ -28,7 +28,7 @@
          <!-- GRADE ACTIVE -->
          <div class="col-lg-3 col-6">
            <!-- small box -->
-           <div class="small-box bg-success">
+           <div class="small-box bg-success" style="border-radius: 12px;">
              <div class="inner">
                <h3>{{$data['totalGrade']}}
                 {{-- <sup style="font-size: 20px">%</sup> --}}
@@ -40,7 +40,7 @@
                {{-- <i class="ion ion-stats-bars"></i> --}}
                <i class="fa-solid fa-chalkboard-user"></i>
              </div>
-              <a href="/teacher/dashboard/grade" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/teacher/dashboard/grade" class="small-box-footer" style="border-radius: 12px;">More info <i class="fas fa-arrow-circle-right"></i></a>
            </div>
          </div>
          <!-- ./col -->
@@ -48,7 +48,7 @@
          <!-- SUBJECT ACTIVE -->
          <div class="col-lg-3 col-6">
            <!-- small box -->
-           <div class="small-box bg-warning">
+           <div class="small-box bg-warning" style="border-radius: 12px;">
              <div class="inner">
                <h3>{{$data['totalSubject']}}
                {{-- <sup style="font-size: 20px">%</sup> --}}
@@ -60,7 +60,7 @@
                 {{-- <i class="ion ion-person-add"></i> --}}
                 <i class="fa-solid fa-book"></i>
               </div>
-              <a href="/teacher/course" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/teacher/course" class="small-box-footer" style="border-radius: 12px;">More info <i class="fas fa-arrow-circle-right"></i></a>
            </div>
          </div>
          <!-- ./col -->
@@ -68,7 +68,7 @@
          <!-- EXAM ACTIVE -->
          <div class="col-lg-3 col-6">
            <!-- small box -->
-           <div class="small-box bg-danger">
+           <div class="small-box bg-danger" style="border-radius: 12px;">
              <div class="inner">
                <h3>{{ $data['totalExam']}}</h3>
 
@@ -79,7 +79,7 @@
                <i class="fa-solid fa-book-open-reader"></i>
              </div>
              
-             <a href="/teacher/dashboard/exam/teacher" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+             <a href="/teacher/dashboard/exam/teacher" class="small-box-footer" style="border-radius: 12px;">More info <i class="fas fa-arrow-circle-right"></i></a>
              
            </div>
          </div>
@@ -93,7 +93,7 @@
          <section class="col-lg-8 connectedSortable">
            
           <!-- Custom tabs (Charts with tabs) List Exam-->
-          <div class="card bg-danger">
+          <div class="card bg-danger" style="border-radius: 12px;">
             <div class="card-header">
               <h3 class="card-title">
                 <i class="fa-solid fa-calendar-xmark mr-1"></i>
@@ -121,72 +121,83 @@
                            $currentDate = date('y-m-d');
                           @endphp 
     
-                           @foreach ($data['exam'] as $el)
-                           <li>
-                             <!-- drag handle -->
-                             <span class="handle">
-                               <i class="fas fa-ellipsis-v"></i>
-                               <i class="fas fa-ellipsis-v"></i>
-                             </span>
-                             <!-- checkbox -->
-                             <div  class="icheck-primary d-inline ml-2">
-                               <span class="text-muted">[ {{date( 'd F Y',strtotime($el->date_exam))}} ]</span>
-                             </div>
-                             <!-- todo text -->
-                             <span class="text text-sm">( {{$el->type_exam_name}} ) {{$el->name_exam}} ({{ $el->subject }}) ({{ $el->grade_name .'-'. $el->grade_class }})</span>
+                            @foreach ($data['exam'] as $el)
+                            <li  
+                            class="hover:cursor-pointer"
+                            style="background-color: #ffde9e;border: 2px dashed #ffcc00;border-radius: 8px;"
+                            >
+                              <a href="{{ '/teacher/dashboard/exam/detail/' .$el->id }}" class="text-decoration-none text-dark">
+                                <span class="handle">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </span>
+                                <!-- checkbox -->
+                                <div class="icheck-primary d-inline ml-2">
+                                    <span
+                                        class="text-muted">[{{ date('d F Y', strtotime($el->date_exam)) }}]</span>
+                                </div>
+                                <!-- todo text -->
+                                <span class="text text-sm">( {{ $el->type_exam_name }} )
+                                    ({{ $el->subject }})
+                                    {{ $el->name_exam }} </span>
 
-                             <span>
-                                @if ($el->is_active)
-                                @php
-                                      $currentDate = now(); // Tanggal saat ini
-                                      $dateExam = $el->date_exam; // Tanggal ujian dari data
+                                <span>
+                                    @if ($el->is_active)
+                                      @php
+                                        $currentDate = now(); // Tanggal saat ini
+                                        $dateExam = $el->date_exam; // Tanggal ujian dari data
 
-                                      // Buat objek DateTime dari tanggal saat ini dan tanggal ujian
-                                      $currentDateTime = new DateTime($currentDate);
-                                      $dateExamDateTime = new DateTime($dateExam);
+                                        // Buat objek DateTime dari tanggal saat ini dan tanggal ujian
+                                        $currentDateTime = new DateTime($currentDate);
+                                        $dateExamDateTime = new DateTime($dateExam);
 
-                                      // Hitung selisih antara kedua tanggal
-                                      $interval = $currentDateTime->diff(
+                                        $currentDateOnly = $currentDateTime->format('Y-m-d');
+                                        $dateExamOnly = $dateExamDateTime->format('Y-m-d');
+                                        
+                                        $interval = $currentDateTime->diff(
                                           $dateExamDateTime,
-                                      );
+                                        );
 
-                                      // Ambil jumlah hari dari selisih tersebut
-                                      $days = $interval->days;
+                                        // Ambil jumlah hari dari selisih tersebut
+                                        $days = $interval->days;
 
-                                      // Jika tanggal ujian lebih kecil dari tanggal saat ini, buat selisih menjadi negatif
-                                      if ($dateExamDateTime < $currentDateTime) {
+                                        // Jika tanggal ujian lebih kecil dari tanggal saat ini, buat selisih menjadi negatif
+                                        if ($currentDateOnly > $dateExamOnly) {
                                           $days = 'Past Deadline';
-                                      } elseif (
-                                          $dateExamDateTime > $currentDateTime &&
+                                        } elseif (
+                                          $dateExamOnly > $currentDateOnly &&
                                           $days == 0
-                                      ) {
+                                        ) {
                                           // Jika tanggal ujian di masa depan dan selisih kurang dari 1 hari, anggap 1 hari
                                           $days = 1;
-                                      }
-                                  @endphp
+                                        }
+                                        elseif ($currentDateOnly === $dateExamOnly) {
+                                          // Jika tanggal ujian sama dengan tanggal saat ini, anggap 0 hari
+                                          $days = 'Today';
+                                        }
+                                      @endphp
 
-                                  @if ($days == 'Past Deadline')
-                                      <span class="badge badge-warning">Past
-                                          Deadline</span>
-                                  @else
-                                      <span
+                                      @if ($days == 'Past Deadline')
+                                        <span class="badge badge-warning">Past
+                                            Deadline</span>
+                                      @elseif ($days == 'Today')
+                                        <span class="badge badge-success">Today</span>
+                                      @else
+                                        <span
                                           class="badge badge-warning">{{ $days }}
                                           days again</span>
-                                  @endif
-                                @else
-                                    <span class="badge badge-success">Done</span>
-                                @endif
-                              </span>
+                                      @endif
+                                    @else
+                                      <span class="badge badge-success">Done</span>
+                                    @endif
+                                </span>
 
-                             <!-- Emphasis label -->
-                             <div class="tools">
-                               <a href="/teacher/dashboard/exam/detail/{{$el->id}}">
-                                 <i class="fas fa-search"></i>
-                               </a>
-                             </div>
-                           </li>
-                           
-                           @endforeach
+                                <div class="tools">
+                                  <i class="fas fa-search hover:cursor-pointer"></i>
+                                </div>
+                              </a>
+                            </li>
+                            @endforeach
                          </ul>
                        </div>
                      </div>
@@ -272,7 +283,7 @@
          <!-- right col (We are only adding the ID to make the widgets sortable)-->
          <section class="col-lg-4 connectedSortable">        
           <!-- Subject List -->
-          <div class="card bg-warning">
+          <div class="card bg-warning" style="border-radius: 12px;">
             <div class="card-header">
               <h3 class="card-title">
                 <i class="fa-solid fa-book mr-1"></i>

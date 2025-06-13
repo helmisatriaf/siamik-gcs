@@ -5,8 +5,8 @@
 <div class="container-fluid">
     <div class="row">
       <div class="col">
-        <nav aria-label="breadcrumb" class="bg-white p-3 rounded-3 mb-4">
-          <ol class="breadcrumb mb-0">
+        <nav aria-label="breadcrumb" class="p-3 mb-4" style="background-color: #ffde9e;border-radius:12px;">
+          <ol class="breadcrumb mb-0"  style="background-color: #fff3c0;">
             <li class="breadcrumb-item">Home</li>
             @if (session('role') == 'superadmin')
               <li class="breadcrumb-item"><a href="{{url('/superadmin/reports')}}">Reports</a></li>
@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" style="background-color: #ffde9e;border-radius:12px;">
         <div class="card-header">
             <div class="row">
                 <div class="col-6">
@@ -89,12 +89,11 @@
         
             @csrf
             <div style="overflow-x: auto;">
-                
-                <table class="table table-striped table-bordered bg-white border-black" style=" width: 2000px;">
+                <table class="table table-striped table-bordered" style="width: 2000px;">
                     <thead>
                         <tr>
                             <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">S/N</th>
-                            <th rowspan="2 class="text-center" style="vertical-align : middle;text-align:center;">First Name</th>
+                            <th rowspan="2" class="text-center" style="vertical-align : middle;">First Name</th>
                             <th colspan="{{ $data['grade']->total_homework + 1 }}" class="text-center" style="vertical-align : middle;text-align:center;">Homework (20%)</th>
                             <th colspan="{{ $data['grade']->total_exercise + 1 }}" class="text-center" style="vertical-align : middle;text-align:center;">Exercise (35%)</th>
                             <th colspan="{{ $data['grade']->total_participation + 1 }} class="text-center" style="vertical-align : middle;text-align:center;">Attendance / Participation (10%)</th>
@@ -132,9 +131,8 @@
                             
                             <tr>
                                 <td>{{ $loop->iteration }}</td>  <!-- nomer -->
-                                <td>{{ $student['student_name'] }}</td> <!-- name -->
+                                <td style="position: sticky; left: 0; background: #fff3c0; z-index: 99;">{{ $student['student_name'] }}</td> <!-- name -->
                             
-        
                                 <!-- COUNT HOMEWORK -->
                                 @foreach ($student['scores'] as $index => $score)
                                     @if($score['type_exam'] == $data['homework'])
@@ -143,7 +141,6 @@
                                 @endforeach
                                 <td style="background-color:beige;" class="text-center">{{ $student['percent_homework'] }} </td>
                                 <!-- END HOMEWORK -->
-        
         
                                 <!-- COUNT EXERCISE -->
                                 @foreach ($student['scores'] as $index => $score)

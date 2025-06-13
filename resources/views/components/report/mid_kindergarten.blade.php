@@ -219,7 +219,7 @@
                             @foreach ($data['students'] as $student)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $student['name'] }}</td>
+                                <td style="position: sticky;left: 0;z-index: 100;">{{ $student['name'] }}</td>
         
                                 @foreach (array_merge([
                                     'brain_gym', 'cursive_writing', 'dictation',

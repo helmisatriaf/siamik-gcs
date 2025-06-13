@@ -4200,6 +4200,8 @@ class ReportController extends Controller
                 ->select('student_monthly_activities.*', 'monthly_activities.name as name_activity')
                 ->get();
 
+            // dd($studentMonthlyActivity);
+
             $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) use($studentMonthlyActivity){
                 $student = $scores->first();
 
@@ -4263,6 +4265,7 @@ class ReportController extends Controller
             }
             unset($title);
 
+            // dd($scoresByStudent);
             $data = [
                 'grade' => $grade,
                 'students' => $student,
@@ -6177,11 +6180,11 @@ class ReportController extends Controller
                 ];
             }
 
-
             $pdf = app('dompdf.wrapper');
             $pdf->set_option('isRemoteEnabled', true);
             $pdf->set_option('isHtml5ParserEnabled', true);
             $pdf->loadView('components.report.pdf.nursery-pdf', $data)->setPaper('a5', 'portrait');
+
             return $pdf->stream($student->student_name . '_semester' . $semester . '.pdf');
 
         } catch (Exception $err) {

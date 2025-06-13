@@ -6,13 +6,13 @@
     @if(count($data) !== 0)
         <div class="row">
             <div class="col">
-                <nav aria-label="breadcrumb" class="bg-white rounded-3 p-3 mb-3">
-                    <ol class="breadcrumb mb-0">
+                <nav aria-label="breadcrumb" class="p-3 mb-3" style="background-color: #ffde9e;border-radius: 12px;">
+                    <ol class="breadcrumb mb-0" style="background-color: #fff3c0;">
                         <li class="breadcrumb-item">Home</li>
                         @if(session('role') == 'admin' || session('role') == 'superadmin')
                         @else
                         <li class="breadcrumb-item"><a href="{{url('/teacher/dashboard/exam/detail/'. $data[0]->exam_id )}}">Assessment</a></li>
-                        <li class="breadcrumb-item"><a href="{{url('/teacher/dashboard/exam/teacher')}}">Scoring</a></li>
+                        {{-- <li class="breadcrumb-item"><a href="{{url('/teacher/dashboard/exam/teacher')}}">Scoring</a></li> --}}
                         @endif
                         <li class="breadcrumb-item active" aria-current="page">Scoring {{ $data[0]['exam_name'] }} {{ $data[0]['subject_name'] }} ({{ $data[0]['grade_name'] }} - {{ $data[0]['grade_class'] }})</li>
                     </ol>
@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        <div class="card card-orange">
+        <div class="card"  style="background-color: #ffde9e;border-radius: 12px;">
             <div class="card-header">
                 <h3 class="card-title">Scorings</h3>
 

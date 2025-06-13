@@ -1,7 +1,7 @@
 @extends('layouts.admin.master')
 @section('content')
 
-    <div class="card p-4">
+    <div class="card p-4" style="background-color: #ffde9e;border-radius: 12px;">
         <h4>Create Activity For {{ \Carbon\Carbon::createFromFormat('dmY', $section_id)->format('d F Y') }}</h4>
         <form
             action="{{ route('subject.store-activity', [

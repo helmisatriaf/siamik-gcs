@@ -409,11 +409,11 @@ class GradeController extends Controller
          ->pluck('subject_id')->toArray();
 
          // dd(count($subjectGrade));
-         $teacher = Teacher::orderBy('name', 'asc')->get();
+         $teacher = Teacher::where('is_active', true)->orderBy('name', 'asc')->get();
          $subject = Subject::orderBy('id', 'asc')->get();         
          $data    = Grade::where('id', $id)->first();
          $gradeSubject = Subject::get();
-         $allTeacher = Teacher::orderBy('name', 'asc')->get();
+         $allTeacher = Teacher::where('is_active', true)->orderBy('name', 'asc')->get();
          $gradeId = $id;
          
          // dd($subjectGrade);

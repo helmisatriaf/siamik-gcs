@@ -12,8 +12,8 @@ $days = floor($diff / (60 * 60 * 24)); // Konversi detik ke hari
 <section>
   <div class="row">
     <div class="col">
-      <nav aria-label="breadcrumb" class="bg-white rounded-3 p-3 mb-4">
-        <ol class="breadcrumb mb-0">
+      <nav aria-label="breadcrumb" class="p-3 mb-4" style="background-color: #ffde9e;border-radius: 12px;">
+        <ol class="breadcrumb mb-0" style="background-color: #fff3c0;">
           <li class="breadcrumb-item">Home</li>
           @if (session('role') == 'teacher')
           <li class="breadcrumb-item"><a href="{{url('/teacher/dashboard/exam/teacher') }}">Assessment</a></li>
@@ -28,7 +28,7 @@ $days = floor($diff / (60 * 60 * 24)); // Konversi detik ke hari
   
   <div class="row">
     <div class="col">
-      <div class="card card-orange">
+      <div class="card" style="background-color: #ffde9e;border-radius: 12px;">
         <div class="card-header">
           <h3 class="card-title text-bold">Detail</h3>
         </div>
@@ -37,7 +37,7 @@ $days = floor($diff / (60 * 60 * 24)); // Konversi detik ke hari
             <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
               <div class="row">
                 <div class="col-12 col-sm-4">
-                  <div class="info-box bg-light">
+                  <div class="info-box bg-light" style="border-radius: 12px;">
                     <div class="info-box-content">
                       <span class="info-box-text text-center text-black text-bold">{{$data->name_exam}}</span>
                       {{-- <span class="info-box-number text-center text-muted mb-0">2300</span> --}}
@@ -45,7 +45,7 @@ $days = floor($diff / (60 * 60 * 24)); // Konversi detik ke hari
                   </div>
                 </div>
                 <div class="col-12 col-sm-4">
-                  <div class="info-box bg-light">
+                  <div class="info-box bg-light" style="border-radius: 12px;">
                     <div class="info-box-content">
                       <span class="info-box-text text-center text-black text-bold">{{$data->type_exam}} - {{$data->subject_name}}</span>
                       {{-- <span class="info-box-number text-center text-muted mb-0">2000</span> --}}
@@ -53,7 +53,7 @@ $days = floor($diff / (60 * 60 * 24)); // Konversi detik ke hari
                   </div>
                 </div>
                 <div class="col-12 col-sm-4">
-                  <div class="info-box bg-light">
+                  <div class="info-box bg-light" style="border-radius: 12px;">
                     <div class="info-box-content">
                       <span class="info-box-text text-center text-black text-bold">Deadline {{ \Carbon\Carbon::parse($data->date_exam)->translatedFormat('d F Y') }} </span>
                       {{-- <span class="info-box-number text-center text-muted mb-0">20</span> --}}
@@ -323,7 +323,7 @@ $days = floor($diff / (60 * 60 * 24)); // Konversi detik ke hari
 
                       @if ($idTeacher == $subjectTeacher->id)
                         @if ($idTeacher == $data->teacher_id)
-                          <a href="/teacher/dashboard/exam/score/{{ $data->id }}" class="btn btn-success btn-sm col-12">
+                          <a href="/teacher/dashboard/exam/score/{{ $data->id }}" class="btn btn-success btn-sm col-12" style="border-radius: 12px;">
                             @if ($data->model == "mce" || $data->model == "essay")
                               Correction Student Answers
                             @elseif ($data->model == "mc")
@@ -333,7 +333,7 @@ $days = floor($diff / (60 * 60 * 24)); // Konversi detik ke hari
                             @endif
                           </a>
                         @else
-                          <a href="/teacher/dashboard/exam/score/{{ $data->id }}" class="btn btn-success btn-sm col-12">
+                          <a href="/teacher/dashboard/exam/score/{{ $data->id }}" class="btn btn-success btn-sm col-12" style="border-radius: 12px;">
                             @if ($data->model == "mce" || $data->model == "essay")
                               Correction Student Answers
                             @elseif ($data->model == "mc")

@@ -547,9 +547,9 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
             @else 
             @endif
             <tr>
-                <td style="padding:0px;height:30px;" colspan="2"></td>
+                <td style="padding:0px;height:100px;" colspan="2"></td>
             </tr>
-            <tr>
+            {{-- <tr>
                 <td style="padding:0px;text-align:center;" colspan="2">
                     <div style="display: inline-block; width: 40%; border-bottom: 1px solid black;font-size:13px;">Yuliana Harijanto, B.Eng (Hons)</div>
                 </td>
@@ -558,16 +558,49 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
                 <td style="padding:0px;text-align:center;font-size:13px;" colspan="2"><b>Head of Preschool and KG</b></td>
             </tr>
             <tr>
-                <td style="padding:0px;text-align:center;padding-top:12px;font-size:14px;font-color:black;"colspan="2"><i>This report card is for internal circulation only.</i></td>
+                <td style="padding:0px;text-align:center;padding-top:12px;font-size:14px;font-color:black;"colspan="2"><i>This report card is for internal circulation only.</i></td> --}}
             </tr>
             {{-- <tr>
                 <td style="padding:0px;text-align:center;" colspan="2"><b><span class="noto-serif-sc-chinese">老师签名</span></b></td>
             </tr> --}}
         </table>
+        <table class="table">
+            <tr>
+                <td style="text-align:center;width:30%;">
+                    <div style="border-bottom: 1px solid black; margin: 0 auto; font-size:13px;">
+                        {{ $classTeacher->teacher_name }}
+                    </div>
+                </td>
+                <td style="width:30%;"></td>
+                <td style="text-align:center;width:40%;">
+                    <div style="border-bottom: 1px solid black; margin: 0 auto; font-size:13px;">
+                        Yuliana Harijanto, B.Eng (Hons)
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:center; font-size:13px;width:30%;"><b>Teacher's Signature</b></td>
+                <td style="width:30%;"></td>
+                <td style="text-align:center; font-size:13px;width:30%;"><b>Principal's Signature</b></td>
+            </tr>
+        </table>
+        <table class="table">
+            <tr>
+                <td style="padding:0px;height:60px;" colspan="2"></td>
+            </tr>
+            {{-- <tr>
+                <td style="padding:0px;text-align:center;" colspan="2">
+                    <div style="display: inline-block; width: 40%; border-bottom: 1px solid black;font-size:13px;"></div>
+                </td>
+            </tr> --}}
+            <tr style="text-align: center;">
+                <td style="display: inline-block;padding:0px;text-align:center; width: 40%;border-top: 1px solid black;font-size:13px;" colspan="2"><b>Paren't Signature</b></td>
+            </tr>
+        </table>
     </div>
-    <div class="footer" style="margin-top: 10px;text-align:center;">
+    {{-- <div class="footer" style="margin-top: 10px;text-align:center;">
         <img src="<?= $cambridge ?>" style="width:150px;height:25px;">
-    </div>
+    </div> --}}
     <!-- END PAGE 2 -->
 </div>
 

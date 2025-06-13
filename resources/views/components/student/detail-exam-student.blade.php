@@ -28,8 +28,8 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col">
-      <nav aria-label="breadcrumb" class="bg-white rounded-3 p-3 mb-4">
-        <ol class="breadcrumb mb-0">
+      <nav aria-label="breadcrumb" class="p-3 mb-4" style="background-color: #ffde9e;border-radius: 12px;">
+        <ol class="breadcrumb mb-0" style="background-color: #fff3c0;">
           <li class="breadcrumb-item">Home</li>
           <li class="breadcrumb-item"><a href="{{ url('/' . session('role') . '/dashboard/exam') }}">Assessment</a></li>
           <li class="breadcrumb-item active" aria-current="page">Detail</li>
@@ -39,16 +39,16 @@
   </div>
 
   <section class="content">
-    <div class="card">
-      <div class="card-header bg-orange">
-        <h3 class="card-title text-white">Assessment Detail</h3>
+    <div class="card" style="background-color: #ffde9e;border-radius: 12px;">
+      <div class="pl-3 pt-3">
+        <h3 class="card-title text-dark text-bold">Assessment Detail</h3>
       </div>
       <div class="card-body">
         <div class="row">
           <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
             <div class="row">
               <div class="col-12 col-sm-4">
-                <div class="info-box bg-light">
+                <div class="info-box bg-light" style="border-radius: 12px;">
                   <div class="info-box-content">
                     <span class="info-box-text text-center text-black text-bold">{{ucwords(strtolower($data->name_exam))}}</span>
                     {{-- <span class="info-box-number text-center text-muted mb-0">2300</span> --}}
@@ -56,7 +56,7 @@
                 </div>
               </div>
               <div class="col-12 col-sm-4">
-                <div class="info-box bg-light">
+                <div class="info-box bg-light" style="border-radius: 12px;">
                   <div class="info-box-content">
                     <span class="info-box-text text-center text-black text-bold">{{$data->type_exam}} - {{$data->subject_name}}</span>
                     {{-- <span class="info-box-number text-center text-muted mb-0">2000</span> --}}
@@ -64,7 +64,7 @@
                 </div>
               </div>
               <div class="col-12 col-sm-4">
-                <div class="info-box bg-light">
+                <div class="info-box bg-light" style="border-radius: 12px;">
                   <div class="info-box-content">
                     <span class="info-box-text text-center text-black text-bold">Deadline {{ \Carbon\Carbon::parse($data->date_exam)->translatedFormat('d F Y') }} </span>
                     {{-- <span class="info-box-number text-center text-muted mb-0">20</span> --}}
@@ -94,16 +94,16 @@
                   @if ($statusQuestion !== null)
                     @if ($data->model !== null)
                       <div class="col-12 col-md-4">
-                          <div class="info-box small-box bg-orange px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="min-height: 110px;">
+                          <div class="info-box small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="border-radius: 12px;background-color: #ffcc00;">
                               <a 
                                   href="#"
                                   id="detail-workplace"
-                                  class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
+                                  class="stretched-link d-flex flex-column text-center justify-content-center align-items-center">
                               
                                   <!-- Ribbon -->
                                   <div class="ribbon-wrapper ribbon-lg">
-                                      <div class="ribbon bg-danger">
-                                        Assessment
+                                      <div class="ribbon bg-dark">
+                                        CBT
                                       </div>
                                   </div>
                               
@@ -113,10 +113,10 @@
                                       <div>
                                           <img loading="lazy" src="{{ asset('images/greta-greti-baju-olga.png') }}" 
                                             alt="avatar" class="profileImage img-fluid" 
-                                            style="width: 50px; height: 50px; cursor: pointer;">
+                                            style="width:85px; height: 60px; cursor: pointer;">
                                       </div>
                                       <!-- Nama Subject -->
-                                      <div class="inner mt-2">
+                                      <div class="inner">
                                           <p class="info-box-text text-center text-white text-bold">Click Me !</p>
                                       </div>
                                   </div>
@@ -137,7 +137,7 @@
                     @endif
                   @else 
                     <div class="col-12 col-md-4">
-                      <div class="info-box small-box bg-orange px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="min-height: 110px;">
+                      <div class="info-box small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="border-radius: 12px;background-color: #ffcc00;">
                           <a 
                               href="#"
                               id="workplace"
@@ -145,8 +145,8 @@
                           
                               <!-- Ribbon -->
                               <div class="ribbon-wrapper ribbon-lg">
-                                  <div class="ribbon bg-danger">
-                                    Assessment
+                                  <div class="ribbon bg-dark">
+                                    CBT
                                   </div>
                               </div>
                           
@@ -156,11 +156,11 @@
                                   <div>
                                       <img loading="lazy" src="{{ asset('images/greta-greti-baju-olga.png') }}" 
                                         alt="avatar" class="profileImage img-fluid" 
-                                        style="width: 50px; height: 50px; cursor: pointer;">
+                                        style="width:85px; height: 60px; cursor: pointer;">
                                   </div>
                                   <!-- Nama Subject -->
                                   <div class="inner mt-2">
-                                      <p class="info-box-text text-center text-white text-bold">Click Me !</p>
+                                      <p class="info-box-text text-center text-lg text-dark text-bold">Click Me !</p>
                                   </div>
                               </div>
                           </a>
@@ -294,12 +294,12 @@
 @if (session('role') == 'student')
   <div class="modal fade" id="changeFile" tabindex="-1" role="dialog" aria-labelledby="changeFileLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content modal-sm" style="border-radius: 12px;background-color: #ffde9e;">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Change Your Answer</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+              <h5 class="modal-title" id="exampleModalLongTitle">Change Your Answer</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
             <div class="modal-body">
               <form action="{{route('upload.answer')}}" method="POST" enctype="multipart/form-data">
@@ -311,11 +311,10 @@
                 </div>      
               </div>
             <div class="modal-footer">
-                <div class="form-group row">
-                  <button type="submit" class="btn btn-sm btn-success w-100" id="submitBtn">Submit</button>
-                </div>
+              <div class="form-group row">
+                <button type="submit" class="btn btn-sm btn-success w-100" id="submitBtn">Submit</button>
+              </div>
               </form>
-
             </div>
         </div>
     </div>
@@ -495,11 +494,17 @@
 @if(session('after_upload_answer')) 
   <script>
     Swal.fire({
-      icon: 'success',
       title: 'Successfully',
       text: 'Successfully Upload Answer',
-      timer: 1000, // Swal akan hilang dalam 2000ms (2 detik)
-      showConfirmButton: false // Sembunyikan tombol "OK",
+      timer: 1000,
+      showConfirmButton: false,
+      imageUrl: '/images/happy.png', 
+      imageWidth: 100,
+      imageHeight: 100,
+      imageAlt: 'Custom image',
+      customClass: {
+        popup: 'custom-swal-style'
+      },
     });
 </script>
 @endif

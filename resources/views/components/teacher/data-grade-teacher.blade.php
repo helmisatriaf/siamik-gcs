@@ -28,8 +28,8 @@
    <div class="container-fluid">
       <div class="row">
          <div class="col">
-               <nav aria-label="breadcrumb" class="bg-white rounded-3 p-3 mb-3">
-                  <ol class="breadcrumb mb-0">
+               <nav aria-label="breadcrumb" class="p-3 mb-4" style="background-color: #ffde9e;border-radius:12px;">
+                  <ol class="breadcrumb mb-0"  style="background-color: #fff3c0;">
                      <li class="breadcrumb-item">Home</li>
                      <li class="breadcrumb-item active" aria-current="page">Class</li>
                   </ol>
@@ -37,9 +37,9 @@
          </div>
       </div>
       @foreach ($data['gradeTeacher'] as $dgt)
-         <div class="card card-light">
+         <div class="card" style="background-color: #ffde9e;border-radius:12px;">
             <div class="card-header">
-               <h3 class="card-title">Data {{ $dgt->name . ' - ' . $dgt->class }}</h3>
+               <h3 class="card-title text-xl">Data {{ $dgt->name . ' - ' . $dgt->class }}</h3>
                <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                         <i class="fas fa-minus"></i>
@@ -116,9 +116,9 @@
          </div>
 
          
-         <div class="card card-light">
+         <div class="card" style="background-color:#ffde9e;border-radius:12px;">
             <div class="card-header">
-               <h3 class="card-title">Course {{ $dgt->name . ' - ' . $dgt->class }}</h3>
+               <h3 class="card-title text-xl">Course {{ $dgt->name . ' - ' . $dgt->class }}</h3>
                <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                         <i class="fas fa-minus"></i>
@@ -129,7 +129,7 @@
             <div class="row">
                @foreach ($subjects as $subject)
                   <div class="col-lg-3 col-md-4 col-6">
-                     <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="min-height: 110px;">
+                     <div class="small-box bg px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="min-height: 110px;background-color:#fff3c0;border-radius:12px;">
                         <a 
                            @if (session('role') == 'teacher')
                                  href="{{ route('course.sections.class.teacher', [
@@ -156,7 +156,7 @@
                                  </div>
                                  <!-- Nama Subject -->
                                  <div class="inner mt-2">
-                                    <p class="mb-0 text-lg fw-bold text-center">{{ $subject->name_subject }}</p>
+                                    <p class="mb-0 text-lg fw-bold text-center text-dark">{{ $subject->name_subject }}</p>
                                  </div>
                            </div>
                         </a>

@@ -1,24 +1,32 @@
 @extends('layouts.admin.master')
 @section('content')
+<style>
+    .custom-modal-dialog {
+        max-width: 80%; /* Atur persentase sesuai kebutuhan Anda */
+        width: auto !important; /* Untuk memastikan lebar otomatis */
+    }
+    .fc {
+        background-color: transparent !important;
+    }
+
+    .fc-daygrid-body {
+        background-color: #fffde9;
+    }
+
+    .fc-col-header {
+        background-color: #ffde9e;
+    }
+
+    .fc-daygrid-day {
+        background-color: #fff9cc;
+    }
+</style>
 
 <!-- Content Wrapper. Contains page content -->
-<div class="container-fluid">
+<div class="container-fluid mt-2">
     @if (!empty($data))
-        <div class="card card-dark mt-2">
-            <div class="card-header header-elements-inline">
-                <h5 class="card-title">{{ $data['grade_name'] }} - {{ $data['grade_class'] }}</h5>
-
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="card-body">
-                <div id="calendar"></div>
-            </div>
-        </div>
+        <h5 class="text-lg text-bold">{{ $data['grade_name'] }} - {{ $data['grade_class'] }}</h5>
+        <div id="calendar"></div>
     @else
         <p>Data Kosong</p>
     @endif

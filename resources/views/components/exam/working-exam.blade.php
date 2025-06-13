@@ -8,11 +8,20 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('/style.css') }}">
     <link rel="stylesheet" href="{{ asset('template') }}/dist/css/adminlte.min.css">
+    <link rel="icon" href="{{ asset('great.png') }}" type="image/x-icon">
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="{{ asset('template') }}/plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('fontawesome') }}/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Caveat+Brush&family=Chewy&family=DynaPuff&family=Lora:ital,wght@0,400..700;1,400..700&family=Patrick+Hand&family=Vollkorn:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
 
     <style>
+        body {
+            background-color: #ffde9e;
+            font-family: "DynaPuff", system-ui !important;
+            font-weight: 400;
+            font-style: normal;
+        }
         .question-number {
             width: 35px;
             height: 35px;
@@ -64,13 +73,20 @@
     // dd($examDateTime);
 @endphp
 
+
 <body>
+    {{-- <img src="{{ asset('/images') }}/logo-school.png"
+     class=""
+     alt="Watermark"
+     style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            opacity: 0.7; z-index: 0; width: 90vh; pointer-events: none;"> --}}
+
     <div class="container mt-4">
         {{-- HEADER --}}
         <div class="row">
             <div class="col-md-6 col-lg-1">
                 <div
-                    class="info-box small-box bg-danger px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center">
+                    class="info-box small-box bg-danger px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="border-radius: 12px;">
                     <a href="#" data-bs-toggle="modal" data-bs-target="#backTo"
                         class="stretched-link d-flex flex-column p-2 text-center justify-content-center align-items-center">
                         <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
@@ -81,40 +97,40 @@
                     </a>
                 </div>
             </div>
-            <div class="col-md-6 col-md-6 col-lg-4">
-                <div class="info-box bg-orange">
+            <div class="col-md-6 col-lg-4">
+                <div class="info-box" style="background-color: #fff3c0;border-radius: 12px;">
                     <div class="info-box-content d-flex flex-row justify-content-center align-items-center flex-grow-1">
-                        <div>
+                        {{-- <div>
                             <img loading="lazy" src="{{ asset('images/greta-baca-buku.png') }}" alt="avatar"
                                 class="profileImage img-fluid" style="width: 30px; height: 50px; cursor: pointer;">
-                        </div>
+                        </div> --}}
                         <span
-                            class="info-box-text text-center text-white text-bold">{{ ucwords(strtolower($assessment->name_exam)) }}</span>
+                            class="info-box-text text-center text-dark text-bold text-lg">{{ ucwords(strtolower($assessment->name_exam)) }}</span>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6 col-md-6 col-lg-4">
-                <div class="info-box bg-orange">
+            <div class="col-md-6 col-lg-4">
+                <div class="info-box" style="background-color: #fff3c0;border-radius: 12px;">
                     <div class="info-box-content d-flex flex-row justify-content-center align-items-center flex-grow-1">
-                        <div>
+                        {{-- <div>
                             <img loading="lazy" src="{{ asset('images/greti-baca-buku.png') }}" alt="avatar"
                                 class="profileImage img-fluid" style="width: 30px; height: 50px; cursor: pointer;">
-                        </div>
+                        </div> --}}
                         <span
-                            class="info-box-text text-center text-white text-bold">{{ ucwords($assessment->type_exam) }}
+                            class="info-box-text text-center text-dark text-bold text-lg">{{ ucwords($assessment->type_exam) }}
                             - {{ $assessment->subject_name }} <br> {{ $assessment->grade_name }} -
                             {{ $assessment->grade_class }}</span>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-md-6 col-lg-3">
-                <div class="info-box bg-orange">
+            <div class="col-md-6 col-lg-3">
+                <div class="info-box" style="background-color: #fff3c0;border-radius: 12px;">
                     <div class="info-box-content d-flex flex-row justify-content-center align-items-center flex-grow-1">
-                        <div>
+                        {{-- <div>
                             <img loading="lazy" src="{{ asset('images/greta-greti-baca-buku.png') }}" alt="avatar"
                                 class="profileImage img-fluid" style="width: 65px; height: 50px; cursor: pointer;">
-                        </div>
-                        <span class="info-box-text text-center text-white text-bold">Deadline
+                        </div> --}}
+                        <span class="info-box-text text-center text-dark text-bold text-lg">Deadline
                             {{ \Carbon\Carbon::parse($assessment->date_exam)->translatedFormat('d F Y') }} </span>
                     </div>
                 </div>
@@ -125,9 +141,10 @@
         <div class="row">
             <!-- Sidebar kiri untuk nomor soal -->
             <div class="col-md-3">
-                <div class="card p-3">
-                    <h5 class="text-center">Question Number</h5>
-                    <div class="d-flex flex-wrap gap-2">
+                <div class="card p-3" style="background-color: #fff3c0; border-radius: 12px;">
+                    <img loading="lazy" src="{{ asset('/images') }}/logo-school.png" class="img-fluid bg-transparent" alt="Sample image">
+                    <h5 class="text-center text-lg">Question Number</h5>
+                    <div class="d-flex flex-wrap gap-1">
                         @foreach ($questions as $index => $question)
                             <div class="question-number" id="qnum-{{ $question->id }}"
                                 onclick="showQuestion({{ $question->id }}, {{ $index + 1 }})">
@@ -139,7 +156,7 @@
                 @if (session('role') !== 'parent')
                     @if ($assessment->is_active == true)
                         @if ($currentDateTime <= $examDateTime)
-                            <button class="btn btn-danger w-100 mb-3" data-bs-toggle="modal" data-bs-target="#completed">Completed</button>
+                            <button class="btn btn-danger w-100 mb-3" data-bs-toggle="modal" data-bs-target="#completed" style="border-radius: 12px;">Completed</button>
                         @endif
                     @endif
                 @endif
@@ -147,7 +164,7 @@
 
             <!-- Konten soal di sebelah kanan -->
             <div class="col-md-9">
-                <div class="card p-4">
+                <div class="card p-4" style="background-color: #fff3c0; border-radius: 12px;">
                     @foreach ($questions as $question)
                         <div class="question-content" id="question-{{ $question->id }}" style="display: none;">
                             <h5 id="qn-{{ $question->id }}"></h5>
@@ -192,8 +209,8 @@
 
     {{-- Modal Welcome --}}
     <div class="modal fade" id="welcome" tabindex="-1" aria-labelledby="welcomeLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
-            <div class="modal-content bg-danger p-3 rounded">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: fit-content;">
+            <div class="modal-content bg-danger p-4" style="border-radius: 48px;">
                 <div class="alert-container d-flex flex-column align-items-center text-center">
                     <!-- Logo Container -->
                     <div class="image-container mb-3" style="width: 150px; height: 150px;">
@@ -202,7 +219,7 @@
                     </div>
 
                     <!-- Pesan -->
-                    <p class="fw-bold text-white mb-0" style="font-size: 1.2rem;">Welcome to Great Assessment</p>
+                    <p class="fw-bold text-white mb-0" style="font-size: 1.8rem;">Welcome to Great Assessment</p>
                 </div>
             </div>
         </div>
@@ -211,16 +228,16 @@
     {{-- Modal Back --}}
     <div class="modal fade" id="backTo" tabindex="-1" aria-labelledby="backToLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content bg-danger p-4 rounded">
+            <div class="modal-content bg-danger p-4" style="border-radius: 96px;">
                 <div class="alert-container d-flex flex-column align-items-center text-center gap-3">
 
                     <!-- Pesan -->
                     @if (session('role') !== 'parent')
                         <!-- Logo -->
-                        <img loading="lazy" src="{{ asset('images/greta-greti-angkat-tangan.png') }}" alt="alert-icon"
+                        <img loading="lazy" src="{{ asset('images/greti-cina.png') }}" alt="alert-icon"
                             class="profileImage img-fluid" style="width: 120px; height: 120px; object-fit: contain;">
 
-                        <p class="fw-bold">Your answers won't be saved if you leave now</p>
+                        <p class="fw-bold" style="font-size: 1.6rem;">!! Your answers won't be saved if you leave now !!</p>
                     @else
                         <!-- Logo -->
                         <img loading="lazy" src="{{ asset('images/happy.png') }}" alt="alert-icon" class="profileImage img-fluid"
@@ -231,8 +248,8 @@
 
                     <!-- Tombol -->
                     <div class="d-flex justify-content-center gap-3 w-100">
-                        <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-dark px-4" onclick="goBack()">Yes</button>
+                        <button type="button" class="btn-lg btn-light px-4" style="border-radius: 12px;" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn-lg btn-dark px-4" style="border-radius: 12px;" onclick="goBack()">Yes</button>
                     </div>
                 </div>
             </div>
@@ -243,27 +260,27 @@
     @if (session('role') !== 'parent')
         <div class="modal fade" id="completed" tabindex="-1" aria-labelledby="backToLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content bg-danger p-4 rounded">
+                <div class="modal-content bg-danger p-4" style="border-radius: 72px;">
                     <div class="alert-container d-flex flex-column align-items-center text-center gap-3">
                         <!-- Logo -->
-                        <div class="image-container" style="width: 150px; height: 150px;">
+                        <div class="image-container" style="width: 250px; height: 150px;">
                             <img loading="lazy" src="{{ asset('images/greta-greti-angkat-tangan.png') }}" alt="alert-icon"
                                 class="profileImage img-fluid"
                                 style="width: 100%; height: 100%; object-fit: contain;">
                         </div>
 
                         <!-- Pesan -->
-                        <p class="fw-bold">Make sure your answers are correct <br> You cannot edit your answers after
-                            you submitted this assessment</p>
+                        <p class="fw-bold text-lg">
+                            Make sure your answers are correct <br> You cannot edit your answers after
+                            you submitted this assessment
+                        </p>
 
                         <!-- Tombol -->
                         <div class="col">
-                            <p class="fw-bold">Do you want to submitted this assessment ?</p>
+                            <p class="fw-bold text-lg">Do you want to submitted this assessment ?</p>
                             <div class="d-flex justify-content-center gap-3 w-100">
-                                <button type="button" class="btn btn-secondary px-4"
-                                    data-bs-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-dark px-4"
-                                    onclick="submitAnswers()">Yes</button>
+                                <button type="button" class="btn-lg btn-light px-4" style="border-radius: 12px;" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn-lg btn-dark px-4" style="border-radius: 12px;" onclick="submitAnswers()">Yes</button>
                             </div>
                         </div>
                     </div>
@@ -345,7 +362,7 @@
                                         <img loading="lazy" src="{{ asset('images/greta-greti-baju-olga.png') }}" 
                                             alt="Success Icon" 
                                             class="profileImage img-fluid"
-                                            style="width: 100px; height: 120px; border-radius: 8px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); margin-bottom: 15px;">
+                                            style="max-width: 100px; max-height: 120px; border-radius: 4px; margin-bottom: 15px;">
                                         <h3 style="color: #2d3748; font-weight: 600; margin-bottom: 10px; font-size: 22px;">
                                             Excellent Work!
                                         </h3>

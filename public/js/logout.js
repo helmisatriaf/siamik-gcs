@@ -4,11 +4,18 @@ $(document).ready(() => {
 
         Swal.fire({
             title: "Are you sure want to exit?",
-            icon: "warning",
+            // icon: "warning",
             showCancelButton: true,
             cancelButtonColor: "#d33",
             confirmButtonColor: "#00b527",
             confirmButtonText: "Continue",
+            imageUrl: '/images/confuse.png', // pastikan path ini bisa diakses dari browser
+            imageWidth: 100,
+            imageHeight: 100,
+            imageAlt: 'Custom image',
+            customClass: {
+                popup: 'rounded-swal',
+            }
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({

@@ -8,9 +8,9 @@
             <a><b>Superadmin</b> Access</a>
         </div>
 
-        <div class="card">
-            <div class="card-body register-card-body">
-                <p class="login-box-msg">Register a new user</p>
+        <div class="card" style="background-color: #ffde9e;border-radius: 12px;">
+            <div class="card-body register-card-body" style="background-color: #ffde9e;border-radius: 12px;">
+                <p class="login-box-msg text-dark fw-bold">Register a new user</p>
 
                 @if (session('role') == 'superadmin')
                 <form action="/superadmin/users/register-action" method="post" enctype="multipart/form-data">
@@ -163,7 +163,7 @@
                         <!-- /.col -->
                     </div>
 
-                    <button type="submit" class="mt-3 btn btn-primary btn-block">Register</button>
+                    <button type="submit" class="mt-3 btn btn-warning btn-block">Register</button>
                 </form>
             </div>
         </div>

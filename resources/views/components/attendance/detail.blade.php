@@ -5,8 +5,8 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col">
-            <nav aria-label="breadcrumb" class="bg-white rounded-3 p-3">
-                <ol class="breadcrumb mb-0">
+            <nav aria-label="breadcrumb" class="p-3 mb-3 shadow-soft" style="background-color: #ffde9e;">
+                <ol class="breadcrumb mb-0" style="background-color: #fff3c0;">
                     <li class="breadcrumb-item">Home</li>
                     @if (session('role') == 'superadmin')
                         <li class="breadcrumb-item"><a href="{{url('/superadmin/attendances')}}">Attendance</a></li>
@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <div class="card">
+    <div class="card" style="background-color: #ffde9e;border-radius: 12px;">
         <div class="card-header">
             <div class="row">
                 <div class="col-6 mt-2">
@@ -76,7 +76,7 @@
                     @csrf
                     
                     <div style="overflow-x:auto;">
-                        <table class="table table-striped table-bordered bg-white">
+                        <table class="table table-striped table-bordered bg-warning" style="border-radius: 18px;">
                             <thead>
                                 <tr>
                                     <th rowspan="2" class="text-center" style="vertical-align: middle;">S/N</th>
@@ -128,92 +128,93 @@
                 </div>
             </div>
    
-            @foreach ($data['totalAttendances']['datesByMonth'] as $month => $dates)
-                <div class="row">
-                    <div class="col">
-                        <div class="card card-dark">
-                            <div class="card-header">
-                                <h4 class="card-title">{{ $month }}</h4>
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body p-0">
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th rowspan="2" class="text-center" style="vertical-align: middle;width:50px">S/N</th>
-                                                <th rowspan="2" class="text-center" style="vertical-align: middle;min-width:450px;">First Name</th>
-                                                @foreach($dates as $date)
-                                                    <th class="text-center" style="vertical-align: middle;">{{ $loop->iteration }}</th>
-                                                @endforeach
-                                                <!-- <th colspan="5" class="text-center" style="vertical-align: middle;">Total</th> -->
-                                            </tr>
-                                            <tr>
-                                                @foreach($dates as $date)
-                                                    <th class="text-center text-xs" style="vertical-align: middle;">{{ \Carbon\Carbon::parse($date)->format('l, d F Y') }}
-                                                    </th>
-                                                @endforeach
-                                                <!-- <th class="text-center" style="vertical-align: middle;">P</th>
-                                                <th class="text-center" style="vertical-align: middle;">A</th>
-                                                <th class="text-center" style="vertical-align: middle;">S</th>
-                                                <th class="text-center" style="vertical-align: middle;">L</th>
-                                                <th class="text-center" style="vertical-align: middle;">PE</th> -->
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @if (!empty($data['students']))
-                                                @foreach ($data['students'] as $student)
-                                                    <tr>
-                                                        <td class="text-center">{{ $loop->iteration }}</td>
-                                                        <td>{{ $student['student_name'] }}</td>
-                                                        @foreach($dates as $date)
-                                                            @php
-                                                                $attendance = $student['attendances']->firstWhere('attendances_date', $date);
-                                                            @endphp
-                                                            <td>
-                                                                @if($attendance)
-                                                                    @if($attendance['attendances_present'])
-                                                                        P
-                                                                    @else
-                                                                        @if($attendance['attendances_alpha'])
-                                                                            A 
-                                                                        @elseif($attendance['attendances_sick'])
-                                                                            S <small>({{ $attendance['attendances_information'] }})</small>
-                                                                        @elseif($attendance['attendances_permission'])
-                                                                            Pe <small>({{ $attendance['attendances_information'] }})</small>
-                                                                        @elseif($attendance['attendances_late'])
-                                                                            L <small>({{ $attendance['attendances_latest'] }} minute)</small>
-                                                                        @endif
-                                                                    @endif
-                                                                @else
-                                                                    -
-                                                                @endif
-                                                            </td>
-                                                        @endforeach
-                                                        <!-- <td>{{ $student['total_present'] }}</td>
-                                                        <td>{{ $student['total_alpha'] }}</td>
-                                                        <td>{{ $student['total_sick'] }}</td>
-                                                        <td>{{ $student['total_pe'] }}</td> -->
-                                                    </tr>
-                                                @endforeach
-                                            @else
-                                                <p class="text-center">No data available</p>
-                                            @endif
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-        
-                    </div>
-                </div>
-            @endforeach
         </div>
     </div>
+    
+    @foreach ($data['totalAttendances']['datesByMonth'] as $month => $dates)
+        <div class="row">
+            <div class="col">
+                <div class="card" style="background-color: #ffde9e;border-radius: 12px;">
+                    <div class="card-header">
+                        <h4 class="card-title text-bold">{{ $month }}</h4>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive bg-warning" style="border-radius: 18px;">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2" class="text-center" style="vertical-align: middle;width:50px">S/N</th>
+                                        <th rowspan="2" class="text-center" style="vertical-align: middle;min-width:450px;">First Name</th>
+                                        @foreach($dates as $date)
+                                            <th class="text-center" style="vertical-align: middle;">{{ $loop->iteration }}</th>
+                                        @endforeach
+                                        <!-- <th colspan="5" class="text-center" style="vertical-align: middle;">Total</th> -->
+                                    </tr>
+                                    <tr>
+                                        @foreach($dates as $date)
+                                            <th class="text-center text-xs" style="vertical-align: middle;">{{ \Carbon\Carbon::parse($date)->format('l, d F Y') }}
+                                            </th>
+                                        @endforeach
+                                        <!-- <th class="text-center" style="vertical-align: middle;">P</th>
+                                        <th class="text-center" style="vertical-align: middle;">A</th>
+                                        <th class="text-center" style="vertical-align: middle;">S</th>
+                                        <th class="text-center" style="vertical-align: middle;">L</th>
+                                        <th class="text-center" style="vertical-align: middle;">PE</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (!empty($data['students']))
+                                        @foreach ($data['students'] as $student)
+                                            <tr>
+                                                <td class="text-center">{{ $loop->iteration }}</td>
+                                                <td>{{ $student['student_name'] }}</td>
+                                                @foreach($dates as $date)
+                                                    @php
+                                                        $attendance = $student['attendances']->firstWhere('attendances_date', $date);
+                                                    @endphp
+                                                    <td>
+                                                        @if($attendance)
+                                                            @if($attendance['attendances_present'])
+                                                                P
+                                                            @else
+                                                                @if($attendance['attendances_alpha'])
+                                                                    A 
+                                                                @elseif($attendance['attendances_sick'])
+                                                                    S <small>({{ $attendance['attendances_information'] }})</small>
+                                                                @elseif($attendance['attendances_permission'])
+                                                                    Pe <small>({{ $attendance['attendances_information'] }})</small>
+                                                                @elseif($attendance['attendances_late'])
+                                                                    L <small>({{ $attendance['attendances_latest'] }} minute)</small>
+                                                                @endif
+                                                            @endif
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    </td>
+                                                @endforeach
+                                                <!-- <td>{{ $student['total_present'] }}</td>
+                                                <td>{{ $student['total_alpha'] }}</td>
+                                                <td>{{ $student['total_sick'] }}</td>
+                                                <td>{{ $student['total_pe'] }}</td> -->
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <p class="text-center">No data available</p>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    @endforeach
 </div>
 
 <!-- Confirmation Modal -->

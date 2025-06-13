@@ -1155,6 +1155,7 @@ class ScoringController extends Controller
     public function actionPostReportCardNursery(Request $request)
     {
         try {
+            // dd($request);
             $semester = Master_academic::first()->value('now_semester');
             $monthlyActivity = MonthlyActivity::where('grades', '=', 'lower')->get();
             
@@ -1262,8 +1263,25 @@ class ScoringController extends Controller
                             );
                         }
                     }
+                    elseif($request->semester == 2){
+                        foreach($monthlyActivity as $ma){
+                            $name = str_replace(' ', '_', trim($ma->name));
+                            $monthly = [
+                                'score' => $request->$name[$student_id],
+                                'monthly_activity_id' => $ma->id,
+                                'grades' => $this->gradeKindergarten($request->$name[$student_id]),
+                            ];
+                            
+                            Student_Monthly_Activity::updateOrCreate(
+                                ['student_id' => $request->student_id[$i], 'grade_id' => $request->grade_id, 'semester' => $request->semester,
+                                'monthly_activity_id' => $ma->id, 'academic_year' => session('academic_year')], 
+                                $monthly
+                            );
+                        }
+                    }
                 }
             }
+
 
             $status = [
                 'grade_id'         => $request->grade_id,

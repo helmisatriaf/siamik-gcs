@@ -28,26 +28,27 @@
     </a>
     @endif
 
-    <div class="card card-orange mt-2">
+    <div id="calendar" style="overflow: hidden;border-radius:16px;"></div>
+    <div id="schedule-list" class="mt-3">
+        <h5 id="schedule-month"></h5>
+        <ul id="schedule-items" class="list-unstyled"></ul>
+    </div>
+    {{-- <div class="card card-warning mt-2" style="border-radius: 12px;">
         <div class="card-header header-elements-inline">
             <h5 class="card-title text-bold">School Calendar</h5>
     
-            {{-- <div class="card-tools">
+            <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                     <i class="fas fa-minus"></i>
                 </button>
-            </div> --}}
+            </div>
         </div>
     
         <div class="card-body">
-            <div id="calendar" style="overflow: hidden;"></div>
-            <div id="schedule-list" class="mt-3">
-                <h5 id="schedule-month"></h5>
-                <ul id="schedule-items" class="list-unstyled"></ul>
-            </div>
+           
             
         </div>
-    </div>    
+    </div>     --}}
 </div>
 
 <!-- Modal Detail-->
@@ -142,6 +143,22 @@
     max-width: 80%; /* Atur persentase sesuai kebutuhan Anda */
     width: auto !important; /* Untuk memastikan lebar otomatis */
 }
+.fc {
+    background-color: transparent !important;
+}
+
+.fc-daygrid-body {
+    background-color: #fffde9;
+}
+
+.fc-col-header {
+    background-color: #ffde9e;
+}
+
+.fc-daygrid-day {
+    background-color: #fff9cc;
+}
+
 </style>
 
 <link rel="stylesheet" href="{{ asset('template/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">

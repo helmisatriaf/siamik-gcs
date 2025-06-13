@@ -66,6 +66,14 @@
                                             data-target="#change-password-user">
                                             <i class="fas fa-key"></i>
                                         </a>
+                                        
+                                        {{-- <a href="" class="btn btn-outline-success btn-sm change-unique-id-btn" 
+                                            data-id="{{ $user->id }}" 
+                                            data-name="{{ $user->username }}" 
+                                            data-toggle="modal" 
+                                            data-target="#change-unique-id">
+                                            <i class="fas fa-key"></i>
+                                        </a> --}}
     
                                         <a href="javascript:void(0)" class="btn btn-outline-danger btn-sm delete-user" 
                                             data-id="{{ $user->id }}" 

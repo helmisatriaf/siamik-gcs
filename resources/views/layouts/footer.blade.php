@@ -1,5 +1,10 @@
-<footer class="main-footer text-sm">
-  <strong>Copyright &copy; {{ date('Y') }} <a target="_blank" href="https://great.sch.id/">Great Crystal School & Course Center</a>.</strong>
+{{-- @if (session('role') == 'student' || session('role') == 'parent') --}}
+<footer class="main-footer text-sm" style="background-color: #fff3c0">
+{{-- @else
+<footer class="main-footer text-sm bg-light">
+@endif --}}
+
+<strong style="color: #ff9000;">Copyright &copy; {{ date('Y') }} <a target="_blank" href="https://great.sch.id/">Great Crystal School & Course Center</a></strong>
   {{-- All rights reserved. --}}
   <b>Version</b> 1.0
    <div class="float-right">

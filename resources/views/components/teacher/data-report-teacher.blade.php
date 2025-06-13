@@ -151,7 +151,7 @@
       </div> --}}
       @foreach ($data['classTeacher'] as $dgt)
          <div class="col-12 mb-3">
-            <div class="position-relative p-3 bg-light d-flex flex-column rounded-lg shadow-lg border">
+            <div class="position-relative p-3 d-flex flex-column shadow-lg border" style="background-color: #ffde9e;border-radius:12px;">
                <div class="ribbon-wrapper ribbon-lg">
                <div class="ribbon bg-dark text-md">
                   {{ $dgt->name }} - {{ $dgt->class }}
@@ -165,7 +165,7 @@
                   <div class="row">
                      @if (strtolower($dgt->name) === "toddler")
                         <div class="col-lg-2 col-md-4 col-6">
-                           <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center">
+                           <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
                               <a  type="button"
                                  href="{{ url('teacher/dashboard/report/mid/cardToddler') . '/' . $dgt->id }}"
                                  class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
@@ -181,14 +181,14 @@
 
                                        <!-- Nama Subject -->
                                        <div class="inner mt-2">
-                                          <p class="mb-0 text-lg fw-bold text-center">Mid Report Card</p>
+                                          <p class="mb-0 text-lg fw-bold text-center text-dark text-dark">Mid Report Card</p>
                                        </div>
                                  </div>
                               </a>
                            </div>       
                         </div>
                         <div class="col-lg-2 col-md-4 col-6">
-                           <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center">
+                           <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
                               <a  type="button"
                                  href="{{ url('teacher/dashboard/report/cardToddler') . '/' . $dgt->id }}"
                                  class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
@@ -204,7 +204,7 @@
 
                                        <!-- Nama Subject -->
                                        <div class="inner mt-2">
-                                          <p class="mb-0 text-lg fw-bold text-center">Report Card</p>
+                                          <p class="mb-0 text-lg fw-bold text-center text-dark text-dark">Report Card</p>
                                        </div>
                                  </div>
                               </a>
@@ -212,7 +212,7 @@
                         </div>
                      @elseif (strtolower($dgt->name) === "nursery")
                         <div class="col-lg-2 col-md-4 col-6">
-                           <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center">
+                           <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
                               <a  type="button"
                                  href="{{ url('teacher/dashboard/report/mid/cardNursery') . '/' . $dgt->id }}"
                                  class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
@@ -228,14 +228,14 @@
 
                                        <!-- Nama Subject -->
                                        <div class="inner mt-2">
-                                          <p class="mb-0 text-lg fw-bold text-center">Mid Report Card</p>
+                                          <p class="mb-0 text-lg fw-bold text-center text-dark text-dark">Mid Report Card</p>
                                        </div>
                                  </div>
                               </a>
                            </div>       
                         </div>
                         <div class="col-lg-2 col-md-4 col-6">
-                           <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center">
+                           <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
                               <a  type="button"
                                  href="{{url('teacher/dashboard/report/cardNursery') . '/' . $dgt->id }}"
                                  class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
@@ -251,7 +251,7 @@
 
                                        <!-- Nama Subject -->
                                        <div class="inner mt-2">
-                                          <p class="mb-0 text-lg fw-bold text-center">Report Card</p>
+                                          <p class="mb-0 text-lg fw-bold text-center text-dark text-dark">Report Card</p>
                                        </div>
                                  </div>
                               </a>
@@ -259,7 +259,7 @@
                         </div>
                      @elseif (strtolower($dgt->name) === "kindergarten")
                         <div class="col-lg-2 col-md-4 col-6">
-                           <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center">
+                           <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
                               <a  type="button"
                                  href="{{ url('teacher/dashboard/report/mid/cardKindergarten') . '/' . $dgt->id }}"
                                  class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
@@ -275,14 +275,14 @@
 
                                        <!-- Nama Subject -->
                                        <div class="inner mt-2">
-                                          <p class="mb-0 text-lg fw-bold text-center">Mid Report Card</p>
+                                          <p class="mb-0 text-lg fw-bold text-center text-dark">Mid Report Card</p>
                                        </div>
                                  </div>
                               </a>
                            </div>       
                         </div>
                         <div class="col-lg-2 col-md-4 col-6">
-                           <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center">
+                           <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
                               <a  type="button"
                                  href="{{ url('teacher/dashboard/report/cardKindergarten') . '/' . $dgt->id }}"
                                  class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
@@ -298,7 +298,7 @@
 
                                        <!-- Nama Subject -->
                                        <div class="inner mt-2">
-                                          <p class="mb-0 text-lg fw-bold text-center">Report Card</p>
+                                          <p class="mb-0 text-lg fw-bold text-center text-dark">Report Card</p>
                                        </div>
                                  </div>
                               </a>
@@ -306,7 +306,7 @@
                         </div>
                      @elseif (strtolower($dgt->name) === "primary")
                         <div class="col-lg-2 col-md-4 col-6">
-                           <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center">
+                           <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
                               <a  type="button"
                                  href="{{url('teacher/dashboard/report') . '/acar/detail/' . $dgt->id}}"
                                  class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
@@ -322,14 +322,14 @@
 
                                        <!-- Nama Subject -->
                                        <div class="inner mt-2">
-                                          <p class="mb-0 text-lg fw-bold text-center">ACAR</p>
+                                          <p class="mb-0 text-lg fw-bold text-center text-dark">ACAR</p>
                                        </div>
                                  </div>
                               </a>
                            </div>       
                         </div>
                         <div class="col-lg-2 col-md-4 col-6">
-                           <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center">
+                           <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
                               <a  type="button"
                                  href="{{url('teacher/dashboard/report') . '/tcop/detail/' . $dgt->id}}"
                                  class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
@@ -345,14 +345,14 @@
 
                                        <!-- Nama Subject -->
                                        <div class="inner mt-2">
-                                          <p class="mb-0 text-lg fw-bold text-center">TCOP</p>
+                                          <p class="mb-0 text-lg fw-bold text-center text-dark">TCOP</p>
                                        </div>
                                  </div>
                               </a>
                            </div>       
                         </div>
                         <div class="col-lg-2 col-md-4 col-6">
-                           <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center">
+                           <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
                               <a  type="button"
                                  href="{{url('teacher/dashboard/report') . '/sooa/detail/' . $dgt->id}}"
                                  class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
@@ -368,7 +368,7 @@
 
                                        <!-- Nama Subject -->
                                        <div class="inner mt-2">
-                                          <p class="mb-0 text-lg fw-bold text-center">SOOA</p>
+                                          <p class="mb-0 text-lg fw-bold text-center text-dark">SOOA</p>
                                        </div>
                                  </div>
                               </a>
@@ -376,7 +376,7 @@
                         </div>
                         @if (session('semester') == 1)
                            <div class="col-lg-2 col-md-4 col-6">
-                              <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center">
+                              <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
                                  <a  type="button"
                                     href="{{url('teacher/dashboard/report') . '/midcard/semestersatu/' . $dgt->id}}"
                                     class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
@@ -392,14 +392,14 @@
 
                                           <!-- Nama Subject -->
                                           <div class="inner mt-2">
-                                             <p class="mb-0 text-lg fw-bold text-center">Mid Report Card</p>
+                                             <p class="mb-0 text-lg fw-bold text-center text-dark">Mid Report Card</p>
                                           </div>
                                     </div>
                                  </a>
                               </div>       
                            </div>
                            <div class="col-lg-2 col-md-4 col-6">
-                              <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center">
+                              <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
                                  <a  type="button"
                                     href="{{url('teacher/dashboard/report') . '/card/semestersatu/' . $dgt->id}}"
                                     class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
@@ -415,7 +415,7 @@
 
                                           <!-- Nama Subject -->
                                           <div class="inner mt-2">
-                                             <p class="mb-0 text-lg fw-bold text-center">Report Card</p>
+                                             <p class="mb-0 text-lg fw-bold text-center text-dark">Report Card</p>
                                           </div>
                                     </div>
                                  </a>
@@ -423,7 +423,7 @@
                            </div>
                         @elseif (session('semester') == 2)
                            <div class="col-lg-2 col-md-4 col-6">
-                              <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center">
+                              <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
                                  <a  type="button"
                                     href="{{url('teacher/dashboard/report') . '/midcard/semestersatu/' . $dgt->id}}"
                                     class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
@@ -439,14 +439,14 @@
 
                                           <!-- Nama Subject -->
                                           <div class="inner mt-2">
-                                             <p class="mb-0 text-lg fw-bold text-center">Mid Report Card</p>
+                                             <p class="mb-0 text-lg fw-bold text-center text-dark">Mid Report Card</p>
                                           </div>
                                     </div>
                                  </a>
                               </div>       
                            </div>
                            <div class="col-lg-2 col-md-4 col-6">
-                              <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center">
+                              <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
                                  <a  type="button"
                                     href="{{url('teacher/dashboard/report') . '/card/semesterdua/' . $dgt->id}}"
                                     class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
@@ -462,7 +462,7 @@
 
                                           <!-- Nama Subject -->
                                           <div class="inner mt-2">
-                                             <p class="mb-0 text-lg fw-bold text-center">Report Card</p>
+                                             <p class="mb-0 text-lg fw-bold text-center text-dark">Report Card</p>
                                           </div>
                                     </div>
                                  </a>
@@ -471,7 +471,7 @@
                         @endif
                      @elseif (strtolower($dgt->name) === "secondary")
                         <div class="col-lg-2 col-md-4 col-6">
-                           <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center">
+                           <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
                               <a  type="button"
                                  href="{{url('teacher/dashboard/report') . '/acar/detailSec/' . $dgt->id}}"
                                  class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
@@ -487,14 +487,14 @@
 
                                        <!-- Nama Subject -->
                                        <div class="inner mt-2">
-                                          <p class="mb-0 text-lg fw-bold text-center">ACAR</p>
+                                          <p class="mb-0 text-lg fw-bold text-center text-dark">ACAR</p>
                                        </div>
                                  </div>
                               </a>
                            </div>       
                         </div>
                         <div class="col-lg-2 col-md-4 col-6">
-                           <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center">
+                           <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
                               <a  type="button"
                                  href="{{url('teacher/dashboard/report') . '/sooa/detailSec/' . $dgt->id}}"
                                  class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
@@ -510,14 +510,14 @@
 
                                        <!-- Nama Subject -->
                                        <div class="inner mt-2">
-                                          <p class="mb-0 text-lg fw-bold text-center">SOOA</p>
+                                          <p class="mb-0 text-lg fw-bold text-center text-dark">SOOA</p>
                                        </div>
                                  </div>
                               </a>
                            </div>       
                         </div>
                         <div class="col-lg-2 col-md-4 col-6">
-                           <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center">
+                           <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
                               <a  type="button"
                                  href="{{url('teacher/dashboard/report') . '/tcop/detailSec/' . $dgt->id}}"
                                  class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
@@ -533,7 +533,7 @@
 
                                        <!-- Nama Subject -->
                                        <div class="inner mt-2">
-                                          <p class="mb-0 text-lg fw-bold text-center">TCOP</p>
+                                          <p class="mb-0 text-lg fw-bold text-center text-dark">TCOP</p>
                                        </div>
                                  </div>
                               </a>
@@ -541,7 +541,7 @@
                         </div>
                         @if (session('semester') == 1)
                            <div class="col-lg-2 col-md-4 col-6">
-                              <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center">
+                              <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
                                  <a  type="button"
                                     href="{{url('teacher/dashboard/report') . '/midcard/semestersatu/' . $dgt->id}}"
                                     class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
@@ -557,14 +557,14 @@
 
                                           <!-- Nama Subject -->
                                           <div class="inner mt-2">
-                                             <p class="mb-0 text-lg fw-bold text-center">Mid Report Card</p>
+                                             <p class="mb-0 text-lg fw-bold text-center text-dark">Mid Report Card</p>
                                           </div>
                                     </div>
                                  </a>
                               </div>       
                            </div>
                            <div class="col-lg-2 col-md-4 col-6">
-                              <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center">
+                              <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
                                  <a  type="button"
                                     href="{{url('teacher/dashboard/report') . '/cardSec/semestersatu/' . $dgt->id}}"
                                     class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
@@ -580,7 +580,7 @@
 
                                           <!-- Nama Subject -->
                                           <div class="inner mt-2">
-                                             <p class="mb-0 text-lg fw-bold text-center">Report Card</p>
+                                             <p class="mb-0 text-lg fw-bold text-center text-dark">Report Card</p>
                                           </div>
                                     </div>
                                  </a>
@@ -589,7 +589,7 @@
                         @endif
                         @if (session('semester') == 2)
                            <div class="col-lg-2 col-md-4 col-6">
-                              <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center">
+                              <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
                                  <a  type="button"
                                     href="{{url('teacher/dashboard/report') . '/midcard/semestersatu/' . $dgt->id}}"
                                     class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
@@ -605,14 +605,14 @@
 
                                           <!-- Nama Subject -->
                                           <div class="inner mt-2">
-                                             <p class="mb-0 text-lg fw-bold text-center">Mid Report Card</p>
+                                             <p class="mb-0 text-lg fw-bold text-center text-dark">Mid Report Card</p>
                                           </div>
                                     </div>
                                  </a>
                               </div>       
                            </div>
                            <div class="col-lg-2 col-md-4 col-6">
-                              <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center">
+                              <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
                                  <a  type="button"
                                     href="{{url('teacher/dashboard/report') . '/cardSec/semesterdua/' . $dgt->id}}"
                                     class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
@@ -628,7 +628,7 @@
 
                                           <!-- Nama Subject -->
                                           <div class="inner mt-2">
-                                             <p class="mb-0 text-lg fw-bold text-center">Report Card</p>
+                                             <p class="mb-0 text-lg fw-bold text-center text-dark">Report Card</p>
                                           </div>
                                     </div>
                                  </a>

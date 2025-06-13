@@ -245,16 +245,17 @@ class RegisterController extends Controller
 
          $student = Student::create($credentials);
          $relationship = $this->handleRelationship($request, $student);
-         $brotherOrSister = $this->handleBrotherOrSister($request, $student);
+         // $brotherOrSister = $this->handleBrotherOrSister($request, $student);
          
          // return $relationship;
          if(!$relationship->success){
             DB::rollBack();
             return dd($relationship->error);
-         } else if (!$brotherOrSister->success){
-            DB::rollBack();
-            return dd('error at brother or sisters');
          }
+         //  else if (!$brotherOrSister->success){
+         //    DB::rollBack();
+         //    return dd('error at brother or sisters');
+         // }
 
          // return 'post';
          $id = DB::table('students')->latest('id')->value('unique_id');
@@ -264,7 +265,7 @@ class RegisterController extends Controller
          // dd($brotherOrSister);
          $data = (object) [
             'student' => $student,
-            'brother_or_sisters' => $brotherOrSister,
+            // 'brother_or_sisters' => $brotherOrSister,
             'after_create' => 'Success register student with name ' . $student->name,
          ];
          
@@ -342,8 +343,8 @@ class RegisterController extends Controller
          $father = $checkIdFather && $checkIdFather->relation == 'father'? $this->updateRelation($checkIdFather->id, $credentialsFather) : Relationship::create($credentialsFather);
          $mother = $checkIdMother && $checkIdMother->relation == 'mother'? $this->updateRelation($checkIdMother->id, $credentialsMother) : Relationship::create($credentialsMother);
 
-         Student_relationship::create(['student_id' => $student->id,'relationship_id' => $father->id]);
-         Student_relationship::create(['student_id' => $student->id,'relationship_id' => $mother->id]);
+         Student_relationship::create(['student_id' => $student->id,'relation_id' => $father->id]);
+         Student_relationship::create(['student_id' => $student->id,'relation_id' => $mother->id]);
 
          return (object)['success' => true, 'dataRelation' => (object)['father' => $father, 'mother' => $mother]];
 

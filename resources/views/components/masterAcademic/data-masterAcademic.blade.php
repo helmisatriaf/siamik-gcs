@@ -20,8 +20,8 @@
     <div class="row">
         <div class="col-md-3">
             <div class="inner">
-                <a class="small-box bg-light d-flex align-items-center justify-content-center text-center text-md"
-                    style="min-height: 100px;" href="{{ url('/' . session('role') . '/masterAcademics/create') }}">
+                <a class="small-box d-flex align-items-center justify-content-center text-center text-md text-dark fw-bold"
+                    style="min-height: 100px;background-color: #ffde9e;border-radius: 12px;" href="{{ url('/' . session('role') . '/masterAcademics/create') }}">
                     <i class="fas fa-calendar-plus mr-1"></i>
                     Create Master Academic   
                 </a>
@@ -29,8 +29,8 @@
         </div>
         <div class="col-md-3">
             <div class="inner">
-                <a class="small-box bg-light d-flex align-items-center justify-content-center text-center text-md"
-                    style="min-height: 100px;" href="{{url('/' . session('role') .'/masterAcademics') . '/edit'}}">
+                <a class="small-box d-flex align-items-center justify-content-center text-center text-md text-dark fw-bold"
+                    style="min-height: 100px;background-color: #ffde9e;border-radius: 12px;" href="{{url('/' . session('role') .'/masterAcademics') . '/edit'}}">
                     <i class="fas fa-solid fa-pencil mr-1"></i>
                     Edit
                 </a>
@@ -38,18 +38,18 @@
         </div>
 
         @php
-            $admin = App\Models\User::where('username', '=', 'admin')->first();
+            $admin = App\Models\User::where('username', '=', 'administrator')->first();
         @endphp
         <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
-            <div class="card bg-light d-flex flex-fill">
-                <div class="card-header text-muted border-bottom-0">
+            <div class="card d-flex flex-fill" style="background-color: #ffde9e;border-radius: 12px;">
+                <div class="card-header border-bottom-0 text-dark fw-bold">
                     Admin SIAMIK
                 </div>
                 <div class="card-body pt-0">
                     <div class="row">
                         <div class="col-7">
-                        <h2 class="lead"><b>{{$admin->name}}</b></h2>
-                        <ul class="ml-4 mb-0 fa-ul text-muted">
+                        <h2 class="lead text-dark text-md fw-bold"><b>{{$admin->name}}</b></h2>
+                        <ul class="ml-4 mb-0 fa-ul text-dark fw-bold">
                             <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> Address: Jl. Darmo Permai</li>
                             <li class="small mt-2"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> Phone: {{$admin->phone}}</li>
                         </ul>
@@ -77,7 +77,7 @@
         </div>
     </div>
 
-    <div class="card card-light mt-2">
+    <div class="card mt-2" style="background-color: #ffde9e;">
         <div class="card-header d-flex flex-column">
             <div>
                 <h5 class="card-title">Data Master Academic</h5>

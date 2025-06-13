@@ -1,39 +1,51 @@
 @extends('layouts.admin.master')
 @section('content')
 
+<style>
+    .custom-modal-dialog {
+        padding: 10px;
+        background-color: #ffde9e;
+        color: #000;
+        border: 3px solid #ffcc00;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s;
+        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 90% 70% 80% 85% / 80% 80% 80% 95% ;
+    }
+    .fc {
+        background-color: transparent !important;
+    }
+
+    .fc-daygrid-body {
+        background-color: #fffde9;
+    }
+
+    .fc-col-header {
+        background-color: #ffde9e;
+    }
+
+    .fc-daygrid-day {
+        background-color: #fff9cc;
+    }
+</style>
+
 <!-- Content Wrapper. Contains page content -->
 <div class="container-fluid">
     @if (!empty($data))
-        <div class="card card-dark mt-2">
-            <div class="card-header header-elements-inline">
-                <h5 class="card-title">Your Subject Schedule</h5>
-
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="card-body">
-                <div id="calendar"></div>
-            </div>
-        </div>
+    <h5 class="text-bold text-xl">Your Subject Schedule</h5>
+    <div id="calendar"></div>
 </div>
 
 <!-- Modal Detail Schedule -->
-<div class="modal fade " id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="eventModalLabel">Schedule Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content custom-modal-dialog">
             <div class="modal-body">
-                <p id="eventTitle"></p>
-                <p id="eventDescription"></p></div>
+                <p id="eventTitle" class="text-lg text-center"></p>
+                <p id="eventDescription" class="text-lg"></p></div>
             <!-- <div class="modal-footer">
                 <div id="attendanceTeacherBtnContainer"></div>
             </div> -->
@@ -87,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 daysOfWeek: [schedule.day],
                 startTime: schedule.start_time,
                 endTime: schedule.end_time,
-                description: `<br>Teacher : <span class="badge badge-primary"> ${schedule.teacher_name} </span> <br>Assisstant : ${schedule.teacher_companion !== null ? schedule.teacher_companion : ""} <br>Grade : ${schedule.grade_name}`,
+                description: `<br>Teacher :  ${schedule.teacher_name} <br>Assisstant : ${schedule.teacher_companion !== null ? schedule.teacher_companion : ""}`,
                 color: 'blue',
                 grade_id: schedule.grade_id,
                 subject_id: schedule.subject_id,
@@ -96,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 title: `${subs.grade_name} (${subs.subject_name})`,
                 start: `${subs.date}T${subs.start_time}`,
                 end: `${subs.date}T${subs.end_time}`,  
-                description: `<br>Teacher: ${subs.teacher_name} <span class='badge badge-danger'>substitute</span><br>Assisstant : ${subs.teacher_companion !== null ? subs.teacher_companion : ""}<br>Grade: ${subs.grade_name}`,
+                description: `<br>Teacher: ${subs.teacher_name} <span class='badge badge-danger'>substitute</span><br>Assisstant : ${subs.teacher_companion !== null ? subs.teacher_companion : ""}`,
                 color: 'red',
                 grade_id: subs.grade_id,
                 subject_id: subs.subject_id,
@@ -126,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ],
         eventClick: function(info) {
             document.getElementById('eventTitle').innerText = info.event.title;
-            document.getElementById('eventDescription').innerHTML = 'Description : ' + info.event.extendedProps.description;
+            document.getElementById('eventDescription').innerHTML = info.event.extendedProps.description;
             
             var eventModal = new bootstrap.Modal(document.getElementById('eventModal'), {
                 keyboard: false

@@ -4,8 +4,8 @@
 <div class="container">
   <div class="row">
     <div class="col">
-      <nav aria-label="breadcrumb" class="bg-white rounded-3 p-3 mb-4">
-        <ol class="breadcrumb mb-0">
+      <nav aria-label="breadcrumb" class="p-3 mb-4" style="background-color: #ffde9e;border-radius:12px;">
+        <ol class="breadcrumb mb-0"  style="background-color: #fff3c0;">
           <li class="breadcrumb-item">Home</li>
           @if(session('role') == 'admin')
               <li class="breadcrumb-item"><a href="{{url('/admin/teachers')}}">Teacher</a></li>
@@ -20,7 +20,7 @@
 
   <div class="row">
     <div class="col-lg-4">
-      <div class="card mb-4 position-sticky" style="top: 4.5rem">
+      <div class="card mb-4 position-sticky" style="top: 4.5rem;background-color: #ffde9e;border-radius: 12px;">
         <div class="card-body text-center">
           <div class="position-relative d-inline-block" style="width: 150px;">
             <!-- Input file (disembunyikan) -->
@@ -42,7 +42,7 @@
           </div>
           
           <h5 class="my-3">{{$data['teacher']->name}}</h5>
-          <p class="text-muted mb-1">
+          <p class="text-dark mb-1">
                               
                 {{(date("md", date("U", mktime(0, 0, 0, 
                 explode("-", $data['teacher']->date_birth)[2], 
@@ -53,7 +53,7 @@
                 }} years old
 
           </p>
-          <p class="text-muted mb-4">{{$data['teacher']->home_address}}</p>
+          <p class="text-dark mb-4">{{$data['teacher']->home_address}}</p>
 
           @if (!$data['user'])
             <div class="col-lg">
@@ -72,7 +72,7 @@
                   <p class="mb-0">Username</p>
                 </div>
                 <div class="col-sm-4">
-                  <p class="text-muted">{{$data['user']->username}}</p>
+                  <p class="text-dark">{{$data['user']->username}}</p>
                 </div>
               </div>
               <div class="row justify-content-center">
@@ -80,7 +80,7 @@
                   <p class="mb-0">Role</p>
                 </div>
                 <div class="col-sm-4">
-                  <p class="text-muted">{{$data['user']->role_name}}</p>
+                  <p class="text-dark">{{$data['user']->role_name}}</p>
                 </div>
               </div>
               <div class="row justify-content-center">
@@ -103,14 +103,14 @@
     </div>
 
     <div class="col-lg-8">
-      <div class="card mb-4">
+      <div class="card mb-4" style="background-color: #ffde9e;border-radius: 12px;">
         <div class="card-body">
           <div class="row">
             <div class="col-sm-4">
               <p class="mb-0">Full name</p>
             </div>
             <div class="col-sm-8">
-              <p class="text-muted mb-0">{{$data['teacher']->name}}</p>
+              <p class="text-dark mb-0">{{$data['teacher']->name}}</p>
             </div>
           </div>
           <hr>
@@ -119,7 +119,7 @@
               <p class="mb-0">Unique ID</p>
             </div>
             <div class="col-sm-8">
-              <p class="text-muted mb-0">{{$data['teacher']->unique_id}}</p>
+              <p class="text-dark mb-0">{{$data['teacher']->unique_id}}</p>
             </div>
           </div>
           <hr>
@@ -128,7 +128,7 @@
               <p class="mb-0">NIK or Passport</p>
             </div>
             <div class="col-sm-8">
-              <p class="text-muted mb-0">{{$data['teacher']->nik}}</p>
+              <p class="text-dark mb-0">{{$data['teacher']->nik}}</p>
             </div>
           </div>
           <hr>
@@ -137,7 +137,7 @@
               <p class="mb-0">Status</p>
             </div>
             <div class="col-sm-8">
-                <p class="text-muted mb-0">
+                <p class="text-dark mb-0">
                   @if($data['teacher']->is_active)
                       <h1 class="badge badge-success">Active</h1>
                   @else
@@ -152,7 +152,7 @@
               <p class="mb-0">Gender</p>
             </div>
             <div class="col-sm-8">
-              <p class="text-muted mb-0">{{$data['teacher']->gender}}</p>
+              <p class="text-dark mb-0">{{$data['teacher']->gender}}</p>
             </div>
           </div>
           <hr>
@@ -161,7 +161,7 @@
               <p class="mb-0">Religion</p>
             </div>
             <div class="col-sm-8">
-              <p class="text-muted mb-0">{{$data['teacher']->religion}}</p>
+              <p class="text-dark mb-0">{{$data['teacher']->religion}}</p>
             </div>
           </div>
           <hr>
@@ -170,7 +170,7 @@
               <p class="mb-0">Place of Birth</p>
             </div>
             <div class="col-sm-8">
-              <p class="text-muted mb-0">{{$data['teacher']->place_birth}}</p>
+              <p class="text-dark mb-0">{{$data['teacher']->place_birth}}</p>
             </div>
           </div>
           <hr>
@@ -179,7 +179,7 @@
               <p class="mb-0">Date of Birth</p>
             </div>
             <div class="col-sm-8">
-              <p class="text-muted mb-0">{{date("d/m/Y", strtotime($data['teacher']->date_birth))}}</p>
+              <p class="text-dark mb-0">{{date("d/m/Y", strtotime($data['teacher']->date_birth))}}</p>
             </div>
           </div>
           <hr>
@@ -188,7 +188,7 @@
               <p class="mb-0">Nationality</p>
             </div>
             <div class="col-sm-8">
-              <p class="text-muted mb-0">{{$data['teacher']->nationality}}</p>
+              <p class="text-dark mb-0">{{$data['teacher']->nationality}}</p>
             </div>
           </div>
           <hr>
@@ -197,7 +197,7 @@
               <p class="mb-0">Last Education</p>
             </div>
             <div class="col-sm-8">
-              <p class="text-muted mb-0">{{$data['teacher']->last_education}}</p>
+              <p class="text-dark mb-0">{{$data['teacher']->last_education}}</p>
             </div>
           </div>
           <hr>
@@ -206,7 +206,7 @@
               <p class="mb-0">Major</p>
             </div>
             <div class="col-sm-8">
-              <p class="text-muted mb-0">{{$data['teacher']->major}}</p>
+              <p class="text-dark mb-0">{{$data['teacher']->major}}</p>
             </div>
           </div>
           <hr>
@@ -215,7 +215,7 @@
               <p class="mb-0">Email</p>
             </div>
             <div class="col-sm-8">
-              <p class="text-muted mb-0">{{$data['teacher']->email}}</p>
+              <p class="text-dark mb-0">{{$data['teacher']->email}}</p>
             </div>
           </div>
           <hr>
@@ -224,7 +224,7 @@
               <p class="mb-0">Mobile phone</p>
             </div>
             <div class="col-sm-8">
-              <p class="text-muted mb-0">{{$data['teacher']->handphone}}</p>
+              <p class="text-dark mb-0">{{$data['teacher']->handphone}}</p>
             </div>
           </div>
           <hr>
@@ -233,7 +233,7 @@
               <p class="mb-0">Temporary Address</p>
             </div>
             <div class="col-sm-8">
-              <p class="text-muted mb-0">{{$data['teacher']->temporary_address}}</p>
+              <p class="text-dark mb-0">{{$data['teacher']->temporary_address}}</p>
             </div>
           </div>
           <hr>
@@ -244,7 +244,7 @@
             <div class="col-sm-8">
                 @if(sizeof($data['teacherGrade']))
                     @foreach($data['teacherGrade'] as $tg)
-                      <p class="text-muted mb-0">- {{$tg->name}} - {{$tg->class}}</p>
+                      <p class="text-dark mb-0">- {{$tg->name}} - {{$tg->class}}</p>
                     @endforeach
                 @else
                   <p class="text-danger mb-0">-</p>
@@ -259,7 +259,7 @@
             <div class="col-sm-8">
                 @if(sizeof($data['teacherSubject']))
                   @foreach ($data['teacherSubject'] as $ts)
-                    <p class="text-muted mb-0">- {{$ts->name_subject}}
+                    <p class="text-dark mb-0">- {{$ts->name_subject}}
                       @if($ts->is_lead) 
                           <span class="badge badge-primary">Main Teacher</span> 
                       @elseif($ts->is_group) 
@@ -306,7 +306,7 @@
                       <label for="exampleInputPassword1">Password</label>
                       <input name="password" type="password" class="form-control"
                           id="exampleInputPassword1" aria-describedby="emailHelp">
-                      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                      <small id="emailHelp" class="form-text text-dark">We'll never share your email with anyone else.</small>
                   </div>
                   <div class="form-group">
                       <label for="exampleInputPassword2">Reinput password</label>
@@ -413,23 +413,19 @@
 
 @if(session('password.success'))
 <script>
-  setTimeout(() => {
-      Swal.fire({
-          icon: 'success',
-          title: 'Success update password',
-      });
-  }, 1500);
+  Swal.fire({
+    icon: 'success',
+    title: 'Success update password',
+  });
 </script>
 @endif
 
 @if(session('after_update_teacher'))
 <script>
-  setTimeout(() => {
-      Swal.fire({
-          icon: 'success',
-          title: 'Success Edit Data Teacher',
-      });
-  }, 1500);
+  Swal.fire({
+    icon: 'success',
+    title: 'Success Edit Data Teacher',
+  });
 </script>
 @endif
 

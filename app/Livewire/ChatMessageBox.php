@@ -43,7 +43,7 @@ class ChatMessageBox extends Component
 
     public function render()
     {
-        $this->chat = Chat::with(['history', 'user'])->find($this->chatId);
+        $this->chat = Chat::with(['history', 'user.student'])->find($this->chatId);
         return view('livewire.chat-message-box');
     }
 }

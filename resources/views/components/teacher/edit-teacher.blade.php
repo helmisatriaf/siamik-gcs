@@ -3,8 +3,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col">
-                <nav aria-label="breadcrumb" class="bg-white rounded-3 p-3 mb-3">
-                    <ol class="breadcrumb mb-0">
+                <nav aria-label="breadcrumb" class="p-3 mb-4" style="background-color: #ffde9e;border-radius:12px;">
+                    <ol class="breadcrumb mb-0"  style="background-color: #fff3c0;">
                     <li class="breadcrumb-item">Home</li>
                     <li class="breadcrumb-item">Teacher</li>
                     <li class="breadcrumb-item active" aria-current="page">Edit</li>
@@ -26,9 +26,9 @@
                     @endif
                         @csrf
                         @method('PUT')
-                        <div class="card card-dark">
+                        <div class="card" style="background-color: #ffde9e;border-radius:12px;">
                             <div class="card-header">
-                                <h3 class="card-title">Teacher</h3>
+                                <h3 class="card-title text-xl">Teacher</h3>
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->

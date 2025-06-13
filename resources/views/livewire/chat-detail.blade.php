@@ -1,5 +1,5 @@
-<div>
-    <div class="card card-light direct-chat direct-chat-light">
+<div class="container-fluid">
+    <div class="card direct-chat direct-chat-light" style="background-color: #ffde9e;border-radius: 12px;">
         <div class="card-header">
             <h3 class="card-title text-bold">Chat BOT</h3>
         </div>
@@ -10,16 +10,16 @@
                         <span class="direct-chat-name float-left">Greta</span>
                     </div>
                     <img class="direct-chat-img" src="{{asset('images/greta-face.png')}}">
-                    <div class="direct-chat-text">
+                    <div class="direct-chat-text bg-light">
                         Hello! How can we help you today? <br>
                         Click on the topic below that is your problem
                     </div>
                     
                     <!-- Topic List -->
-                    <div class="direct-chat-text" id="topic-chat">
+                    <div class="direct-chat-text bg-light" id="topic-chat">
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
                             @foreach ($questions as $question)
-                                <li class="nav-item border-bottom border-light p-0">
+                                <li class="nav-item border-bottom p-0">
                                     <a href="#" class="nav-link topic-item" data-id="{{$question->id}}">
                                         <p>{{$question->name}}</p>
                                     </a>
@@ -34,7 +34,7 @@
                     </div>
                     
                     <!-- Sub-Topic List (Hidden by Default) -->
-                    <div class="direct-chat-text" id="sub-topic-chat" style="display: none;">
+                    <div class="direct-chat-text bg-light" id="sub-topic-chat" style="display: none;">
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
                         </ul>
                     </div>

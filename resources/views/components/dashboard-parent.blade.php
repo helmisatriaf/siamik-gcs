@@ -98,7 +98,7 @@
     <div class="row">
       <div class="col-lg-3 col-6">
           <!-- small box -->
-          <div class="small-box bg-success">
+          <div class="small-box bg-success" style="border-radius: 12px;">
               <div class="inner">
                   <h3>{{ $data['totalAbsent'] }}</h3>
                   <p>Total Absence</p>
@@ -106,14 +106,14 @@
               <div class="icon">
                   <i class="fa-solid fa-chalkboard-user"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i
-                      class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" class="small-box-footer" style="border-radius: 12px;">More info <i
+                class="fas fa-arrow-circle-right"></i></a>
           </div>
       </div>
 
       <div class="col-lg-3 col-6">
           <!-- small box -->
-          <div class="small-box bg-success">
+          <div class="small-box bg-success" style="border-radius: 12px;">
               <div class="inner">
                   <h3>{{ $data['totalLate'] }}</h3>
                   <p>Total Late</p>
@@ -121,7 +121,7 @@
               <div class="icon">
                   <i class="fa-solid fa-chalkboard-user"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i
+              <a href="#" class="small-box-footer" style="border-radius: 12px;">More info <i
                       class="fas fa-arrow-circle-right"></i></a>
           </div>
       </div>
@@ -129,7 +129,7 @@
       <!-- SUBJECT ACTIVE -->
       <div class="col-lg-3 col-6">
           <!-- small box -->
-          <div class="small-box bg-warning">
+          <div class="small-box bg-warning" style="border-radius: 12px;">
               <div class="inner">
                   <h3>{{ $data['totalSubject'] }}
                       {{-- <sup style="font-size: 20px">%</sup> --}}
@@ -141,7 +141,7 @@
                   {{-- <i class="ion ion-person-add"></i> --}}
                   <i class="fa-solid fa-book"></i>
               </div>
-              <a href="course" class="small-box-footer">More info <i
+              <a href="course" class="small-box-footer" style="border-radius: 12px;">More info <i
                       class="fas fa-arrow-circle-right"></i></a>
           </div>
       </div>
@@ -150,7 +150,7 @@
       <!-- EXAM ACTIVE -->
       <div class="col-lg-3 col-6">
           <!-- small box -->
-          <div class="small-box bg-danger">
+          <div class="small-box bg-danger" style="border-radius: 12px;">
               <div class="inner">
                   <h3>{{ $data['totalExam'] }}</h3>
 
@@ -160,7 +160,7 @@
                   <i class="fa-solid fa-book-open-reader"></i>
               </div>
 
-              <a href="/parent/dashboard/exam" class="small-box-footer">More info <i
+              <a href="/parent/dashboard/exam" class="small-box-footer" style="border-radius: 12px;">More info <i
                       class="fas fa-arrow-circle-right"></i></a>
 
           </div>
@@ -169,7 +169,7 @@
 
     <div class="row">
       <div class="col-md-6">
-        <div class="card bg-info">
+        <div class="card bg-info" style="border-radius: 12px;">
           <div class="card-header">
             <h3 class="card-title">
               <i class="fa-solid fa-person mr-1"></i>
@@ -178,7 +178,7 @@
           </div>
   
           <div class="pt-3 px-4 px-md-3">
-            <select required name="studentId" class="form-control" id="studentId" onchange="saveStudentId()">
+            <select required name="studentId" class="form-control" style="border-radius: 12px;" id="studentId" onchange="saveStudentId()">
               <option value="">-- Your Relation -- </option>
               @foreach ($data['totalRelation'] as $dtr)
                 <option value="{{ $dtr->student_id }}" {{ session('studentId') == $dtr->student_id ? "selected" : "" }}> {{ ucwords(strtolower($dtr->student_name)) }}</option>
@@ -188,7 +188,7 @@
   
           <div class="card-body">
             <!-- Widget: user widget style 2 -->
-            <div class="card card-widget widget-user-2 shadow-xl">
+            <div class="card card-widget widget-user-2 shadow-xl" style="border-radius: 12px;">
               <!-- Add the bg color to the header using any of the bg-* classes -->
               <div class="widget-user-header bg-info">
                 <div class="widget-user-image">
@@ -230,9 +230,9 @@
         </div>
       </div>
       <div class="col-md-3">
-        <div class="card card-widget widget-user">
+        <div class="card card-widget widget-user"style="border-radius: 12px;">
           <!-- Add the bg color to the header using any of the bg-* classes -->
-          <div class="widget-user-header bg-info">
+          <div class="widget-user-header bg-info" style="border-top-left-radius: 12px; border-top-right-radius: 12px;">
             <h3 class="widget-user-username text-lg">{{ucwords(strtolower(session('name_user')))}}</pp>
             <h5 class="widget-user-desc text-md">{{ucwords(strtolower($data['parent']->relation))}}</h5>
           </div>
@@ -259,7 +259,7 @@
         </div>
       </div>
       <div class="col-md-3">
-        <div class="card bg-warning">
+        <div class="card bg-warning" style="border-radius: 12px;">
           <div class="card-header">
             <h3 class="card-title">
               <i class="fa-solid fa-book"></i>
@@ -302,111 +302,55 @@
       </div>
     </div>
 
-            <div class="row">
-                <div class="col-md-12">
-                    @if (isset($data['paymentStatus']) && $data['paymentStatus']['has_unpaid_bill'])
-                        <div class="card bg-gradient-warning animate__animated animate__fadeIn">
-                            <div class="card-header border-0">
-                                <h3 class="card-title">
-                                    <i class="fas fa-bell fa-shake mr-2"></i>
-                                    Payment Notification
-                                </h3>
-                            </div>
-                            <div class="card-body">
-                                <div
-                                    class="d-flex flex-column flex-md-row justify-content-between align-items-center bg-white rounded-lg p-4 shadow-sm">
-                                    <div class="d-flex align-items-center mb-3 mb-md-0">
-                                        <div class="flex-shrink-0">
-                                            <i class="fas fa-exclamation-circle text-warning fa-2x"></i>
-                                        </div>
-                                        <div class="ml-3">
-                                            <h5 class="font-weight-bold text-dark mb-1">
-                                                {{ $data['paymentStatus']['message'] }}
-                                            </h5>
-                                            <p class="text-muted mb-0">
-                                                Please make the payment as soon as possible to avoid late fees.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="text-center text-md-right">
-                                        <div class="mb-2">
-                                            <span class="text-muted">Total Bill:</span>
-                                            <h4 class="text-danger font-weight-bold mb-0">
-                                                Rp {{ number_format($data['paymentStatus']['amount'], 0, ',', '.') }}
-                                            </h4>
-                                        </div>
-                                        {{-- <a href="#"
-                                            class="btn btn-sm btn-danger btn-lg px-5 waves-effect waves-light">
-                                            <i class="fas fa-credit-card mr-2"></i>
-                                            Pay Now
-                                        </a> --}}
-                                    </div>
+    <div class="row">
+        <div class="col-md-12">
+            @if (isset($data['paymentStatus']) && $data['paymentStatus']['has_unpaid_bill'])
+                <div class="card bg-gradient-warning animate__animated animate__fadeIn" style="border-radius: 12px;">
+                    <div class="card-header border-0">
+                        <h3 class="card-title">
+                            <i class="fas fa-bell fa-shake mr-2"></i>
+                            Payment Notification
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div
+                            class="d-flex flex-column flex-md-row justify-content-between align-items-center bg-white rounded-lg p-4 shadow-sm">
+                            <div class="d-flex align-items-center mb-3 mb-md-0">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-exclamation-circle text-warning fa-2x"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <h5 class="font-weight-bold text-dark mb-1">
+                                        {{ $data['paymentStatus']['message'] }}
+                                    </h5>
+                                    <p class="text-muted mb-0">
+                                        Please make the payment as soon as possible to avoid late fees.
+                                    </p>
                                 </div>
                             </div>
-                        </div>
-                    @endif
-                </div>
-            </div>
-
-            <!-- Payment History Card -->
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header bg-light">
-                            <h3 class="card-title">
-                                <i class="fas fa-history mr-2"></i>
-                                Payment History 
-                            </h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>Month</th>
-                                            <th>Year</th>
-                                            <th>Amount</th>
-                                            <th>Status</th>
-                                            <th>Payment Date</th>
-                                            <th>Due Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="payment-history-body">
-                                        @foreach ($data['paymentHistory'] ?? [] as $payment)
-                                            <tr>
-                                                <td>{{ $payment['month'] }}</td>
-                                                <td>{{ $payment['year'] }}</td>
-                                                <td>Rp {{ number_format($payment['amount'], 0, ',', '.') }}</td>
-                                                <td>
-                                                    @if ($payment['status'] === 'Lunas')
-                                                        <span class="badge badge-soft-success px-3 py-2">
-                                                            <i class="fas fa-check-circle mr-1"></i>
-                                                            Paid
-                                                        </span>
-                                                    @else
-                                                        <span class="badge badge-soft-danger px-3 py-2">
-                                                            <i class="fas fa-times-circle mr-1"></i>
-                                                            Unpaid
-                                                        </span>
-                                                    @endif
-                                                </td>
-                                                <td>{{ $payment['payment_date'] ?? '-' }}</td>
-                                                <td>{{ $payment['due_date'] }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                            <div class="text-center text-md-right">
+                                <div class="mb-2">
+                                    <span class="text-muted">Total Bill:</span>
+                                    <h4 class="text-danger font-weight-bold mb-0">
+                                        Rp {{ number_format($data['paymentStatus']['amount'], 0, ',', '.') }}
+                                    </h4>
+                                </div>
+                                {{-- <a href="#"
+                                    class="btn btn-sm btn-danger btn-lg px-5 waves-effect waves-light">
+                                    <i class="fas fa-credit-card mr-2"></i>
+                                    Pay Now
+                                </a> --}}
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-
+            @endif
+        </div>
+    </div>
 
     <div class="row">
         <section class="col-12 connectedSortable">
-            <div class="card bg-danger">
+            <div class="card bg-danger" style="border-radius: 12px;">
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="fa-solid fa-calendar-xmark mr-1"></i>
@@ -436,7 +380,10 @@
                   @endphp 
 
                   @foreach ($data['exam'] as $el)
-                    <li id="view" data-id="{{ $el->id }}" class="hover:cursor-pointer">
+                    <li id="view" data-id="{{ $el->id }}"
+                      class="hover:cursor-pointer"
+                      style="background-color: #ffde9e;border: 2px dashed #ffcc00;border-radius: 8px;"
+                      >
                       <span class="handle" class="hover:cursor-pointer">
                           <i class="fas fa-ellipsis-v"></i>
                           <i class="fas fa-ellipsis-v"></i>
@@ -503,8 +450,66 @@
         </div>
     </div>
 
+  </section>
   </div>
-</section>
+
+    <!-- Payment History Card -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card" style="border-radius: 12px;">
+                <div class="card-header bg-light" style="border-top-left-radius: 12px;border-top-right-radius:12px;">
+                    <h3 class="card-title">
+                        <i class="fas fa-history mr-2"></i>
+                        Payment History 
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Month</th>
+                                    <th>Year</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Payment Date</th>
+                                    <th>Due Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="payment-history-body">
+                                @foreach ($data['paymentHistory'] ?? [] as $payment)
+                                    <tr>
+                                        <td>{{ $payment['month'] }}</td>
+                                        <td>{{ $payment['year'] }}</td>
+                                        <td>Rp {{ number_format($payment['amount'], 0, ',', '.') }}</td>
+                                        <td>
+                                            @if ($payment['status'] === 'Lunas')
+                                                <span class="badge badge-soft-success px-3 py-2">
+                                                    <i class="fas fa-check-circle mr-1"></i>
+                                                    Paid
+                                                </span>
+                                            @else
+                                                <span class="badge badge-soft-danger px-3 py-2">
+                                                    <i class="fas fa-times-circle mr-1"></i>
+                                                    Unpaid
+                                                </span>
+                                            @endif
+                                        </td>
+                                        <td>{{ $payment['payment_date'] ?? '-' }}</td>
+                                        <td>{{ $payment['due_date'] }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    
 
 <!-- Modal Loading -->
 <div id="loadingModal" class="modal" tabindex="-1" role="dialog" style="display: none;">

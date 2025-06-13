@@ -2,27 +2,38 @@
 @section('content')
 
 <!-- Content Wrapper. Contains page content -->
-<div class="container-fluid">
+<div class="container-fluid text-center">
     @if (!empty($data))
-        <div class="card card-orange">
-            <div class="card-header header-elements-inline">
-                <h5 class="card-title text-bold">{{ $data['grade_name'] }} - {{ $data['grade_class'] }}</h5>
-
-                {{-- <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                </div> --}}
-            </div>
-
-            <div class="card-body">
-                <div id="calendar" class="p-0"></div>
-            </div>
-        </div>
+    <h5 class="text-bold text-xl">{{ $data['grade_name'] }} - {{ $data['grade_class'] }}</h5>
+    <div id="calendar">
+    </div>
     @else
         <p>Data Kosong</p>
     @endif
 </div>
+
+<!-- Tambahkan CSS untuk modal khusus -->
+<style>
+    .custom-modal-dialog {
+        max-width: 80%; /* Atur persentase sesuai kebutuhan Anda */
+        width: auto !important; /* Untuk memastikan lebar otomatis */
+    }
+    .fc {
+        background-color: transparent !important;
+    }
+
+    .fc-daygrid-body {
+        background-color: #fffde9;
+    }
+
+    .fc-col-header {
+        background-color: #ffde9e;
+    }
+
+    .fc-daygrid-day {
+        background-color: #fff9cc;
+    }
+</style>
 
 <!-- Modal Detail Schedule -->
 <div class="modal fade " id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
@@ -77,7 +88,8 @@
                         'startTime' => $schedule->start_time,
                         'endTime' => $schedule->end_time,
                         'description' => '',
-                        'color' => 'bluesky'
+                        'color' => '#ffe8d6',
+                        'textColor' => 'black',
                     ];
 
                     switch (strtolower($schedule->note)) {
@@ -97,6 +109,7 @@
                             $event['description'] = 'Morning Reading';
                             $event['color'] = 'orange';
                             break;
+
                         default:
                             $event['description'] = "Teacher: {$schedule->teacher_name}<br>Grade: {$schedule->grade_name} - {$schedule->grade_class}";
                     }

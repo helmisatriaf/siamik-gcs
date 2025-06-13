@@ -85,19 +85,19 @@
 
                @foreach ($data['gradeTeacher'] as $el)
                <div class="col-md-4 col-sm-6 mb-3">
-                  <div class="position-relative p-3 bg-light d-flex flex-column rounded-lg shadow-lg border">
+                  <div class="small-box zoom-hover position-relative p-3 d-flex flex-column shadow-lg border" style="background-color: #ffde9e;border-radius: 12px;">
                      <div class="ribbon-wrapper ribbon-lg">
                        <div class="ribbon bg-dark text-md">
                         {{ $el->name }} - {{ $el->class }}
                        </div>
                      </div>
-                     <p class="flex-grow-1 text-bold text-blackD">
+                     <p class="flex-grow-1 text-bold text-black">
                         {{session('name_user')}} |
                         Class Teacher
                      </p>
                      <div class="row col-10 p-0">
                         <div class="col-6 p-0 pr-1">
-                           <a class="btn btn-app btn-sm text-sm w-100 rounded"
+                           <a class="btn btn-app btn-sm text-sm w-100 rounded bg-yellow" style="border-radius: 16px;"
                               href="{{ route('attendance.detail.teacher', ['id' => session('id_user'), 'gradeId' => $el->id]) }}">
                               <i class="fas fa-eye">
                               </i>
@@ -105,7 +105,7 @@
                            </a>
                         </div>
                         <div class="col-6 p-0">
-                           <a class="btn btn-app btn-sm text-sm w-100 rounded"
+                           <a class="btn btn-app btn-sm text-sm w-100 rounded bg-danger" style="border-radius: 16px;"
                               href="{{url('/' . session('role') . '/dashboard/attendance/all') . '/' . session('id_user') . '/' . $el->id}}">
                               <i class="fas fa-paper-plane">
                               </i>

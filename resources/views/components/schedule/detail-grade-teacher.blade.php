@@ -26,75 +26,42 @@
 
 <!-- Content Wrapper. Contains page content -->
 @if (!empty($data))
-    <div class="container-fluid">
+    <div class="container-fluid text-center">
         @if ($totalClass > 1)
-                <div class="card card-dark mt-2">
-                <div class="card-header"> 
-                    <h3 class="card-title">Your Class</h3>
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
+            @foreach ($data as $dt)
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-12">
+                    <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="min-height: 110px;background-color: #ffde9e;border-radius: 12px;">
+                        <a class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center"
+                            href="{{url('teacher/dashboard/schedules/gradeOther') . '/' . $dt->grade_id}}">
+                            <!-- Ribbon -->
+                            <div class="ribbon-wrapper ribbon-lg">
+                                <div class="ribbon bg-dark text-sm">
+                                   Schedule
+                                </div>
+                            </div>
+                        
+                            <!-- Bagian Utama -->
+                            <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
+                                <!-- Ikon -->
+                                <div>
+                                    <img loading="lazy" src="{{ asset('images/schedules.png')}}"  
+                                     alt="avatar" class="profileImage img-fluid" 
+                                     style="width: 50px; height: 50px; cursor: pointer;" loading="lazy">
+                                </div>
+                                <!-- Nama Subject -->
+                                <div class="inner mt-2">
+                                    <p class="mb-0 text-lg fw-bold text-center text-dark"> {{ $dt->grade_name }} - {{ $dt->grade_class }}</p>
+                                </div>
+                            </div>
+                        </a>
                     </div>
-                </div>
-    
-                <div class="card-body p-0">
-                    <table class="table table-striped projects">
-                        <thead>
-                            <tr>
-                                <th style="width: 5%">
-                                    #
-                                </th>
-                                <th style="width: 10%">
-                                    Grade
-                                </th>
-                                <th>
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        @foreach ($data as $dt)
-                            <tr id="{{ 'index_grade_' . $dt->id }}">
-                                <td>
-                                    {{ $loop->index + 1 }}
-                                </td>
-                                <td>
-                                    <a>
-                                    {{ $dt->grade_name }} - {{ $dt->grade_class }}
-                                    </a>
-                                </td>
-                                <td>
-                                    <a class="btn btn-primary btn-sm"
-                                    href="{{url('teacher/dashboard/schedules/gradeOther') . '/' . $dt->grade_id}}">
-                                    <i class="fas fa-eye">
-                                    </i>
-                                    View
-                                    </a>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                </div> 
-            
-        @else
-            <div class="card card-dark mt-2">
-                <div class="card-header header-elements-inline">
-                    <h5 class="card-title">{{ $data['grade_name'] }} - {{ $data['grade_class'] }}</h5>
-
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <div id="calendar"></div>
                 </div>
             </div>
+            @endforeach
+        @else
+            <h5 class="text-bold text-xl">{{ $data['grade_name'] }} - {{ $data['grade_class'] }}</h5>                
+            <div id="calendar"></div>
         @endif
     </div>
 @else

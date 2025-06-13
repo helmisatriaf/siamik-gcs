@@ -31,7 +31,7 @@
 <!-- Content Wrapper. Contains page content -->
  
 <div class="container-fluid">
-    <div class="card">
+    <div class="card" style="background-color: #ffde9e;border-radius: 12px;">
         <div class="card-body">
             <form class="row col-12" action="/teacher/dashboard/exam/teacher">
                 {{-- GRADES --}}
@@ -129,11 +129,11 @@
         
         <div class="row">
             @foreach ($data as $el)
-            <div class="col-md-6 mb-3">
-                <div class="position-relative p-3 bg-light d-flex flex-column rounded-lg shadow-lg border">
+            <div class="col-md-12 mb-3">
+                <div class="position-relative p-3 d-flex flex-column" style="background-color: #ffde9e;border-radius: 12px;">
                     <div class="ribbon-wrapper ribbon-lg">
                         @if($el->is_active)
-                        <div class="ribbon bg-primary">ongoing</div>
+                        <div class="ribbon bg-dark">ongoing</div>
                         @else
                         <div class="ribbon bg-light">completed</div>
                         @endif
@@ -166,7 +166,10 @@
                                         </span>
                                         @break
                                     @default
-                                        @break
+                                        <span class="text-sm">
+                                            Model : Scoring/Upload File <br>
+                                        </span>
+                                    @break
                                 @endswitch
                                 <i class="fas fa-clock"></i> 
                                 @php

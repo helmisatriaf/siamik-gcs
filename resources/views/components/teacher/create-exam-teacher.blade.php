@@ -48,7 +48,7 @@
             <div>
                <form method="POST" action="{{ route('actionCreateExamTeacher') }}" enctype="multipart/form-data">
                   @csrf
-                  <div class="card card-light">
+                  <div class="card mb-2" style="background-color: #ffde9e;border-radius: 12px;">
                      <div class="card-header">
                         @php
                            $week = \App\Models\Section::where('sections.id', session('section_id'))
@@ -190,17 +190,85 @@
                                     <div class="text-danger mt-2" id="fileError" style="display: none;"></div>
                                  </div>
                               </div>
-                           </div>
+
+                              <div class="div p-0" id="combine" style="display: none;">
+                                 <div class="d-flex p-0">
+                                    <div class="col-6 p-0">
+                                       <div class="form-group row">
+                                          <div class="col-12">
+                                             <label for="question_mce">Input total of questions multiple choice <span style="color: red">*</span></label>
+                                             <input name="question_mce" type="number" class="form-control" id="question_mce" max="50">
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col-6">
+                                       <div class="form-group row">
+                                          <div class="col-12">
+                                             <label for="question_essay">Input total of essay <span style="color: red">*</span></label>
+                                             <input name="question_essay" type="number" class="form-control" id="question_essay" max="50">
+                                          </div>
+                                       </div>
+                                    </div>   
+                                 </div>
+                                 <div class="col-12">
+                                    <div class="form-group row">
+                                       <div class="col-12 p-0">
+                                          <button class="btn btn-warning btn-md w-100 btn-create-mce">Create Question</button>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+
+                              <div class="div p-0" id="mc" style="display: none;">
+                                 <div class="d-flex">
+                                    <div class="col-12 p-0">
+                                       <div class="form-group row">
+                                          <div class="col-12">
+                                             <label for="just_mc">Input total of questions multiple choice <span style="color: red">*</span></label>
+                                             <input name="just_mc" type="number" class="form-control" id="just_mc" max="50">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-12">
+                                    <div class="form-group row">
+                                       <div class="col-12 p-0">
+                                          <button class="btn btn-warning btn-mc btn-md w-100 btn-create-mc">Create Question</button>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+
+                              <div class="div p-0" id="essay" style="display: none;">
+                                 <div class="d-flex p-0">
+                                    <div class="col-6 p-0">
+                                       <div class="form-group row">
+                                          <div class="col-12">
+                                             <label for="just_essay">Input total of essay <span style="color: red">*</span></label>
+                                             <input name="just_essay" type="number" class="form-control" id="just_essay" max="50">
+                                          </div>
+                                       </div>
+                                    </div>   
+                                 </div>
+                                 <div class="col-12">
+                                    <div class="form-group row">
+                                       <div class="col-12 p-0">
+                                          <button class="btn btn-warning btn-essay btn-md w-100 btn-create-essay">Create Question</button>
+                                       </div>
+                                    </div>
+                                 </div>
+
+                              </div>
                         </div>
                      </div>
                   </div>
 
-                  <div class="card card-light" id="combine" style="display: none;">
+                  <div class="card card-light" id="question-combine" style="display: none;border-radius: 12px;">
                      <div class="card-header">
                         Multiple Choice & Essay
                      </div>
                      <div class="card-body">
-                        <div class="d-flex">
+                        {{-- <div class="d-flex">
                            <div class="col-4 ">
                               <div class="form-group row">
                                  <div class="col-12">
@@ -224,19 +292,19 @@
                                  <button class="btn btn-secondary btn-md w-100 btn-create-mce">Create Question</button>
                               </div>
                            </div>
-                        </div>
+                        </div> --}}
 
                         <div id="question">
                         </div>
                      </div>
                   </div>
 
-                  <div class="card card-light" id="essay" style="display: none;">
+                  <div class="card card-light" id="question-essay" style="display: none;border-radius: 12px;">
                      <div class="card-header">
                         Essay
                      </div>
                      <div class="card-body">
-                        <div class="d-flex">
+                        {{-- <div class="d-flex">
                            <div class="col-4">
                               <div class="form-group row">
                                  <div class="col-12">
@@ -252,19 +320,19 @@
                                  <button class="btn btn-dark btn-essay btn-md w-100 btn-create-essay">Create Question</button>
                               </div>
                            </div>
-                        </div>
+                        </div> --}}
 
                         <div id="containeressay">
                         </div>
                      </div>
                   </div>
 
-                  <div class="card card-light" id="mc" style="display: none;">
+                  <div class="card card-light" id="question-mc" style="display: none;border-radius: 12px;">
                      <div class="card-header">
                         Multiple Choice
                      </div>
                      <div class="card-body">
-                        <div class="d-flex">
+                        {{-- <div class="d-flex">
                            <div class="col-4 ">
                               <div class="form-group row">
                                  <div class="col-12">
@@ -280,7 +348,8 @@
                                  <button class="btn btn-primary btn-mc btn-md w-100 btn-create-mc">Create Question</button>
                               </div>
                            </div>
-                        </div>
+                        </div> --}}
+
                         <div id="containermultiplechoice">
                         </div>
                      </div>
@@ -354,6 +423,9 @@
    document.getElementById('model').addEventListener('change', function() {
       if (this.value === 'uf') {
          document.getElementById('file-form').style.display = 'block';
+         document.getElementById('question-combine').style.display = 'none';
+         document.getElementById('question-mc').style.display = 'none';
+         document.getElementById('question-essay').style.display = 'none';
          document.getElementById('combine').style.display = 'none';
          document.getElementById('mc').style.display = 'none';
          document.getElementById('essay').style.display = 'none';
@@ -363,24 +435,33 @@
          document.getElementById('file-form').style.display = 'none';
          document.getElementById('mc').style.display = 'none';
          document.getElementById('essay').style.display = 'none';
+         document.getElementById('question-mc').style.display = 'none';
+         document.getElementById('question-essay').style.display = 'none';
       }
       else if(this.value === 'mc') {
          document.getElementById('mc').style.display = 'block';
          document.getElementById('file-form').style.display = 'none';
          document.getElementById('combine').style.display = 'none';
          document.getElementById('essay').style.display = 'none';
+         document.getElementById('question-combine').style.display = 'none';
+         document.getElementById('question-essay').style.display = 'none';
       }
       else if(this.value === 'essay') {
          document.getElementById('essay').style.display = 'block';
          document.getElementById('file-form').style.display = 'none';
          document.getElementById('combine').style.display = 'none';
          document.getElementById('mc').style.display = 'none';
+         document.getElementById('question-combine').style.display = 'none';
+         document.getElementById('question-mc').style.display = 'none';
       }
       else {
          document.getElementById('file-form').style.display = 'none';
          document.getElementById('combine').style.display = 'none';
          document.getElementById('mc').style.display = 'none';
          document.getElementById('essay').style.display = 'none';
+         document.getElementById('question-combine').style.display = 'none';
+         document.getElementById('question-mc').style.display = 'none';
+         document.getElementById('question-essay').style.display = 'none';
       }
    });
 
@@ -424,18 +505,27 @@
          event.preventDefault();
          event.addClass = "d-none";
          let model = "combine";
+         document.getElementById('question-combine').style.display = 'block';
+         document.getElementById('question-essay').style.display = 'none';
+         document.getElementById('question-mc').style.display = 'none';
          generateQuestions(model);
       });
       
       document.querySelector(".btn-create-essay").addEventListener("click", function (event) {
          event.preventDefault();
          let model = "essay";
+         document.getElementById('question-essay').style.display = 'block';
+         document.getElementById('question-combine').style.display = 'none';
+         document.getElementById('question-mc').style.display = 'none';
          generateQuestions(model);
       });
 
       document.querySelector(".btn-create-mc").addEventListener("click", function (event) {
          event.preventDefault();
          let model = "mc";
+         document.getElementById('question-mc').style.display = 'block';
+         document.getElementById('question-essay').style.display = 'none';
+         document.getElementById('question-combine').style.display = 'none';
          generateQuestions(model);
       });
    });

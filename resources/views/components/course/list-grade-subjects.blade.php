@@ -9,7 +9,7 @@
         <div class="row">
             @foreach ($data as $subject)
                 <div class="col-lg-3 col-md-4 col-12">
-                    <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="min-height: 110px;">
+                    <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="min-height: 110px;background-color: #ffde9e;border-radius: 12px;">
                         <a 
                             @if (session('role') == 'student' || session('role') == 'parent')
                                 id="set-course-id"
@@ -46,7 +46,7 @@
                                 </div>
                                 <!-- Nama Subject -->
                                 <div class="inner mt-2">
-                                    <p class="mb-0 text-lg fw-bold text-center">{{ $subject->name_subject }}</p>
+                                    <p class="mb-0 text-lg fw-bold text-center text-dark">{{ $subject->name_subject }}</p>
                                 </div>
                             </div>
                         </a>

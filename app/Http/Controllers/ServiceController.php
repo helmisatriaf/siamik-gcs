@@ -43,7 +43,7 @@ class ServiceController extends Controller
         }
 
         $tutorials = Chat_bot::with('page')->paginate(5);
-        $admin = User::where('username', '=', 'admin')->first();
+        $admin = User::where('username', '=', 'administrator')->first();
 
         return view('components.care.cc', compact('chat', 'tutorials', 'admin'));
     }

@@ -30,7 +30,7 @@
    <!-- START TABEL -->
       <!-- Display Kindergarten Grades -->
       @if (!$kindergartenGrades->isEmpty())
-         <div class="card card-light">
+         <div class="card" style="background-color: #ffde9e;border-radius:12px;">
             <div class="card-header"> 
                   <h3 class="card-title text-bold">Kindergarten Grades</h3>
                   <div class="card-tools">
@@ -63,7 +63,7 @@
                                        style="width: 50px; height: 50px; cursor: pointer;">
                                     </div>
                                     <!-- Nama Subject -->
-                                    <div class="inner mt-2">
+                                    <div class="inner mt-2 text-dark">
                                        <p class="mb-0 text-lg fw-bold text-center">{{ $el->name_subject }}</p>
                                        <p>{{$el->name}} - {{$el->class}}</p>
                                     </div>
@@ -79,9 +79,9 @@
 
       <!-- Display Primary Grades -->
       @if (!$primaryGrades->isEmpty())
-         <div class="card card-light">
+         <div class="card" style="background-color: #ffde9e;border-radius:12px;">
             <div class="card-header"> 
-                  <h3 class="card-title text-bold">Primary Grades</h3>
+                  <h3 class="card-title text-bold text-xl">Primary Grades</h3>
                   <div class="card-tools">
                      <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                         <i class="fas fa-minus"></i>
@@ -92,13 +92,13 @@
                <div class="row">
                   @foreach ($primaryGrades as $el)
                      <div class="col-lg-3 col-md-4 col-6">
-                        <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="min-height: 110px;">
+                        <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="min-height: 110px;background-color: #fff3c0;border-radius:12px;">
                            <a href="{{ url('teacher/dashboard/report/detailSubjectPrimary') . '/' . $el->grade_id . '/' . $el->subject_id }}"
                               class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
                            
                               <!-- Ribbon -->
                               <div class="ribbon-wrapper ribbon-lg">
-                                    <div class="ribbon {{ $el->status == 1 ? 'bg-primary' : 'bg-secondary' }}">
+                                    <div class="ribbon {{ $el->status == 1 ? 'bg-primary' : 'bg-dark' }}">
                                        {{ $el->status == 1 ? 'Completed' : 'Not Submitted' }}
                                     </div>
                               </div>
@@ -112,7 +112,7 @@
                                        style="width: 50px; height: 50px; cursor: pointer;">
                                     </div>
                                     <!-- Nama Subject -->
-                                    <div class="inner mt-2">
+                                    <div class="inner mt-2 text-dark">
                                        <p class="mb-0 text-lg fw-bold text-center">{{ $el->name_subject }}</p>
                                        <p>{{$el->name}} - {{$el->class}}</p>
                                     </div>
@@ -128,9 +128,9 @@
 
       <!-- Display Secondary Grades -->
       @if (!$secondaryGrades->isEmpty())
-         <div class="card card-light">
+         <div class="card" style="background-color: #ffde9e;border-radius: 12px;">
             <div class="card-header"> 
-                  <h3 class="card-title text-bold">Secondary Grades</h3>
+                  <h3 class="card-title text-bold text-xl">Secondary Grades</h3>
                   <div class="card-tools">
                      <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                         <i class="fas fa-minus"></i>
@@ -141,13 +141,13 @@
                <div class="row">
                   @foreach ($secondaryGrades as $el)
                         <div class="col-lg-3 col-md-4 col-6">
-                           <div class="small-box bg-light px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="min-height: 110px;">
+                           <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="min-height: 110px;background-color: #fff3c0;border-radius:12px;">
                               <a href="{{ url('teacher/dashboard/report/detailSubjectSecondary') . '/' . $el->grade_id . '/' . $el->subject_id }}"
                                  class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
                               
                                  <!-- Ribbon -->
                                  <div class="ribbon-wrapper ribbon-lg">
-                                       <div class="ribbon {{ $el->status == 1 ? 'bg-primary' : 'bg-secondary' }}">
+                                       <div class="ribbon {{ $el->status == 1 ? 'bg-primary' : 'bg-dark' }}">
                                           {{ $el->status == 1 ? 'Completed' : 'Not Submitted' }}
                                        </div>
                                  </div>
@@ -161,7 +161,7 @@
                                           style="width: 50px; height: 50px; cursor: pointer;">
                                        </div>
                                        <!-- Nama Subject -->
-                                       <div class="inner mt-2">
+                                       <div class="inner mt-2 text-dark">
                                           <p class="mb-0 text-lg fw-bold text-center">{{ $el->name_subject }}</p>
                                           <p>{{$el->name}} - {{$el->class}}</p>
                                        </div>

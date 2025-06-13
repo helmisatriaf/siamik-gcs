@@ -83,6 +83,7 @@ class SuperAdminController extends Controller
          
          // foreach($pr as $parent){
          //    $name = strtolower(explode(' ', trim($parent->name))[0]);
+         //    $password = str_replace('/', '', trim($parent->date_birth));
          //    $check = User::where('username', $name)->first();
          //    if($check){
          //       continue;
@@ -90,7 +91,7 @@ class SuperAdminController extends Controller
          //    else{
          //       $userParent = User::create([
          //          'username' => "{$name}",
-         //          'password' => 12345,
+         //          'password' => "{$password}",
          //          'role_id' => 5,
          //       ]);
          //    }
@@ -241,6 +242,8 @@ class SuperAdminController extends Controller
             ->select('relationships.*')
             ->get();
 
+         // dd($dataParent);
+
 
          // $dataParent = Relationship::leftJoin('student_relations', 'student_relations.relation_id', '=', 'relationships.id')
          // ->leftJoin('students', 'students.id', '=', 'student_relations.student_id')
@@ -359,7 +362,7 @@ class SuperAdminController extends Controller
    }
 
    public function changePhone(Request $request){
-      User::where('username', '=', 'admin')->update([
+      User::where('role_id', '=', '2')->update([
          'phone' => $request->phone,
       ]);
 
@@ -367,7 +370,7 @@ class SuperAdminController extends Controller
    }
 
    public function changeDataAdmin(Request $request){
-      User::where('username', '=', 'admin')->update([
+      User::where('role_id', '=', '2')->update([
          'name' => $request->name,
       ]);
 

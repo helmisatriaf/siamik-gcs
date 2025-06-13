@@ -5,8 +5,8 @@
 <div class="container-fluid">
     <div class="row">
       <div class="col">
-        <nav aria-label="breadcrumb" class="bg-white p-3 rounded-3 mb-4">
-          <ol class="breadcrumb mb-0">
+        <nav aria-label="breadcrumb" class="p-3 rounded-3 mb-4" style="background-color: #ffde9e;border-radius: 12px;">
+          <ol class="breadcrumb mb-0" style="background-color: #fff3c0;">
             <li class="breadcrumb-item">Home</li>
             @if (session('role') == 'superadmin')
               <li class="breadcrumb-item"><a href="{{url('/superadmin/reports')}}">Report Card</a></li>
@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" style="background-color:#ffde9e;border-radius:12px;">
         <div class="card-header">
             <div class="row">
                 <div class="col-6">
@@ -113,7 +113,7 @@
         
                 @if (!empty($data['students']))
                 
-                <table class="table table-striped table-bordered bg-white" style=" width: 3000px;">
+                <table class="table table-striped table-borderer" style=" width: 3000px;background-color: #fff3c0;">
                     @if ($data['status'] == null)   
                         <!-- JIKA DATA BELUM DI SUBMIT OLEH TEACHER  -->
                         <thead>
@@ -155,7 +155,7 @@
                                 @foreach ($data['result'] as $student)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $student['student_name'] }}</td>
+                                    <td style="position: sticky; left: 0; background: #fff3c0; z-index: 2;">{{ $student['student_name'] }}</td>
                                     @foreach ($student['scores'] as $index => $score)
                                         @foreach (array_merge(['songs', 'prayer', 'colour', 'number', 'object', 'body_movement', 'colouring', 'painting', 'chinese_songs', 'ability_to_recognize_the_objects', 'able_to_own_up_to_mistakes', 'takes_care_of_personal_belongings_and_property', 'demonstrates_importance_of_self_control', 'management_emotional_problem_solving'], $data['monthlyTitle']) as $field)
                                             <td class="text-left ">
@@ -211,7 +211,7 @@
                             @foreach ($data['students'] as $student)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $student['name'] }}</td>
+                                <td style="position: sticky; left: 0; background: #fff3c0; z-index: 2;">{{ $student['name'] }}</td>
         
                                 @foreach (array_merge(['songs', 'prayer', 'colour', 'number', 'object', 'body_movement', 'colouring', 'painting', 'chinese_songs', 'ability_to_recognize_the_objects', 'able_to_own_up_to_mistakes', 'takes_care_of_personal_belongings_and_property', 'demonstrates_importance_of_self_control', 'management_emotional_problem_solving']
                                 , $data['monthlyTitle']) as $field)
@@ -300,7 +300,7 @@
                             @foreach ($data['result'] as $student)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $student['student_name'] }}</td>
+                                    <td style="position: sticky; left: 0; background: #fff3c0; z-index: 2;">{{ $student['student_name'] }}</td>
                                     @foreach ($student['scores'] as $index => $score)
                                         @foreach (array_merge(['songs', 'prayer', 'colour', 'number', 'object', 'body_movement', 'colouring', 'painting', 'chinese_songs', 'ability_to_recognize_the_objects', 'able_to_own_up_to_mistakes', 'takes_care_of_personal_belongings_and_property', 'demonstrates_importance_of_self_control', 'management_emotional_problem_solving']
                                         , $data['monthlyTitle']) as $field)

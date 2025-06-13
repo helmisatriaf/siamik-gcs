@@ -19,8 +19,8 @@
 
 <!-- Content Wrapper. Contains page content -->
 <div class="container-fluid">
-    <div class="card">
-        <div class="card-header">
+    <div class="card" style="background-color: #ffde9e;border-radius: 12px;">
+        <div class="p-3">
             @if (session('role') == 'student')
             <form class="row align-items-center" action="{{ route('student.dashboard.exam') }}" method="GET">
             @elseif (session('role') == 'parent')
@@ -67,12 +67,12 @@
     @if(sizeof($data) !== 0)
         <div class="row">
             @foreach ($data as $el)
-            <div class="col-lg-4 col-md-6 col-12 mb-3">
-                <div class="box position-relative p-3 bg-light d-flex flex-column rounded-lg shadow-lg border">
+            <div class="col-lg-4 col-md-6 col-12">
+                <div class="small-box position-relative p-3 d-flex flex-column" style="background-color: #ffde9e;border-radius: 12px;">
                     <a id="view" data-id="{{ $el->id }}" href="">
                         <div class="ribbon-wrapper ribbon-lg">
                             @if($el->is_active)
-                            <div class="ribbon bg-orange text-xs">ongoing</div>
+                            <div class="ribbon bg-dark text-xs">ongoing</div>
                             @else
                             <div class="ribbon bg-light text-xs">completed</div>
                             @endif
@@ -87,7 +87,7 @@
                             </div>
                         
                             <!-- Informasi Ujian -->
-                            <div class="pl-2">
+                            <div class="pl-2 text-dark">
                                 <p>
                                     <strong>{{ ucwords($el->type_exam) }} | {{ $el->subject_name }}</strong> <br>
                                     {{-- {{ $el->grade_name }} - {{ $el->grade_class }} <br> --}}
@@ -108,8 +108,11 @@
                                             </span>
                                             @break
                                         @default
+                                            <span class="text-sm">
+                                                Model : Scoring/Upload File <br>
+                                            </span>
                                             @break
-                                    @endswitch
+                                        @endswitch
                                     {{ ucwords($el->name_exam) }}<br>
                         
                                     <i class="fas fa-clock"></i> 
@@ -124,10 +127,10 @@
                                             {{ $dateExam->format('l, d F Y') }}
                                         </span> <br>
                                         <span class="badge bg-warning">Score: {{ $el->score }}</span>
-                                        <span class="badge bg-success"><i class="fas fa-check"></i> Completed</span>
+                                        {{-- <span class="badge bg-success"><i class="fas fa-check"></i> Completed</span> --}}
                                     @else
                                         @if ($el->is_active)
-                                            <span class="text-danger text-sm">
+                                            <span class="text-dark text-sm">
                                                 {{ $dateExam->format('l, d F Y') }}
                                             </span>  <br>
                                             @if ($daysRemaining == 0)
@@ -140,7 +143,7 @@
                                                 {{ $dateExam->format('l, d F Y') }}
                                             </span> <br>
                                             <span class="badge bg-warning">Score: {{ $el->score }}</span>
-                                            <span class="badge bg-success"><i class="fas fa-check"></i> Completed</span>
+                                            {{-- <span class="badge bg-success"><i class="fas fa-check"></i> Completed</span> --}}
                                         @endif
                                     @endif
                                 </p>
