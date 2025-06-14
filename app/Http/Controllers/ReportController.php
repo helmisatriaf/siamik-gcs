@@ -7819,7 +7819,7 @@ class ReportController extends Controller
                 ->get();
 
             $attendancesByStudent = $resultsAttendance->groupBy('student_id')->map(function($attendances) {
-            
+                
                 $totalAlpha = $attendances->where('alpha', 1)->count();
                 $totalPermission = $attendances->where('permission', 1)->count();
                 $totalAbsent = $totalAlpha + $totalPermission;
