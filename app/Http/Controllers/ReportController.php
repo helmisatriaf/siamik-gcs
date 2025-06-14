@@ -6149,8 +6149,10 @@ class ReportController extends Controller
                 ->where('student_monthly_activities.semester', $semester)
                 ->where('student_monthly_activities.academic_year', $academic_year)
                 ->select('student_monthly_activities.*', 'monthly_activities.name as name_activity')
+                ->orderBy('student_monthly_activities.created_at', 'desc')
                 ->take(3)
                 ->get();
+
             // dd($studentMonthlyActivity);
 
             $academicYear = Master_academic::first()->value('academic_year');
