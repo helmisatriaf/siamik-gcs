@@ -599,7 +599,7 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
                 </td>
             </tr> --}}
             <tr style="text-align: center;">
-                <td style="display: inline-block;padding:0px;text-align:center; width: 40%;border-top: 1px solid black;font-size:13px;" colspan="2"><b>Paren't Signature</b></td>
+                <td style="display: inline-block;padding:0px;text-align:center; width: 40%;border-top: 1px solid black;font-size:13px;" colspan="2"><b>Parent's Signature</b></td>
             </tr>
             <tr style="text-align: center;">
                 <td style="display: inline-block;padding:0px;text-align:center; width: 40%;font-size:10px;" colspan="2""><span class="noto-serif-sc-chinese"><b>家长签名</b></span></td>
