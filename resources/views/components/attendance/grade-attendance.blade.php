@@ -84,7 +84,7 @@
             </div> --}}
 
                @foreach ($data['gradeTeacher'] as $el)
-               <div class="col-md-4 col-sm-6 mb-3">
+               <div class="col-md-6 mb-3">
                   <div class="small-box zoom-hover position-relative p-3 d-flex flex-column shadow-lg border" style="background-color: #ffde9e;border-radius: 12px;">
                      <div class="ribbon-wrapper ribbon-lg">
                        <div class="ribbon bg-dark text-md">
