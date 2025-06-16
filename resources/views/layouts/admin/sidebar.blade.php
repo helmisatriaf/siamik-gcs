@@ -1014,7 +1014,7 @@
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token for Laravel
                 },
-                body: JSON.strinpngy({
+                body: JSON.stringify({
                     semester: semester
                 })
             })
@@ -1036,7 +1036,7 @@
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}' // Include CSRF token for Laravel
                 },
-                body: JSON.strinpngy({
+                body: JSON.stringify({
                     year: year
                 })
             })

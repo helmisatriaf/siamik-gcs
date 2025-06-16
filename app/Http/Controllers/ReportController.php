@@ -7107,7 +7107,7 @@ class ReportController extends Controller
             if ($checkReport == false) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'Semester report not available',
+                    'message' => 'Report card doesnt exists',
                 ]);
             }
             
@@ -7139,7 +7139,7 @@ class ReportController extends Controller
                     return redirect($role . '/dashboard');
                 }
 
-                $checkReport = Report_card::where('student_id', $getIdStudent)
+                $checkReport = Mid_report::where('student_id', $getIdStudent)
                     ->where('semester', session('semester'))
                     ->where('academic_year', session('academic_year'))->exists();
                 
@@ -7186,6 +7186,7 @@ class ReportController extends Controller
             $semester = session('semester');
             $role = session('role');
 
+            
             if ($role == "parent") {
                 $getIdStudent = session('studentId');
 

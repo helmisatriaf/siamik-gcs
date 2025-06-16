@@ -94,7 +94,7 @@ class ServiceController extends Controller
 
     public function directWhatsapp()
     {
-        $phone = User::where('username', '=', 'admin')->value('phone');
+        $phone = User::where('role_id', '=', 2)->value('phone');
         $adminPhone = "62" . $phone; // Gunakan format internasional tanpa tanda "+"
         $message = urlencode("Hello Admin, I need some help.");
         

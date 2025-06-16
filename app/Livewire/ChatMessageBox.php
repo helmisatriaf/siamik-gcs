@@ -37,7 +37,7 @@ class ChatMessageBox extends Component
             $this->message = '';
     
             // Dispatch event untuk memperbarui chat secara live
-            $this->dispatch('refreshChat');
+            // $this->dispatch('refreshChat');
         }
     }
 

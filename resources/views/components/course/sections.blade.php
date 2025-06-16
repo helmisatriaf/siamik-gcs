@@ -1371,35 +1371,47 @@
         });
     </script>
 
-    <script>
+        <script>
         // Initialize file upload interactions
         document.addEventListener('DOMContentLoaded', function() {
             const fileInput = document.getElementById('file');
             const fileInfo = document.getElementById('file-info');
             const fileName = document.getElementById('file-name');
-            const removeFileBtn = document.getElementById('remove-file');
+            const removeFileBtn = document.getElementById('btn-remove-file');
             const uploadArea = document.getElementById('upload-area');
     
             fileInput.addEventListener('change', function() {
                 const file = this.files[0];
                 const fileExtension = file.name.split('.').pop();
+                const fileSize = file.size;
 
-                if(fileExtension !== 'pdf') {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        html: `You can upload a PDF file only`,
-                        confirmButtonText: 'Oke',
-                    });
-                }else{
-                    if (this.files.length > 0) {
-                        fileName.textContent = this.files[0].name;
-                        fileInfo.classList.remove('d-none');
-                        uploadArea.classList.add('d-none');
-                    } else {
-                        resetFileUpload();
+                // if(fileSize > 10 * 1024 * 1024) { // 10 MB
+                //     Swal.fire({
+                //         icon: 'error',
+                //         title: 'Oops...',
+                //         html: `File size exceeds the maximum limit of 10 MB`,
+                //         confirmButtonText: 'Oke',
+                //     });
+                //     fileInput.value = ''; // Reset input
+                //     selectedFile.classList.add('d-none');
+                // } else {
+                    if(fileExtension !== 'pdf') {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            html: `You can upload a PDF file only`,
+                            confirmButtonText: 'Oke',
+                        });
+                    }else{
+                        if (this.files.length > 0) {
+                            fileName.textContent = this.files[0].name;
+                            fileInfo.classList.remove('d-none');
+                            uploadArea.classList.add('d-none');
+                        } else {
+                            resetFileUpload();
+                        }
                     }
-                }
+                // }
             });
     
             removeFileBtn.addEventListener('click', function() {

@@ -424,7 +424,7 @@
 
     {{-- <audio id="clickSound" src="{{ asset('music/click.mp3') }}" style="display: none;"></audio> --}}
     <!-- /.content-wrapper -->
-    <script>
+    {{-- <script>
         const topScroll = document.getElementById('scroll-top');
         const bottomScroll = document.getElementById('scroll-bottom');
 
@@ -446,7 +446,7 @@
             clickSound.currentTime = 0; // Reset audio ke awal
             clickSound.play(); // Putar suara
         });
-    </script>
+    </script> --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @livewireScripts
 </body>

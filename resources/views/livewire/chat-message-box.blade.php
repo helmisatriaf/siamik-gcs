@@ -21,11 +21,17 @@
                                     <div class="direct-chat-infos clearfix">
                                         <span class="direct-chat-name float-left">{{$chat->name}}</span>
                                     </div>
-                                    @if ($chat->user->student->profil != null)
-                                        <img class="direct-chat-img img-circle" src="{{ asset('storage/file/profile/'.$chat->user->student->profil) }}" alt="User Avatar" style="width: 45px; height: 45px;">
-                                    @else
+                                    {{-- ROLE STUDENT --}}
+                                    @if ($chat->user->role_id == 4)
+                                        @if ($chat->user->student->profil != null)
+                                            <img class="direct-chat-img img-circle" src="{{ asset('storage/file/profile/'.$chat->user->student->profil) }}" alt="User Avatar" style="width: 45px; height: 45px;">
+                                        @else
+                                            <img class="direct-chat-img img-circle" src="{{ asset('images/admin.png') }}" alt="User Avatar" style="width: 45px; height: 45px;">
+                                        @endif
+
+                                    {{-- ROLE PARENT --}}
+                                    @elseif($chat->user->role_id == 5)
                                         <img class="direct-chat-img img-circle" src="{{ asset('images/admin.png') }}" alt="User Avatar" style="width: 45px; height: 45px;">
-                                        {{-- <img class="direct-chat-img img-circle" src="{{ asset('storage/file/profile/'.$chat->profil) }}" alt="User Avatar" style="width: 45px; height: 45px;"> --}}
                                     @endif
                                     <div class="direct-chat-text">
                                         {{ $history->text }}
@@ -38,9 +44,15 @@
                                     <div class="direct-chat-infos clearfix">
                                         <span class="direct-chat-name float-right">{{$chat->name}}</span>
                                     </div>
-                                    @if ($chat->user->student->profil != null)
-                                        <img class="direct-chat-img img-circle" src="{{ asset('storage/file/profile/'.$chat->user->student->profil) }}" alt="User Avatar" style="width: 45px; height: 45px;">
-                                    @else
+                                    {{-- ROLE STUDENT --}}
+                                    @if ($chat->user->role_id == 4)
+                                        @if ($chat->user->student->profil != null)
+                                            <img class="direct-chat-img img-circle" src="{{ asset('storage/file/profile/'.$chat->user->student->profil) }}" alt="User Avatar" style="width: 45px; height: 45px;">
+                                        @else
+                                            <img class="direct-chat-img img-circle" src="{{ asset('images/admin.png') }}" alt="User Avatar" style="width: 45px; height: 45px;">
+                                        @endif
+                                    {{-- ROLE PARENT --}}
+                                    @elseif($chat->user->role_id ==  5)
                                         <img class="direct-chat-img img-circle" src="{{ asset('images/admin.png') }}" alt="User Avatar" style="width: 45px; height: 45px;">
                                     @endif
                                     <div class="direct-chat-text">{{ $history->text }}</div>
