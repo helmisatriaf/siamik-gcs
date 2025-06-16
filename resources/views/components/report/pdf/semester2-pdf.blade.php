@@ -33,15 +33,6 @@ $grade_name = $student->grade_name;
             font-style: normal;
         }
 
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@900&display=swap');
-
-        .noto-serif-sc-chinese {
-            font-family: "Noto Sans SC", sans-serif;
-            font-optical-sizing: auto;
-            font-weight: 400;
-            font-style: normal;
-        }
-
         body {
             font-family: Arial, sans-serif;
         }
