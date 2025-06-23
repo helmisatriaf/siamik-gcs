@@ -299,7 +299,7 @@
                   },
                   success: function(response) {
                      if (response.success) {
-                           window.location.href = '/' + sessionRole + '/dashboard/exam/detail';
+                           location.assign('/' + sessionRole + '/dashboard/exam/detail');
                      } else {
                            alert('Failed to set exam ID in session.');
                      }
