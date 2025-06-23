@@ -1356,7 +1356,7 @@ class ExamController extends Controller
    public function setAssessmentId(Request $request)
    {
       session(['exam_id' => $request->id]);
-      return response()->json(['success' => true]);
+      return response()->json(['success' => true, 'redirect' => url('/' . session('role') . '/dashboard/exam/detail')]);
    }
 
    public function delete(Request $request)
