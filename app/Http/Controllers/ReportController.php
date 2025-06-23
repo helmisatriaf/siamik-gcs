@@ -7174,7 +7174,7 @@ class ReportController extends Controller
             $pdf->set_option('isHtml5ParserEnabled', true);
             $pdf->loadView('components.report.pdf.mid_semester-pdf', $data)->setPaper('a5', 'portrait');
             
-            return $pdf->stream($data['student']->student_name . '_midsemester' . $semester . '.pdf');            
+            return $pdf->download($data['student']->student_name . '_midsemester' . $semester . '.pdf');            
         }   
         catch(Exception $err){
             dd($err);

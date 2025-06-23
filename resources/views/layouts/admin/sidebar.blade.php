@@ -1105,9 +1105,8 @@
                             },
                         });
                     } else {
-                        Swal.close(); // Close loading
-                        // If access is granted, open the report in a new tab
-                        window.open(originalUrl, '_blank');
+                        Swal.close();
+                        window.location.href = originalUrl;
                     }
                 },
                 error: function(xhr, status, error) {
