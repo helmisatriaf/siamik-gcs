@@ -4279,7 +4279,7 @@ class ReportController extends Controller
                 $title = str_replace(' ', '_', trim($title));
             }
             unset($title);
-
+            // dd($monthlyTitle);
             // dd($scoresByStudent);
             $data = [
                 'grade' => $grade,
@@ -6164,13 +6164,15 @@ class ReportController extends Controller
 
             $studentMonthlyActivity = Student_Monthly_Activity::join('students', 'students.id', '=', 'student_monthly_activities.student_id')
                 ->join('monthly_activities', 'monthly_activities.id', '=', 'student_monthly_activities.monthly_activity_id')
+                ->where('monthly_activities.grades', '=', 'lower')
                 ->where('student_monthly_activities.grade_id', $gradeId)
                 ->where('student_monthly_activities.semester', $semester)
                 ->where('student_monthly_activities.academic_year', $academic_year)
                 ->select('student_monthly_activities.*', 'monthly_activities.name as name_activity')
-                ->orderBy('student_monthly_activities.created_at', 'desc')
+                // ->orderBy('student_monthly_activities.created_at', 'desc')
+                ->orderBy('monthly_activities.id', 'desc')
                 ->take(3)
-                ->get();
+                ->get()->sortBy('id');
 
             // dd($studentMonthlyActivity);
 
