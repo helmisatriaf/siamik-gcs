@@ -69,7 +69,7 @@
             @foreach ($data as $el)
             <div class="col-lg-4 col-md-6 col-12">
                 <div class="small-box position-relative p-3 d-flex flex-column" style="background-color: #ffde9e;border-radius: 12px;">
-                    <a id="view" data-id="{{ $el->id }}" href="">
+                    <a id="view" data-id="{{ $el->id }}" href="javascript:void(0);">
                         <div class="ribbon-wrapper ribbon-lg">
                             @if($el->is_active)
                             <div class="ribbon bg-dark text-xs">ongoing</div>
@@ -299,7 +299,7 @@
                   },
                   success: function(response) {
                      if (response.success) {
-                           location.assign('/' + sessionRole + '/dashboard/exam/detail');
+                           window.location.href = '/' + sessionRole + '/dashboard/exam/detail';
                      } else {
                            alert('Failed to set exam ID in session.');
                      }
