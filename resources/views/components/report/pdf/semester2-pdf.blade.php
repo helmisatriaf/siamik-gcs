@@ -84,6 +84,21 @@ $grade_name = $student->grade_name;
             user-select: none; /* Teks tidak bisa disorot */
             pointer-events: none; /* Tidak mengganggu interaksi pengguna */
         }
+
+        .watermark-school {
+            position: absolute;
+            top: 40%; /* Posisi vertikal tengah */
+            left: 50%; /* Posisi horizontal tengah */
+            transform: translate(-50%, -50%) rotate(-45deg); /* Pusatkan dan rotasi */
+            font-size: 80px; /* Ukuran font */
+            color: rgba(254,147,6, 0.5); /* Warna abu-abu dengan transparansi */
+            white-space: nowrap; /* Tidak memecah teks */
+            z-index: -1; /* Pastikan di belakang konten */
+            width: 100%; /* Lebar teks */
+            text-align: center; /* Penataan teks */
+            user-select: none; /* Teks tidak bisa disorot */
+            pointer-events: none; /* Tidak mengganggu interaksi pengguna */
+        }
         
         @page {
             margin: 5mm 5mm 0mm 5mm;
@@ -94,8 +109,12 @@ $grade_name = $student->grade_name;
 <div class="container"> 
     <!-- PAGE 1 -->
         @if ($subjectReports[0]['isRestricted'] === TRUE)
-        <p class="watermark">Internal Use Only</p>  
+            <p class="watermark">Internal Use Only</p>  
         @endif
+        @if (session('role') == 'student' || session('role') == 'parent')
+            <p class="watermark-school">Great Crystal School</p> 
+        @endif
+        
         <div class="header">
             <!-- <div style="padding-left:50px;padding-right:50px;margin-bottom:5px;">
                 <img src="<?= $logo ?>" style="width:90%;height:8%;" alt="Sample image">
@@ -324,7 +343,10 @@ $grade_name = $student->grade_name;
 
     <!-- PAGE 2 -->
         @if ($subjectReports[0]['isRestricted'] === TRUE)
-        <p class="watermark">Internal Use Only</p>
+            <p class="watermark">Internal Use Only</p>
+        @endif
+        @if (session('role') == 'student' || session('role') == 'parent')
+            <p class="watermark-school">Great Crystal School</p> 
         @endif
         <div>
             <table class="table">
