@@ -346,6 +346,19 @@
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1) !important;
 }
 
+.custom-swal-schedule-detail {
+    padding: 20px;
+    background-color: #ffde9e !important;
+    color: #000 !important;
+    border: 3px solid #ffcc00 !important;
+    overflow: hidden !important;
+    display: grid !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: transform 0.3s !important;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1) !imp    ortant;
+}
+
 
 
 

@@ -24,7 +24,7 @@
     }
 
     .tutorial-container {
-        background: #ffffff;
+        background: #ffde9e;
         border-radius: 12px;
         width: 600px;
         max-width: 90vw;
@@ -59,19 +59,20 @@
         padding-top: 2rem;
         /* Added extra padding at the top */
         overflow-y: auto;
-        background: #ffffff;
+        background: #ffde9e;
         display: flex;
         flex-direction: column;
     }
 
     .page-section {
         margin-bottom: 1rem;
+        background-color: #ffde9e;
     }
 
     .page-title {
         cursor: pointer;
         padding: 0.75rem 1rem;
-        background: #f1f5f9;
+        background: #ffe8d6;
         border-radius: 6px;
         margin: 0;
         font-size: 0.95rem;
@@ -84,7 +85,7 @@
     }
 
     .page-title:hover {
-        background: #e2e8f0;
+        background: #ffcc00;
     }
 
     .tutorial-list {
@@ -113,7 +114,7 @@
     }
 
     .order-number {
-        color: #94a3b8;
+        color: #000000;
         font-size: 0.75rem;
         font-weight: 500;
     }
@@ -135,7 +136,7 @@
     }
 
     .step-counter {
-        color: #64748b;
+        color: #ffde9e;
         font-size: 0.875rem;
         font-weight: 500;
         text-align: center;
@@ -220,7 +221,7 @@
 
     /* Tutorial Description */
     .tutorial-description {
-        color: #475569;
+        color: #000000;
         line-height: 1.6;
         font-size: 0.95rem;
     }
@@ -389,17 +390,17 @@
                 </div>
             </main>
 
-            <aside class="tutorial-sidebar">
-                <nav class="tutorial-pages">
+            <aside class="tutorial-sidebar" style="background-color: #ffde9e;">
+                <nav class="tutorial-pages" style="background-color: #ffde9e;">
                     @foreach ($allTutorials as $pageName => $pageTutorials)
-                        <div class="page-section">
+                        <div class="page-section" style="background-color: #ffde9e;">
                             <h4 class="page-title" data-page="{{ $pageName }}">
                                 <i class="fas fa-chevron-right transition-transform"></i>
                                 {{ ucfirst($pageName) }}
                             </h4>
                             <div class="tutorial-list" id="tutorials-{{ $pageName }}" style="display: none;">
                                 @foreach ($pageTutorials->sortBy('order') as $tutorial)
-                                    <button class="tutorial-item w-full text-left"
+                                    <button class="tutorial-item w-full text-left text-dark "
                                         data-tutorial-id="{{ $tutorial->id }}"
                                         data-element="{{ $tutorial->element_selector }}"
                                         data-position="{{ $tutorial->position }}" data-order="{{ $tutorial->order }}"
