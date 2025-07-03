@@ -214,7 +214,7 @@
                               
                              
                              <div class="tools">
-                               <a href="/admin/exams/{{$el->id}}" target="_blank">
+                               <a href="/{{session('role')}}/exams/{{$el->id}}" target="_blank">
                                  <i class="fas fa-search"></i>
                                </a>
                              </div>

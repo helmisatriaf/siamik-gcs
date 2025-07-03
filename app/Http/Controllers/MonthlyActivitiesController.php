@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\MonthlyActivity;
+use App\Models\Master_academic;
 
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-
+use Carbon\Carbon;
+use PDO;
+use PhpOffice\PhpSpreadsheet\Calculation\DateTimeExcel\Month;
 
 class MonthlyActivitiesController extends Controller
 {
@@ -21,8 +24,28 @@ class MonthlyActivitiesController extends Controller
             ]);
 
             $data = MonthlyActivity::get();
+            $monthActive = Master_academic::where('is_use', 1)->first();
+            $monthActivity = [];
 
-            return view('components.monthlyActivities.data-monthly-activities')->with('data', $data);
+            if (session('semester') == 1) {
+                $startSemester = Carbon::parse($monthActive->semester1);
+                $endSemester = Carbon::parse($monthActive->end_semester1);
+            } elseif (session('semester') == 2) {
+                $startSemester = Carbon::parse($monthActive->semester2);
+                $endSemester = Carbon::parse($monthActive->end_semester2);
+            }
+
+            $period = \Carbon\CarbonPeriod::create($startSemester->copy()->startOfMonth(), '1 month', $endSemester->copy()->startOfMonth());
+
+            foreach ($period as $date) {
+                // Format nama bulan dalam Bahasa Indonesia
+                $monthActivity[] = ucfirst($date->translatedFormat('F'));
+            }
+
+            return view('components.monthlyActivities.data-monthly-activities', [
+                'data' => $data,
+                'monthActivity' => $monthActivity,
+            ]);
 
         } catch (Exception $err) {
             return dd($err);
@@ -49,10 +72,19 @@ class MonthlyActivitiesController extends Controller
         DB::beginTransaction();
         try {
 
+            MonthlyActivity::where('name', session('semester'))
+                ->where('academic_year', session('academic_year'))
+                ->delete();
+
+            // dd($request->monthly_activities);
             foreach($request->monthly_activities as $ma){
+                // dd($ma); 
                 MonthlyActivity::create([
                     'name' => $ma['name'],
                     'grades' => $ma['grades'],
+                    'month' => $ma['month'],
+                    'semester' => session('semester'),
+                    'academic_year' => session('academic_year'),
                 ]);
             }
             
@@ -98,9 +130,9 @@ class MonthlyActivitiesController extends Controller
             ]);
 
             $role = session('role');
-
             MonthlyActivity::where('id', $request->id)->update([
                 'name' => $request->change_name,
+                'month' => $request->month,
             ]);
     
             DB::commit();

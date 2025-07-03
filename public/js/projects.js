@@ -291,4 +291,132 @@ $(document).ready(function () {
             }
         });
     });
+    
+    $("body").on("click", "#promoted-student", function (event) {
+        event.preventDefault();
+        const value = $(this).attr("data-id");
+        const name = $(this).attr("data-name");
+        let token = $("meta[name='csrf-token']").attr("content");
+        Swal.fire({
+            title: "Are you sure want to promoted " + name + "?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, promoted it !",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    headers: {
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                            "content"
+                        ),
+                    },
+                    accepts: {
+                        mycustomtype: "application/x-some-custom-type",
+                    },
+                    url: `/superadmin/student/promoted/${value}`,
+                    type: "PATCH",
+                    cache: false,
+                    data: {
+                        id: value,
+                        _token: token,
+                    },
+                })
+                    .then((res) => {
+                        console.log(res);
+
+                        if (!res.success) {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: res.text,
+                                footer: '<a href="">Why do I have this issue?</a>',
+                            });
+                        } else {
+                            Swal.fire(
+                                "Activate!",
+                                `${name} has been promoted.`,
+                                "success"
+                            );
+
+                            $(`#index_student_${value}`).remove();
+                        }
+                    })
+                    .catch((err) => {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Something went wrong!",
+                            footer: '<a href="">Why do I have this issue?</a>',
+                        });
+                    });
+            }
+        });
+    });
+    
+    $("body").on("click", "#graduated-student", function (event) {
+        event.preventDefault();
+        const value = $(this).attr("data-id");
+        const name = $(this).attr("data-name");
+        let token = $("meta[name='csrf-token']").attr("content");
+        Swal.fire({
+            title: "Are you sure want to graduated " + name + "?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, graduated it !",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    headers: {
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                            "content"
+                        ),
+                    },
+                    accepts: {
+                        mycustomtype: "application/x-some-custom-type",
+                    },
+                    url: `/superadmin/student/graduated/${value}`,
+                    type: "PATCH",
+                    cache: false,
+                    data: {
+                        id: value,
+                        _token: token,
+                    },
+                })
+                    .then((res) => {
+                        console.log(res);
+
+                        if (!res.success) {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: res.text,
+                                footer: '<a href="">Why do I have this issue?</a>',
+                            });
+                        } else {
+                            Swal.fire(
+                                "Activate!",
+                                `${name} has been graduate.`,
+                                "success"
+                            );
+
+                            $(`#index_student_${value}`).remove();
+                        }
+                    })
+                    .catch((err) => {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Something went wrong!",
+                            footer: '<a href="">Why do I have this issue?</a>',
+                        });
+                    });
+            }
+        });
+    });
 });

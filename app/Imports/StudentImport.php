@@ -5,7 +5,7 @@ namespace App\Imports;
 use App\Models\Grade;
 use App\Models\Relationship;
 use App\Models\Student;
-use App\Models\Student_relation;
+use App\Models\Student_relationship;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Collection;
@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class StudentImport implements ToCollection
 {
@@ -22,6 +23,7 @@ class StudentImport implements ToCollection
        
        try {
           //code...
+        //   dd($row);
           
           if($row[0][0] !== 'Male') {
                DB::beginTransaction();
@@ -96,7 +98,7 @@ class StudentImport implements ToCollection
                         'grade_id' => 'integer|required',
                         'gender' => 'string|required',
                         'religion' => 'string|required',
-                        'nisn' => 'string|nullable|min:7|max:12|unique:students',
+                        // 'nisn' => 'string|nullable|min:7|max:12|unique:students',
                         'place_birth' => 'string|required',
                         'date_birth' => 'date|required',
                         'id_or_passport' => 'nullable|string|min:9|max:16|unique:students',
@@ -110,10 +112,10 @@ class StudentImport implements ToCollection
                         'father_date_birth' => 'date|required',
                         'father_id_or_passport' => 'string|required|min:12|max:16',
                         'father_nationality' => 'string|required',
-                        'father_phone' => 'nullable|string|max:15|min:6',
+                        // 'father_phone' => 'nullable|string|max:15|min:6',
                         'father_home_address' => 'required|string',
-                        'father_mobilephone' => 'required|string|max:15|min:6',
-                        'father_telephone' => 'nullable|string|max:15|min:6',
+                        // 'father_mobilephone' => 'required|string|max:15|min:6',
+                        // 'father_telephone' => 'nullable|string|max:15|min:6',
                         'father_email' => 'required|string|email',
                         //mother validation
                         'mother_name' => 'string|required|min:3',
@@ -125,11 +127,11 @@ class StudentImport implements ToCollection
                         'mother_occupation' => 'nullable|string',
                         'mother_company_name' => 'nullable|string',
                         'mother_company_address' => 'nullable|string',
-                        'mother_phone' => 'nullable|string|max:15|min:6',
+                        // 'mother_phone' => 'nullable|string|max:15|min:6',
                         'mother_home_address' => 'required|string',
-                        'mother_telephone' => 'nullable|string|max:15|min:6',
-                        'mother_mobilephone' => 'required|string|max:15|min:6',
-                        'mother_telephone' => 'nullable|string|max:15|min:6',
+                        // 'mother_telephone' => 'nullable|string|max:15|min:6',
+                        // 'mother_mobilephone' => 'required|string|max:15|min:6',
+                        // 'mother_telephone' => 'nullable|string|max:15|min:6',
                         'mother_email' => 'required|string|email',
                     ]);
 
@@ -171,6 +173,7 @@ class StudentImport implements ToCollection
                         'nationality' => $reg[8],
                         'place_of_issue' => $reg[9],
                         'date_exp' =>$reg[10] ? $this->dateFormated($reg[10]) : null,
+                        'is_graduate' => false,
                     ]);
 
                     $credentialsFather = [
@@ -218,8 +221,8 @@ class StudentImport implements ToCollection
                      $father = $checkIdFather && $checkIdFather->relation == 'father'? $this->updateRelation($checkIdFather->id, $credentialsFather) : Relationship::create($credentialsFather);
                      $mother = $checkIdMother && $checkIdMother->relation == 'mother'? $this->updateRelation($checkIdMother->id, $credentialsMother) : Relationship::create($credentialsMother);
             
-                     Student_relation::create(['student_id' => $student->id,'relation_id' => $father->id]);
-                     Student_relation::create(['student_id' => $student->id,'relation_id' => $mother->id]);
+                     Student_relationship::create(['student_id' => $student->id,'relation_id' => $father->id]);
+                     Student_relationship::create(['student_id' => $student->id,'relation_id' => $mother->id]);
 
                      
                     }
@@ -236,7 +239,7 @@ class StudentImport implements ToCollection
             }
 
         } catch (Exception $th) {
-
+            dd($th);
             info('masuk error'. json_encode($th));
             
             session()->flash('import_status', [ 
@@ -249,12 +252,16 @@ class StudentImport implements ToCollection
 
 
     public function dateFormated($date): string {
+        
+        // dd($date);
+        // $filter = str_replace('=DATE(', '', $date);
+        // $filter = str_replace(')', '', $filter);
+        // $n = explode(',', $filter);
+        // dd($filter);
 
-        $filter = str_replace('=DATE(', '', $date);
-        $filter = str_replace(')', '', $filter);
-
-        $n = explode(',', $filter);
-        $createDate = Carbon::create($n[0], $n[1], $n[2])->format('Y-m-d');
+        $createDate = Date::excelToDateTimeObject($date)->format('Y-m-d');
+        // dd($createDate);
+        // $createDate = Carbon::create($n[0], $n[1], $n[2])->format('Y-m-d');
 
         return $createDate;
     }

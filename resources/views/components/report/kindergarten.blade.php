@@ -289,10 +289,17 @@
         
                                         @if ($data['status'] !== null)
                                         <td>
-                                            <a class="btn btn-primary btn"
-                                                href="{{url('teacher/dashboard/report/kindergarten/print') . '/' . $student['student_id']}}">
-                                                Print
-                                            </a>
+                                            @if (session('role') == 'teacher')
+                                                <a class="btn btn-primary btn"
+                                                    href="{{url('teacher/dashboard/report/kindergarten/print') . '/' . $student['student_id']}}">
+                                                    Print
+                                                </a>
+                                            @else
+                                                <a class="btn btn-primary btn"
+                                                    href="{{url( session('role').'/reports/kindergarten/print') . '/' . $student['student_id']}}">
+                                                    Print
+                                                </a>
+                                            @endif
                                         </td>
                                         @endif
                                     @endforeach

@@ -210,17 +210,14 @@
                             <td>
                                 <a>
                                     {{$el->grade->name}}
-                            </a>
+                                </a>
                             </td>
                             <td>
                             {{$el->grade->class}}
                             </td>
                             <td class="project-state">
                             @if ($el->is_graduate)
-                                
-
                                 <h1 class="badge badge-info">Graduated</h1>
-
                             @else
                                 
                                 @if($el->is_active)
@@ -237,7 +234,7 @@
                                     </i>
                                     View
                                 </a>
-                        @if($el->is_active)
+                            @if($el->is_active)
                             <a class="btn btn-warning {{session('role') == 'admin'? 'btn' : 'btn-sm'}}" href="update/{{$el->unique_id}}">
                                 <i class="fas fa-pencil-alt">
                                 </i>
@@ -245,24 +242,34 @@
                             </a>
                             @endif
                             @if(session('role') == 'superadmin' && $el->is_active)
-                                <a href="javascript:void(0)" id="delete-student" data-id="{{ $el->id }}" data-name="{{ $el->name }}" class="btn btn-danger btn-sm">
-                                    <i class="fas fa fa-ban">
+                            <a href="javascript:void(0)" id="delete-student" data-id="{{ $el->id }}" data-name="{{ $el->name }}" class="btn btn-danger btn-sm">
+                                <i class="fas fa fa-ban">
+                                </i>
+                                Deactive
+                            </a>
+                            @elseif ($el->is_graduate && (sizeof($grades) > $el->grade_id))
+                                <a href="/admin/student/re-registration/{{$el->unique_id}}" class="btn btn-dark btn-sm">
+                                    <i class="fas fa fa-register">
                                     </i>
-                                    Deactive
+                                    Re-registration
                                 </a>
-                                @elseif ($el->is_graduate && (sizeof($grades) > $el->grade_id))
-                                    <a href="/admin/student/re-registration/{{$el->unique_id}}" class="btn btn-dark btn-sm">
-                                        <i class="fas fa fa-register">
-                                        </i>
-                                        Re-registration
-                                    </a>
-                                @elseif (session('role') == 'superadmin' && !$el->is_graduate )
-                                        <a href="javascript:void(0)" id="active-student" data-id="{{ $el->id }}" data-name="{{ $el->name }}" class="btn btn-success btn-sm">
-                                            <i class="fas fa fa-register">
-                                            </i>
-                                            Activate
+                            @elseif (session('role') == 'superadmin' && !$el->is_graduate )
+                                <a href="javascript:void(0)" id="active-student" data-id="{{ $el->id }}" data-name="{{ $el->name }}" class="btn btn-success btn-sm">
+                                    <i class="fas fa fa-register">
+                                    </i>
+                                    Activate
                                 </a>
                             @endif
+                                <a href="javascript:void(0)" id="promoted-student" data-id="{{ $el->id }}" data-name="{{ $el->name }}" class="btn btn-success btn-sm">
+                                    <i class="fas fa fa-register">
+                                    </i>
+                                    Promoted
+                                </a>
+                                <a href="javascript:void(0)" id="graduated-student" data-id="{{ $el->id }}" data-name="{{ $el->name }}" class="btn btn-success btn-sm">
+                                    <i class="fas fa fa-register">
+                                    </i>
+                                    Graduated
+                                </a>
                             </td>
                         </tr>
                         

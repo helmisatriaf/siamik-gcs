@@ -37,7 +37,7 @@ class SuperAdminController extends Controller
       }
    }
 
-   public function getUser()
+   public function getUser(Request $request)
    {
       try {
          session()->flash('preloader', false);
@@ -45,8 +45,13 @@ class SuperAdminController extends Controller
             'page' => 'user',
             'child' => 'database user',
          ]);
-         //code...
+         
          $user = Auth::user();
+
+         $form = (object) [
+            'role' => $request->role && $request->role !== 'all'? $request->role : null,
+            'search' => $request->search? $request->search : null,
+         ];
 
          // $st = Student::where('is_active', true)->get();
          // foreach($st as $student){
@@ -98,15 +103,31 @@ class SuperAdminController extends Controller
          //    Relationship::where('id', $parent->id)->update(['user_id' => $userParent->id]);
          // }
 
-         $data = User::with(['role'])
-            ->when(request('role_id') == 3, fn($q) => $q->with('teacher'))
-            // ->when(request('role_id') == 4, fn($q) => $q->with(['student.grade' => function ($query) {
-            //    $query->select('id', 'name', 'class'); // Ambil hanya name dan class
-            // }]))
-            // ->when(request('role_id') == 5, fn($q) => $q->with(['relationship.student.grade' => function ($query) {
-            //    $query->select('id', 'name', 'class'); // Ambil hanya name dan class dari student
-            // }]))
+         $data = User::with(['role']);
+           
+         if($form->search || $form->role){
+         // ->when(request('role_id') == 4, fn($q) => $q->with(['student.grade' => function ($query) {
+         //    $query->select('id', 'name', 'class'); // Ambil hanya name dan class
+         // }]))
+         // ->when(request('role_id') == 5, fn($q) => $q->with(['relationship.student.grade' => function ($query) {
+         //    $query->select('id', 'name', 'class'); // Ambil hanya name dan class dari student
+         // }]))
+         
+            if($form->role){
+               $data->where('role_id', $form->role);
+            }
+
+            if($form->search){
+               $data->where('username','LIKE','%'. $request->search .'%');
+            }
+            
+
+            $data = $data->when(request('role_id') == 3, fn($q) => $q->with('teacher'))
             ->take(10)->paginate(20);
+         }else{
+            $data = $data->when(request('role_id') == 3, fn($q) => $q->with('teacher'))
+            ->take(10)->paginate(20);
+         }
 
          // Looping untuk menggabungkan name dan class menjadi satu
          $data->getCollection()->transform(function ($user) {
@@ -119,7 +140,6 @@ class SuperAdminController extends Controller
             return $user;
          });
 
-         // dd($data);
 
          $students = User::with(['role'])->where('role_id', 4)->take(15)->get();
          // $parents = User::with(['role', 'relationship.student'])
@@ -134,15 +154,14 @@ class SuperAdminController extends Controller
          return view('components.super.data-user', [
             "data" => $data,
             "students" => $students,
+            "form" => $form,
             // "parents" => $parents,
          ]);
       
-      } catch (Exception $err) {
-         
+      } catch (Exception $err) { 
          return dd($err);
       }
    }
-
 
    public function getById($id)
    {
@@ -211,6 +230,39 @@ class SuperAdminController extends Controller
          else{
             return redirect('/superadmin/users');
          }
+      } catch (Exception $th) {
+         //throw $th;
+         return dd($th);
+      }
+   }
+
+   public function changeUsername(Request $request, $id)
+   {
+      try {
+         //code...
+         session()->flash('preloader', false);
+         session()->flash('page',  $page = (object)[
+            'page' => 'user',
+            'child' => 'database user',
+         ]);
+         
+         $checkUsername = User::where('username', $request->username)->exists();
+
+         if($checkUsername){
+            session()->flash('username.success', false);
+            session()->flash('error.type.username', 'Username already exists !!!');
+            session()->flash('error.username', false);
+            
+            return redirect()->back();
+         }else{
+            User::where('id', $id)->update([
+               'username' => $request->username,
+            ]);
+      
+            session()->flash('username.success');
+            return redirect()->back();
+         }
+         
       } catch (Exception $th) {
          //throw $th;
          return dd($th);

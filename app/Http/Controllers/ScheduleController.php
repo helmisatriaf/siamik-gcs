@@ -166,7 +166,7 @@ class ScheduleController extends Controller
             ->join('subjects', 'subject_exams.subject_id', '=', 'subjects.id')
             ->join('teachers', 'exams.teacher_id', '=', 'teachers.id')
             ->join('type_exams', 'exams.type_exam', '=', 'type_exams.id')
-            // ->where('exams.is_active', 1)
+            ->where('exams.is_active', 1)
             ->where('exams.academic_year', session('academic_year'))
             ->select('exams.*', 'grades.name as grade_name', 'grades.class as grade_class', 'subjects.name_subject as subject_name', 'teachers.name as teacher_name', 'type_exams.name as type_exam')
             ->get();
@@ -197,11 +197,8 @@ class ScheduleController extends Controller
 
 
          $typeSchedule = Type_schedule::where('name', '!=', 'Lesson')->get();
-
-         // dd($finalExam);
-
+ 
          return view('components.schedule.schedule', compact('exams', 'schedules', 'midExam', 'finalExam'))->with('data', $typeSchedule);
-
       } catch (Exception $err) {
          return dd($err);
       }
@@ -2175,6 +2172,8 @@ class ScheduleController extends Controller
 
          // Query schedule
          $gradeSchedule = Schedule::where('grade_id', $getGradeId)
+            ->where('schedules.semester', $semester)
+            ->where('schedules.academic_year', session('academic_year'))
             ->where('schedules.type_schedule_id', $typeExam)
             ->join('grades', 'grades.id', '=', 'schedules.grade_id')
             ->leftJoin('teachers', function ($join) {

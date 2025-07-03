@@ -36,3 +36,7 @@
 
 {{-- MOMENT --}}
 <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+
+{{-- Summernote --}}
+{{-- <link rel="stylesheet" href={{asset('assets/vendors/summernote/summernote-lite.min.css')}}> --}}
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">

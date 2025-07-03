@@ -46,9 +46,8 @@ class Import extends Controller
 
             $event = Excel::import(new StudentImport, $request->file('import_student'));
 
-            return redirect('/admin/register/imports')->with('status', 'success');
+            return redirect('/' . session('role') . '/register/imports')->with('status', 'success');
 
-            //code...
         } catch (Exception $err) {
             return dd($err);
         }

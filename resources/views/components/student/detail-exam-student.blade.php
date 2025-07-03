@@ -129,7 +129,11 @@
                         <div class="user-block">
                           <img class="img-circle img-bordered-sm" src="{{asset('storage/file/profile/'. $profile)}}" alt="user image">
                           <span class="username">
-                            <a class="text-muted" href="#">{{$name}}</a>
+                            @if (session('role') == 'parent')
+                              <a class="text-muted" href="#">{{$studentName}}</a>
+                            @elseif(session('role') == 'student')
+                              <a class="text-muted" href="#">{{$name}}</a>
+                            @endif
                           </span>
                           <span class="description">Collection time - {{ \Carbon\Carbon::parse($statusQuestion->created_at)->format('d M Y H:i') }}</span>
                         </div>

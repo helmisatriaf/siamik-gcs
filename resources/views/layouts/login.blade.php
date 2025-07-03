@@ -153,15 +153,23 @@
                 </div>
 
                 <!-- Password input -->
-                <div class="form-outline">
-                  <label class="form-label text-dark" for="form3Example4">Password</label>
-                    <input type="password" id="password-desktop" class="form-control form-control-lg" style="border-radius: 12px;"
-                    placeholder="Enter password" name="password" autocomplete="off" value="{{old('password')}}"/>
-                </div>
+                <div class="form-outline position-relative">
+                  <label class="form-label text-dark" for="password-desktop">Password</label>
+                  <input type="password" id="password-desktop" class="form-control form-control-lg" style="border-radius: 12px;"
+                    placeholder="Enter password" name="password" autocomplete="off" value="{{ old('password') }}" />
+
+                  <button type="button" class="position-absolute" 
+                    style="top: 34px; right: 10px; border: none;" 
+                    onclick="togglePassword('password-desktop', this)">
+                    🔓
+                  </button>
+              </div>
+
+
 
                 <div class="d-flex justify-content-between align-items-center">
                   <!-- Checkbox -->
-                  <div class="form-check mb-0">
+                  <div class="form-check my-2">
                     <input class="form-check-input me-2" type="checkbox" value="" id="remember-desktop" />
                     <label class="form-check-label text-dark" for="remember-desktop">
                         Remember me
@@ -194,6 +202,20 @@
     //   }
     // }
   </script>
+
+  <script>
+    function togglePassword(inputId, btn) {
+        const input = document.getElementById(inputId);
+        if (input.type === "password") {
+            input.type = "text";
+            btn.innerHTML = "🔐";
+        } else {
+            input.type = "password";
+            btn.innerHTML = "🔓";
+        }
+    }
+  </script>
+
 
   @if ($errors->any())
     @if($errors->first('invalid'))

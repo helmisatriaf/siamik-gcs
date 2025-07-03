@@ -152,8 +152,22 @@ class UserController extends Controller
          }
          if($checkRole == 'parent') {  
             $id           = Relationship::where('user_id', session('id_user'))->value('id');
-            $getIdStudent = Student_relationship::where('relation_id', $id)->value('student_id');
+            $getIdStudent = Student_relationship::where('relation_id', $id)->pluck('student_id')->toArray();
+            $getDataStudent = Student::whereIn('students.id', $getIdStudent)
+               ->leftJoin('grades', 'grades.id', '=', 'students.grade_id')
+               ->select(
+                  'students.name as student_name',
+                  'students.id as student_id',
+                  'students.gender as gender',
+                  'grades.id as grade_id',
+                  'grades.name as grade_name',
+                  'grades.class as grade_class'
+               )
+               ->orderBy('grades.class', 'asc')
+               ->take(1)
+               ->get();
 
+            $getIdStudent = $getDataStudent->value('student_id');
             session()->put([
                'studentId' => $getIdStudent,
             ]); 
@@ -356,7 +370,6 @@ class UserController extends Controller
          return dd($th);
       }
    }
-
 
    public function changeProfile(Request $request){
       try{

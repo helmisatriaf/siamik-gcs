@@ -583,7 +583,7 @@
                                     @if ($assessment->hasFile == 1)
                                         <div
                                             class="activity-item shadow-soft mb-2 p-4 border d-flex flex-column position-relative" style="background-color: #ffe8d6;">
-                                            <a @if (session('role') == 'admin' || session('role') == 'superadmin') href="{{ url('/' . session('role') . '/dashboard/exam/detail/' . $assessment->id) }}"
+                                            <a @if (session('role') == 'admin' || session('role') == 'superadmin') href="{{ url('/' . session('role') . '/exams/' . $assessment->id) }}"
                                             @elseif (session('role') == 'teacher')
                                                 href="/teacher/dashboard/exam/detail/{{ $assessment->id }}"
                                             @else
@@ -658,7 +658,7 @@
                                     @else
                                         <div
                                             class="activity-item shadow-soft mb-2 p-4 d-flex flex-column position-relative" style="background-color: #ffe8d6;">
-                                            <a @if (session('role') == 'admin' || session('role') == 'superadmin') href="{{ url('/' . session('role') . '/dashboard/exam/detail/' . $assessment->id) }}"
+                                            <a @if (session('role') == 'admin' || session('role') == 'superadmin') href="{{ url('/' . session('role') . '/exams/' . $assessment->id) }}"
                                                 @elseif (session('role') == 'teacher')
                                                     href="/teacher/dashboard/exam/detail/{{ $assessment->id }}"
                                                 @else

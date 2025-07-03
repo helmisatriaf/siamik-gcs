@@ -103,9 +103,9 @@
         <div class="card-body">
             <div style="overflow-x: auto;">
                 @if (session('role') == 'superadmin')
-                    <form id="confirmForm"  method="POST">
+                    <form id="confirmForm"  method="POST" action="{{url('superadmin/reports/report/nursery')}}">
                 @elseif (session('role') == 'admin')
-                    <form id="confirmForm" method="POST">
+                    <form id="confirmForm" method="POST" action="{{url('admin/reports/report/nursery')}}">
                 @elseif (session('role') == 'teacher')
                     <form id="confirmForm" method="POST" action={{route('actionTeacherPostReportCardNursery')}}>
                 @endif
@@ -323,14 +323,24 @@
                                             @if ($data['mid'] == 0)
                                                 <td>
                                                     <a class="btn btn-primary btn"
-                                                        href="{{url('teacher/dashboard/report/nursery/print') . '/' . $student['student_id']}}">
+                                                    @if (session('role') == 'teacher')
+                                                        href="{{url('teacher/dashboard/report/nursery/print') . '/' . $student['student_id']}}"
+                                                    @else
+                                                        href="{{url( session('role'). '/reports/report/nursery/print') . '/' . $student['student_id']}}"
+                                                    @endif
+                                                        >
                                                         Print
                                                     </a>
                                                 </td>
                                             @else
                                                 <td>
                                                     <a class="btn btn-primary btn"
-                                                        href="{{url('teacher/dashboard/report/mid/nursery/print') . '/' . $student['student_id']}}">
+                                                        @if (session('role') == 'teacher')
+                                                            href="{{url('teacher/dashboard/report/mid/nursery/print') . '/' . $student['student_id']}}"
+                                                        @else
+                                                            href="{{url( session('role'). '/reports/report/mid/nursery/print') . '/' . $student['student_id']}}"
+                                                        @endif
+                                                        >
                                                         Print
                                                     </a>
                                                 </td>

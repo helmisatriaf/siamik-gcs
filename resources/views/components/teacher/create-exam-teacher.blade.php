@@ -367,6 +367,8 @@
    </div>
 </section>
 
+<script src={{asset('assets/vendors/summernote/summernote-lite.min.js')}}></script>
+
 <script>
    var gradeSelect   = document.getElementById("grade_id");
    var subjectSelect = document.getElementById("subject_id");
@@ -554,7 +556,7 @@
             mcSection.innerHTML += `
                   <div class="card p-3 mb-2">
                      <label>Question ${i + 1}</label>
-                     <textarea id="froala-editor" name="question_mc[${i}][question]"></textarea>
+                     <textarea class="summernote" name="question_mc[${i}][question]"></textarea>
                      <div class="mt-2">
                         <label>Options:</label>
                         <input type="text" name="question_mc[${i}][answer][a]" class="form-control" placeholder="Option A" required>
@@ -581,14 +583,15 @@
             essaySection.innerHTML += `
                   <div class="card p-3 mb-2">
                      <label>Question ${i + 1}</label>
-                     <textarea id="froala-editor" name="essay[${i}][question]"></textarea>
+                     <textarea class="summernote" name="essay[${i}][question]"></textarea>
                      <label class="mt-2">Answer Key:</label>
                      <input type="text" name="essay[${i}][answer]" class="form-control" placeholder="Enter correct answer" required>
                   </div>
             `;
          }
          questionContainer.appendChild(essaySection);
-         setTimeout(initializeFroalaEditor, 100);
+         console.log(typeof $.fn.summernote)
+         setTimeout(initializeSummerNote, 300);
       }
       else if(model == "mc"){
          let mc = document.getElementById("just_mc").value;
@@ -603,7 +606,7 @@
             mcSection.innerHTML += `
                   <div class="card p-3 mb-2">
                      <label>Question ${i + 1}</label>
-                     <textarea id="froala-editor" name="question_mc[${i}][question]"></textarea>
+                     <textarea class="summernote" name="question_mc[${i}][question]"></textarea>
                      <div class="mt-2">
                         <label>Options:</label>
                         <input type="text" name="question_mc[${i}][answer][a]" class="form-control" placeholder="Option A" required>
@@ -622,7 +625,7 @@
             `;
          }
          mcContainer.appendChild(mcSection);
-         setTimeout(initializeFroalaEditor, 100);
+         setTimeout(initializeSummerNote, 300);
       }
       else if(model == "essay"){
          let essayCount = document.getElementById("just_essay").value;
@@ -637,30 +640,41 @@
             essaySection.innerHTML += `
                   <div class="card p-3 mb-2">
                      <label>Question ${i + 1}</label>
-                     <textarea id="froala-editor" name="essay[${i}][question]"></textarea>
+                     <textarea class="summernote" name="essay[${i}][question]"></textarea>
                      <label class="mt-2">Answer Key:</label>
                      <input type="text" name="essay[${i}][answer]" class="form-control" placeholder="Enter correct answer" required>
                   </div>
             `;
          }
          questionContainer.appendChild(essaySection);
-         setTimeout(initializeFroalaEditor, 100);
+         setTimeout(initializeSummerNote, 300);
       }
    }
    // END COMBINE
 
-   // Fungsi untuk menginisialisasi CKEditor setelah textarea dibuat
-   function initializeFroalaEditor() {
-      new FroalaEditor("textarea#froala-editor", 
-      {
-         imageUploadURL: "/upload-image-question", // Endpoint Laravel
-         imageUploadMethod: "POST",
-         imageAllowedTypes: ["jpeg", "jpg", "png", "gif"],
-         imageUploadParams: {
-            _token: document.querySelector('meta[name="csrf-token"]').getAttribute("content"), // Kirim CSRF Token
-         },
+   function initializeSummerNote() {
+      $('.summernote').summernote({
+         tabsize: 2,
+         height: 120,
+      })
+      $("#hint").summernote({
+         height: 100,
+         toolbar: false,
+         placeholder: 'type with apple, orange, watermelon and lemon',
+         hint: {
+            words: ['apple', 'orange', 'watermelon', 'lemon'],
+            match: /\b(\w{1,})$/,
+            search: function(keyword, callback) {
+               callback($.grep(this.words, function(item) {
+                  return item.indexOf(keyword) === 0;
+               }));
+            }
+         }
       });
    }
+
+
+   
 
    function clearForm(containerId) {
       let container = document.getElementById(containerId);
@@ -675,7 +689,6 @@
    }
 
 </script>
-
 
 
 @endsection

@@ -62,6 +62,7 @@ class ReportController extends Controller
 
             $other = Grade::with(['student', 'subject'])
                 ->join('teacher_grades', 'teacher_grades.grade_id', '=', 'grades.id')
+                ->where('teacher_grades.academic_year', session('academic_year'))
                 ->leftJoin('teachers', function ($join) {
                     $join->on('teachers.id', '=', 'teacher_grades.teacher_id');
                 })
@@ -83,6 +84,7 @@ class ReportController extends Controller
 
             $primary  = Grade::with(['student', 'subject'])
                 ->join('teacher_grades', 'teacher_grades.grade_id', '=', 'grades.id')
+                ->where('teacher_grades.academic_year', session('academic_year'))
                 ->leftJoin('teachers', function ($join) {
                     $join->on('teachers.id', '=', 'teacher_grades.teacher_id');
                 })
@@ -106,6 +108,7 @@ class ReportController extends Controller
 
             $secondary = Grade::with(['student', 'subject'])
                 ->join('teacher_grades', 'teacher_grades.grade_id', '=', 'grades.id')
+                ->where('teacher_grades.academic_year', session('academic_year'))
                 ->leftJoin('teachers', function ($join) {
                     $join->on('teachers.id', '=', 'teacher_grades.teacher_id');
                 })
@@ -1706,8 +1709,6 @@ class ReportController extends Controller
                 'promote' => $promoteGrade,
                 'status' => $status,
             ];
-
-            // dd($data);
 
             return view('components.report.tcop')->with('data', $data);
         } catch (Exception $err) {
@@ -4582,6 +4583,8 @@ class ReportController extends Controller
                 ->select('student_monthly_activities.*', 'monthly_activities.name as name_activity')
                 ->get();
 
+            // dd($studentMonthlyActivity);
+
             // dd($semester);
             $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) use ($studentMonthlyActivity) {
                 $student = $scores->first();
@@ -4637,15 +4640,36 @@ class ReportController extends Controller
                 ->where('class_teacher_id', $classTeacher->teacher_id)
                 ->first();
 
-            $monthly = MonthlyActivity::where('grades', '=', 'lower')->get();
-            $monthlyTitle = MonthlyActivity::where('grades', '=', 'lower')->pluck('name')->toArray();
+            $data = MonthlyActivity::get();
+            $monthActive = Master_academic::where('is_use', 1)->first();
+            $monthActivity = [];
 
+            if (session('semester') == 1) {
+                $startSemester = Carbon::parse($monthActive->semester1);
+                $endSemester = Carbon::parse($monthActive->end_semester1);
+            } elseif (session('semester') == 2) {
+                $startSemester = Carbon::parse($monthActive->semester2);
+                $endSemester = Carbon::parse($monthActive->end_semester2);
+            }
+
+            $period = \Carbon\CarbonPeriod::create($startSemester->copy()->startOfMonth(), '1 month', $endSemester->copy()->startOfMonth());
+
+            foreach ($period as $date) {
+                // Format nama bulan dalam Bahasa Indonesia
+                $monthActivity[] = ucfirst($date->translatedFormat('F'));
+            }
+
+            $monthly = MonthlyActivity::where('grades', '=', 'lower')->whereIn('month', $monthActivity)->take(3)->get();
+            $monthlyTitle = MonthlyActivity::where('grades', '=', 'lower')->whereIn('month', $monthActivity)->take(3)->pluck('name')->toArray();
+
+            // dd($monthlyTitle);
             foreach ($monthlyTitle as &$title) {
                 $title = str_replace(' ', '_', trim($title));
             }
             unset($title); // Hapus referensi untuk menghindari bug
 
             // dd($scoresByStudent);
+
             $data = [
                 'grade' => $grade,
                 'students' => $student,

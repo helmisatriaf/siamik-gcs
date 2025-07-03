@@ -285,7 +285,7 @@
                         <!-- /.card-body students -->
 
 
-                        {{-- @php
+                        @php
                         foreach ($data->student->relationship as $key => $value) {
                         if( strtolower($value->relation) === 'father')
                         {
@@ -296,7 +296,7 @@
                         }
                         @endphp
 
-                        @if(empty($data->student->relationship))
+                        @if(!empty($data->student->relationship))
                         <div class="card card-dark">
                             <div class="card-header">
                                 <h3 class="card-title">Father's</h3>
@@ -514,11 +514,11 @@
                                     </div>
                                 </div>
                             </div>
-                        </div> --}}
+                        </div> 
                         <!-- /.card-body father -->
 
 
-                        {{-- <div class="card card-dark">
+                        <div class="card card-dark">
                             <div class="card-header">
                                 <h3 class="card-title">Mother's</h3>
                             </div>
@@ -568,7 +568,7 @@
                                             $mother->religion;
                                             @endphp
 
-                                            <option selected>{{$mother_religion}}</option>
+                                            <option selected>{{$mother_religion}}</option>  
 
                                             @if ($mother_religion)
 
@@ -736,7 +736,7 @@
                             </div>
                         </div>
                         @else
-                        @endif --}}
+                        @endif
                 </div>
                 <!-- /.card-body Brother or sisters -->
 

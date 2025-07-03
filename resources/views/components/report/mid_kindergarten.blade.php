@@ -350,14 +350,24 @@
                                             @if ($data['mid'] == 0)
                                                 <td>
                                                     <a class="btn btn-primary btn"
-                                                        href="{{url('teacher/dashboard/report/kindergarten/print') . '/' . $student['student_id']}}">
-                                                        Print
+                                                        @if (session('role') == 'teacher')
+                                                            href="{{url('teacher/dashboard/report/kindergarten/print') . '/' . $student['student_id']}}"
+                                                        @else
+                                                            href="{{url(session('role') . '/' . 'reports/report//kindergarten/print') . '/' . $student['student_id']}}"
+                                                        @endif   
+                                                    >
+                                                        Print    
                                                     </a>
                                                 </td>
                                             @else
                                                 <td>
                                                     <a class="btn btn-primary btn"
-                                                        href="{{url('teacher/dashboard/report/mid/kindergarten/print') . '/' . $student['student_id']}}">
+                                                        @if (session('role') == 'teacher')
+                                                            href="{{url('teacher/dashboard/report/mid/kindergarten/print') . '/' . $student['student_id']}}"
+                                                        @else    
+                                                            href="{{url(session('role') . '/' . 'reports/report/mid/kindergarten/print') . '/' . $student['student_id']}}"
+                                                        @endif
+                                                    >
                                                         Print
                                                     </a>
                                                 </td>

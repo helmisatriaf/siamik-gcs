@@ -24,50 +24,57 @@
     <div class="card">
         <div class="card-header">
             <div class="row">
-                <div class="col-11 col-md-10">
-                    <p class="text-bold">The Certificate of Promotion</p>
-                    <table>
-                        <tr>
-                            <td>Class</td>
-                            <td> : {{ $data['grade']->grade_name }} - {{ $data['grade']->grade_class }}</td>
-                        </tr>
-                        <tr>
-                            <td>Class Teacher</td>
-                            <td> : {{ $data['classTeacher']->teacher_name }}</td>
-                        </tr>
-                        <tr>
-                            <td>Date</td>
-                            <td> : {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</td>
-                        </tr>
-                        @if($data['status'] !== null)  
-                        <tr>
-                            <td>Status</td>
-                            <td> : <span class="text-bold">
-                                Already Submitted on {{ \Carbon\Carbon::parse($data['status']->created_at)->format('l, d F Y') }}
-                                </span> 
-                            </td>
-                        </tr>
+                    <div class="col-11 col-md-10">
+                        <p class="text-bold">The Certificate of Promotion</p>
+                        <table>
+                            <tr>
+                                <td>Class</td>
+                                <td> : {{ $data['grade']->grade_name }} - {{ $data['grade']->grade_class }}</td>
+                            </tr>
+                            <tr>
+                                <td>Class Teacher</td>
+                                <td> : {{ $data['classTeacher']->teacher_name }}</td>
+                            </tr>
+                            <tr>
+                                <td>Date</td>
+                                <td> : {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</td>
+                            </tr>
+                            @if($data['status'] !== null)  
+                            <tr>
+                                <td>Status</td>
+                                <td> : <span class="text-bold">
+                                    Already Submitted on {{ \Carbon\Carbon::parse($data['status']->created_at)->format('l, d F Y') }}
+                                    </span> 
+                                </td>
+                            </tr>
+                            @endif
+                        </table>
+                    </div>
+                    <div class="col-1 col-md-2 d-flex justify-content-end align-items-start text-end">
+                        @if ($data['status'] == null)
+                            @if (!empty($data['students']))
+                                <a class="btn btn-app bg-success" data-toggle="modal" data-target="#confirmModal">
+                                    <i class="fas fa-save"></i>
+                                    Submit
+                                </a>
+                            @endif
+                        @elseif ($data['status'] !== null)    
+                            @if (session('role') == 'superadmin' || session('role') == 'admin' || session('role') == 'teacher')
+                                <a  class="btn btn-app bg-danger" data-toggle="modal" data-target="#modalDecline">
+                                    <i class="fas fa-cancel"></i>
+                                    Decline
+                                </a>
+                            @endif
                         @endif
-                    </table>
-                </div>
 
-                <div class="col-1 col-md-2 d-flex justify-content-end align-items-start text-end">
-                    @if ($data['status'] == null)
-                        @if (!empty($data['students']))
-                            <a class="btn btn-app bg-success" data-toggle="modal" data-target="#confirmModal">
+                        @if (session('role') == 'superadmin')
+                            <a class="btn btn-app bg-success" data-toggle="modal" data-target="#modalPromoted">
                                 <i class="fas fa-save"></i>
-                                Submit
+                                Promoted
                             </a>
                         @endif
-                    @elseif ($data['status'] !== null)    
-                        @if (session('role') == 'superadmin' || session('role') == 'admin' || session('role') == 'teacher')
-                            <a  class="btn btn-app bg-danger" data-toggle="modal" data-target="#modalDecline">
-                                <i class="fas fa-cancel"></i>
-                                Decline
-                            </a>
-                        @endif
-                    @endif
-                </div>
+                    </div>
+
             </div>
         </div>
 
@@ -112,7 +119,7 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $student['student_name'] }}
-                                    <input name="student_id[]" type="number" class="form-control d-none" id="student_id" value="{{ $student['student_id'] }}">    
+                                    <input name="student_id[]" type="number" class="form-control d-none" id="student_id_{{$student['student_id']}}" value="{{ $student['student_id'] }}">    
                                     </td>
         
                                     @php
@@ -201,7 +208,7 @@
 
 <!-- Decline -->
 <div class="modal fade" id="modalDecline" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">Decline TCOP</h5>
@@ -213,6 +220,25 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 <a class="btn btn-danger btn" id="confirmDecline">Yes</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Promoted -->
+<div class="modal fade" id="modalPromoted" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Promoted Student</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">Are you sure want to promoted student in this class ?</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn" id="confirmPromoted">Yes</a>
             </div>
         </div>
     </div>
@@ -245,6 +271,17 @@
             }            
         });
     });
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        $('#modalPromoted').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var id = @json($data['grade']->grade_id);
+
+            var confirmPromoted = document.getElementById('confirmPromoted');
+            confirmPromoted.href = "{{ url('/' . session('role') . '/student/promoted/tcop/') }}/" + id;
+
+        });
+    });
 </script>
 
 <link rel="stylesheet" href="{{asset('template')}}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
@@ -269,6 +306,18 @@
             icon: 'success',
             title: 'Successfully',
             title: 'Successfully decline tcop.',
+            timer: 1000, // Swal akan hilang dalam 2000ms (2 detik)
+            showConfirmButton: false // Sembunyikan tombol "OK",
+        });
+    </script>
+@endif
+
+@if(session('after_promoted_student'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Successfully',
+            title: 'Successfully promoted students',
             timer: 1000, // Swal akan hilang dalam 2000ms (2 detik)
             showConfirmButton: false // Sembunyikan tombol "OK",
         });

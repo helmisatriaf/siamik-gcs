@@ -44,17 +44,25 @@
                         <th style="width: 15%">
                            Monthly Activity
                         </th>
-                        <th style="width: 80%">
+                        <th style="width: 10%">
+                           Grades
+                        </th>
+                        <th style="width: 35%">
+                           Academic Year
+                        </th>
+                        <th style="width: 35%">
                            Action
                         </th>
                     </tr>
                 </thead>
-                <tbody>
-                     @if (count($data) !== 0)
+                  @if (count($data) !== 0)
+                     <tbody>
                         @foreach ($data as $el)
                            <tr id={{'index_grade_' . $el->id}}>
                                  <td>{{ $loop->index + 1 }}</td>
                                  <td>{{$el->name}}</td>
+                                 <td>{{$el->grades}}</td>
+                                 <td>Semester {{$el->semester}} / {{$el->month}} / {{$el->academic_year}}</td>
                                  
                                  <td class="project-actions text-left toastsDefaultSuccess">
                                     <a class="btn btn-warning btn" data-toggle="modal" data-target="#editMonthlyActivities-{{$el->id}}">
@@ -76,44 +84,49 @@
                                     </a>
                                     @endif
                                  </td>
-                           </tr>
-
-                           <!-- Modal -->
-                           {{-- EDIT --}}
-                           <div class="modal" id="editMonthlyActivities-{{$el->id}}" tabindex="-1" aria-labelledby="exampleModalCenterTitle" role="dialog" aria-hidden="true">
-                              <div class="modal-dialog modal-dialog-centered" role="document">
-                              <div class="modal-content">
-                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Change Data Monthly Activities</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                       <span aria-hidden="true">&times;</span>
-                                    </button>
-                                 </div>
-                                 <div class="modal-body">
-                                    Monthly Activities
-                                    <input name="class" type="text" class="form-control" id="change-name-{{$el->id}}" placeholder="" value="{{$el->name}}">
-                                    <input type="hidden" value="{{$el->id}}" name="data_id" id="data-id-{{$el->id}}">
-                                 </div>
-                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
-                                    <a class="btn btn-danger btn" id="confirmChange-{{$el->id}}">Change</a>
-                                 </div>
-                              </div>
-                           </div>                           
-                           
+                           </tr>   
                         @endforeach
-                     @else
-                        
-                     @endif
-                </tbody>
+                     </tbody>
+                  @else
+                     
+                  @endif
             </table>
         </div>
         <!-- /.card-body -->
     </div>
 </div>
+@foreach ($data as $el)
+   <div class="modal fade" id="editMonthlyActivities-{{$el->id}}" >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="exampleModalLongTitle">Change Data Monthly Activities</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               Name
+               <input name="class" type="text" class="form-control" id="change-name-{{$el->id}}" placeholder="" value="{{$el->name}}">
+               <input type="hidden" value="{{$el->id}}" name="data_id" id="data-id-{{$el->id}}">
+               Month
+               <select name="change_month" class="form-control" id="change-month-{{$el->id}}">
+                  @foreach ($monthActivity as $month)
+                    <option value="{{ $month }}" {{ $month == $el->month ? 'selected' : '' }}>{{ $month }}</option>
+                  @endforeach
+               </select>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+               <a class="btn btn-danger btn" id="confirmChange-{{$el->id}}">Change</a>
+            </div>
+         </div>
+      </div>
+   </div>      
+@endforeach
 
 {{-- ADD --}}
-<div class="modal fade" id="addMonthlyActivities" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="addMonthlyActivities" >
    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
          <div class="modal-header">
@@ -130,6 +143,7 @@
                      <thead>
                         <th>Name Activities</th>
                         <th>Grades</th>
+                        <th>Month</th>
                         <th>Action</th>
                      </thead>
                      <tbody id="scheduleTableBody">
@@ -144,7 +158,14 @@
                                  <option value="upper">Primary - Secondary</option>
                               </select>
                            </td>
-                           
+                           <td>
+                              <select name="monthly_activities[0][month]" class="form-control">
+                                 <option value="" selected>-- Choose Month --</option>
+                                 @foreach ($monthActivity as $month)
+                                    <option value="{{$month}}">{{$month}}</option>
+                                 @endforeach
+                              </select>
+                           </td>
                            <td>
                               <button type="button" class="btn btn-success btn-sm btn-tambah mt-1" title="Tambah Baris" id="tambah"><i class="fa fa-plus"></i></button>
                               <button type="button" class="btn btn-danger btn-sm btn-hapus mt-1 d-none" title="Hapus Baris"><i class="fa fa-times"></i></button>
@@ -160,10 +181,9 @@
    </div>
 </div>
 
-
 {{-- DELETE --}}
  <!-- Modal -->
- <div class="modal fade" id="modalDeleteSubject" tabindex="-1" role="dialog" aria-labelledby="modalDeleteSubjectLabel" aria-hidden="true">
+<div class="modal fade" id="modalDeleteSubject" tabindex="-1" role="dialog" aria-labelledby="modalDeleteSubjectLabel" aria-hidden="true">
    <div class="modal-dialog modal-dialog-centered" role="document">
        <div class="modal-content">
            <div class="modal-header">
@@ -224,12 +244,13 @@
             const id = this.id.split('-')[1]; // Get the ID from the button's ID
             const changeName = document.getElementById(`change-name-${id}`).value; // Get the selected teacher from the corresponding modal
             const dataId = document.getElementById(`data-id-${id}`).value; // Get the selected teacher from the corresponding modal
-
+            const month = document.getElementById(`change-month-${id}`).value; // Get the selected month from the corresponding modal
             // console.log(changeName);
 
             const form = {
-                  id: parseInt(dataId, 10),
-                  change_name: changeName,
+               id: parseInt(dataId, 10),
+               change_name: changeName,
+               month: month,
             };
 
             // console.log(form);
@@ -283,25 +304,33 @@
          let row = 1;
 
          function addRow() {
-            var newRow = `<tr>
-                  <td>
-                     <input name="monthly_activities[${row}][name]" class="form-control" id="monthlyActivities_${row}"></input>
-                  </td>
-                  <td>
-                     <select name="monthly_activities[${row}][grades]" id="grades_${row}" class="form-control">
-                        <option value="">-- Select Grade --</option>
-                        <option value="lower">Kindergarten</option>
-                        <option value="upper">Primary - Secondary</option>
-                     </select>
-                  </td>
-                  <td>
-                     <button type="button" class="btn btn-success btn-sm btn-tambah mt-1" title="Tambah Baris" id="tambah"><i class="fa fa-plus"></i></button>
-                     <button type="button" class="btn btn-danger btn-sm btn-hapus mt-1 d-none" title="Hapus Baris"><i class="fa fa-times"></i></button>
-                  </td>
+            var newRow = `
+            <tr>
+               <td>
+                  <input name="monthly_activities[${row}][name]" class="form-control" id="monthlyActivities_${row}"></input>
+               </td>
+               <td>
+                  <select name="monthly_activities[${row}][grades]" id="grades_${row}" class="form-control">
+                     <option value="">-- Select Grade --</option>
+                     <option value="lower">Kindergarten</option>
+                     <option value="upper">Primary - Secondary</option>
+                  </select>
+               </td>
+               <td>
+                  <select name="monthly_activities[${row}][month]" class="form-control" id="month_${row}">
+                     <option value="" selected>-- Choose Month --</option>
+                     @foreach ($monthActivity as $month)
+                        <option value="{{$month}}">{{$month}}</option>
+                     @endforeach
+                  </select>
+               </td>
+               <td>
+                  <button type="button" class="btn btn-success btn-sm btn-tambah mt-1" title="Tambah Baris" id="tambah"><i class="fa fa-plus"></i></button>
+                  <button type="button" class="btn btn-danger btn-sm btn-hapus mt-1 d-none" title="Hapus Baris"><i class="fa fa-times"></i></button>
+               </td>
             </tr>`;
             $('#scheduleTableBody').append(newRow);
             row++;
-         
 
             updateHapusButtons();
          }
@@ -342,11 +371,6 @@
 
          // Initial call to update the visibility of the "Hapus" and "Tambah" buttons
          updateHapusButtons();
-
-
-
-
-
 
 
          // DELETE ACTIVITY

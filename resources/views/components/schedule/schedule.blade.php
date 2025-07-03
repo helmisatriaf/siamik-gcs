@@ -27,12 +27,14 @@
         Manage
     </a>
     @endif
-
-    <div id="calendar" style="overflow: hidden;border-radius:16px;"></div>
+    
     <div id="schedule-list" class="mt-3">
         <h5 id="schedule-month"></h5>
         <ul id="schedule-items" class="list-unstyled"></ul>
     </div>
+    <div id="calendar" style="overflow: hidden;border-radius:16px;">
+    </div>
+   
     {{-- <div class="card card-warning mt-2" style="border-radius: 12px;">
         <div class="card-header header-elements-inline">
             <h5 class="card-title text-bold">School Calendar</h5>
@@ -53,22 +55,13 @@
 
 <!-- Modal Detail-->
 <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content custom-modal-dialog custom-swal-schedule-detail">
                 <h5 class="modal-title" id="eventModalLabel">Event Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                     <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
                 <p id="eventTitle"></p>
                 <p id="eventDescription"></p>
-            </div>
-            <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
             </div>
-        </div>
     </div>
 </div>
 
@@ -136,6 +129,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Tambahkan CSS untuk modal khusus -->
 <style>
@@ -209,12 +203,12 @@
                     
                 ],
                 eventClick: function(info) {
-                    document.getElementById('eventTitle').innerText = 'Event: ' + info.event.title;
+                    document.getElementById('eventTitle').innerText = 'Event : ' + info.event.title;
                     if (info.event.extendedProps.sampai === null) {
-                        document.getElementById('eventDescription').innerHTML = 'Description: ' + info.event.extendedProps.description + ' (' + info.event.extendedProps.jadwal + ')';
+                        document.getElementById('eventDescription').innerHTML = 'Description : <br>' + info.event.extendedProps.description + ' (' + info.event.extendedProps.jadwal + ')';
                     }
                     else {
-                        document.getElementById('eventDescription').innerHTML = 'Description: ' + info.event.extendedProps.description + ' (' + info.event.extendedProps.jadwal + ' until ' + info.event.extendedProps.sampai + ')';
+                        document.getElementById('eventDescription').innerHTML = 'Description : <br>' + info.event.extendedProps.description + ' (' + info.event.extendedProps.jadwal + ' until ' + info.event.extendedProps.sampai + ')';
                     }
                     var eventModal = new bootstrap.Modal(document.getElementById('eventModal'), {
                         keyboard: false
@@ -267,12 +261,12 @@
                     }),  
                 ],
                 eventClick: function(info) {
-                    document.getElementById('eventTitle').innerText = 'Event: ' + info.event.title;
+                    document.getElementById('eventTitle').innerText = 'Event : ' + info.event.title;
                     if (info.event.extendedProps.sampai === null) {
-                        document.getElementById('eventDescription').innerHTML = 'Description: ' + info.event.extendedProps.description + ' (' + info.event.extendedProps.jadwal + ')';
+                        document.getElementById('eventDescription').innerHTML = 'Description : <br>' + info.event.extendedProps.description + ' (' + info.event.extendedProps.jadwal + ')';
                     }
                     else {
-                        document.getElementById('eventDescription').innerHTML = 'Description: ' + info.event.extendedProps.description + ' (' + info.event.extendedProps.jadwal + ' until ' + info.event.extendedProps.sampai + ')';
+                        document.getElementById('eventDescription').innerHTML = 'Description : <br>' + info.event.extendedProps.description + ' (' + info.event.extendedProps.jadwal + ' until ' + info.event.extendedProps.sampai + ')';
                     }
                     var eventModal = new bootstrap.Modal(document.getElementById('eventModal'), {
                         keyboard: false
@@ -325,7 +319,7 @@
             });
         }
         calendar.render();
-        
+
         function updateScheduleList(startDate) {
             const monthYear = startDate.toLocaleDateString('en-EN', { month: 'long' });
             document.getElementById('schedule-month').innerText = "Detail Event " + monthYear;
@@ -341,7 +335,7 @@
                 .sort((a, b) => new Date(a.date) - new Date(b.date)); // Urutkan dari tanggal kecil ke besar
     
             if (filteredSchedules.length === 0) {
-                scheduleList.innerHTML = '<li>Tidak ada jadwal bulan ini</li>';
+                scheduleList.innerHTML = '<li>There is no event on this month</li>';
             } else {
                 filteredSchedules.forEach(schedule => {
                     let formattedDate = new Date(schedule.date).toLocaleDateString('en-EN', {
@@ -351,10 +345,10 @@
                     let listItem = document.createElement('li');
 
                     if (formattedDate == endDate){
-                        listItem.innerHTML = `${formattedDate} : <strong>${schedule.note}</strong>`;
+                        listItem.innerHTML = `${formattedDate} : <strong>${schedule.note}</strong> - (${schedule.type_schedule})`;
                     }
                     else {                    
-                        listItem.innerHTML = `${formattedDate}${endDate ? ' - ' + endDate : ''} : <strong>${schedule.note}</strong>`;
+                        listItem.innerHTML = `${formattedDate}${endDate ? ' - ' + endDate : ''} : <strong>${schedule.note}</strong> - (${schedule.type_schedule})`;
                     }
                     scheduleList.appendChild(listItem);
                 });
@@ -371,12 +365,74 @@
 
 <script src="{{asset('template')}}/plugins/jquery/jquery.min.js"></script>
 
-@if (session('after_create_exam'))
+<script>
+    $(document).ready(function() {
+        // Function to add a new row
+        function addRow() {
+            var newRow = `
+            <tr>
+                <td>
+                    <select required name="type_schedule[]" class="form-control" id="type_schedule">
+                        <option value="">-- TYPE SCHEDULE --</option>
+                        @foreach($data as $el)
+                            <option value="{{ $el->id }}">{{ $el->name }}</option>
+                        @endforeach
+                    </select>
+                </td>
+                <td>
+                    <input name="date[]" type="date" class="form-control" id="date" required>
+                </td>
+                <td>
+                    <input name="end_date[]" type="date" class="form-control" id="_end_date">
+                </td>
+                <td>
+                    <textarea required name="notes[]" class="form-control" id="notes" cols="10" rows="1"></textarea>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-success btn-sm btn-tambah mt-1" title="Tambah Data" id="tambah"><i class="fa fa-plus"></i></button>
+                    <button type="button" class="btn btn-danger btn-sm btn-hapus mt-1 d-none" title="Hapus Baris" id="hapus"><i class="fa fa-times"></i></button>
+                </td>
+            </tr>
+            `;
+            $('#scheduleTableBody').append(newRow);
+
+            updateHapusButtons();
+        }
+
+        // Function to update the visibility of the "Hapus" buttons
+        function updateHapusButtons() {
+            $('#scheduleTableBody tr').each(function(index, row) {
+                var hapusButton = $(row).find('.btn-hapus');
+                if (index === $('#scheduleTableBody tr').length - 1) {
+                    hapusButton.removeClass('d-none');
+                } else {
+                    hapusButton.addClass('d-none');
+                }
+            });
+        }
+
+        // Event listener for the "Tambah" button
+        $('#scheduleTableBody').on('click', '.btn-tambah', function() {
+            addRow();
+        });
+
+        // Event listener for the "Hapus" button
+        $('#scheduleTableBody').on('click', '.btn-hapus', function() {
+            $(this).closest('tr').remove();
+            updateHapusButtons();
+        });
+
+        // Initial call to update the visibility of the "Hapus" buttons
+        updateHapusButtons();
+    });
+</script>
+
+@if(session('after_create_otherSchedule')) 
     <script>
         Swal.fire({
             icon: 'success',
-            title: 'Successfully',
-            text: 'Successfully created new exam in the database.',
+            title: 'Successfully'
+            text: 'Successfully created new other schedule in the database.'
         });
     </script>
 @endif

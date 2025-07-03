@@ -735,7 +735,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/{{ session('role') }}/supplementarySubjects"
+
+                                <a href="/supplementarySubjects"
                                     class="nav-link {{ session('page') && session('page')->child ? (session('page')->child == 'database supplementary subjects' ? 'active' : '') : '' }}">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Supplementary Subject</p>

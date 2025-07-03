@@ -5,10 +5,14 @@
    <div class="container-fluid">
       <div class="row">
          <div class="col">
-            <nav aria-label="breadcrumb" class="bg-white rounded-3 p-3 ">
-                  <ol class="breadcrumb mb-0">
+            <nav aria-label="breadcrumb" class="rounded-3 p-3" style="background-color: #ffde9e;">
+                  <ol class="breadcrumb mb-0" style="background-color: #fff3c0;">
                      <li class="breadcrumb-item">Home</li>
+                     @if (session('role') == 'teacher')
                      <li class="breadcrumb-item"><a href="{{url('/' .session('role'). '/dashboard/exam/teacher')}}">Assessments</a></li>
+                     @else
+                     <li class="breadcrumb-item"><a href="{{url('/' .session('role'). '/exams')}}">Assessments</a></li>
+                     @endif
                      <li class="breadcrumb-item active" aria-current="page">Edit Question</li>
                   </ol>
             </nav>

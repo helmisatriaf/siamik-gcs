@@ -825,6 +825,7 @@ class ExamController extends Controller
                ->first();
             $status = $getStatus->hasFile == 1 ? true : false;
             $profile = Student::where('id', session('studentId'))->value('profil');
+            $studentName = Student::where('id', session('studentId'))->value('name');
             $statusQuestion = QuestionStatus::where('exam_id', $id)
                ->where('student_id', session('studentId'))
                ->where('semester', session('semester'))
@@ -845,6 +846,7 @@ class ExamController extends Controller
             ->first();
 
          return view('components.student.detail-exam-student', [
+            'studentName' => isset($studentName) ? $studentName : null,
             'data' => $data,
             'status' => $status,
             'getStatus' => $getStatus,
@@ -1537,6 +1539,8 @@ class ExamController extends Controller
          
             $questions = Question::with(['answer'])->where('exam_id', session('exam_id'))->get();
          }
+
+         // dd($questions);
 
          return view('components.exam.detail-working-exam', [
             'questions' => $questions,

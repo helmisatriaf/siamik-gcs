@@ -32,7 +32,7 @@
    <!-- START TABEL -->
    @if (sizeof($data['grade']) != 0)
          <!-- UNDERGRADE -->
-         <div class="card card-orange">
+         <div class="card" style="background-color: #ffde9e;">
             <div class="card-header">
                <h3 class="card-title">Except Primary dan Secondary</h3>
                <div class="card-tools">
@@ -100,7 +100,7 @@
          <!-- END UNDERGRADE -->
 
          <!-- PRIMARY -->
-         <div class="card card-orange mt-2">
+         <div class="card mt-5" style="background-color: #fff3c0;">
                <div class="card-header">
                   <h3 class="card-title">Primary</h3>
                   <div class="card-tools">
@@ -179,7 +179,7 @@
          <!-- END PRIMARY -->
    
          <!-- SECONDARY -->
-         <div class="card card-orange mt-5">
+         <div class="card mt-5" style="background-color: #ffe8d6;">
                <div class="card-header">
                   <h3 class="card-title">Secondary</h3>
                   <div class="card-tools">

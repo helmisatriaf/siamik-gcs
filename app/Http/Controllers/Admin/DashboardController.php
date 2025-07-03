@@ -222,6 +222,7 @@ class DashboardController extends Controller
                ->count('id');
 
             $totalSubject      = Grade_subject::where('grade_id', $gradeIdStudent)
+            ->where('academic_year', session('academic_year'))
             ->where(function ($query) use ($cek) {
                $query->whereNotIn('grade_subjects.subject_id', [34, 35, 36, 37]) // Eksklusi semua pelajaran agama
                ->orWhere('grade_subjects.subject_id', $cek); // Masukkan hanya pelajaran agama sesuai agama siswa
@@ -353,7 +354,7 @@ class DashboardController extends Controller
             $paymentStatus = $this->billingService->checkPaymentStatus($student->unique_id);
             $paymentHistory = $this->billingService->getPaymentHistory($student->unique_id);
 
-            $getIdStudent    = Student_relationship::where('relation_id', $id)->pluck('student_id')->toArray();
+            $getIdStudent  = Student_relationship::where('relation_id', $id)->pluck('student_id')->toArray();
             $academicYears = Master_academic::pluck('academic_year');
             $religion = Student::where('id', session('studentId'))->value('religion');
             if ($religion == "Islam") {
@@ -558,11 +559,6 @@ class DashboardController extends Controller
             ];
 
             return view('components.dashboard-parent')->with('data', $data);
-         } elseif ($checkRole == 'library') {
-
-            // $planVisit = Plan_visit::get();
-            // dd($planVisit);
-            return view('components.dashboard-library');
          }
       } catch (Exception $err) {
          return dd($err);

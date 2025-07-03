@@ -12,8 +12,55 @@
     </a>
 
     @php
-        $groupedUser = $data->groupBy('role.name');
+        $groupedUser = $data->groupBy('role.name')
+        ->map(function ($users) {
+            return $users->sortBy('username');
+        });
     @endphp
+    <div class="container">
+        <form class="mt-5" action="/{{session('role')}}/users">
+            <div class="row">
+                <div class="col-md-12 ">
+                    <div class="row">
+                        <div class="col-2">
+                            <div class="form-group">
+                                <label>Role : <span style="color: red"></span></label>
+
+                                @php
+                                
+                                $selectedRoles = $form->role ? $form->role : 'all';
+
+                                @endphp
+
+                                <select name="role" class="form-control">
+                                    <option  {{$selectedRoles === 'all' ? 'selected' : ''}} value="all">All Role</option>
+                                    <option  {{$selectedRoles === '5' ? 'selected' : ''}} value="5">Parent</option>
+                                    <option  {{$selectedRoles === '4' ? 'selected' : ''}} value="4">Student</option>
+                                    <option  {{$selectedRoles === '3' ? 'selected' : ''}} value="3">Teacher</option>
+                                </select>                              
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Search :</label>
+                        <div class="input-group input-group-lg">
+                            <input name="search" value="{{$form->search}}" type="search" class="form-control form-control-lg" placeholder="Type your keywords here">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-lg btn-default">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                            <div class="input-group-append">
+                                <a href="/{{session('role')}}/users" type="button" class="btn btn-lg btn-default">
+                                    <i class="fa fa-refresh"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form >
+    </div>
     
     <div class="card shadow-sm border-0 rounded">
         <div class="card-body p-0">
@@ -29,16 +76,17 @@
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th>#</th>
-                                <th style="width: 15%;">User</th>
-                                <th style="width: 35%;">Name</th>
-                                <th style="width: 50%;" class="text-end">Actions</th>
+                                <th>User ID</th>
+                                <th style="width: 15%;">Username</th>
+                                <th style="width: 15%;">Name</th>
+                                <th style="width: 15%;">Password</th>
+                                <th style="width: 55%;" class="text-end">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($users->sortBy('role_id') as $index => $user)
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $user->id }}</td>
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <i class="fas fa-user-circle text-secondary me-2 fa-lg"></i>
@@ -58,27 +106,35 @@
                                             {{-- @endif --}}
                                         </div>
                                     </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <span class="fw-medium">{{ $user->password }}</span>
+                                        </div>
+                                    </td>
                                     <td class="text-end">
+                                        <a href="" class="btn btn-outline-success btn-sm change-username-btn" 
+                                            data-id="{{ $user->id }}" 
+                                            data-name="{{ $user->username }}" 
+                                            data-toggle="modal" 
+                                            data-target="#change-username"
+                                            title="Change Unique Username">
+                                            <i class="fas fa-user"></i>
+                                        </a>
+
                                         <a href="" class="btn btn-outline-primary btn-sm change-password-btn" 
                                             data-id="{{ $user->id }}" 
                                             data-name="{{ $user->username }}" 
                                             data-toggle="modal" 
-                                            data-target="#change-password-user">
+                                            data-target="#change-password-user"
+                                            title="Change Password">
                                             <i class="fas fa-key"></i>
                                         </a>
                                         
-                                        {{-- <a href="" class="btn btn-outline-success btn-sm change-unique-id-btn" 
-                                            data-id="{{ $user->id }}" 
-                                            data-name="{{ $user->username }}" 
-                                            data-toggle="modal" 
-                                            data-target="#change-unique-id">
-                                            <i class="fas fa-key"></i>
-                                        </a> --}}
-    
                                         <a href="javascript:void(0)" class="btn btn-outline-danger btn-sm delete-user" 
                                             data-id="{{ $user->id }}" 
                                             data-name="{{ $user->username }}"
-                                            id="delete-user">
+                                            id="delete-user"
+                                            title="Delete User">
                                             <i class="fas fa-trash-alt"></i>
                                         </a>
                                     </td>
@@ -133,6 +189,36 @@
     </div>
 </div>
 
+{{-- MODAL CHANGE USERNAME --}}
+<div class="modal fade" id="change-username"
+    data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-title">Change Username</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="change-username-form" action="" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input name="username" type="text" class="form-control">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- JavaScript -->
 <script>
     $(document).ready(function () {
@@ -147,6 +233,21 @@
 
             // Update modal title dengan username yang dipilih
             $("#modal-title").text("Change Password for " + username);
+        });
+    });
+    
+    $(document).ready(function () {
+        $(".change-username-btn").click(function () {
+            var userId = $(this).data("id");
+            var username = $(this).data("name");
+
+            var actionUrl = "{{ route('user.editUsername', ':id') }}".replace(':id', userId);
+            
+            // Update form action URL dengan ID user yang dipilih
+            $("#change-username-form").attr("action", actionUrl);
+
+            // Update modal title dengan username yang dipilih
+            $("#modal-title").text("Change Username for " + username);
         });
     });
 </script>
@@ -166,6 +267,16 @@
             icon: 'success',
             title: 'Successfuly',
             text: 'Success update password',
+        });
+    </script>
+@endif
+
+@if(session('username.success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Successfuly',
+            text: 'Success change username',
         });
     </script>
 @endif

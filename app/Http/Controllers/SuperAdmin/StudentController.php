@@ -87,7 +87,7 @@ class StudentController extends Controller
          ];
       }
 
-   }            
+   }         
    
    public function pageReRegis($student_id){
       try {
@@ -176,5 +176,103 @@ class StudentController extends Controller
          DB::rollBack();
          return dd($err);
       }  
+   }
+
+   public function promotedStudent($student_id)
+   {
+      
+      DB::beginTransaction();
+
+      try {
+
+         $student = Student::where('id', $student_id)->first();
+
+         if(!$student)
+         {
+            return (object) [
+               'success' => false,
+               'text' => 'Student not found !!!',
+            ];
+         }
+
+         $getGradeIdStudent = Student::where('id', $student_id)->value('grade_id');
+
+         Student::where('id', $student_id)->update([
+            'grade_id' => $getGradeIdStudent + 1,
+         ]);
+
+         DB::commit();
+         return (object) [
+            'success' => true,
+         ];
+         
+      } catch (Exception $err) {
+         
+         return (object) [
+            'success' => false,
+            'text' => 'Internal server error !!!',
+         ];
+      }
+
+   }  
+
+   public function graduatedStudent($student_id)
+   {
+      
+      DB::beginTransaction();
+
+      try {
+
+         $student = Student::where('id', $student_id)->first();
+
+         if(!$student)
+         {
+            return (object) [
+               'success' => false,
+               'text' => 'Student not found !!!',
+            ];
+         }
+
+         Student::where('id', $student_id)->update([
+            'is_graduate' => 0,
+            'is_active' => 0,
+         ]);
+
+         DB::commit();
+         return (object) [
+            'success' => true,
+         ];
+         
+      } catch (Exception $err) {
+         
+         return (object) [
+            'success' => false,
+            'text' => 'Internal server error !!!',
+         ];
+      }
+
+   }   
+
+   public function promotedTCOP($gradeId)
+   {
+      try{
+         $students = Student::where('grade_id', $gradeId)
+            ->where('is_active', true)
+            ->where('is_graduate', false)
+            ->get();
+
+         foreach($students as $student) {
+            Student::where('id', $student->id)->update([
+               'grade_id' => $student->grade_id + 1,
+            ]);
+         }
+
+         session()->flash('after_promoted_student');
+
+         return redirect()->back();
+         
+      } catch (Exception $err) {
+         dd($err);
+      }
    }
 }

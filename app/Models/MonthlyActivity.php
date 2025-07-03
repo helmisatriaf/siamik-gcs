@@ -9,13 +9,6 @@ class MonthlyActivity extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'id',
-        'name',
-        'grades',
-        'created_at',
-        'updated_at',
-    ];
-
+    protected $guarded = ['id'];
     
 }

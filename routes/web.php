@@ -713,6 +713,7 @@ Route::middleware(['auth.login', 'role:superadmin'])->prefix('/superadmin')->gro
       Route::get('/{id}', [SuperAdminController::class, 'getById']);
       Route::post('/register-action', [SuperAdminController::class, 'registerUserAction']);
       Route::put('/change-password/{id}', [SuperAdminController::class, 'changePassword'])->name('user.editPassword');
+      Route::put('/change-username/{id}', [SuperAdminController::class, 'changeUsername'])->name('user.editUsername');
       Route::get('delete/{id}', [SuperAdminController::class, 'deleteUser']);
    });
 
@@ -779,6 +780,10 @@ Route::middleware(['auth.login', 'role:superadmin'])->prefix('/superadmin')->gro
       Route::patch('/{id}', [SuperStudentController::class, 'inactiveStudent']);
       Route::patch('/activate/{student_id}', [SuperStudentController::class, 'activateStudent']);
       Route::patch('/re-registration/{student_id}', [SuperStudentController::class, 'actionReRegis'])->name('action.re-regis');
+      Route::patch('/promoted/{student_id}', [SuperStudentController::class, 'promotedStudent'])->name('action.promoted');
+      Route::patch('/graduated/{student_id}', [SuperStudentController::class, 'graduatedStudent'])->name('action.graduated');
+
+      Route::get('promoted/tcop/{gradeId}', [SuperStudentController::class, 'promotedTCOP']);
    });
 
    Route::prefix('/subjects')->group(function () {
@@ -804,8 +809,6 @@ Route::middleware(['auth.login', 'role:superadmin'])->prefix('/superadmin')->gro
       Route::get('/delete/{id}', [MinorSubjectController::class, 'delete'])->name('delete-minorsubject');
    });
 
-
-
    Route::prefix('/typeExams')->group(function () {
       Route::get('/', [TypeExamController::class, 'index']);
       Route::get('/create', [TypeExamController::class, 'pageCreate']);
@@ -826,7 +829,6 @@ Route::middleware(['auth.login', 'role:superadmin'])->prefix('/superadmin')->gro
       Route::post('/scoringMinorPrimary', [ScoringController::class, 'actionPostMinorPrimary'])->name('actionPostScoringMinorPrimary');
       Route::post('/scoringSecondary', [ScoringController::class, 'actionPostSecondary'])->name('actionPostScoringSecondary');
 
-
       Route::get('acar/detail/{id}', [ReportController::class, 'acarPrimary']);
       Route::post('/acarPrimary', [ScoringController::class, 'actionPostAcarPrimary'])->name('actionPostScoringAcarPrimary');
       Route::post('/acarSecondary', [ScoringController::class, 'actionPostAcarSecondary'])->name('actionPostScoringAcarSecondary');
@@ -840,6 +842,7 @@ Route::middleware(['auth.login', 'role:superadmin'])->prefix('/superadmin')->gro
       Route::post('/updateSooaSecondary/{id}', [ScoringController::class, 'actionPostSooaSecondary']);
 
       Route::get('tcop/detail/{id}', [ReportController::class, 'tcopPrimary']);
+      Route::get('tcop/detailSec/{id}', [ReportController::class, 'tcopSecondary']);
 
       Route::get('midcard/semestersatu/{id}', [ReportController::class, 'cardSemesterMid']);
       Route::get('semestersatu/detail/{id}', [ReportController::class, 'cardSemester1']);
@@ -853,6 +856,38 @@ Route::middleware(['auth.login', 'role:superadmin'])->prefix('/superadmin')->gro
       Route::get('toddler/print/{id}', [ReportController::class, 'downloadPDFToddler']);
       Route::get('nursery/print/{id}', [ReportController::class, 'downloadPDFNursery']);
       Route::get('kindergarten/print/{id}', [ReportController::class, 'downloadPDFKindergarten']);
+
+      Route::get('scoring/decline/{gradeId}/{teacherId}/{subjectId}/{semester}', [ReportController::class, 'scoringDecline']);
+      Route::get('acar/decline/{gradeId}/{teacherId}/{semester}', [ReportController::class, 'acarDecline']); // Sudah termasuk acar primary dan secondary
+      Route::get('sooa/decline/{gradeId}/{teacherId}/{semester}', [ReportController::class, 'sooaPrimaryDecline']);
+      Route::get('reportCard/decline/{gradeId}/{teacherId}/{semester}', [ReportController::class, 'reportCardDecline']);
+      Route::get('midreportCard/decline/{gradeId}/{teacherId}/{semester}', [ReportController::class, 'midreportCardDecline']);
+      Route::get('tcop/decline/{gradeId}/{teacherId}', [ReportController::class, 'tcopDecline']);
+
+      Route::get('cardToddler/{id}', [ReportController::class, 'cardToddler']);
+      Route::get('mid/cardToddler/{id}', [ReportController::class, 'cardToddlerMid']);
+      Route::get('cardNursery/{id}', [ReportController::class, 'cardNursery']);
+      Route::get('mid/cardNursery/{id}', [ReportController::class, 'cardNurseryMid']);
+      Route::get('cardKindergarten/{id}', [ReportController::class, 'cardKindergarten']);
+      Route::get('mid/cardKindergarten/{id}', [ReportController::class, 'cardKindergartenMid']);
+
+      Route::get('midreport/print/{id}', [ReportController::class, 'downloadPDFMidSemester']);
+      Route::get('report/semester1/print/{id}', [ReportController::class, 'downloadPDFSemester1']);
+      Route::get('report/semester2/print/{id}', [ReportController::class, 'downloadPDFSemester2']);
+      Route::get('report/toddler/print/{id}', [ReportController::class, 'downloadPDFToddler']);
+      Route::get('report/mid/toddler/print/{id}', [ReportController::class, 'downloadPDFToddlerMid']);
+      Route::get('report/nursery/print/{id}', [ReportController::class, 'downloadPDFNursery']);
+      Route::get('report/mid/nursery/print/{id}', [ReportController::class, 'downloadPDFNurseryMid']);
+      Route::get('report/kindergarten/print/{id}', [ReportController::class, 'downloadPDFKindergarten']);
+      Route::get('report/mid/kindergarten/print/{id}', [ReportController::class, 'downloadPDFKindergartenMid']);
+
+      Route::post('report/midReportCard', [ScoringController::class, 'actionPostMidReportCard']);
+      Route::post('report/reportCard1', [ScoringController::class, 'actionPostReportCard1']);
+      Route::post('report/reportCard2', [ScoringController::class, 'actionPostReportCard2']);
+      Route::post('report/toddler', [ScoringController::class, 'actionPostReportCardToddler']);
+      Route::post('report/nursery', [ScoringController::class, 'actionPostReportCardNursery']);
+      Route::post('report/kindergarten', [ScoringController::class, 'actionPostReportCardKindergarten']);
+      Route::post('report/midkindergarten', [ScoringController::class, 'actionPostMidReportCardKindergarten']);
    });
 
    Route::prefix('/schedules')->group(function () {
@@ -942,7 +977,14 @@ Route::middleware(['auth.login', 'role:superadmin'])->prefix('/superadmin')->gro
       Route::get('/student/delete/{id}', [ChineseLowerController::class, 'delete']);
    });
 
-   Route::post('/change-data-admin', [SuperAdminController::class, 'changeDataAdmin'])->name('actionDataAdmin');
+   Route::prefix('/dashboard')->group(function () {
+      Route::post('/change-data-admin', [SuperAdminController::class, 'changeDataAdmin'])->name('actionDataSuperAdmin');
+      Route::get('acar/decline/{gradeId}/{teacherId}/{semester}', [ReportController::class, 'acarDecline']); // Sudah termasuk acar primary dan secondary
+      Route::get('sooa/decline/{gradeId}/{teacherId}/{semester}', [ReportController::class, 'sooaPrimaryDecline']);
+      Route::get('scoring/decline/{gradeId}/{teacherId}/{subjectId}/{semester}', [ReportController::class, 'scoringDecline']);
+      Route::get('reportCard/decline/{gradeId}/{teacherId}/{semester}', [ReportController::class, 'reportCardDecline']);
+      Route::get('tcop/decline/{gradeId}/{teacherId}', [ReportController::class, 'tcopDecline']);
+   });
 });
 
 Route::middleware(['auth.login', 'role:admin'])->prefix('/admin')->group(function () {
@@ -1117,6 +1159,24 @@ Route::middleware(['auth.login', 'role:admin'])->prefix('/admin')->group(functio
       Route::get('mid/cardNursery/{id}', [ReportController::class, 'cardNurseryMid']);
       Route::get('cardKindergarten/{id}', [ReportController::class, 'cardKindergarten']);
       Route::get('mid/cardKindergarten/{id}', [ReportController::class, 'cardKindergartenMid']);
+
+      Route::get('midreport/print/{id}', [ReportController::class, 'downloadPDFMidSemester']);
+      Route::get('report/semester1/print/{id}', [ReportController::class, 'downloadPDFSemester1']);
+      Route::get('report/semester2/print/{id}', [ReportController::class, 'downloadPDFSemester2']);
+      Route::get('report/toddler/print/{id}', [ReportController::class, 'downloadPDFToddler']);
+      Route::get('report/mid/toddler/print/{id}', [ReportController::class, 'downloadPDFToddlerMid']);
+      Route::get('report/nursery/print/{id}', [ReportController::class, 'downloadPDFNursery']);
+      Route::get('report/mid/nursery/print/{id}', [ReportController::class, 'downloadPDFNurseryMid']);
+      Route::get('report/kindergarten/print/{id}', [ReportController::class, 'downloadPDFKindergarten']);
+      Route::get('report/mid/kindergarten/print/{id}', [ReportController::class, 'downloadPDFKindergartenMid']);
+
+      Route::post('report/midReportCard', [ScoringController::class, 'actionPostMidReportCard']);
+      Route::post('report/reportCard1', [ScoringController::class, 'actionPostReportCard1']);
+      Route::post('report/reportCard2', [ScoringController::class, 'actionPostReportCard2']);
+      Route::post('report/toddler', [ScoringController::class, 'actionPostReportCardToddler']);
+      Route::post('report/nursery', [ScoringController::class, 'actionPostReportCardNursery']);
+      Route::post('report/kindergarten', [ScoringController::class, 'actionPostReportCardKindergarten']);
+      Route::post('report/midkindergarten', [ScoringController::class, 'actionPostMidReportCardKindergarten']);
    });
 
    Route::prefix('/schedules')->group(function () {
@@ -1222,6 +1282,15 @@ Route::middleware(['auth.login', 'role:admin'])->prefix('/admin')->group(functio
       Route::get('/add', [ChineseLowerController::class, 'addStudent']);
       Route::post('/', [ChineseLowerController::class, 'actionPost'])->name('actionAdminAddStudentChineseLower');
       Route::get('/student/delete/{id}', [ChineseLowerController::class, 'delete']);
+   });
+
+   Route::prefix('/dashboard')->group(function () {
+      Route::post('/change-data-admin', [SuperAdminController::class, 'changeDataAdmin'])->name('actionDataAdmin');
+      Route::get('acar/decline/{gradeId}/{teacherId}/{semester}', [ReportController::class, 'acarDecline']); // Sudah termasuk acar primary dan secondary
+      Route::get('sooa/decline/{gradeId}/{teacherId}/{semester}', [ReportController::class, 'sooaPrimaryDecline']);
+      Route::get('scoring/decline/{gradeId}/{teacherId}/{subjectId}/{semester}', [ReportController::class, 'scoringDecline']);
+      Route::get('reportCard/decline/{gradeId}/{teacherId}/{semester}', [ReportController::class, 'reportCardDecline']);
+      Route::get('tcop/decline/{gradeId}/{teacherId}', [ReportController::class, 'tcopDecline']);
    });
 });
 
@@ -1373,9 +1442,6 @@ Route::middleware(['auth.login', 'role:student'])->prefix('/student')->group(fun
 
       Route::get('/schools', [ScheduleController::class, 'scheduleStudentSchools']);
       Route::get('schedules/grade', [ScheduleController::class, 'scheduleStudent']);
-
-      // Route::get('/midreport', [ReportController::class, 'midreport']);
-      // Route::get('/report', [ReportController::class, 'report']);
 
       Route::get('/midreport', [ReportController::class, 'midreport']);
       Route::get('/report', [ReportController::class, 'report']);

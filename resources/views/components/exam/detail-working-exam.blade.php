@@ -143,7 +143,23 @@
                 <div class="card p-4" style="background-color: #fff3c0; border-radius: 12px;">
                     @foreach ($questions as $question)
                     <div class="question-content" id="question-{{ $question->id }}" style="display: none;">
-                        <h5 id="qn-{{ $question->id }}"></h5>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 id="qn-{{ $question->id }}"></h5>
+                            <span style="
+                                display: inline-block;
+                                padding: 10px 20px;
+                                background-color: #ffeb3b; /* kuning terang */
+                                border-radius: 50px;
+                                box-shadow: 0 0 10px rgba(0,0,0,0.15);
+                                font-weight: bold;
+                                color: #000;
+                            ">
+                            @if (session('role') == 'parent' || session('role') == 'student')
+                                <h5>Point : {{$question->studentAnswer[0]['point']}}</h5>
+                            @else
+                            @endif
+                            </span>
+                        </div>
                         <p>{!! $question->text !!}</p>
 
                         @if ($question->type == "mc")
@@ -170,10 +186,12 @@
 
 
                         @elseif($question->type == "essay")
-                            <h5>Answer :</h5>
-                            @if (session('role') == 'parent' || session('role') == 'student')
-                                {{$question->studentAnswer[0]['essay_answer']}}
+                        @if (session('role') == 'parent' || session('role') == 'student')
+                            <h5>Correct : <span> {{ $question->answer[0]['answer_text']}}</span></h5>
+                            <h5>Answer : </h5>
+                                {{$question->studentAnswer[0]['essay_answer']}} <br>
                             @else
+                            <h5>Correct  : </h5>
                                 {{$question->answer[0]['answer_text']}}
                             @endif
                         @endif

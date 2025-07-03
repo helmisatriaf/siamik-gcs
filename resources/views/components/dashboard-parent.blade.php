@@ -536,6 +536,22 @@
     var selectedStudentId = studentIdSelect.value;
 
     // Simpan nilai semester ke dalam session
+    Swal.fire({
+      title: 'Switching Data...',
+      text: 'Please wait a moment.',
+      mageUrl: '/images/happy.png', // pastikan path ini bisa diakses dari browser
+      imageWidth: 100,
+      imageHeight: 100,
+      imageAlt: 'Custom image',
+      customClass: {
+          popup: 'custom-swal-style'
+      },
+      allowOutsideClick: false,
+          didOpen: () => {
+              Swal.showLoading();
+          }
+    });
+
     $.ajax({
         url: '{{ route('save.student.session') }}',
         type: 'POST',
@@ -544,7 +560,8 @@
             _token: '{{ csrf_token() }}'
         },
         success: function(response) {
-            window.location.href = '/parent/dashboard/';
+          window.location.href = '/parent/dashboard/';
+          Swal.close(); 
         },
         error: function(xhr, status, error) {
             console.error('Error saving semester to session:', error);
