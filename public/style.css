@@ -356,9 +356,21 @@
     align-items: center !important;
     justify-content: center !important;
     transition: transform 0.3s !important;
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1) !imp    ortant;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1) !important;
 }
 
 
+.note-modal {
+    z-index: 1050 !important; /* Atur supaya di atas layer lain */    
+    transform: translate(0%, 10%);
+}
 
+.note-modal-backdrop {
+    z-index: 1040 !important;
+}
+
+
+.note-modal-backdrop {
+   display: none !important;
+}
 

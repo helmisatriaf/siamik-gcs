@@ -453,6 +453,26 @@
             window.history.back();
         }
     </script>
+    
+    @if (session('role' !== 'parent'))
+    <script>
+       let isFormDirty = true; // set true jika ada perubahan penting
+    
+       window.addEventListener('beforeunload', function (e) {
+          if (isFormDirty) {
+             // Pesan ini akan ditampilkan oleh browser
+             e.preventDefault(); // sebagian browser butuh ini
+             e.returnValue = 'Soal yang Anda buat akan hilang!'; // Chrome & Edge
+          }
+       });
+    
+       // Opsional: kalau user sudah menyimpan soal, kita matikan peringatan
+       function formSaved() {
+          isFormDirty = false;
+       }
+    </script>
+    @endif
+
 </body>
 
 </html>

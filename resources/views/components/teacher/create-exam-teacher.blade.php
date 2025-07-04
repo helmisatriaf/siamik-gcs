@@ -25,6 +25,7 @@
       font-size: 16px;
       color: #6c757d;
    }
+
 </style>
 
 <section class="content">
@@ -655,7 +656,14 @@
    function initializeSummerNote() {
       $('.summernote').summernote({
          tabsize: 2,
-         height: 120,
+         height: 200,
+         callbacks: {
+            onImageUpload: function(files) {
+               for (let i = 0; i < files.length; i++) {
+                  uploadImage(files[i], this);
+               }
+            }
+         }
       })
       $("#hint").summernote({
          height: 100,
@@ -673,8 +681,27 @@
       });
    }
 
+   function uploadImage(file, editor) {
+      let data = new FormData();
+      data.append("file", file);
+      data.append("_token", $('meta[name="csrf-token"]').attr('content'));
 
-   
+      $.ajax({
+         url: '/upload-image-question',
+         method: "POST",
+         data: data,
+         contentType: false,
+         cache: false,
+         processData: false,
+         success: function(resp) {
+            $(editor).summernote('insertImage', resp.link);
+         },
+         error: function(err) {
+            alert("Upload gagal");
+            console.error(err);
+         }
+      });
+   }
 
    function clearForm(containerId) {
       let container = document.getElementById(containerId);
@@ -689,6 +716,23 @@
    }
 
 </script>
+<script>
+   let isFormDirty = true; // set true jika ada perubahan penting
+
+   window.addEventListener('beforeunload', function (e) {
+      if (isFormDirty) {
+         // Pesan ini akan ditampilkan oleh browser
+         e.preventDefault(); // sebagian browser butuh ini
+         e.returnValue = 'Soal yang Anda buat akan hilang!'; // Chrome & Edge
+      }
+   });
+
+   // Opsional: kalau user sudah menyimpan soal, kita matikan peringatan
+   function formSaved() {
+      isFormDirty = false;
+   }
+</script>
+
 
 
 @endsection
