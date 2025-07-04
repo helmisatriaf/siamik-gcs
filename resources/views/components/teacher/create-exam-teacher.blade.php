@@ -591,7 +591,6 @@
             `;
          }
          questionContainer.appendChild(essaySection);
-         console.log(typeof $.fn.summernote)
          setTimeout(initializeSummerNote, 300);
       }
       else if(model == "mc"){

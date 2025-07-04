@@ -75,7 +75,7 @@
 
 </style>
 
-<body onload="setResponsiveClass()">
+<body>
   {{-- <section id="mobile" class="bg-image justify-content-center align-items-center" style="display: none; height: 100vh;">
     <div class="bg-overlay"></div> <!-- Overlay untuk mengurangi kegelapan gambar -->
     <div class="container-fluid d-flex justify-content-center align-items-center px-4">

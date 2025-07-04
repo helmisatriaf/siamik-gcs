@@ -208,7 +208,7 @@
     </div>
 
     {{-- Modal Welcome --}}
-    <div class="modal fade" id="welcome" tabindex="-1" aria-labelledby="welcomeLabel" aria-hidden="true">
+    <div class="modal fade" id="welcome">
         <div class="modal-dialog modal-dialog-centered" style="max-width: fit-content;">
             <div class="modal-content bg-danger p-4" style="border-radius: 48px;">
                 <div class="alert-container d-flex flex-column align-items-center text-center">
