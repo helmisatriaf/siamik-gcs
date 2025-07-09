@@ -1,6 +1,12 @@
 @extends('layouts.admin.master')
 @section('content')
 
+<style>
+    .modal-backdrop {
+    display: none !important;
+}
+</style>
+
    <!-- Content Wrapper. Contains page content -->
 <div class="container-fluid">
     @if (sizeof($data) == 0 && ($form->type || $form->sort || $form->order || $form->status || $form->search))

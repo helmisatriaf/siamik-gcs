@@ -320,7 +320,7 @@
                                 @if (session('role') == 'teacher')
                                     <a class="small-box bg-danger d-flex flex-column align-items-center justify-content-center text-center"
                                         style="min-height: 110px;border-radius:12px;" data-bs-toggle="modal" data-bs-target="#ebook"
-                                        href="">
+                                        href="" id="addEbook">
                                         <i class="fas fa-plus fa-2x"></i>
                                         <span>Add Ebook</span>
                                     </a>
@@ -330,7 +330,8 @@
                                         'id' => $subject->id,
                                         'grade_id' => $grade_id,
                                     ]) }}"
-                                        class="small-box bg-danger bg-info justfify-content-center text-align-center"
+                                        id="addEbook"
+                                        class="small-box bg-danger d-flex flex-column align-items-center justify-content-center text-center"
                                         style="min-height: 110px;border-radius:12px;">
                                         <i class="fas fa-plus"></i> Add Ebook
                                     </a>
@@ -342,7 +343,12 @@
                     <div class="col-md-3 col-6">
                         <div class="small-box d-flex justify-content-between align-items-center shadow-soft px-4"
                             style="min-height: 110px;background-color: #ffe8d6;border-radius:12px;">
-                            <a href="{{ Storage::url($ebook->file_path) }}"
+                            <a 
+                            @if ($ebook->embed)
+                            href="/view/ebook/{{ $ebook->id}}"
+                            @else
+                            href="{{ Storage::url($ebook->file_path) }}"
+                            @endif
                                 class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center"
                                 target="_blank">
     
@@ -372,7 +378,7 @@
                                 @if (in_array(session('role'), ['admin', 'superadmin', 'teacher']))
                                     <div class="col mb-2">
                                         <a href="#" class="btn-link text-secondary hover:cursor-pointer"
-                                            data-toggle="modal" data-target="#changeBook">
+                                            data-toggle="modal" data-target="#changeBook" id="changeEbook">
                                             <i class="fas fa-edit ml-1"></i> Change E-Book
                                         </a>
                                     </div>
@@ -828,11 +834,10 @@
 @if (session('role') == 'superadmin' || session('role') == 'admin' || session('role') == 'teacher')
     <!-- Modal Add Ebook-->
     <div class="modal fade" id="ebook" tabindex="-1" aria-labelledby="modalLabel-ebook" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content" style="background-color: #ffe8d6;">
                 <div class="modal-header" style="background-color: #ffe8d6;">
                     <div>
-                        {{-- <h5 class="modal-title fw-bold">Add Ebook Resource</h5> --}}
                         <h5 class="modal-title" id="exampleModalLongTitle">
                             <i class="fas fa-book mr-2"></i>Add Ebook Resource
                         </h5>
@@ -844,7 +849,6 @@
                     </button>
                 </div>
                 <div class="modal-body py-4">
-                    <div class="container">
                         {{-- <div class="row mb-4">
                             <div class="col-md-12 text-center">
                                 <div class="upload-icon mb-3">
@@ -875,39 +879,48 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12 mb-4">
-                                    <label for="file" class="form-label fw-semibold">Upload PDF <span
-                                    class="text-danger">*</span></label>
-                                    <div class="file-upload-wrapper">
-                                        <div class="file-upload-area text-center p-4" id="upload-area">
-                                            <input type="file" class="file-input" id="file" name="file"
-                                                accept=".pdf" required>
-                                            <i class="fas fa-cloud-upload-alt fa-2x mb-3 text-primary"></i>
-                                            <h6 class="mb-2">Drag and drop your PDF file here</h6>
-                                            <p class="text-muted small mb-2">or</p>
-                                            <button type="button" class="btn btn-outline-primary btn-sm"
-                                                onclick="document.getElementById('file').click()">Browse Files</button>
-                                            <p class="text-muted small mt-2">Maximum file size: 10MB</p>
-                                        </div>
-                                         {{-- <div class="selected-file mt-3 d-none"> --}}
-                                            <div class="selected-file-info p-2 d-flex align-items-center">
-                                                <i class="fas fa-file-pdf text-danger me-2"></i>
-                                                <span class="file-name text-truncate"></span>
-                                                <span class="file-size ms-2 text-muted small"></span>
-                                                <button type="button" class="btn-remove-file ms-auto btn btn-sm">
-                                                    <i class="fas fa-times-circle"></i>
-                                                </button>
+                                <div class="row grid md:flex col-12">
+                                    <div class="col-lg-6 mb-4">
+                                        <label for="file" class="form-label fw-semibold">Upload PDF <span
+                                        class="text-danger">*</span></label>
+                                        <div class="file-upload-wrapper">
+                                            <div class="file-upload-area text-center p-4" id="upload-area">
+                                                <input type="file" class="file-input" id="file" name="file"
+                                                    accept=".pdf">
+                                                <i class="fas fa-cloud-upload-alt fa-2x mb-3 text-primary"></i>
+                                                <h6 class="mb-2">Drag and drop your PDF file here</h6>
+                                                <p class="text-muted small mb-2">or</p>
+                                                <button type="button" class="btn btn-outline-primary btn-sm">Browse Files</button>
+                                                <p class="text-muted small mt-2">Maximum file size: 10MB</p>
                                             </div>
-                                        {{-- </div> --}}
+                                                <div class="selected-file mt-3 d-none">
+                                                <div class="selected-file-info p-2 d-flex align-items-center">
+                                                    <i class="fas fa-file-pdf text-danger me-2"></i>
+                                                    <span class="file-name text-truncate"></span>
+                                                    <span class="file-size ms-2 text-muted small"></span>
+                                                    <button type="button" id="btn-remove-file" class="btn-remove-file ms-auto btn btn-sm">
+                                                        <i class="fas fa-times-circle"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-text small text-muted mt-2">Only PDF format is supported for
+                                            consistency and compatibility
+                                        </div>
                                     </div>
-                                    <div class="form-text small text-muted mt-2">Only PDF format is supported for
-                                        consistency and compatibility</div>
+    
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="form-group">
+                                            <label for="embed_ebook">Embed For Flip HTML5 <span style="color: red">*</span></label>
+                                            <textarea name="embed_ebook" id="embed_html" rows="5" class="form-control w-100" ></textarea>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="col-md-12 mb-2">
-                                    <div class="alert alert-info small py-2" role="alert">
+                                    <div class="alert alert-warning small py-2" role="alert">
                                         <i class="fas fa-info-circle me-2"></i>
-                                        <strong>Resource Guidelines:</strong> Ensure you have proper rights to share
+                                        <strong>Resource Guidelines : </strong> Ensure you have proper rights to share
                                         this material. Large files may take longer to upload.
                                     </div>
                                 </div>
@@ -921,7 +934,6 @@
                                 </button>
                             </div>
                         </form>
-                    </div>
                 </div>
             </div>
         </div>
@@ -932,9 +944,9 @@
         <!-- Modal change ebook -->
         <div class="modal fade" id="changeBook" tabindex="-1" role="dialog" aria-labelledby="changeFileLabel"
             aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
+            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                <div class="modal-content" style="background-color: #ffe8d6;">
+                    <div class="modal-header" style="background-color: #ffe8d6;">
                         <h5 class="modal-title" id="exampleModalLongTitle">
                             <i class="fas fa-book mr-2"></i>Update E-Book File
                         </h5>
@@ -956,36 +968,48 @@
                             enctype="multipart/form-data">
                             @csrf
                             <input type="number" id="ebookid" name="ebook_id" class="form-control"
-                                value="{{ $ebook->id }}" hidden>
+                            value="{{ $ebook->id }}" hidden>
 
-                            <div class="file-upload-container mb-4">
-                                <label for="upload_file" class="form-label fw-medium">Select PDF File</label>
-                                <div class="file-upload-wrapper">
-                                    <div class="file-upload-area p-4 text-center">
-                                        <i class="fas fa-cloud-upload-alt fa-2x mb-3 text-primary"></i>
-                                        <h6 class="mb-2">Drag and drop your file here</h6>
-                                        <p class="text-muted small mb-3">or</p>
-                                        <label for="upload_file" class="btn btn-outline-primary btn-sm">
-                                            <i class="fas fa-search me-1"></i> Browse Files
-                                        </label>
-                                        <input type="file" id="upload_file" name="upload_file" accept=".pdf"
-                                            class="file-input" required>
-                                        <p class="text-muted small mt-3 file-requirements">
-                                            <i class="fas fa-info-circle me-1"></i> Accepted format: PDF only
-                                        </p>
-                                        <div class="selected-file mt-3 d-none">
-                                            <div class="selected-file-info p-2 d-flex align-items-center">
-                                                <i class="fas fa-file-pdf text-danger me-2"></i>
-                                                <span class="file-name text-truncate"></span>
-                                                <span class="file-size ms-2 text-muted small"></span>
-                                                <button type="button" class="btn-remove-file ms-auto btn btn-sm">
-                                                    <i class="fas fa-times-circle"></i>
-                                                </button>
+
+                            <div class="row grid md:flex col-12">
+                                <div class="col-lg-6 mb-4">
+                                    <div class="file-upload-container mb-4">
+                                        <label for="upload_file" class="form-label fw-medium">Select PDF File</label>
+                                        <div class="file-upload-wrapper">
+                                            <div class="file-upload-area-change text-center p-4" id="upload-area">
+                                                <input type="file" id="upload_file" name="upload_file" accept=".pdf"
+                                                    class="file-input">
+                                                <i class="fas fa-cloud-upload-alt fa-2x mb-3 text-primary"></i>
+                                                <h6 class="mb-2">Drag and drop your file here</h6>
+                                                <p class="text-muted small mb-3">or</p>
+                                                <button type="button" class="btn btn-outline-primary btn-sm">Browse Files</button>
+                                                <p class="text-muted small mt-2">Maximum file size: 10MB</p>
                                             </div>
+                                            <div class="selected-file-change mt-3 d-none">
+                                                <div class="selected-file-info p-2 d-flex align-items-center">
+                                                    <i class="fas fa-file-pdf text-danger me-2"></i>
+                                                    <span class="file-name-change text-truncate"></span>
+                                                    <span class="file-size-change ms-2 text-muted small"></span>
+                                                    <button type="button" id="btn-remove-file-change" class="btn-remove-file-change ms-auto btn btn-sm">
+                                                        <i class="fas fa-times-circle"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-text small text-muted mt-2">Only PDF format is supported for
+                                            consistency and compatibility
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="embed_ebook">Embed from HTML5</label>
+                                        <textarea name="embed_ebook" id="embed_ebook" rows="5" class="form-control w-100">
+                                        </textarea>
+                                    </div>
+                                </div>
                             </div>
+
 
                             <div class="alert alert-info small" role="alert">
                                 <i class="fas fa-info-circle me-2"></i>
@@ -999,6 +1023,13 @@
                                 </button>
                                 <button type="button" class="btn btn-light" data-dismiss="modal">
                                     Cancel
+                                </button>
+                            </div>
+                             <div class="d-flex justify-content-end mt-4">
+                                <button type="button" class="btn btn-outline-secondary mr-4"
+                                    data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save mr-2"></i>Update E-Book
                                 </button>
                             </div>
                         </form>
@@ -1052,7 +1083,7 @@
 @if (session('success_add_activity'))
     <script>
         Swal.fire({
-            title: 'Successfully Add Material',
+            title: 'Successfull Add Material',
             imageUrl: '/images/happy.png', // pastikan path ini bisa diakses dari browser
             imageWidth: 100,
             imageHeight: 100,
@@ -1060,7 +1091,7 @@
             customClass: {
                 popup: 'custom-swal-style'
             },
-            timer: 1000,
+            timer: 1800,
             showConfirmButton: false,
         });
     </script>
@@ -1069,7 +1100,7 @@
 @if (session('success_edit_section'))
     <script>
         Swal.fire({
-            title: 'Successfully Edit Section',
+            title: 'Successfull Edit Section',
             imageUrl: '/images/happy.png', 
             imageWidth: 100,
             imageHeight: 100,
@@ -1077,7 +1108,7 @@
             customClass: {
                 popup: 'custom-swal-style'
             },
-            timer: 1000, 
+            timer: 1800, 
             showConfirmButton: false,
         });
     </script>
@@ -1086,7 +1117,7 @@
 @if (session('success_edit_activity'))
     <script>
         Swal.fire({
-            title: 'Successfully Edit Activity',
+            title: 'Successfull Edit Activity',
             imageUrl: '/images/happy.png', // pastikan path ini bisa diakses dari browser
             imageWidth: 100,
             imageHeight: 100,
@@ -1095,7 +1126,7 @@
                 popup: 'custom-swal-style'
             },
             showConfirmButton: false, // Sembunyikan tombol "OK",
-            timer: 1000, // Swal akan hilang dalam 2000ms (2 detik)
+            timer: 1800, // Swal akan hilang dalam 2000ms (2 detik)
         });
         
     </script>
@@ -1104,7 +1135,7 @@
 @if (session('success_delete_activity'))
     <script>
         Swal.fire({
-            title: 'Successfully Delete Activity',
+            title: 'Successfull Delete Activity',
             imageUrl: '/images/happy.png', // pastikan path ini bisa diakses dari browser
             imageWidth: 100,
             imageHeight: 100,
@@ -1112,7 +1143,7 @@
             customClass: {
                 popup: 'custom-swal-style'
             },
-            timer: 1000,
+            timer: 1800,
             showConfirmButton: false,
         });
     </script>
@@ -1121,8 +1152,8 @@
 @if (session('success_delete_ebook'))
     <script>
         Swal.fire({
-            title: 'Successfully Delete E-Book',
-            timer: 1000, // Swal akan hilang dalam 2000ms (2 detik)
+            title: 'Successfull Delete E-Book',
+            timer: 1800, // Swal akan hilang dalam 2000ms (2 detik)
             showConfirmButton: false, // Sembunyikan tombol "OK",
             imageUrl: '/images/happy.png', // pastikan path ini bisa diakses dari browser
             imageWidth: 100,
@@ -1139,8 +1170,8 @@
     <script>
         Swal.fire({
             
-            title: 'Successfully Edit Activity',
-            timer: 1000, // Swal akan hilang dalam 2000ms (2 detik)
+            title: 'Successfull Edit Activity',
+            timer: 1800, // Swal akan hilang dalam 2000ms (2 detik)
             showConfirmButton: false // Sembunyikan tombol "OK",
             imageUrl: '/images/happy.png', // pastikan path ini bisa diakses dari browser
             imageWidth: 100,
@@ -1157,8 +1188,8 @@
     <script>
         Swal.fire({
             
-            title: 'Successfully Add en Ebook',
-            timer: 1000, // Swal akan hilang dalam 2000ms (2 detik)
+            title: 'Successfull Add Ebook',
+            timer: 1800, // Swal akan hilang dalam 2000ms (2 detik)
             showConfirmButton: false, // Sembunyikan tombol "OK",
             imageUrl: '/images/happy.png', // pastikan path ini bisa diakses dari browser
             imageWidth: 100,
@@ -1174,17 +1205,16 @@
 @if (session('success_change_ebook'))
     <script>
         Swal.fire({
-            
-            title: 'Successfully Change Ebook',
-            timer: 1000, // Swal akan hilang dalam 2000ms (2 detik)
-            showConfirmButton: false // Sembunyikan tombol "OK",
+            title: 'Successfull Change Ebook',
+            timer: 1800, // Swal akan hilang dalam 2000ms (2 detik)
+            showConfirmButton: false, // Sembunyikan tombol "OK",
             imageUrl: '/images/happy.png', // pastikan path ini bisa diakses dari browser
             imageWidth: 100,
             imageHeight: 100,
             imageAlt: 'Custom image',
             customClass: {
                 popup: 'custom-swal-style'
-            }
+            },
         });
     </script>
 @endif
@@ -1247,42 +1277,116 @@
             });
         });
     </script>
-    
-    <script>
-        // Add this JavaScript to handle the file upload interaction
-        document.addEventListener('DOMContentLoaded', function() {
-            const fileInput = document.getElementById('upload_file');
-            const fileArea = document.querySelector('.file-upload-area');
-            const browseButton = document.querySelector('label[for="upload_file"]');
-            const selectedFile = document.querySelector('.selected-file');
-            const fileName = document.querySelector('.file-name');
-            const fileSize = document.querySelector('.file-size');
-            const removeBtn = document.querySelector('.btn-remove-file');
 
-            // Hentikan propagasi klik pada tombol browse
-            browseButton.addEventListener('click', function(e) {
-                e.stopPropagation();
-                // Tidak perlu panggil fileInput.click() karena atribut for="upload_file" sudah melakukannya
-            });
+    @if ($ebook == null)
+        <script>    
+            // FORM TAMBAH EBOOK
+            document.getElementById('addEbook').addEventListener('click', function() {
+                const fileInput = document.getElementById('file');
+                const fileArea = document.querySelector('.file-upload-area');
+                const browseButton = document.querySelector('label[for="file"]');
+                const selectedFile = document.querySelector('.selected-file');
+                const fileName = document.querySelector('.file-name');
+                const fileSize = document.querySelector('.file-size');
+                const removeBtn = document.querySelector('.btn-remove-file');
 
-            // Ubah event listener untuk area file, kecualikan saat mengklik tombol browse
-            fileArea.addEventListener('click', function(e) {
-                // Jika yang diklik bukan tombol browse, baru buka dialog file
-                if (!e.target.closest('label[for="upload_file"]')) {
-                    fileInput.click();
+                // Hentikan propagasi klik pada tombol browse
+                browseButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    // Tidak perlu panggil fileInput.click() karena atribut for="upload_file" sudah melakukannya
+                });
+
+                // Ubah event listener untuk area file, kecualikan saat mengklik tombol browse
+                fileArea.addEventListener('click', function(e) {
+                    // Jika yang diklik bukan tombol browse, baru buka dialog file
+                    if (!e.target.closest('label[for="file"]')) {
+                        fileInput.click();
+                    }
+                });
+
+                fileInput.addEventListener('change', function() {
+                    const file = this.files[0];
+                    const fileExtension = file.name.split('.').pop();
+                    if (this.files.length > 0) {
+                        if (fileExtension == "pdf"){
+                            const file = this.files[0];
+                            fileName.textContent = file.name;
+                            // Format file size
+                            const size = file.size;
+                            let formattedSize;
+                            if (size < 1024) {
+                                formattedSize = size + ' bytes';
+                            } else if (size < 1024 * 1024) {
+                                formattedSize = (size / 1024).toFixed(1) + ' KB';
+                            } else {
+                                formattedSize = (size / (1024 * 1024)).toFixed(1) + ' MB';
+                            }
+
+                            fileSize.textContent = formattedSize;
+                            selectedFile.classList.remove('d-none');
+                        }
+                        else{
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                html: `You can upload a PDF file only`,
+                                confirmButtonText: 'Oke',
+                            });
+                        }
+                    }
+                });
+
+                removeBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    fileInput.value = '';
+                    selectedFile.classList.add('d-none');
+                });
+
+                // Prevent default browser behavior for drag and drop
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    fileArea.addEventListener(eventName, preventDefaults, false);
+                });
+
+                function preventDefaults(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                 }
-            });
 
-            fileInput.addEventListener('change', function() {
-                const file = this.files[0];
-                const fileExtension = file.name.split('.').pop();
-                if (this.files.length > 0) {
-                    if (fileExtension == "pdf"){
-                        const file = this.files[0];
+                // Highlight drop area when file is dragged over it
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    fileArea.addEventListener(eventName, highlight, false);
+                });
+
+                ['dragleave', 'drop'].forEach(eventName => {
+                    fileArea.addEventListener(eventName, unhighlight, false);
+                });
+
+                function highlight() {
+                    fileArea.closest('.file-upload-wrapper').classList.add('border-primary');
+                    fileArea.closest('.file-upload-wrapper').style.backgroundColor = 'rgba(0, 102, 204, 0.05)';
+                }
+
+                function unhighlight() {
+                    fileArea.closest('.file-upload-wrapper').classList.remove('border-primary');
+                    fileArea.closest('.file-upload-wrapper').style.backgroundColor = '';
+                }
+
+                // Handle files dropped into the area
+                fileArea.addEventListener('drop', handleDrop, false);
+
+                function handleDrop(e) {
+
+                    const dt = e.dataTransfer;
+                    const files = dt.files;
+                    fileInput.files = files;
+
+                    if (files.length > 0) {
+                        const file = files[0];
                         fileName.textContent = file.name;
                         // Format file size
                         const size = file.size;
                         let formattedSize;
+
                         if (size < 1024) {
                             formattedSize = size + ' bytes';
                         } else if (size < 1024 * 1024) {
@@ -1294,171 +1398,133 @@
                         fileSize.textContent = formattedSize;
                         selectedFile.classList.remove('d-none');
                     }
-                    else{
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            html: `You can upload a PDF file only`,
-                            confirmButtonText: 'Oke',
-                        });
-                    }
                 }
             });
-
-            removeBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                fileInput.value = '';
-                selectedFile.classList.add('d-none');
-            });
-
-            // Prevent default browser behavior for drag and drop
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                fileArea.addEventListener(eventName, preventDefaults, false);
-            });
-
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-
-            // Highlight drop area when file is dragged over it
-            ['dragenter', 'dragover'].forEach(eventName => {
-                fileArea.addEventListener(eventName, highlight, false);
-            });
-
-            ['dragleave', 'drop'].forEach(eventName => {
-                fileArea.addEventListener(eventName, unhighlight, false);
-            });
-
-            function highlight() {
-                fileArea.closest('.file-upload-wrapper').classList.add('border-primary');
-                fileArea.closest('.file-upload-wrapper').style.backgroundColor = 'rgba(0, 102, 204, 0.05)';
-            }
-
-            function unhighlight() {
-                fileArea.closest('.file-upload-wrapper').classList.remove('border-primary');
-                fileArea.closest('.file-upload-wrapper').style.backgroundColor = '';
-            }
-
-            // Handle files dropped into the area
-            fileArea.addEventListener('drop', handleDrop, false);
-
-            function handleDrop(e) {
-
-                const dt = e.dataTransfer;
-                const files = dt.files;
-                fileInput.files = files;
-
-                if (files.length > 0) {
-                    const file = files[0];
-                    fileName.textContent = file.name;
-                    // Format file size
-                    const size = file.size;
-                    let formattedSize;
-
-                    if (size < 1024) {
-                        formattedSize = size + ' bytes';
-                    } else if (size < 1024 * 1024) {
-                        formattedSize = (size / 1024).toFixed(1) + ' KB';
-                    } else {
-                        formattedSize = (size / (1024 * 1024)).toFixed(1) + ' MB';
-                    }
-
-                    fileSize.textContent = formattedSize;
-                    selectedFile.classList.remove('d-none');
-                }
-            }
-        });
-    </script>
-
+        </script>
+    @else
         <script>
-        // Initialize file upload interactions
-        document.addEventListener('DOMContentLoaded', function() {
-            const fileInput = document.getElementById('file');
-            const fileInfo = document.getElementById('file-info');
-            const fileName = document.getElementById('file-name');
-            const removeFileBtn = document.getElementById('btn-remove-file');
-            const uploadArea = document.getElementById('upload-area');
-    
-            fileInput.addEventListener('change', function() {
-                const file = this.files[0];
-                const fileExtension = file.name.split('.').pop();
-                const fileSize = file.size;
+            // FORM GANTI EBOOK
+            document.getElementById('changeEbook').addEventListener('click', function() {
+                const fileInput = document.getElementById('upload_file');
+                const fileArea = document.querySelector('.file-upload-area-change');
+                const browseButton = document.querySelector('label[for="upload_file"]');
+                const selectedFile = document.querySelector('.selected-file-change');
+                const fileName = document.querySelector('.file-name-change');
+                const fileSize = document.querySelector('.file-size-change');
+                const removeBtn = document.querySelector('.btn-remove-file-change');
 
-                // if(fileSize > 10 * 1024 * 1024) { // 10 MB
-                //     Swal.fire({
-                //         icon: 'error',
-                //         title: 'Oops...',
-                //         html: `File size exceeds the maximum limit of 10 MB`,
-                //         confirmButtonText: 'Oke',
-                //     });
-                //     fileInput.value = ''; // Reset input
-                //     selectedFile.classList.add('d-none');
-                // } else {
-                    if(fileExtension !== 'pdf') {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            html: `You can upload a PDF file only`,
-                            confirmButtonText: 'Oke',
-                        });
-                    }else{
-                        if (this.files.length > 0) {
-                            fileName.textContent = this.files[0].name;
-                            fileInfo.classList.remove('d-none');
-                            uploadArea.classList.add('d-none');
-                        } else {
-                            resetFileUpload();
+                // Hentikan propagasi klik pada tombol browse
+                browseButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    // Tidak perlu panggil fileInput.click() karena atribut for="upload_file" sudah melakukannya
+                });
+
+                // Ubah event listener untuk area file, kecualikan saat mengklik tombol browse
+                fileArea.addEventListener('click', function(e) {
+                    // Jika yang diklik bukan tombol browse, baru buka dialog file
+                    if (!e.target.closest('label[for="upload_file"]')) {
+                        fileInput.click();
+                    }
+                });
+
+                fileInput.addEventListener('change', function() {
+                    const file = this.files[0];
+                    const fileExtension = file.name.split('.').pop();
+                    if (this.files.length > 0) {
+                        if (fileExtension == "pdf"){
+                            const file = this.files[0];
+                            fileName.textContent = file.name;
+                            // Format file size
+                            const size = file.size;
+                            let formattedSize;
+                            if (size < 1024) {
+                                formattedSize = size + ' bytes';
+                            } else if (size < 1024 * 1024) {
+                                formattedSize = (size / 1024).toFixed(1) + ' KB';
+                            } else {
+                                formattedSize = (size / (1024 * 1024)).toFixed(1) + ' MB';
+                            }
+
+                            fileSize.textContent = formattedSize;
+                            selectedFile.classList.remove('d-none');
+                        }
+                        else{
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                html: `You can upload a PDF file only`,
+                                confirmButtonText: 'Oke',
+                            });
                         }
                     }
-                // }
-            });
-    
-            removeFileBtn.addEventListener('click', function() {
-                fileInput.value = '';
-                resetFileUpload();
-            });
-    
-            function resetFileUpload() {
-                fileInfo.classList.add('d-none');
-                uploadArea.classList.remove('d-none');
-                fileName.textContent = 'No file selected';
-            }
-    
-            // Allow drag and drop functionality
-            uploadArea.addEventListener('dragover', function(e) {
-                e.preventDefault();
-                this.classList.add('d-none');
-            });
-    
-            uploadArea.addEventListener('dragleave', function(e) {
-                e.preventDefault();
-                this.classList.remove('d-none');
-            });
-    
-            uploadArea.addEventListener('drop', function(e) {
-                e.preventDefault();
-                this.classList.remove('d-none');
-                
-                if (e.dataTransfer.files.length > 0) {
-                    const file = e.dataTransfer.files[0];
-                    if (file.type === 'application/pdf') {
-                        fileInput.files = e.dataTransfer.files;
+                });
+
+                removeBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    fileInput.value = '';
+                    selectedFile.classList.add('d-none');
+                });
+
+                // Prevent default browser behavior for drag and drop
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    fileArea.addEventListener(eventName, preventDefaults, false);
+                });
+
+                function preventDefaults(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+
+                // Highlight drop area when file is dragged over it
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    fileArea.addEventListener(eventName, highlight, false);
+                });
+
+                ['dragleave', 'drop'].forEach(eventName => {
+                    fileArea.addEventListener(eventName, unhighlight, false);
+                });
+
+                function highlight() {
+                    fileArea.closest('.file-upload-wrapper').classList.add('border-primary');
+                    fileArea.closest('.file-upload-wrapper').style.backgroundColor = 'rgba(0, 102, 204, 0.05)';
+                }
+
+                function unhighlight() {
+                    fileArea.closest('.file-upload-wrapper').classList.remove('border-primary');
+                    fileArea.closest('.file-upload-wrapper').style.backgroundColor = '';
+                }
+
+                // Handle files dropped into the area
+                fileArea.addEventListener('drop', handleDrop, false);
+
+                function handleDrop(e) {
+
+                    const dt = e.dataTransfer;
+                    const files = dt.files;
+                    fileInput.files = files;
+
+                    if (files.length > 0) {
+                        const file = files[0];
                         fileName.textContent = file.name;
-                        fileInfo.classList.remove('d-none');
-                        uploadArea.classList.add('d-none');
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            html: `You can upload a PDF file only`,
-                            confirmButtonText: 'Oke',
-                        });
+                        // Format file size
+                        const size = file.size;
+                        let formattedSize;
+
+                        if (size < 1024) {
+                            formattedSize = size + ' bytes';
+                        } else if (size < 1024 * 1024) {
+                            formattedSize = (size / 1024).toFixed(1) + ' KB';
+                        } else {
+                            formattedSize = (size / (1024 * 1024)).toFixed(1) + ' MB';
+                        }
+
+                        fileSize.textContent = formattedSize;
+                        selectedFile.classList.remove('d-none');
                     }
                 }
             });
-        });
-    </script>
+        </script>
+    @endif
 @endif
 
 <script>

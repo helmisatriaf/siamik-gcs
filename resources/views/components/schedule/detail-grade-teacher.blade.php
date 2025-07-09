@@ -127,7 +127,8 @@
                             'startTime' => $schedule->start_time,
                             'endTime' => $schedule->end_time,
                             'description' => '',
-                            'color' => 'transparant'
+                            'color' => '#ffe8d6',
+                            'textColor' => 'black',
                         ];
 
                         switch (strtolower($schedule->note)) {

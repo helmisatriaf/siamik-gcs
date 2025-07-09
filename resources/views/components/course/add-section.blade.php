@@ -10,13 +10,11 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
             margin: 0;
-            padding: 20px;
             background-color: #f5f5f5;
         }
 
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
+            margin: 20px auto;
             background: white;
             padding: 20px;
             border-radius: 8px;
@@ -59,16 +57,24 @@
             </div>
 
             <div class="form-group text-muted" id="file-form">
-                <label for="upload_file">Upload File (Maks 1MB) <span style="color: red">*</span></label>
-                <input type="file" id="upload_file" name="upload_file" accept=".pdf" required>
+                <label for="upload_file">Upload File (Maks 10MB) <span style="color: red">*</span></label>
+                <input type="file" id="upload_file" name="upload_file" accept=".pdf" >
                 <div class="text-danger mt-2" id="fileError" style="display: none;"></div>
             </div>   
+
+            <div class="form-group">
+                <label for="embed_ebook">Embed For Flip HTML5 <span style="color: red">*</span></label>
+                <textarea name="embed_ebook" id="embed_html" rows="5" class="form-control w-100" ></textarea>
+            </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
 
+    
+    <script src={{asset('assets/vendors/summernote/summernote-lite.min.js')}}></script>
     <script>
+
         document.getElementById("upload_file").addEventListener("change", function () {
             const file = this.files[0];
             const fileError = document.getElementById("fileError");
@@ -77,7 +83,7 @@
             //console.log(file);
             if (file) {
                 const fileSize = file.size;
-                if (fileSize > 1048576) { // 1MB = 1048576 bytes
+                if (fileSize > 10485760 ) { // 10MB = 1048576 bytes
                     fileError.textContent = "Ukuran file terlalu besar! Maksimal 1MB.";
                     fileError.style.display = "block";
                     this.value = "";

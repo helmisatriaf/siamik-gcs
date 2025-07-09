@@ -759,10 +759,9 @@ class CourseController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'file' => 'nullable|file|max:10240'
+            'file' => 'nullable|file|max:10485760 ' // 10 MB
         ]);
 
-        // Get the grade_subject record
         $gradeSubject = Grade_subject::where('subject_id', $id)
             ->where('grade_id', $grade_id)
             ->where('academic_year', session('academic_year'))
@@ -771,24 +770,29 @@ class CourseController extends Controller
         $subject = Subject::findOrFail($id);
 
         $filePath = null;
-        if ($request->hasFile('file')) {
-            $filePath = $request->file('file')->store('subject_sections', 'public');
+        if ($request->hasFile('upload_file')) {
+            $filePath = $request->file('upload_file')->store('ebooks', 'public');
+            $embed = false;
+        }
+        else {
+            $filePath = $request->embed_ebook;
+            $embed = true;
         }
 
-        // Create new section with grade_subject_id
-        $section = new Section([
-            'subject_id' => $subject->id,
+        $ebook = new Ebook([
             'grade_subject_id' => $gradeSubject->id,
             'title' => $validatedData['title'],
-            'description' => $validatedData['description'] ?? null,
             'file_path' => $filePath,
+            'embed' => $embed,
             'semester' => session('semester'),
             'academic_year' => session('academic_year'),
         ]);
-        $section->save();
+        $ebook->save();
 
+        
+        session()->flash('success_add_ebook');
         return redirect()->route('course.sections', ['role' => $role, 'id' => $id, 'grade_id' => $grade_id])
-            ->with('success', 'Section berhasil ditambahkan');
+            ->with('success', 'Ebook berhasil ditambahkan');
     }
 
     public function storeSectionTeacher(Request $request, $id, $grade_id)
@@ -809,12 +813,18 @@ class CourseController extends Controller
         $filePath = null;
         if ($request->hasFile('file')) {
             $filePath = $request->file('file')->store('ebooks', 'public');
+            $embed = false;
+        }
+        else {
+            $filePath = $request->embed_ebook;
+            $embed = true;
         }
 
         $ebook = new Ebook([
             'grade_subject_id' => $gradeSubject->id,
             'title' => $validatedData['title'],
             'file_path' => $filePath,
+            'embed' => $embed,
             'semester' => session('semester'),
             'academic_year' => session('academic_year'),
         ]);
@@ -1402,19 +1412,24 @@ class CourseController extends Controller
             $ebook = Ebook::where('id', $request->ebook_id)->first();
             
             if ($request->hasFile('upload_file')) {
-                $filePath = $request->file('upload_file')->store('ebooks', 'public');
-            }
-    
-            $ebook = Ebook::where('id', $request->ebook_id)->first();
+                $ebook = Ebook::where('id', $request->ebook_id)->first();
      
-            if($ebook !== null){
-                if (Storage::exists($ebook->file_path)) {
-                    Storage::delete('public/' . $ebook->file_path);
+                if($ebook !== null){
+                    if (Storage::exists($ebook->file_path)) {
+                        Storage::delete('public/' . $ebook->file_path);
+                    }
                 }
+                $filePath = $request->file('upload_file')->store('ebooks', 'public');
+                $embed = false;
             }
-        
+            else{
+                $filePath = $request->embed_ebook;
+                $embed = true;
+            }
+            
             $data = [
                 'file_path' => $filePath,
+                'embed' => $embed,
             ];
      
             Ebook::where('id', $request->ebook_id)->update($data);
@@ -1434,6 +1449,24 @@ class CourseController extends Controller
             return redirect()->back();
         }
         catch(Exception $err){
+            dd($err);
+        }
+    }
+
+    public function viewEbook($id)
+    {
+        try {
+            session()->flash('page', (object)[
+                'page' => 'course',
+                'child' => 'detail course',
+            ]);
+
+
+            $data = Ebook::where('id', $id)->first();
+            // dd($data);
+
+            return view('components.course.view-ebook', ['data'=> $data]);
+        } catch (Exception $err) {
             dd($err);
         }
     }

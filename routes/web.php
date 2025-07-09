@@ -793,6 +793,7 @@ Route::middleware(['auth.login', 'role:superadmin'])->prefix('/superadmin')->gro
       Route::get('/pdf/{id}', [SubjectController::class, 'pagePDF']);
       Route::post('/', [SubjectController::class, 'actionPost'])->name('actionSuperCreateSubject');
       Route::get('/delete/{id}', [SubjectController::class, 'delete'])->name('delete-subject');
+      Route::put('/{id}', [SubjectController::class, 'actionPut'])->name('actionSuperUpdateSubject');
    });
 
    Route::prefix('/majorSubjects')->group(function () {
@@ -1593,6 +1594,7 @@ Route::middleware(['auth.login', 'role:superadmin,admin,teacher'])->group(functi
    Route::post('/post-edit-question/{id}', [ExamController::class, 'actionUpdateQuestion'])->name('action.update.question');
    Route::post('scoreMCE', [ScoreController::class, 'scoreMCE'])->name('scoreMCE');
    Route::delete('/ebook/delete', [CourseController::class, 'deleteEbook'])->name('delete.ebook');
+   Route::get('/view/ebook/{id}', [CourseController::class, 'viewEbook'])->name('view.ebook');
 });
 
 Route::get('/assessment-work', [ExamController::class, 'workplace'])->name('work.place');
