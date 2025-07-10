@@ -122,7 +122,15 @@ class DashboardController extends Controller
                ->orderBy('teacher_subjects.grade_id', 'asc')
                ->get();
 
-            $dataExam = Grade_exam::join('grades', 'grades.id', '=', 'grade_exams.grade_id')
+            $dataExam = Grade_exam::where(function($query){
+                  $query->where('exams.open_date', '<=', now())
+                     ->orWhereNull('exams.open_date');
+               })
+               ->where('exams.teacher_id', $id)
+               ->where('exams.semester', session('semester'))
+               ->where('exams.academic_year', session('academic_year'))
+               ->where('exams.is_active', TRUE)
+               ->join('grades', 'grades.id', '=', 'grade_exams.grade_id')
                ->join('exams', 'exams.id', '=', 'grade_exams.exam_id')
                ->join('type_exams', 'type_exams.id', '=', 'exams.type_exam')
                ->select(
@@ -131,12 +139,8 @@ class DashboardController extends Controller
                   'grades.name as grade_name',
                   'grades.class as grade_class'
                )
-               ->where('exams.teacher_id', $id)
-               ->where('exams.semester', session('semester'))
-               ->where('exams.academic_year', session('academic_year'))
-               ->where('exams.is_active', TRUE)
                // Prioritaskan is_active = 0 terlebih dahulu, lalu urutkan berdasarkan date_exam terbaru
-               ->orderByRaw('is_active = 0 ASC, date_exam DESC')
+               ->orderByRaw('is_active = 0 ASC, date_exam ASC')
                ->get();
 
 
@@ -241,17 +245,6 @@ class DashboardController extends Controller
                ->leftJoin('ecas', 'ecas.id', '=', 'student_ecas.eca_id')
                ->get();
 
-            $dataExam  = Grade_exam::join('grades', 'grades.id', '=', 'grade_exams.grade_id')
-               ->join('exams', 'exams.id', '=', 'grade_exams.exam_id')
-               ->join('type_exams', 'type_exams.id', '=', 'exams.type_exam')
-               ->select('exams.*', 'type_exams.name as type_exam_name', 'grades.name as grade_name', 'grades.class as grade_class')
-               ->where('grades.id', $gradeIdStudent)
-               ->where('exams.semester', session('semester'))
-               ->where('exams.academic_year', session('academic_year'))
-               ->where('exams.is_active', true)  
-               ->orderByRaw('is_active = 1 ASC, date_exam DESC')
-               ->get();
-            
             if($gradeIdStudent >= 11){
                $dataStudent  = Grade::with(['subject' => function ($query) use($cek, $chinese){
                   $query->whereNotIn('subjects.id', [34, 35, 36, 37])
@@ -266,7 +259,14 @@ class DashboardController extends Controller
                      ->orderBy('name', 'asc');
                }])->where('id', $gradeIdStudent)->first();
 
-               $dataExam  = Grade_exam::join('grades', 'grades.id', '=', 'grade_exams.grade_id')
+               $dataExam = Grade_exam::with(['exam.score' => function($query) use($id){
+                     $query->where('student_id', $id);
+                  }])
+                  ->where(function($query){
+                  $query->where('exams.open_date', '<=', now())
+                     ->orWhereNull('exams.open_date');
+                  })
+                  ->join('grades', 'grades.id', '=', 'grade_exams.grade_id')
                   ->join('exams', 'exams.id', '=', 'grade_exams.exam_id')
                   ->join('type_exams', 'type_exams.id', '=', 'exams.type_exam')
                   ->join('subject_exams', 'subject_exams.exam_id', '=', 'exams.id')
@@ -286,8 +286,6 @@ class DashboardController extends Controller
                   ->orderByRaw('is_active = 1 ASC, date_exam DESC')
                   ->get();
 
-               // dd($dataExam);
-
                foreach ($dataExam as $ed ) {
                   $ed->subject = Subject_exam::join('subjects', 'subjects.id', '=', 'subject_exams.subject_id')
                      ->where('exam_id', $ed->id)
@@ -298,13 +296,21 @@ class DashboardController extends Controller
                $dataStudent  = Grade::with(['subject' => function ($query) use($cek){
                   $query->whereNotIn('subjects.id', [34, 35, 36, 37]) // Eksklusi semua pelajaran agama
                   ->orWhere('subjects.id', $cek)
+                  ->distinct()
                   ->orderBy('name_subject', 'asc');
                }, 'exam', 'teacher', 'student' => function ($query) {
                   $query->where('is_active', true)
                      ->orderBy('name', 'asc');
                }])->where('id', $gradeIdStudent)->first();
 
-               $dataExam  = Grade_exam::join('grades', 'grades.id', '=', 'grade_exams.grade_id')
+               $dataExam  = Grade_exam::with(['exam.score' => function($query) use($id){
+                     $query->where('student_id', $id);
+                  }])
+                  ->where(function($query){
+                  $query->where('exams.open_date', '<=', now())
+                     ->orWhereNull('exams.open_date');
+                  })
+                  ->join('grades', 'grades.id', '=', 'grade_exams.grade_id')
                   ->join('exams', 'exams.id', '=', 'grade_exams.exam_id')
                   ->join('type_exams', 'type_exams.id', '=', 'exams.type_exam')
                   ->join('subject_exams', 'subject_exams.exam_id', '=', 'exams.id')
@@ -319,7 +325,7 @@ class DashboardController extends Controller
                   })  
                   ->orderByRaw('is_active = 1 ASC, date_exam ASC')
                   ->get();
-
+               
                foreach ($dataExam as $ed ) {
                   $ed->subject = Subject_exam::join('subjects', 'subjects.id', '=', 'subject_exams.subject_id')
                      ->where('exam_id', $ed->id)
@@ -342,6 +348,7 @@ class DashboardController extends Controller
 
             ];
 
+            // dd($data['exam']);
             return view('components.dashboard-student')->with('data', $data);
          } elseif ($checkRole == 'parent') {
             $id              = Relationship::where('user_id', session('id_user'))->value('id');
@@ -473,7 +480,14 @@ class DashboardController extends Controller
                         ->orderBy('name', 'asc');
                   }])->where('id', $gradeIdStudent)->first();
    
-                  $dataExam  = Grade_exam::join('grades', 'grades.id', '=', 'grade_exams.grade_id')
+                  $dataExam  = Grade_exam::with(['exam.score' => function($query) use($id){
+                        $query->where('student_id', $id);
+                     }])
+                     ->where(function($query){
+                     $query->where('exams.open_date', '<=', now())
+                        ->orWhereNull('exams.open_date');
+                     })
+                     ->join('grades', 'grades.id', '=', 'grade_exams.grade_id')
                      ->join('exams', 'exams.id', '=', 'grade_exams.exam_id')
                      ->join('type_exams', 'type_exams.id', '=', 'exams.type_exam')
                      ->join('subject_exams', 'subject_exams.exam_id', '=', 'exams.id')
@@ -510,7 +524,14 @@ class DashboardController extends Controller
                         ->orderBy('name', 'asc');
                   }])->where('id', $gradeIdStudent)->first();
    
-                  $dataExam  = Grade_exam::join('grades', 'grades.id', '=', 'grade_exams.grade_id')
+                  $dataExam  = Grade_exam::with(['exam.score' => function($query) use($id){
+                     $query->where('student_id', $id);
+                     }])
+                     ->where(function($query){
+                     $query->where('exams.open_date', '<=', now())
+                        ->orWhereNull('exams.open_date');
+                     })
+                     ->join('grades', 'grades.id', '=', 'grade_exams.grade_id')
                      ->join('exams', 'exams.id', '=', 'grade_exams.exam_id')
                      ->join('type_exams', 'type_exams.id', '=', 'exams.type_exam')
                      ->join('subject_exams', 'subject_exams.exam_id', '=', 'exams.id')

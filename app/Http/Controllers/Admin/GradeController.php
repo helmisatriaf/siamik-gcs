@@ -14,6 +14,7 @@ use App\Models\Grade_exam;
 use App\Models\Teacher_grade;
 use App\Models\Teacher_subject;
 use App\Models\Subject_exam;
+use App\Models\User;
 
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Support\Carbon;
@@ -847,9 +848,6 @@ class GradeController extends Controller
       }
    }
 
-   
-
-   
    public function teacherGrade()
    {
       try {
@@ -860,6 +858,7 @@ class GradeController extends Controller
 
          $getIdTeacher = Teacher::where('user_id', session('id_user'))->value('id');
          $ct = Teacher_grade::where('teacher_id', $getIdTeacher)->value('grade_id');
+         $profile = Teacher::where('user_id', session('id_user'))->first();
 
          $gradeTeacher = Teacher_grade::where('teacher_id', $getIdTeacher)
             ->join('grades', 'grades.id', '=', 'teacher_grades.grade_id')
@@ -885,6 +884,7 @@ class GradeController extends Controller
          return view('components.teacher.data-grade-teacher', [
             'data' => $data,
             'subjects' => $subject,
+            'profile' => $profile,
          ]);
       } catch (Exception $err) {
          return dd($err);
@@ -1048,6 +1048,50 @@ class GradeController extends Controller
       } catch (Exception $err) {
          dd($err);
          return redirect('/'. session('role') .'/grades/manageSubject/teacher/multiple/edit/' . $gradeId . '/' . $subjectId);
+      }
+   }
+
+   public function previousData(){
+      try {
+         $earlierAcademicYear = "2024-2025";
+         $earlierGradeSubject = Grade_subject::where('academic_year', $earlierAcademicYear)->get();
+         $earlierTeacherGrade = Teacher_grade::where('academic_year', $earlierAcademicYear)->get();
+         $earlierTeacherSubject = Teacher_subject::where('academic_year', $earlierAcademicYear)->get();
+
+         $currentAcademicYear = session('academic_year');
+
+         foreach ($earlierGradeSubject as $item) {
+            Grade_subject::create([
+               'grade_id'      => $item->grade_id,
+               'subject_id'    => $item->subject_id,
+               'academic_year' => $currentAcademicYear,
+            ]);
+         }
+
+         foreach ($earlierTeacherGrade as $class) {
+            Teacher_grade::create([
+               'teacher_id'    => $class->teacher_id,
+               'grade_id'      => $class->grade_id,
+               'academic_year' => $currentAcademicYear,
+            ]);
+         }
+         
+         foreach ($earlierTeacherSubject as $subject) {
+            Teacher_subject::create([
+               'teacher_id'    => $subject->teacher_id,
+               'subject_id'    => $subject->subject_id,
+               'grade_id'      => $subject->grade_id,
+               'is_group'      => $subject->is_group,
+               'is_lead'       => $subject->is_lead,
+               'academic_year' => $currentAcademicYear,
+            ]);
+         }
+
+         session()->flash('create_previous_data');
+         return redirect()->back();
+      }
+      catch(Exception $err){
+         dd($err);
       }
    }
 }

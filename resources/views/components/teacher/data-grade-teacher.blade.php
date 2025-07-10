@@ -36,6 +36,22 @@
                </nav>
          </div>
       </div>
+      <div class="card col-md-4 p-2" style="background-color: #ffde9e;border-radius:12px;">
+         <div class="d-flex align-items-center">
+            <div class="flex-shrink-0">
+               <img src="{{ asset('storage/file/profile/' . $profile->profil) }}" class="img-circle elevation-2"
+                  alt="" style="width: 100px;height: 100px;">
+            </div>
+            <div class="flex-grow-1 ml-3">
+               <h5 class="mb-1">Class Teacher</h5>
+               <p class="mb-0"><strong>{{$profile->name}}</strong></p>
+               <p class="mb-0"><strong>{{ $data['gradeTeacher'][0]->name }} - {{ $data['gradeTeacher'][0]->class}}</strong></p>
+               <p class="mb-0"><strong>32 siswa</strong></p>
+               <p class="mb-0"><strong>12</strong></p>
+            </div>
+         </div>
+      </div>
+
       @foreach ($data['gradeTeacher'] as $dgt)
          <div class="card" style="background-color: #ffde9e;border-radius:12px;">
             <div class="card-header">
@@ -128,7 +144,7 @@
             <div class="card-body">
             <div class="row">
                @foreach ($subjects as $subject)
-                  <div class="col-lg-3 col-md-4 col-6">
+                  <div class="col-lg-3 col-md-4 col-12">
                      <div class="small-box bg px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="min-height: 110px;background-color:#fff3c0;border-radius:12px;">
                         <a 
                            @if (session('role') == 'teacher')
@@ -161,14 +177,13 @@
                            </div>
                         </a>
                      </div>       
-               </div>
+                  </div>
                @endforeach
             </div>
             </div>
          </div>
       @endforeach
    </div>
-
    @else
    <div class="container-fluid full-height">
       <div class="icon-wrapper">

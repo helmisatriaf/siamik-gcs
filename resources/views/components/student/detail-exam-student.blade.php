@@ -232,7 +232,7 @@
                     <form action="{{route('upload.answer')}}" method="POST" enctype="multipart/form-data">
                       @csrf
                       <div class="form-group row text-muted" id="file-form">
-                        <label for="upload_file">Upload Your Answer File (Maks 1MB) <span style="color: red">*</span></label>
+                        <label for="upload_file">Upload Your Answer File (Maks 5MB) <span style="color: red">*</span></label>
                         <input type="file" id="upload_file" name="upload_file" class="" accept=".pdf" required>
                         <div class="text-danger mt-2" id="fileError" style="display: none;"></div>
                       </div>      
@@ -308,7 +308,7 @@
             <div class="modal-body">
               <form action="{{route('upload.answer')}}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <label for="upload_file">Upload Your Answer File (Maks 1MB) <span style="color: red">*</span></label>
+                <label for="upload_file">Upload Your Answer File (Maks 5MB) <span style="color: red">*</span></label>
                 <div class="form-group row text-muted" id="file-form">
                   <input type="file" id="upload_file" name="upload_file" class="" accept=".pdf" required>
                   <div class="text-danger mt-2" id="fileError" style="display: none;"></div>
@@ -341,27 +341,33 @@
         this.value = "";
         submitBtn.disabled = true;
         Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Format file must be pdf !',
+            title: 'Format file must be pdf !',
+            imageUrl: '/images/confuse.png',
+            imageWidth: 100,
+            imageHeight: 100,
         });
       } else {
         if (file) {
             const fileSize = file.size;
-            if (fileSize > 1048576) { // 1MB = 1048576 bytes
-              fileError.textContent = "Ukuran file terlalu besar! Maksimal 1MB.";
+            if (fileSize > 5048576) { // 1MB = 1048576 bytes
+              fileError.textContent = "File size to much! Maksimum 5MB.";
               fileError.style.display = "block";
               this.value = "";
               submitBtn.disabled = true;
-              Swal.fire({
-                  icon: 'error',
+              Swal.fire({ 
                   title: 'Oops...',
-                  html: `Too Much! Maksimum Size 1MB.<br><br>
+                  imageUrl: '/images/confuse.png',
+                  imageWidth: 100,
+                  imageHeight: 100,
+                  html: `Too Much! Maksimum Size 5MB.<br><br>
                         <strong>Please compress your file in:</strong> <br>
                         <a href="https://www.ilovepdf.com/compress_pdf" target="_blank" style="color: #3085d6; text-decoration: underline;">
                             iLovePDF - Compress PDF
                         </a>`,
                   confirmButtonText: 'Oke',
+                  customClass: {
+                     popup: 'custom-swal-style'
+                  },
               });
             } else {
               fileError.style.display = "none";

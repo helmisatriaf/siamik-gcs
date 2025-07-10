@@ -65,5 +65,8 @@ class Student extends Model
    {
       return $this->hasMany(StudentAnswer::class, 'student_id');
    }
-
+   public function cbtStatus()
+   {
+      return $this->hasMany(QuestionStatus::class, 'student_id');
+   }
 }

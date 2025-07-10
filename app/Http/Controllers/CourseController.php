@@ -318,7 +318,7 @@ class CourseController extends Controller
                 ->orderBy('created_at', 'asc')
                 ->paginate(10);
 
-            $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->first();
+            $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->get();
             $material = CourseActivities::where('grade_subject_id', $gradeSubject->id)->count();
             
             $assessment = Exam::select('exams.*', 'grades.name as grade_name', 'subjects.name_subject')
@@ -500,7 +500,7 @@ class CourseController extends Controller
                 ->where('academic_year', session('academic_year'))
                 ->firstOrFail();
 
-            $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->first();
+            $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->get();
             $material = CourseActivities::where('grade_subject_id', $gradeSubject->id)->count();
             
             $assessment = Exam::select('exams.*', 'grades.name as grade_name', 'subjects.name_subject')
@@ -615,7 +615,7 @@ class CourseController extends Controller
                 ->firstOrFail();
 
                 
-            $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->first();
+            $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->get();
             $material = CourseActivities::where('grade_subject_id', $gradeSubject->id)->count();
             
             $assessment = Exam::select('exams.*', 'grades.name as grade_name', 'subjects.name_subject')
@@ -770,8 +770,8 @@ class CourseController extends Controller
         $subject = Subject::findOrFail($id);
 
         $filePath = null;
-        if ($request->hasFile('upload_file')) {
-            $filePath = $request->file('upload_file')->store('ebooks', 'public');
+        if ($request->hasFile('file')) {
+            $filePath = $request->file('file')->store('ebooks', 'public');
             $embed = false;
         }
         else {
@@ -779,6 +779,7 @@ class CourseController extends Controller
             $embed = true;
         }
 
+        // dd($filePath);
         $ebook = new Ebook([
             'grade_subject_id' => $gradeSubject->id,
             'title' => $validatedData['title'],
@@ -1199,6 +1200,7 @@ class CourseController extends Controller
                 'child' => 'detail course',
             ]);
 
+            // STUDENT
             if(session('role') == 'student'){
                 $studentId = Student::where('user_id', session('id_user'))->value('id');
 
@@ -1266,7 +1268,7 @@ class CourseController extends Controller
                     $weekNumber++;
                 }
 
-                $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->first();
+                $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->get();
                 $material = CourseActivities::where('grade_subject_id', $gradeSubject->id)->count();
                 
                 $assessment = Exam::select('exams.*', 'grades.name as grade_name', 'subjects.name_subject')
@@ -1297,6 +1299,8 @@ class CourseController extends Controller
                     ->count();
 
             }
+
+            // PARENT
             elseif(session('role') == 'parent'){
                 $grade_id = Student::where('id', session('studentId'))->value('grade_id');
     
@@ -1362,7 +1366,7 @@ class CourseController extends Controller
                     $weekNumber++;
                 }
 
-                $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->first();
+                $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->get();
                 $material = CourseActivities::where('grade_subject_id', $gradeSubject->id)->count();
                 
                 $assessment = Exam::select('exams.*', 'grades.name as grade_name', 'subjects.name_subject')
@@ -1392,7 +1396,6 @@ class CourseController extends Controller
                     ->where('exams.is_active', TRUE)
                     ->count();
             }         
-
             return view('components.course.sections', compact('subject', 'grade_id', 'gradeSubject', 'course', 'ebook', 'assessment', 'assessmentActive', 'material'));
         } catch (Exception $err) {
             dd($err);

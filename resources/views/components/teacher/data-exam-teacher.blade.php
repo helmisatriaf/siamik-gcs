@@ -408,11 +408,17 @@
     @if(session('after_create_exam')) 
         <script>
             Swal.fire({
-                icon: 'success',
-                title: 'Successfully',
-                text: 'Successfully created new assessment',
-                timer: 1000, // Swal akan hilang dalam 2000ms (2 detik)
-                showConfirmButton: false // Sembunyikan tombol "OK",
+                title: 'Successfully created new assessment',
+                timer: 1800, // Swal akan hilang dalam 2000ms (2 detik)
+                showConfirmButton: false, // Sembunyikan tombol "OK",
+                imageUrl: '/images/happy.png', // pastikan path ini bisa diakses dari browser
+                imageWidth: 100,
+                imageHeight: 100,
+                imageAlt: 'Custom image',
+                customClass: {
+                    popup: 'custom-swal-style'
+                },
+                showConfirmButton: false, // Sembunyikan tombol "OK",
             });
         </script>
     @endif
@@ -420,24 +426,35 @@
     @if(session('after_update_exam')) 
         <script>
             Swal.fire({
-                icon: 'success',
-                title: 'Successfully',
                 text: 'Successfully updated the scoring',
-                timer: 1000, // Swal akan hilang dalam 2000ms (2 detik)
-                showConfirmButton: false // Sembunyikan tombol "OK",
+                showConfirmButton: false, // Sembunyikan tombol "OK",
+                timer: 1800, // Sembunyikan tombol "OK",
+                imageUrl: '/images/happy.png', // pastikan path ini bisa diakses dari browser
+                imageWidth: 100,
+                imageHeight: 100,
+                imageAlt: 'Custom image',
+                customClass: {
+                    popup: 'custom-swal-style'
+                },
             });
         </script>
    @endif
 
     @if(session('after_update_score')) 
-            <script>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Successfully',
-                    text: 'Successfully update score',
-                    timer: 1000, // Swal akan hilang dalam 2000ms (2 detik)
-                    showConfirmButton: false // Sembunyikan tombol "OK",
-                });
-            </script>
+        <script>
+            Swal.fire({
+                title: 'Successfully update score',
+                showConfirmButton: false, // Sembunyikan tombol "OK",
+                timer: 1800, // Swal akan hilang dalam 2000ms (2 detik)
+                showConfirmButton: false, // Sembunyikan tombol "OK",
+                imageUrl: '/images/happy.png', // pastikan path ini bisa diakses dari browser
+                imageWidth: 100,
+                imageHeight: 100,
+                imageAlt: 'Custom image',
+                customClass: {
+                    popup: 'custom-swal-style'
+                },
+            });
+        </script>
     @endif
 @endsection

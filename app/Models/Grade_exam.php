@@ -17,4 +17,9 @@ class Grade_exam extends Model
         'updated_at',
         'academic_year',
     ];
+
+    public function exam()
+    {
+        return $this->hasMany(Exam::class, 'id');
+    }
 }

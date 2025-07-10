@@ -140,37 +140,35 @@ $days = floor($diff / (60 * 60 * 24)); // Konversi detik ke hari
               @if ($data->model !== null)
                 <div class="row">
                   <div class="col-12 col-md-4">
-                      <div class="info-box small-box bg-orange px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="min-height: 110px;">
-                          <a 
-                              href="#"
-                              id="workplace"
-                              class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
-                          
-                              <!-- Ribbon -->
-                              <div class="ribbon-wrapper ribbon-lg">
-                                  <div class="ribbon bg-warning">
-                                    Assessment
+                          <div class="info-box small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="border-radius: 12px;background-color: #ffcc00;">
+                              <a 
+                                  href="#"
+                                  id="workplace"
+                                  class="stretched-link d-flex flex-column text-center justify-content-center align-items-center">
+                              
+                                  <!-- Ribbon -->
+                                  <div class="ribbon-wrapper ribbon-lg">
+                                      <div class="ribbon bg-dark">
+                                        CBT
+                                      </div>
                                   </div>
-                              </div>
-                          
-                              <!-- Bagian Utama -->
-                              <div class="d-flex flex-column justify-content-center align-items-center" style="max-width: 150px;">
-                                <div class="image-container" style="width: 100px; height: 120px;">
-                                    <img loading="lazy" src="{{ asset('images/greta-greti-baju-olga.png') }}" 
-                                         alt="avatar" 
-                                         class="profileImage img-fluid"
-                                         style="width: 100%; height: 100%; object-fit: contain; cursor: pointer;">
-                                </div>
-                                <div class="text-container mt-2">
-                                    <p class="text-center mb-0" style="font-size: 14px; color: white; font-weight: bold;">
-                                        Click Me!
-                                    </p>
-                                </div>
-                            </div>
-                            
-                          </a>
-                      </div>       
-                  </div>
+                              
+                                  <!-- Bagian Utama -->
+                                  <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
+                                      <!-- Ikon -->
+                                      <div>
+                                          <img loading="lazy" src="{{ asset('images/greta-greti-baju-olga.png') }}" 
+                                            alt="avatar" class="profileImage img-fluid" 
+                                            style="width:85px; height: 60px; cursor: pointer;">
+                                      </div>
+                                      <!-- Nama Subject -->
+                                      <div class="inner">
+                                          <p class="info-box-text text-center text-white text-bold">Click Me !</p>
+                                      </div>
+                                  </div>
+                              </a>
+                          </div>       
+                      </div>
                 </div>  
 
                 @if ($data->model == "mce")

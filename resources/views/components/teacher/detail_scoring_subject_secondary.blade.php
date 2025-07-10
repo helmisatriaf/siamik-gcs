@@ -112,8 +112,8 @@
                                 <th rowspan="2 class="text-center" style="vertical-align : middle;text-align:center;">First Name</th>
                                 <th colspan="{{ $data['grade']->total_homework + 1 }}" class="text-center" style="vertical-align : middle;text-align:center;">Homework (20%)</th>
                                 <th colspan="{{ $data['grade']->total_exercise + 1 }}" class="text-center" style="vertical-align : middle;text-align:center;">Exercise (35%)</th>
-                                <th colspan="{{ $data['grade']->total_participation + 1 }} class="text-center" style="vertical-align : middle;text-align:center;">Attendance / Participation (10%)</th>
-                                <th colspan="{{ $data['grade']->total_final_exam + 1 }}" class="text-center" style="vertical-align : middle;text-align:center;">Project/Practical/Final Assessment (35%)</th>
+                                <th colspan="{{ $data['grade']->total_participation + 1 }} class="text-center" style="vertical-align : middle;text-align:center;">Participation (10%)</th>
+                                <th colspan="{{ $data['grade']->total_final_exam + 1 }}" class="text-center" style="vertical-align : middle;text-align:center;">Project/Practical/Final Exam (35%)</th>
                                 <th class="text-center">Total</th>
                                 {{-- <th class="text-center">Marks</th> --}}
                                 <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Remedial</th>
@@ -288,8 +288,8 @@
                             <tr>
                                 <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">S/N</th>
                                 <th rowspan="2 class="text-center" style="vertical-align : middle;text-align:center;">First Name</th>
-                                <th colspan="{{ $data['grade']->total_tasks + 2 }}" class="text-center" style="vertical-align : middle;text-align:center;"> Tasks (Homework/Small Project/Presentation)</th>
-                                <th colspan="{{ $data['grade']->total_mid + 2 }}" class="text-center" style="vertical-align : middle;text-align:center;">Quiz/Practical Exam/Project</th>
+                                <th colspan="{{ $data['grade']->total_tasks + 2 }}" class="text-center" style="vertical-align : middle;text-align:center;"> Homework/Exercise</th>
+                                <th colspan="{{ $data['grade']->total_mid + 2 }}" class="text-center" style="vertical-align : middle;text-align:center;">Quiz/Practical/Project</th>
                                 <th colspan="{{ $data['grade']->total_final_exam + 2 }}" class="text-center" style="vertical-align : middle;text-align:center;">Final Exam</th>
                                 <th class="text-center">Total</th>
                                 <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Remedial</th>

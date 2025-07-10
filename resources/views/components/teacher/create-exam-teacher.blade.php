@@ -25,7 +25,6 @@
       font-size: 16px;
       color: #6c757d;
    }
-
 </style>
 
 <section class="content">
@@ -123,7 +122,7 @@
                                  <div class="col-md-12">
                                     <label for="name">Name <span style="color: red">*</span></label>
                                     <input name="name" type="text" class="form-control" id="name"
-                                          placeholder="Enter Scoring Name" value="{{ old('name') }}" autocomplete="off" required>
+                                          placeholder="Enter Assessment Name" value="{{ old('name') }}" autocomplete="off" required>
                                     @if($errors->has('name'))
                                           <p style="color: red">{{ $errors->first('name') }}</p>
                                     @endif
@@ -151,6 +150,28 @@
                                     
                                     @if($errors->has('date_exam'))
                                        <p style="color: red">{{ $errors->first('exam') }}</p>
+                                    @endif
+                                 </div>
+                              </div>
+                              
+                              <div class="form-group row">
+                                 <div class="col-md-12">
+                                    <label for="open_date">Open date <span style="color: red">* (Kapan soal diakses)</span></label>
+                                    <input name="open_date" type="date" class="form-control" id="open_date" required>
+                                    
+                                    @if($errors->has('open_date'))
+                                       <p style="color: red">{{ $errors->first('open_date') }}</p>
+                                    @endif
+                                 </div>
+                              </div>
+                              
+                              <div class="form-group row">
+                                 <div class="col-md-12">
+                                    <label for="time_open">Time open <span style="color: red">(spesifik jam soal diakses)</span> <span style="color: green;">*Opsional*</span></label>
+                                    <input name="time_open" type="time" class="form-control" id="time_open">
+                                    
+                                    @if($errors->has('time_open'))
+                                       <p style="color: red">{{ $errors->first('time_open') }}</p>
                                     @endif
                                  </div>
                               </div>
@@ -186,7 +207,7 @@
       
                               <div class="form-group row" id="file-form" style="display: none;">
                                  <div class="col-md-12">
-                                    <label for="upload_file">Upload File (Maks 1MB)<span style="color: red">*</span></label><br>
+                                    <label for="upload_file">Upload File (Maks 5MB)<span style="color: red">*</span></label><br>
                                     <input type="file" id="upload_file" name="upload_file" accept=".pdf">
                                     <div class="text-danger mt-2" id="fileError" style="display: none;"></div>
                                  </div>
@@ -262,113 +283,113 @@
                               </div>
                         </div>
                      </div>
-                  </div>
+                  </div>  
+               </div>
 
-                  <div class="card card-light" id="question-combine" style="display: none;border-radius: 12px;">
-                     <div class="card-header">
-                        Multiple Choice & Essay
-                     </div>
-                     <div class="card-body">
-                        {{-- <div class="d-flex">
-                           <div class="col-4 ">
-                              <div class="form-group row">
-                                 <div class="col-12">
-                                    <label for="question_mce">Input total of questions multiple choice <span style="color: red">*</span></label>
-                                    <input name="question_mce" type="number" class="form-control" id="question_mce" max="50">
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-4">
-                              <div class="form-group row">
-                                 <div class="col-12">
-                                    <label for="question_essay">Input total of essay <span style="color: red">*</span></label>
-                                    <input name="question_essay" type="number" class="form-control" id="question_essay" max="50">
-                                 </div>
-                              </div>
-                           </div>   
-                        </div>
-                        <div class="col-12">
+               <div class="card card-light" id="question-combine" style="display: none;border-radius: 12px;">
+                  <div class="card-header">
+                     Multiple Choice & Essay
+                  </div>
+                  <div class="card-body">
+                     {{-- <div class="d-flex">
+                        <div class="col-4 ">
                            <div class="form-group row">
-                              <div class="col-8">
-                                 <button class="btn btn-secondary btn-md w-100 btn-create-mce">Create Question</button>
+                              <div class="col-12">
+                                 <label for="question_mce">Input total of questions multiple choice <span style="color: red">*</span></label>
+                                 <input name="question_mce" type="number" class="form-control" id="question_mce" max="50">
                               </div>
                            </div>
-                        </div> --}}
-
-                        <div id="question">
                         </div>
-                     </div>
-                  </div>
-
-                  <div class="card card-light" id="question-essay" style="display: none;border-radius: 12px;">
-                     <div class="card-header">
-                        Essay
-                     </div>
-                     <div class="card-body">
-                        {{-- <div class="d-flex">
-                           <div class="col-4">
-                              <div class="form-group row">
-                                 <div class="col-12">
-                                    <label for="just_essay">Input total of essay <span style="color: red">*</span></label>
-                                    <input name="just_essay" type="number" class="form-control" id="just_essay" max="50">
-                                 </div>
-                              </div>
-                           </div>   
-                        </div>
-                        <div class="col-12">
+                        <div class="col-4">
                            <div class="form-group row">
-                              <div class="col-8">
-                                 <button class="btn btn-dark btn-essay btn-md w-100 btn-create-essay">Create Question</button>
+                              <div class="col-12">
+                                 <label for="question_essay">Input total of essay <span style="color: red">*</span></label>
+                                 <input name="question_essay" type="number" class="form-control" id="question_essay" max="50">
                               </div>
                            </div>
-                        </div> --}}
-
-                        <div id="containeressay">
+                        </div>   
+                     </div>
+                     <div class="col-12">
+                        <div class="form-group row">
+                           <div class="col-8">
+                              <button class="btn btn-secondary btn-md w-100 btn-create-mce">Create Question</button>
+                           </div>
                         </div>
+                     </div> --}}
+
+                     <div id="question">
                      </div>
                   </div>
+               </div>
 
-                  <div class="card card-light" id="question-mc" style="display: none;border-radius: 12px;">
-                     <div class="card-header">
-                        Multiple Choice
-                     </div>
-                     <div class="card-body">
-                        {{-- <div class="d-flex">
-                           <div class="col-4 ">
-                              <div class="form-group row">
-                                 <div class="col-12">
-                                    <label for="just_mc">Input total of questions multiple choice <span style="color: red">*</span></label>
-                                    <input name="just_mc" type="number" class="form-control" id="just_mc" max="50">
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                        <div class="col-12">
+               <div class="card card-light" id="question-essay" style="display: none;border-radius: 12px;">
+                  <div class="card-header">
+                     Essay
+                  </div>
+                  <div class="card-body">
+                     {{-- <div class="d-flex">
+                        <div class="col-4">
                            <div class="form-group row">
-                              <div class="col-8">
-                                 <button class="btn btn-primary btn-mc btn-md w-100 btn-create-mc">Create Question</button>
+                              <div class="col-12">
+                                 <label for="just_essay">Input total of essay <span style="color: red">*</span></label>
+                                 <input name="just_essay" type="number" class="form-control" id="just_essay" max="50">
                               </div>
                            </div>
-                        </div> --}}
+                        </div>   
+                     </div>
+                     <div class="col-12">
+                        <div class="form-group row">
+                           <div class="col-8">
+                              <button class="btn btn-dark btn-essay btn-md w-100 btn-create-essay">Create Question</button>
+                           </div>
+                        </div>
+                     </div> --}}
 
-                        <div id="containermultiplechoice">
+                     <div id="containeressay">
+                     </div>
+                  </div>
+               </div>
+
+               <div class="card card-light" id="question-mc" style="display: none;border-radius: 12px;">
+                  <div class="card-header">
+                     Multiple Choice
+                  </div>
+                  <div class="card-body">
+                     {{-- <div class="d-flex">
+                        <div class="col-4 ">
+                           <div class="form-group row">
+                              <div class="col-12">
+                                 <label for="just_mc">Input total of questions multiple choice <span style="color: red">*</span></label>
+                                 <input name="just_mc" type="number" class="form-control" id="just_mc" max="50">
+                              </div>
+                           </div>
                         </div>
                      </div>
-                  </div>
+                     <div class="col-12">
+                        <div class="form-group row">
+                           <div class="col-8">
+                              <button class="btn btn-primary btn-mc btn-md w-100 btn-create-mc">Create Question</button>
+                           </div>
+                        </div>
+                     </div> --}}
 
-                  <div class="row d-flex justify-content-center">
-                     <div class="col-md-12">
-                        <input role="button" type="submit" class="btn btn-success center col-12">
+                     <div id="containermultiplechoice">
                      </div>
                   </div>
-               </form>
-            </div>
+               </div>
+               <div class="row d-flex justify-content-center">
+                  <div class="col-md-12">
+                     <input role="button" type="submit" class="btn btn-success center col-12 mt-2" id="submitBtn">
+                  </div>
+               </div>
+            </form>
          </div>
       </div>
    </div>
 </section>
 
 <script src={{asset('assets/vendors/summernote/summernote-lite.min.js')}}></script>
+{{-- <script src="{{asset('assets/vendors/ckeditor/plugins/ckeditor_wiris/integration/WIRISplugins.js?viewer=image')}}"></script> --}}
 
 <script>
    var gradeSelect   = document.getElementById("grade_id");
@@ -488,11 +509,27 @@
       else {
          if (file) {
             const fileSize = file.size;
-            if (fileSize > 1048576) { // 1MB = 1048576 bytes
-               fileError.textContent = "Ukuran file terlalu besar! Maksimal 1MB.";
+            if (fileSize > 5048576) { // 1MB = 1048576 bytes
+               fileError.textContent = "Ukuran file terlalu besar! Maksimal 5MB.";
                fileError.style.display = "block";
                this.value = "";
                submitBtn.disabled = true;
+               Swal.fire({
+                  // icon: 'error',
+                  title: 'Oops...',
+                  imageUrl: '/images/confuse.png',
+                  imageWidth: 100,
+                  imageHeight: 100,
+                  html: `Ukuran file terlalu besar! Maksimal 5MB.<br><br>
+                        <strong>Silakan kompres file Anda di:</strong> <br>
+                        <a href="https://www.ilovepdf.com/compress_pdf" target="_blank" style="color: #3085d6; text-decoration: underline;">
+                           iLovePDF - Compress PDF
+                        </a>`,
+                  confirmButtonText: 'Oke, Saya Mengerti',
+                  customClass: {
+                     popup: 'custom-swal-style'
+                  },
+               });
             } else {
                fileError.style.display = "none";
                submitBtn.disabled = false;
@@ -506,6 +543,20 @@
    document.addEventListener("DOMContentLoaded", function () {
       document.querySelector(".btn-create-mce").addEventListener("click", function (event) {
          event.preventDefault();
+         let isFormDirty = true; // set true jika ada perubahan penting
+
+         window.addEventListener('beforeunload', function (e) {
+            if (isFormDirty) {
+               // Pesan ini akan ditampilkan oleh browser
+               e.preventDefault(); // sebagian browser butuh ini
+               e.returnValue = 'Soal yang Anda buat akan hilang!'; // Chrome & Edge
+            }
+         });
+
+         // Opsional: kalau user sudah menyimpan soal, kita matikan peringatan
+         function formSaved() {
+            isFormDirty = false;
+         }
          event.addClass = "d-none";
          let model = "combine";
          document.getElementById('question-combine').style.display = 'block';
@@ -516,6 +567,20 @@
       
       document.querySelector(".btn-create-essay").addEventListener("click", function (event) {
          event.preventDefault();
+         let isFormDirty = true; // set true jika ada perubahan penting
+
+         window.addEventListener('beforeunload', function (e) {
+            if (isFormDirty) {
+               // Pesan ini akan ditampilkan oleh browser
+               e.preventDefault(); // sebagian browser butuh ini
+               e.returnValue = 'Soal yang Anda buat akan hilang!'; // Chrome & Edge
+            }
+         });
+
+         // Opsional: kalau user sudah menyimpan soal, kita matikan peringatan
+         function formSaved() {
+            isFormDirty = false;
+         }
          let model = "essay";
          document.getElementById('question-essay').style.display = 'block';
          document.getElementById('question-combine').style.display = 'none';
@@ -528,6 +593,20 @@
          let model = "mc";
          document.getElementById('question-mc').style.display = 'block';
          document.getElementById('question-essay').style.display = 'none';
+         let isFormDirty = true; // set true jika ada perubahan penting
+
+         window.addEventListener('beforeunload', function (e) {
+            if (isFormDirty) {
+               // Pesan ini akan ditampilkan oleh browser
+               e.preventDefault(); // sebagian browser butuh ini
+               e.returnValue = 'Soal yang Anda buat akan hilang!'; // Chrome & Edge
+            }
+         });
+
+         // Opsional: kalau user sudah menyimpan soal, kita matikan peringatan
+         function formSaved() {
+            isFormDirty = false;
+         }
          document.getElementById('question-combine').style.display = 'none';
          generateQuestions(model);
       });
@@ -557,7 +636,7 @@
             mcSection.innerHTML += `
                   <div class="card p-3 mb-2">
                      <label>Question ${i + 1}</label>
-                     <textarea class="summernote" name="question_mc[${i}][question]"></textarea>
+                     <textarea id="ckeditor" name="question_mc[${i}][question]"></textarea>
                      <div class="mt-2">
                         <label>Options:</label>
                         <input type="text" name="question_mc[${i}][answer][a]" class="form-control" placeholder="Option A" required>
@@ -584,7 +663,7 @@
             essaySection.innerHTML += `
                   <div class="card p-3 mb-2">
                      <label>Question ${i + 1}</label>
-                     <textarea class="summernote" name="essay[${i}][question]"></textarea>
+                     <textarea id="ckeditor" name="essay[${i}][question]"></textarea>
                      <label class="mt-2">Answer Key:</label>
                      <input type="text" name="essay[${i}][answer]" class="form-control" placeholder="Enter correct answer" required>
                   </div>
@@ -606,7 +685,7 @@
             mcSection.innerHTML += `
                   <div class="card p-3 mb-2">
                      <label>Question ${i + 1}</label>
-                     <textarea class="summernote" name="question_mc[${i}][question]"></textarea>
+                     <textarea id="ckeditor" name="question_mc[${i}][question]"></textarea>
                      <div class="mt-2">
                         <label>Options:</label>
                         <input type="text" name="question_mc[${i}][answer][a]" class="form-control" placeholder="Option A" required>
@@ -653,31 +732,32 @@
    // END COMBINE
 
    function initializeSummerNote() {
-      $('.summernote').summernote({
-         tabsize: 2,
-         height: 200,
-         callbacks: {
-            onImageUpload: function(files) {
-               for (let i = 0; i < files.length; i++) {
-                  uploadImage(files[i], this);
-               }
-            }
-         }
-      })
-      $("#hint").summernote({
-         height: 100,
-         toolbar: false,
-         placeholder: 'type with apple, orange, watermelon and lemon',
-         hint: {
-            words: ['apple', 'orange', 'watermelon', 'lemon'],
-            match: /\b(\w{1,})$/,
-            search: function(keyword, callback) {
-               callback($.grep(this.words, function(item) {
-                  return item.indexOf(keyword) === 0;
-               }));
-            }
-         }
-      });
+      CKEDITOR.replace('ckeditor');
+      // $('.summernote').summernote({
+      //    tabsize: 2,
+      //    height: 200,
+      //    callbacks: {
+      //       onImageUpload: function(files) {
+      //          for (let i = 0; i < files.length; i++) {
+      //             uploadImage(files[i], this);
+      //          }
+      //       }
+      //    }
+      // })
+      // $("#hint").summernote({
+      //    height: 100,
+      //    toolbar: false,
+      //    placeholder: 'type with apple, orange, watermelon and lemon',
+      //    hint: {
+      //       words: ['apple', 'orange', 'watermelon', 'lemon'],
+      //       match: /\b(\w{1,})$/,
+      //       search: function(keyword, callback) {
+      //          callback($.grep(this.words, function(item) {
+      //             return item.indexOf(keyword) === 0;
+      //          }));
+      //       }
+      //    }
+      // });
    }
 
    function uploadImage(file, editor) {
@@ -715,23 +795,5 @@
    }
 
 </script>
-<script>
-   let isFormDirty = true; // set true jika ada perubahan penting
-
-   window.addEventListener('beforeunload', function (e) {
-      if (isFormDirty) {
-         // Pesan ini akan ditampilkan oleh browser
-         e.preventDefault(); // sebagian browser butuh ini
-         e.returnValue = 'Soal yang Anda buat akan hilang!'; // Chrome & Edge
-      }
-   });
-
-   // Opsional: kalau user sudah menyimpan soal, kita matikan peringatan
-   function formSaved() {
-      isFormDirty = false;
-   }
-</script>
-
-
 
 @endsection

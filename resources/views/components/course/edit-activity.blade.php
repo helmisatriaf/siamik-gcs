@@ -65,10 +65,10 @@
     }
 
     .custom-modal {
-    padding: ;
+        padding: 20px;
         background-color: #ffde9e;
         color: #000;
-        border-radius: 96px;
+        border-radius: 86% 64% 74% 76% / 76% 80% 80% 94% !important;
         border: 3px solid #ffcc00;
         overflow: hidden;
         display: flex;
@@ -148,13 +148,13 @@
                     'id' => $id,
                 ]) }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <label for="upload_file">Upload File (Maks 1MB) <span style="color: red">*</span></label>
-                    <input type="file" id="upload_file" name="upload_file" accept=".pdf" required>
+                    <label for="upload_file" class="text-lg">Upload File<span style="color: red">*</span></label>
+                    <input class="text-lg" type="file" id="upload_file" name="upload_file" accept=".pdf" required>
                     <div class="text-danger mt-2" id="fileError" style="display: none;"></div>
                 </div>
                 <div class="form-group d-flex justify-content-center align-item-center text-center">
-                    <button type="button" class="btn btn-secondary" style="border-radius:16px;" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-sm btn-danger w-100" style="border-radius:16px;" id="submitBtn">Confirm</button>
+                    <button type="button" class="btn btn-secondary text-lg" style="border-radius:16px;" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-sm btn-danger text-lg w-100" style="border-radius:16px;" id="submitBtn">Confirm</button>
                 </div>
                 </form>
         </div>
@@ -162,48 +162,48 @@
 </div>
 
 <script>
-    document.getElementById("upload_file").addEventListener("change", function () {
-        const file = this.files[0];
-        const fileError = document.getElementById("fileError");
-        const submitBtn = document.getElementById("submitBtn");
+    // document.getElementById("upload_file").addEventListener("change", function () {
+    //     const file = this.files[0];
+    //     const fileError = document.getElementById("fileError");
+    //     const submitBtn = document.getElementById("submitBtn");
 
-        //console.log(file);
-        if (file) {
-            const fileSize = file.size;
-            const fileExtension = file.name.split('.').pop();
+    //     //console.log(file);
+    //     if (file) {
+    //         const fileSize = file.size;
+    //         const fileExtension = file.name.split('.').pop();
 
-            if(fileExtension == "pdf"){
-                if (fileSize > 1048576) { // 1MB = 1048576 bytes
-                    fileError.textContent = "Ukuran file terlalu besar! Maksimal 1MB.";
-                    fileError.style.display = "block";
-                    this.value = "";
-                    submitBtn.disabled = true;
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        html: `Ukuran file terlalu besar! Maksimal 1MB.<br><br>
-                            <strong>Silakan kompres file Anda di:</strong> <br>
-                            <a href="https://www.ilovepdf.com/compress_pdf" target="_blank" style="color: #3085d6; text-decoration: underline;">
-                                iLovePDF - Compress PDF
-                            </a>`,
-                        confirmButtonText: 'Oke, Saya Mengerti',
-                    });
-                } else {
-                    fileError.style.display = "none";
-                    submitBtn.disabled = false;
-                }
-            } else {
-                fileError.textContent = "Format file tidak didukung! Hanya menerima file PDF.";
-                fileError.style.display = "block";
-                this.value = "";
-                submitBtn.disabled = true;
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Format file tidak didukung! Hanya menerima file PDF.',
-                }); 
-            }
-        }
-    });
+    //         if(fileExtension == "pdf"){
+    //             if (fileSize > 1048576) { // 1MB = 1048576 bytes
+    //                 fileError.textContent = "Ukuran file terlalu besar! Maksimal 1MB.";
+    //                 fileError.style.display = "block";
+    //                 this.value = "";
+    //                 submitBtn.disabled = true;
+    //                 Swal.fire({
+    //                     icon: 'error',
+    //                     title: 'Oops...',
+    //                     html: `Ukuran file terlalu besar! Maksimal 1MB.<br><br>
+    //                         <strong>Silakan kompres file Anda di:</strong> <br>
+    //                         <a href="https://www.ilovepdf.com/compress_pdf" target="_blank" style="color: #3085d6; text-decoration: underline;">
+    //                             iLovePDF - Compress PDF
+    //                         </a>`,
+    //                     confirmButtonText: 'Oke, Saya Mengerti',
+    //                 });
+    //             } else {
+    //                 fileError.style.display = "none";
+    //                 submitBtn.disabled = false;
+    //             }
+    //         } else {
+    //             fileError.textContent = "Format file tidak didukung! Hanya menerima file PDF.";
+    //             fileError.style.display = "block";
+    //             this.value = "";
+    //             submitBtn.disabled = true;
+    //             Swal.fire({
+    //                 icon: 'error',
+    //                 title: 'Oops...',
+    //                 text: 'Format file tidak didukung! Hanya menerima file PDF.',
+    //             }); 
+    //         }
+    //     }
+    // });
 </script>
 @endsection

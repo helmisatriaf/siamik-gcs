@@ -9,24 +9,7 @@ class Exam extends Model
 {
     use HasFactory;
 
-    protected $fillable =[
-        'id',
-        'section_id',
-        'semester',
-        'name_exam',
-        'type_exam',
-        'date_exam',
-        'materi',
-        'model',
-        'teacher_id',
-        'is_active',
-        'hasFile',
-        'file_name',
-        'file_path',
-        'academic_year',
-        'created_at',
-        'updated_at',
-    ];
+    protected $guarded = ['id'];
 
     public function grade(){
         return $this->belongsToMany(Grade::class, 'grade_exams');
@@ -52,7 +35,8 @@ class Exam extends Model
         return $this->hasMany(StudentAnswer::class);
     }
 
-
-
-
+    public function scores()
+    {
+        return $this->hasMany(Score::class);
+    }
 }

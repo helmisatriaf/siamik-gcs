@@ -40,7 +40,8 @@ class Grade extends Model
 
     public function subject()
     {
-      return $this->belongsToMany(Subject::class, 'grade_subjects');
+      return $this->belongsToMany(Subject::class, 'grade_subjects')
+                ->wherePivot('academic_year', session('academic_year'));
     }
 
     public function exam()

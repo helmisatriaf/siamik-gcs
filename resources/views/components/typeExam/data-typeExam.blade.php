@@ -1,6 +1,12 @@
 @extends('layouts.admin.master')
 @section('content')
 
+<style>
+   .modal-backdrop {
+      display: none !important;
+   }
+</style>
+
 
 <!-- Content Wrapper. Contains page content -->
 <div class="container-fluid">

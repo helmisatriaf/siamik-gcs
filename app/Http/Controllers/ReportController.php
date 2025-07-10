@@ -2631,15 +2631,15 @@ class ReportController extends Controller
                 ->select('subjects.name_subject as subject_name', 'subjects.id as subject_id')
                 ->first();
 
-            $tasks = Type_exam::whereIn('name', ['homework', 'small project', 'presentation', 'exercice', 'Exercise'])
+            $tasks = Type_exam::whereIn('name', ['homework', 'exercice', 'Exercise'])
                 ->pluck('id')
                 ->toArray();
 
             // dd($tasks);  
-            $mid = Type_exam::whereIn('name', ['quiz', 'practical exam', 'project', 'exam'])
+            $mid = Type_exam::whereIn('name', ['quiz', 'practical', 'project'])
                 ->pluck('id')
                 ->toArray();
-            $finalExam = Type_exam::whereIn('name', ['written tes', 'big project', 'final assessment', 'final exam'])
+            $finalExam = Type_exam::whereIn('name', ['final exam'])
                 ->pluck('id')
                 ->toArray();
 

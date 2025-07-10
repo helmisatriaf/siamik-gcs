@@ -187,7 +187,6 @@
 
                                                 @foreach ($data['exam'] as $el)
                                                     <li id="view" data-id="{{ $el->id }}"
-                                                        class="hover:cursor-pointer"
                                                         style="background-color: #ffde9e;border: 2px dashed #ffcc00;border-radius: 8px;"
                                                         >
                                                         <span class="handle">
@@ -202,9 +201,26 @@
                                                         <!-- todo text -->
                                                         <span class="text text-sm">( {{ $el->type_exam_name }} )
                                                             ({{ $el->subject }})
-                                                            {{ $el->name_exam }} </span>
+                                                            {{ $el->name_exam }} 
+                                                            {{ $el->model }}
+                                                        </span>
 
                                                         <span>
+                                                        <span class="badge">
+                                                            @if ($el->model == 'mce' || $el->model == 'mc' || $el->model ==  'essay')
+                                                                @if ($el['exam'][0]['score'][0]->student_status)
+                                                                    ✔
+                                                                @else
+                                                                    ❌
+                                                                @endif
+                                                            @else
+                                                                @if ($el['exam'][0]['score'][0]->student_upload)
+                                                                    ✔
+                                                                @else
+                                                                    ❌
+                                                                @endif
+                                                            @endif
+                                                        </span>
                                                             @if ($el->is_active)
                                                             @php
                                                                 $currentDate = now(); // Tanggal saat ini
@@ -358,7 +374,7 @@
         </div>
 
           {{-- bill & payment --}}
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-md-12">
                     @if (isset($data['paymentStatus']) && $data['paymentStatus']['has_unpaid_bill'])
                         <div class="card bg-gradient-warning animate__animated animate__fadeIn" style="border-radius: 12px;">
@@ -397,10 +413,10 @@
                         </div>
                     @endif
                 </div>
-            </div>
+            </div> --}}
 
             <!-- Payment History Card -->
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-md-12">
                     <div class="card" style="border-radius: 12px;">
                         <div class="card-header">
@@ -451,7 +467,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         
     </div>
 </section>

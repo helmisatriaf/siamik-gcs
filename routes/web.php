@@ -1496,6 +1496,7 @@ Route::middleware(['auth.login', 'role:superadmin,admin'])->group(function () {
       Route::post('/monthlyActivities/gas', [MonthlyActivitiesController::class, 'actionPost'])->name('actionCreateMonthly');
       Route::put('/actionEdit', [MonthlyActivitiesController::class, 'actionPut'])->name('actionUpdateMonthly');
       Route::delete('/deleteMonthly', [MonthlyActivitiesController::class, 'delete'])->name('deleteMonthly');
+      Route::get('/set-grade-previous-data', [GradeController::class, 'previousData'])->name('set.grade.previous.data');
    });
 
    Route::post('/exam/delete', [ExamController::class, 'delete'])->name('delete.exams');
@@ -1581,7 +1582,7 @@ Route::middleware(['auth.login', 'role:superadmin,admin'])->group(function () {
    Route::post('/change-number-admin', [SuperAdminController::class, 'changePhone'])->name('change.number.phone');
 });
 
-Route::middleware(['auth.login', 'role:superadmin,admin,teacher'])->group(function () {
+Route::middleware(['auth.login', 'role:superadmin,admin,teacher,student,parent'])->group(function () {
    Route::post('remedial', [ScoreController::class, 'remedial'])->name('remedial');
    Route::post('changeFile', [ExamController::class, 'changeFile'])->name('change.file.exam');
    Route::post('changeEbook', [CourseController::class, 'changeEbook'])->name('change.file.ebook');

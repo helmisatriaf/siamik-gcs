@@ -21,6 +21,13 @@
       </a>
    </div> --}}
 
+   <div class="row">
+      <a type="button" class="btn btn-app bg-success" 
+         data-toggle="modal" data-target="#confirmModal">
+         <i class="fas fa-user"></i> Use Previous Data
+      </a>
+   </div>
+
    <div class="card card-dark mt-2">
       <div class="card-header">
          <h3 class="card-title">Grades</h3>
@@ -105,8 +112,34 @@
    </div>
 </div>
 
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Confirm use previous data?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to use previous data?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmAccScoring">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <link rel="stylesheet" href="{{asset('template')}}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
 <script src="{{asset('template')}}/plugins/sweetalert2/sweetalert2.min.js"></script>
+
+<script>
+   document.getElementById('confirmAccScoring').addEventListener('click', function() {
+       window.location.href = "{{ route('set.grade.previous.data') }}";
+   });
+</script>
 
 @if(session('after_create_grade')) 
    <script>
@@ -114,6 +147,16 @@
          icon: 'success',
          title: 'Successfully',
          title: 'Successfully created new grade in the database.',
+      });
+   </script>
+@endif
+
+@if(session('create_previous_data')) 
+   <script>
+      Swal.fire({
+         icon: 'success',
+         title: 'Successfully',
+         title: 'Data kelas, wali kelas, guru mapel sama dengan tahun ajara 2024-2025. Kamu bisa edit juga kok',
       });
    </script>
 @endif

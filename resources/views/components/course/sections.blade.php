@@ -313,90 +313,7 @@
         </div>
         <div class="card-body">
             <div class="row">
-                @if ($ebook == null)
-                    @if (in_array(session('role'), ['admin', 'superadmin', 'teacher']))
-                        <div class="col-md-3 col-6">
-                            <div class="inner">
-                                @if (session('role') == 'teacher')
-                                    <a class="small-box bg-danger d-flex flex-column align-items-center justify-content-center text-center"
-                                        style="min-height: 110px;border-radius:12px;" data-bs-toggle="modal" data-bs-target="#ebook"
-                                        href="" id="addEbook">
-                                        <i class="fas fa-plus fa-2x"></i>
-                                        <span>Add Ebook</span>
-                                    </a>
-                                @else
-                                    <a href="{{ route('subject.create-section.super', [
-                                        'role' => session('role'),
-                                        'id' => $subject->id,
-                                        'grade_id' => $grade_id,
-                                    ]) }}"
-                                        id="addEbook"
-                                        class="small-box bg-danger d-flex flex-column align-items-center justify-content-center text-center"
-                                        style="min-height: 110px;border-radius:12px;">
-                                        <i class="fas fa-plus"></i> Add Ebook
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    @endif
-                @else
-                    <div class="col-md-3 col-6">
-                        <div class="small-box d-flex justify-content-between align-items-center shadow-soft px-4"
-                            style="min-height: 110px;background-color: #ffe8d6;border-radius:12px;">
-                            <a 
-                            @if ($ebook->embed)
-                            href="/view/ebook/{{ $ebook->id}}"
-                            @else
-                            href="{{ Storage::url($ebook->file_path) }}"
-                            @endif
-                                class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center"
-                                target="_blank">
-    
-                                <!-- Ribbon -->
-                                <div class="ribbon-wrapper ribbon-md">
-                                    <div class="ribbon bg-secondary">
-                                        E-Book
-                                    </div>
-                                </div>
-    
-                                <!-- Bagian Utama -->
-                                <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
-                                    <!-- Ikon -->
-                                    <div>
-                                        <img loading="lazy" src="{{ asset('images/book.png') }}" alt="Book Icon"
-                                            style="width: 50px; height: 50px;">
-                                    </div>
-                                    <!-- Nama Subject -->
-                                    <div class="inner mt-2">
-                                        <p class="mb-0 text-sm fw-bold text-center">{{ $ebook->title }}</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="row">
-                            <div class="form-group justify-content-start grid">
-                                @if (in_array(session('role'), ['admin', 'superadmin', 'teacher']))
-                                    <div class="col mb-2">
-                                        <a href="#" class="btn-link text-secondary hover:cursor-pointer"
-                                            data-toggle="modal" data-target="#changeBook" id="changeEbook">
-                                            <i class="fas fa-edit ml-1"></i> Change E-Book
-                                        </a>
-                                    </div>
-                                @endif
-                                @if (in_array(session('role'), ['admin', 'superadmin', 'teacher']))
-                                    <div class="col">
-                                        <a href="#" class="btn-link text-danger hover:cursor-pointer"
-                                            data-toggle="modal" data-target="#deleteBook">
-                                            <i class="fas fa-trash ml-1"></i> Delete E-Book
-                                        </a>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                @endif
-    
-                <div class="col-md-3 col-6">
+                <div class="col-md-4 col-6">
                     <div class="small-box d-flex justify-content-between align-items-center shadow-soft px-4" style="min-height: 110px;background-color: #ffe8d6; border-radius: 12px;">
                         <div class="inner">
                             <h3>{{ $material }}</h3>
@@ -407,7 +324,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 col-6">
+                <div class="col-md-4 col-6">
                     <div class="small-box d-flex justify-content-between align-items-center shadow-soft px-4" style="min-height: 110px; background-color: #ffe8d6; border-radius: 12px;">
                         <div class="inner">
                             <h3>{{ $assessment }}</h3>
@@ -418,8 +335,7 @@
                         </div>
                     </div>
                 </div>
-    
-                <div class="col-md-3 col-6">
+                <div class="col-md-4 col-6">
                     <div class="small-box d-flex justify-content-between align-items-center shadow-soft px-4" style="min-height: 110px;background-color: #ffe8d6;border-radius:12px;">
                         <div class="inner">
                             <h3>{{ $assessmentActive }}</h3>
@@ -430,6 +346,78 @@
                         </div>
                     </div>
                 </div>
+                  @if (in_array(session('role'), ['admin', 'superadmin', 'teacher']))
+                    <div class="col-md-3 col-6">
+                        <div class="inner">
+                            {{-- @if (session('role') == 'teacher') --}}
+                            <a class="small-box bg-danger d-flex flex-column align-items-center justify-content-center text-center"
+                                style="min-height: 110px;border-radius:12px;" data-bs-toggle="modal" data-bs-target="#ebook"
+                                href="" id="addEbook">
+                                <i class="fas fa-plus fa-2x"></i>
+                                <span>Add Ebook</span>
+                            </a>
+                        </div>
+                    </div>
+                @endif
+                @if (count($ebook) == 0)
+                @else
+                    @foreach ($ebook as $ebook)
+                        <div class="col-md-2 col-6">
+                            <div class="small-box d-flex justify-content-between align-items-center shadow-soft px-4"
+                                style="min-height: 110px;background-color: #ffe8d6;border-radius:12px;">
+                                <a 
+                                @if ($ebook->embed)
+                                href="/view/ebook/{{ $ebook->id}}"
+                                @else
+                                href="{{ Storage::url($ebook->file_path) }}"
+                                @endif
+                                    class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center"
+                                    target="_blank">
+        
+                                    <!-- Ribbon -->
+                                    <div class="ribbon-wrapper ribbon-md">
+                                        <div class="ribbon bg-secondary">
+                                            E-Book
+                                        </div>
+                                    </div>
+        
+                                    <!-- Bagian Utama -->
+                                    <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
+                                        <!-- Ikon -->
+                                        <div>
+                                            <img loading="lazy" src="{{ asset('images/book.png') }}" alt="Book Icon"
+                                                style="width: 50px; height: 50px;">
+                                        </div>
+                                        <!-- Nama Subject -->
+                                        <div class="inner mt-2">
+                                            <p class="mb-0 text-sm fw-bold text-center">{{ $ebook->title }}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="row">
+                                <div class="form-group justify-content-start grid">
+                                    @if (in_array(session('role'), ['admin', 'superadmin', 'teacher']))
+                                        <div class="col mb-2">
+                                            <a href="#" class="btn-link text-secondary hover:cursor-pointer"
+                                                data-toggle="modal" data-target="#changeBook" id="changeEbook">
+                                                <i class="fas fa-edit ml-1"></i> Change E-Book
+                                            </a>
+                                        </div>
+                                    @endif
+                                    @if (in_array(session('role'), ['admin', 'superadmin', 'teacher']))
+                                        <div class="col">
+                                            <a href="#" class="btn-link text-danger hover:cursor-pointer"
+                                                data-toggle="modal" data-target="#deleteBook">
+                                                <i class="fas fa-trash ml-1"></i> Delete E-Book
+                                            </a>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
             </div>
         </div>
     </div>
@@ -471,36 +459,179 @@
                                     ->orderBy('created_at', 'desc')
                                     ->get();
     
-                                $assessments = \App\Models\Exam::join(
-                                    'grade_exams',
-                                    'exams.id',
-                                    '=',
-                                    'grade_exams.exam_id',
-                                )
-                                    ->join('grades', 'grade_exams.grade_id', '=', 'grades.id')
-                                    ->join('subject_exams', 'exams.id', '=', 'subject_exams.exam_id')
-                                    ->join('subjects', 'subject_exams.subject_id', '=', 'subjects.id')
-                                    ->join('teachers', 'exams.teacher_id', '=', 'teachers.id')
-                                    ->join('type_exams', 'exams.type_exam', '=', 'type_exams.id')
-                                    ->where('exams.semester', session('semester'))
-                                    ->where('exams.academic_year', session('academic_year'))
-                                    ->where('subjects.id', $subject->id)
-                                    ->where('grades.id', $grade_id)
-                                    ->where('section_id', $index)
-                                    ->orderByRaw('exams.is_active = 0 ASC')
-                                    ->select(
-                                        'exams.id',
-                                        'type_exams.name as type_exam',
-                                        'exams.name_exam',
-                                        'exams.hasFile',
-                                        'exams.model',
-                                        'exams.is_active',
-                                    )
-                                    ->get();
-    
-                                foreach ($assessments as $assessment) {
-                                    $info = \App\Models\Score::where('exam_id', $assessment->id)->first();
+                                if (session('role') == 'student') {
+                                    $id = \App\Models\Student::where('user_id', session('id_user'))->value('id');
+                                    $assessments = \App\Models\Exam::with(['score' => function($query) use($id){
+                                                        $query->where('student_id', $id);
+                                                    }])
+                                                    ->where(function($query){
+                                                    $query->where('exams.open_date', '<=', now())
+                                                        ->orWhereNull('exams.open_date');
+                                                    })
+                                                    ->join(
+                                                        'grade_exams',
+                                                        'exams.id',
+                                                        '=',
+                                                        'grade_exams.exam_id',
+                                                    )
+                                                        ->join('grades', 'grade_exams.grade_id', '=', 'grades.id')
+                                                        ->join('subject_exams', 'exams.id', '=', 'subject_exams.exam_id')
+                                                        ->join('subjects', 'subject_exams.subject_id', '=', 'subjects.id')
+                                                        ->join('teachers', 'exams.teacher_id', '=', 'teachers.id')
+                                                        ->join('type_exams', 'exams.type_exam', '=', 'type_exams.id')
+                                                        ->where('exams.semester', session('semester'))
+                                                        ->where('exams.academic_year', session('academic_year'))
+                                                        ->where('subjects.id', $subject->id)
+                                                        ->where('grades.id', $grade_id)
+                                                        ->where('section_id', $index)
+                                                        ->orderByRaw('exams.is_active = 0 ASC')
+                                                        ->select(
+                                                            'exams.id',
+                                                            'type_exams.name as type_exam',
+                                                            'exams.name_exam',
+                                                            'exams.hasFile',
+                                                            'exams.model',
+                                                            'exams.is_active',
+                                                        )
+                                                        ->get();
+
+                                                    
+                        
+                                                    foreach ($assessments as $assessment) {
+                                                        if(session('role') == 'student'){
+                                                            $studentId = \App\Models\Student::where('user_id', session('id_user'))->value('id');
+                                                            if($assessment->model == 'mc' || $assessment->model == 'mce' || $assessment->model == 'essay'){
+                                                                $status = $assessment['score'][0]->student_status;
+                                                            }
+                                                            else{
+                                                                $info = \App\Models\Score::where('exam_id', $assessment->id)
+                                                                    ->where('student_id', $studentId)->value('file_name');
+                                                                $status = !is_null($info); // true jika file_name terisi
+                                                            }
+                                                        }
+                                                        if (session('role') == 'parent') {
+                                                            if($assessment->model == 'mc' || $assessment->model == 'mce' || $assessment->model == 'essay'){
+                                                                $status = $assessment['score'][0]->student_status;
+                                                            }    
+                                                            else{
+                                                                $info = \App\Models\Score::where('exam_id', $assessment->id)
+                                                                    ->where('student_id', session('studentId'))->value('file_name');
+                                                                $status = !is_null($info); // true jika file_name terisi
+                                                            }
+                                                        }
+                                                    }
                                 }
+                                elseif (session('role') == 'parent') {
+                                    $assessments = \App\Models\Exam::with(['score' => function($query){
+                                                        $query->where('student_id', session('studentId'));
+                                                    }])
+                                                    ->where(function($query){
+                                                    $query->where('exams.open_date', '<=', now())
+                                                        ->orWhereNull('exams.open_date');
+                                                    })
+                                                    ->join(
+                                                        'grade_exams',
+                                                        'exams.id',
+                                                        '=',
+                                                        'grade_exams.exam_id',
+                                                    )
+                                                        ->join('grades', 'grade_exams.grade_id', '=', 'grades.id')
+                                                        ->join('subject_exams', 'exams.id', '=', 'subject_exams.exam_id')
+                                                        ->join('subjects', 'subject_exams.subject_id', '=', 'subjects.id')
+                                                        ->join('teachers', 'exams.teacher_id', '=', 'teachers.id')
+                                                        ->join('type_exams', 'exams.type_exam', '=', 'type_exams.id')
+                                                        ->where('exams.semester', session('semester'))
+                                                        ->where('exams.academic_year', session('academic_year'))
+                                                        ->where('subjects.id', $subject->id)
+                                                        ->where('grades.id', $grade_id)
+                                                        ->where('section_id', $index)
+                                                        ->orderByRaw('exams.is_active = 0 ASC')
+                                                        ->select(
+                                                            'exams.id',
+                                                            'type_exams.name as type_exam',
+                                                            'exams.name_exam',
+                                                            'exams.hasFile',
+                                                            'exams.model',
+                                                            'exams.is_active',
+                                                        )
+                                                        ->get();
+
+                                                    
+                        
+                                                    foreach ($assessments as $assessment) {
+                                                        $info = \App\Models\Score::where('exam_id', $assessment->id)->first();
+                                                        if(session('role') == 'student'){
+                                                            $studentId = \App\Models\Student::where('user_id', session('id_user'))->value('id');
+                                                            if($assessment->model == 'mc' || $assessment->model == 'mce' || $assessment->model == 'essay'){
+                                                                $status = $assessment->student_status;
+                                                            }
+                                                            else{
+                                                                $status = $assessment->student_upload;
+                                                            }
+                                                        }
+                                                        if (session('role') == 'parent') {
+                                                            if($assessment->model == 'mc' || $assessment->model == 'mce' || $assessment->model == 'essay'){
+                                                                $status = $assessment->student_status;
+                                                            }    
+                                                            else{
+                                                                $status = $assessment->student_upload;
+                                                            }
+                                                        }
+                                                    }
+                                }
+                                else {
+                                    $assessments = \App\Models\Exam::join(
+                                            'grade_exams',
+                                            'exams.id',
+                                            '=',
+                                            'grade_exams.exam_id',
+                                        )
+                                            ->join('grades', 'grade_exams.grade_id', '=', 'grades.id')
+                                            ->join('subject_exams', 'exams.id', '=', 'subject_exams.exam_id')
+                                            ->join('subjects', 'subject_exams.subject_id', '=', 'subjects.id')
+                                            ->join('teachers', 'exams.teacher_id', '=', 'teachers.id')
+                                            ->join('type_exams', 'exams.type_exam', '=', 'type_exams.id')
+                                            ->where('exams.semester', session('semester'))
+                                            ->where('exams.academic_year', session('academic_year'))
+                                            ->where('subjects.id', $subject->id)
+                                            ->where('grades.id', $grade_id)
+                                            ->where('section_id', $index)
+                                            ->orderByRaw('exams.is_active = 0 ASC')
+                                            ->select(
+                                                'exams.id',
+                                                'type_exams.name as type_exam',
+                                                'exams.name_exam',
+                                                'exams.hasFile',
+                                                'exams.model',
+                                                'exams.is_active',
+                                            )
+                                            ->get();
+
+                                        
+            
+                                        foreach ($assessments as $assessment) {
+                                            $info = \App\Models\Score::where('exam_id', $assessment->id)->first();
+                                            if(session('role') == 'student'){
+                                                $studentId = \App\Models\Student::where('user_id', session('id_user'))->value('id');
+                                                if($assessment->model == 'mc' || $assessment->model == 'mce' || $assessment->model == 'essay'){
+                                                    $status = $assessment->student_status;
+                                                }
+                                                else{
+                                                    $status = $assessment->student_upload;
+                                                }
+                                            }
+                                            if (session('role') == 'parent') {
+                                                if($assessment->model == 'mc' || $assessment->model == 'mce' || $assessment->model == 'essay'){
+                                                    $status = $assessment->student_status;
+                                                }    
+                                                else{
+                                                    $status = $assessment->student_upload;
+                                                }
+                                            }
+                                        }
+                                }
+
+                                // dd($status);
                             @endphp
     
                             @if ($activities->count() > 0)
@@ -585,7 +716,8 @@
     
                             @if ($assessments->count() > 0)
                                 @foreach ($assessments as $assessment)
-                                    {{-- {{$assessment}} --}}
+                                    
+                                    {{-- MODEL UPLOAD FILE --}}
                                     @if ($assessment->hasFile == 1)
                                         <div
                                             class="activity-item shadow-soft mb-2 p-4 border d-flex flex-column position-relative" style="background-color: #ffe8d6;">
@@ -641,12 +773,12 @@
                                                 @if (session('role') == 'parent' || session('role') == 'student')
                                                     <i class="fas fa-info-circle"></i>
                                                     Status :
-                                                    @if ($info->hasFile == 1)
+                                                    @if ($status)
                                                         Already submit answer <br>
                                                         <i class="fas fa-file ml-1"></i> {{ $info->file_name }}
                                                     @else
                                                         <span class="text-danger">
-                                                            You have not completed this assessment
+                                                           {{$status}}
                                                         </span>
                                                     @endif
                                                 @endif
@@ -661,6 +793,8 @@
                                                 @endif
                                             </div>
                                         </div>
+
+                                    {{-- MODEL CBT --}}
                                     @else
                                         <div
                                             class="activity-item shadow-soft mb-2 p-4 d-flex flex-column position-relative" style="background-color: #ffe8d6;">
@@ -692,7 +826,7 @@
                                                         <br>
                                                     </span>
                                                     <i class="fas fa-info-circle"></i>
-                                                    Model {{$assessment->model}} : 
+                                                    Model : 
                                                     <span>
                                                         @switch($assessment->model)
                                                             @case("mce")
@@ -716,7 +850,15 @@
                                                     <i class="fas fa-info-circle"></i>
                                                     Status :
                                                     @if ($assessment->is_active == 1)
+                                                        @if (session('role') == 'student' || session('role') == 'parent')
+                                                            @if ($status)
+                                                                <span class="badge badge-success text-md">completed</span>
+                                                            @else
+                                                                <span class="badge badge-danger text-md">you haven't completed this exam</span>
+                                                            @endif
+                                                        @else
                                                         <span class="badge badge-warning">Active</span>
+                                                        @endif
                                                     @else
                                                         <span class="badge badge-secondary">Completed</span>
                                                     @endif
@@ -829,252 +971,251 @@
             </div>
         @endforeach
     </div>
-</div>
 
-@if (session('role') == 'superadmin' || session('role') == 'admin' || session('role') == 'teacher')
-    <!-- Modal Add Ebook-->
-    <div class="modal fade" id="ebook" tabindex="-1" aria-labelledby="modalLabel-ebook" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content" style="background-color: #ffe8d6;">
-                <div class="modal-header" style="background-color: #ffe8d6;">
-                    <div>
-                        <h5 class="modal-title" id="exampleModalLongTitle">
-                            <i class="fas fa-book mr-2"></i>Add Ebook Resource
-                        </h5>
-                        <p class="text-muted mb-0 small">{{ $subject->name_subject }} |
-                            {{ $subject->grade->first()->name }} - {{ $subject->grade->first()->class }}</p>
-                    </div>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true"><i class="fas fa-times"></i></span>
-                    </button>
-                </div>
-                <div class="modal-body py-4">
-                        {{-- <div class="row mb-4">
-                            <div class="col-md-12 text-center">
-                                <div class="upload-icon mb-3">
-                                    <i class="fas fa-book fa-2x text-danger"></i>
-                                </div>
-                                <h6 class="fw-bold">Add Educational Resource</h6>
-                                <p class="text-muted small">Make learning materials easily accessible to your students
-                                </p>
-                            </div>
-                        </div> --}}
-
-                        <form
-                            @if (session('role') == 'admin' || session('role') == 'superadmin') action="{{ route('subject.store-section', ['role' => session('role'), 'id' => $subject->id, 'grade_id' => $grade_id]) }}"    
-                            @elseif (session('role') == 'teacher')
-                                action="{{ route('subject.store-section.teacher', ['role' => session('role'), 'id' => $subject->id, 'grade_id' => $grade_id]) }}" @endif
-                            method="POST" enctype="multipart/form-data" class="pt-2">
-                            @csrf
-
-                            <div class="row">
-                                <div class="col-md-12 mb-4">
-                                    <div class="form-group">
-                                        <label for="title" class="form-label fw-semibold">Book Title <span
-                                            class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="title" name="title"
-                                            placeholder="Enter a descriptive title for this resource" required>
-                                        <div class="form-text small text-muted">Choose a clear, descriptive title that
-                                            helps students identify the content</div>
-                                    </div>
-                                </div>
-
-                                <div class="row grid md:flex col-12">
-                                    <div class="col-lg-6 mb-4">
-                                        <label for="file" class="form-label fw-semibold">Upload PDF <span
-                                        class="text-danger">*</span></label>
-                                        <div class="file-upload-wrapper">
-                                            <div class="file-upload-area text-center p-4" id="upload-area">
-                                                <input type="file" class="file-input" id="file" name="file"
-                                                    accept=".pdf">
-                                                <i class="fas fa-cloud-upload-alt fa-2x mb-3 text-primary"></i>
-                                                <h6 class="mb-2">Drag and drop your PDF file here</h6>
-                                                <p class="text-muted small mb-2">or</p>
-                                                <button type="button" class="btn btn-outline-primary btn-sm">Browse Files</button>
-                                                <p class="text-muted small mt-2">Maximum file size: 10MB</p>
-                                            </div>
-                                                <div class="selected-file mt-3 d-none">
-                                                <div class="selected-file-info p-2 d-flex align-items-center">
-                                                    <i class="fas fa-file-pdf text-danger me-2"></i>
-                                                    <span class="file-name text-truncate"></span>
-                                                    <span class="file-size ms-2 text-muted small"></span>
-                                                    <button type="button" id="btn-remove-file" class="btn-remove-file ms-auto btn btn-sm">
-                                                        <i class="fas fa-times-circle"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-text small text-muted mt-2">Only PDF format is supported for
-                                            consistency and compatibility
-                                        </div>
-                                    </div>
-    
-                                    <div class="col-lg-6 mb-4">
-                                        <div class="form-group">
-                                            <label for="embed_ebook">Embed For Flip HTML5 <span style="color: red">*</span></label>
-                                            <textarea name="embed_ebook" id="embed_html" rows="5" class="form-control w-100" ></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12 mb-2">
-                                    <div class="alert alert-warning small py-2" role="alert">
-                                        <i class="fas fa-info-circle me-2"></i>
-                                        <strong>Resource Guidelines : </strong> Ensure you have proper rights to share
-                                        this material. Large files may take longer to upload.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="d-flex justify-content-end mt-4">
-                                <button type="button" class="btn btn-outline-secondary mr-4"
-                                    data-bs-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save mr-2"></i>Add Resource
-                                </button>
-                            </div>
-                        </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    @if ($ebook != null)
-        <!-- Modal change ebook -->
-        <div class="modal fade" id="changeBook" tabindex="-1" role="dialog" aria-labelledby="changeFileLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    @if (session('role') == 'superadmin' || session('role') == 'admin' || session('role') == 'teacher')
+        <!-- Modal Add Ebook-->
+        <div class="modal fade" id="ebook" tabindex="-1" aria-labelledby="modalLabel-ebook" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
                 <div class="modal-content" style="background-color: #ffe8d6;">
                     <div class="modal-header" style="background-color: #ffe8d6;">
-                        <h5 class="modal-title" id="exampleModalLongTitle">
-                            <i class="fas fa-book mr-2"></i>Update E-Book File
-                        </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <div>
+                            <h5 class="modal-title" id="exampleModalLongTitle">
+                                <i class="fas fa-book mr-2"></i>Add Ebook Resource
+                            </h5>
+                            <p class="text-muted mb-0 small">{{ $subject->name_subject }} |
+                                {{ $subject->grade->first()->name }} - {{ $subject->grade->first()->class }}</p>
+                        </div>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true"><i class="fas fa-times"></i></span>
                         </button>
                     </div>
-                    <div class="modal-body p-4">
-                        <div class="text-center mb-4">
-                            <div class="upload-icon mb-3">
-                                <i class="fas fa-file-pdf fa-3x text-danger"></i>
-                            </div>
-                            <h6 class="fw-bold">Replace Current E-Book</h6>
-                            <p class="text-muted small">The new file will replace the existing e-book while maintaining
-                                all associated metadata and settings.</p>
-                        </div>
+                    <div class="modal-body py-4">
+                            {{-- <div class="row mb-4">
+                                <div class="col-md-12 text-center">
+                                    <div class="upload-icon mb-3">
+                                        <i class="fas fa-book fa-2x text-danger"></i>
+                                    </div>
+                                    <h6 class="fw-bold">Add Educational Resource</h6>
+                                    <p class="text-muted small">Make learning materials easily accessible to your students
+                                    </p>
+                                </div>
+                            </div> --}}
 
-                        <form action="{{ route('change.file.ebook') }}" method="POST"
-                            enctype="multipart/form-data">
-                            @csrf
-                            <input type="number" id="ebookid" name="ebook_id" class="form-control"
-                            value="{{ $ebook->id }}" hidden>
+                            <form
+                                @if (session('role') == 'admin' || session('role') == 'superadmin') action="{{ route('subject.store-section', ['role' => session('role'), 'id' => $subject->id, 'grade_id' => $grade_id]) }}"    
+                                    action="{{ route('subject.create-section.super', [
+                                            'role' => session('role'),
+                                            'id' => $subject->id,
+                                            'grade_id' => $grade_id,
+                                            ]) }}" 
+                                @elseif (session('role') == 'teacher')
+                                    action="{{ route('subject.store-section.teacher', ['role' => session('role'), 'id' => $subject->id, 'grade_id' => $grade_id]) }}" 
+                                
+                                @endif
+                                method="POST" enctype="multipart/form-data" class="pt-2">
+                                @csrf
 
+                                <div class="row">
+                                    <div class="col-md-12 mb-4">
+                                        <div class="form-group">
+                                            <label for="title" class="form-label fw-semibold">Book Title <span
+                                                class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="title" name="title"
+                                                placeholder="Enter a descriptive title for this resource" required>
+                                            <div class="form-text small text-muted">Choose a clear, descriptive title that
+                                                helps students identify the content</div>
+                                        </div>
+                                    </div>
 
-                            <div class="row grid md:flex col-12">
-                                <div class="col-lg-6 mb-4">
-                                    <div class="file-upload-container mb-4">
-                                        <label for="upload_file" class="form-label fw-medium">Select PDF File</label>
-                                        <div class="file-upload-wrapper">
-                                            <div class="file-upload-area-change text-center p-4" id="upload-area">
-                                                <input type="file" id="upload_file" name="upload_file" accept=".pdf"
-                                                    class="file-input">
-                                                <i class="fas fa-cloud-upload-alt fa-2x mb-3 text-primary"></i>
-                                                <h6 class="mb-2">Drag and drop your file here</h6>
-                                                <p class="text-muted small mb-3">or</p>
-                                                <button type="button" class="btn btn-outline-primary btn-sm">Browse Files</button>
-                                                <p class="text-muted small mt-2">Maximum file size: 10MB</p>
-                                            </div>
-                                            <div class="selected-file-change mt-3 d-none">
-                                                <div class="selected-file-info p-2 d-flex align-items-center">
-                                                    <i class="fas fa-file-pdf text-danger me-2"></i>
-                                                    <span class="file-name-change text-truncate"></span>
-                                                    <span class="file-size-change ms-2 text-muted small"></span>
-                                                    <button type="button" id="btn-remove-file-change" class="btn-remove-file-change ms-auto btn btn-sm">
-                                                        <i class="fas fa-times-circle"></i>
-                                                    </button>
+                                    <div class="row grid md:flex col-12">
+                                        <div class="col-lg-6 mb-4">
+                                            <label for="file" class="form-label fw-semibold">Upload PDF <span
+                                            class="text-danger">*</span></label>
+                                            <div class="file-upload-wrapper">
+                                                <div class="file-upload-area text-center p-4" id="upload-area">
+                                                    <input type="file" class="file-input" id="file" name="file"
+                                                        accept=".pdf">
+                                                    <i class="fas fa-cloud-upload-alt fa-2x mb-3 text-primary"></i>
+                                                    <h6 class="mb-2">Drag and drop your PDF file here</h6>
+                                                    <p class="text-muted small mb-2">or</p>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm">Browse Files</button>
+                                                    <p class="text-muted small mt-2">Maximum file size: 10MB</p>
+                                                </div>
+                                                    <div class="selected-file mt-3 d-none">
+                                                    <div class="selected-file-info p-2 d-flex align-items-center">
+                                                        <i class="fas fa-file-pdf text-danger me-2"></i>
+                                                        <span class="file-name text-truncate"></span>
+                                                        <span class="file-size ms-2 text-muted small"></span>
+                                                        <button type="button" id="btn-remove-file" class="btn-remove-file ms-auto btn btn-sm">
+                                                            <i class="fas fa-times-circle"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <div class="form-text small text-muted mt-2">Only PDF format is supported for
+                                                consistency and compatibility
+                                            </div>
                                         </div>
-                                        <div class="form-text small text-muted mt-2">Only PDF format is supported for
-                                            consistency and compatibility
+        
+                                        <div class="col-lg-6 mb-4">
+                                            <div class="form-group">
+                                                <label for="embed_ebook">Embed For Flip HTML5 <span style="color: red">*</span></label>
+                                                <textarea name="embed_ebook" id="embed_html" rows="5" class="form-control w-100" ></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 mb-2">
+                                        <div class="alert alert-warning small py-2" role="alert">
+                                            <i class="fas fa-info-circle me-2"></i>
+                                            <strong>Resource Guidelines : </strong> Ensure you have proper rights to share
+                                            this material. Large files may take longer to upload.
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="embed_ebook">Embed from HTML5</label>
-                                        <textarea name="embed_ebook" id="embed_ebook" rows="5" class="form-control w-100">
-                                        </textarea>
-                                    </div>
+
+                                <div class="d-flex justify-content-end mt-4">
+                                    <button type="button" class="btn btn-outline-secondary mr-4"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save mr-2"></i>Add Resource
+                                    </button>
                                 </div>
-                            </div>
-
-
-                            <div class="alert alert-info small" role="alert">
-                                <i class="fas fa-info-circle me-2"></i>
-                                <strong>Note:</strong> Please ensure your PDF is properly formatted and optimized for
-                                online viewing. Larger files may take longer to load for students.
-                            </div>
-
-                            <div class="d-grid gap-2 mt-4">
-                                <button type="submit" class="btn btn-primary" id="submitBtnUpdate">
-                                    <i class="fas fa-save mr-2"></i>Update E-Book
-                                </button>
-                                <button type="button" class="btn btn-light" data-dismiss="modal">
-                                    Cancel
-                                </button>
-                            </div>
-                             <div class="d-flex justify-content-end mt-4">
-                                <button type="button" class="btn btn-outline-secondary mr-4"
-                                    data-bs-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save mr-2"></i>Update E-Book
-                                </button>
-                            </div>
-                        </form>
+                            </form>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Modal delete ebook -->
-        <div class="modal fade" id="deleteBook" tabindex="-1" role="dialog" aria-labelledby="changeFileLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content" style="background-color: #ffe8d6;border-radius: 36px;">
-                    <div class="modal-body p-4">
-                        <div class="row d-flex px-4">
-                            <div class="col-3 align-items-end justify-content-end">
-                                <img src="{{ asset('images/greta-face.png')}}" style="width:100%; height:100%;">
+
+        @if ($ebook != null)
+            <!-- Modal change ebook -->
+            {{-- <div class="modal fade" id="changeBook" tabindex="-1" role="dialog" aria-labelledby="changeFileLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                    <div class="modal-content" style="background-color: #ffe8d6;">
+                        <div class="modal-header" style="background-color: #ffe8d6;">
+                            <h5 class="modal-title" id="exampleModalLongTitle">
+                                <i class="fas fa-book mr-2"></i>Update E-Book File
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true"><i class="fas fa-times"></i></span>
+                            </button>
+                        </div>
+                        <div class="modal-body p-4">
+                            <div class="text-center mb-4">
+                                <div class="upload-icon mb-3">
+                                    <i class="fas fa-file-pdf fa-3x text-danger"></i>
+                                </div>
+                                <h6 class="fw-bold">Replace Current E-Book</h6>
+                                <p class="text-muted small">The new file will replace the existing e-book while maintaining
+                                    all associated metadata and settings.</p>
                             </div>
-                            <div class="col-9 d-flex justify-content-center align-items-center">
-                                <form action="{{ route('delete.ebook') }}" method="POST"
-                                    enctype="multipart/form-data">
-                                    @csrf
-                                    @method('DELETE')
-                                    <input type="number" id="delebookid" name="ebook_id" class="form-control"
-                                        value="{{ $ebook->id }}" hidden>
-        
-                                        <strong>Are you sure want to delete this e-book ?</strong>
-        
-                                    <div class="d-grid gap-2 mt-4">
-                                        <button type="submit" class="btn btn-primary"  id="deleteBtn">
-                                            <i class="fas fa-check mr-2"></i>Yes
-                                        </button>
-                                        <button type="button" class="btn btn-light" data-dismiss="modal">
-                                            Cancel
-                                        </button>
+
+                            <form action="{{ route('change.file.ebook') }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <input type="number" id="ebookid" name="ebook_id" class="form-control"
+                                value="{{ $ebook->id }}" hidden>
+
+
+                                <div class="row grid md:flex col-12">
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="file-upload-container mb-4">
+                                            <label for="upload_file" class="form-label fw-medium">Select PDF File</label>
+                                            <div class="file-upload-wrapper">
+                                                <div class="file-upload-area-change text-center p-4" id="upload-area">
+                                                    <input type="file" id="upload_file" name="upload_file" accept=".pdf"
+                                                        class="file-input">
+                                                    <i class="fas fa-cloud-upload-alt fa-2x mb-3 text-primary"></i>
+                                                    <h6 class="mb-2">Drag and drop your file here</h6>
+                                                    <p class="text-muted small mb-3">or</p>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm">Browse Files</button>
+                                                    <p class="text-muted small mt-2">Maximum file size: 10MB</p>
+                                                </div>
+                                                <div class="selected-file-change mt-3 d-none">
+                                                    <div class="selected-file-info p-2 d-flex align-items-center">
+                                                        <i class="fas fa-file-pdf text-danger me-2"></i>
+                                                        <span class="file-name-change text-truncate"></span>
+                                                        <span class="file-size-change ms-2 text-muted small"></span>
+                                                        <button type="button" id="btn-remove-file-change" class="btn-remove-file-change ms-auto btn btn-sm">
+                                                            <i class="fas fa-times-circle"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-text small text-muted mt-2">Only PDF format is supported for
+                                                consistency and compatibility
+                                            </div>
+                                        </div>
                                     </div>
-                                </form>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="embed_ebook">Embed from HTML5</label>
+                                            <textarea name="embed_ebook" id="embed_ebook" rows="5" class="form-control w-100">
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="alert alert-info small" role="alert">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <strong>Note:</strong> Please ensure your PDF is properly formatted and optimized for
+                                    online viewing. Larger files may take longer to load for students.
+                                </div>
+
+                                <div class="d-flex justify-content-end mt-4">
+                                    <button type="button" class="btn btn-outline-secondary mr-4"
+                                        data-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary" id="submitBtnUpdate">
+                                        <i class="fas fa-save mr-2"></i>Update E-Book
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div> --}}
+
+            <!-- Modal delete ebook -->
+            {{-- <div class="modal fade" id="deleteBook" tabindex="-1" role="dialog" aria-labelledby="changeFileLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content" style="background-color: #ffe8d6;border-radius: 36px;">
+                        <div class="modal-body p-4">
+                            <div class="row d-flex px-4">
+                                <div class="col-3 align-items-end justify-content-end">
+                                    <img src="{{ asset('images/greta-face.png')}}" style="width:100%; height:100%;">
+                                </div>
+                                <div class="col-9 d-flex justify-content-center align-items-center">
+                                    <form action="{{ route('delete.ebook') }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        @method('DELETE')
+                                        <input type="number" id="delebookid" name="ebook_id" class="form-control"
+                                            value="{{ $ebook->id }}" hidden>
+            
+                                            <strong>Are you sure want to delete this e-book ?</strong>
+            
+                                        <div class="d-grid gap-2 mt-4">
+                                            <button type="submit" class="btn btn-primary"  id="deleteBtn">
+                                                <i class="fas fa-check mr-2"></i>Yes
+                                            </button>
+                                            <button type="button" class="btn btn-light" data-dismiss="modal">
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div> --}}
+        @endif
     @endif
-@endif
+</div>
 
 <link rel="stylesheet" href="{{ asset('template') }}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
 <script src="{{ asset('template') }}/plugins/sweetalert2/sweetalert2.min.js"></script>
@@ -1125,10 +1266,26 @@
             customClass: {
                 popup: 'custom-swal-style'
             },
-            showConfirmButton: false, // Sembunyikan tombol "OK",
-            timer: 1800, // Swal akan hilang dalam 2000ms (2 detik)
+            timer: 1800,
+            showConfirmButton: false,
         });
-        
+    </script>
+@endif
+
+@if (session('success_edit_file_activity'))
+    <script>
+        Swal.fire({
+            title: 'Successfull Edit Activity',
+            imageUrl: '/images/happy.png', // pastikan path ini bisa diakses dari browser
+            imageWidth: 100,
+            imageHeight: 100,
+            imageAlt: 'Custom image',
+            customClass: {
+                popup: 'custom-swal-style'
+            },
+            timer: 1800,
+            showConfirmButton: false,
+        });
     </script>
 @endif
 
@@ -1162,24 +1319,6 @@
             customClass: {
                 popup: 'custom-swal-style'
             },
-        });
-    </script>
-@endif
-
-@if (session('success_edit_file_activity'))
-    <script>
-        Swal.fire({
-            
-            title: 'Successfull Edit Activity',
-            timer: 1800, // Swal akan hilang dalam 2000ms (2 detik)
-            showConfirmButton: false // Sembunyikan tombol "OK",
-            imageUrl: '/images/happy.png', // pastikan path ini bisa diakses dari browser
-            imageWidth: 100,
-            imageHeight: 100,
-            imageAlt: 'Custom image',
-            customClass: {
-                popup: 'custom-swal-style'
-            }
         });
     </script>
 @endif
@@ -1278,115 +1417,42 @@
         });
     </script>
 
-    @if ($ebook == null)
-        <script>    
-            // FORM TAMBAH EBOOK
-            document.getElementById('addEbook').addEventListener('click', function() {
-                const fileInput = document.getElementById('file');
-                const fileArea = document.querySelector('.file-upload-area');
-                const browseButton = document.querySelector('label[for="file"]');
-                const selectedFile = document.querySelector('.selected-file');
-                const fileName = document.querySelector('.file-name');
-                const fileSize = document.querySelector('.file-size');
-                const removeBtn = document.querySelector('.btn-remove-file');
+    <script>    
+        // FORM TAMBAH EBOOK
+        document.getElementById('addEbook').addEventListener('click', function() {
+            const fileInput = document.getElementById('file');
+            const fileArea = document.querySelector('.file-upload-area');
+            const browseButton = document.querySelector('label[for="file"]');
+            const selectedFile = document.querySelector('.selected-file');
+            const fileName = document.querySelector('.file-name');
+            const fileSize = document.querySelector('.file-size');
+            const removeBtn = document.querySelector('.btn-remove-file');
 
-                // Hentikan propagasi klik pada tombol browse
-                browseButton.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    // Tidak perlu panggil fileInput.click() karena atribut for="upload_file" sudah melakukannya
-                });
+            // Hentikan propagasi klik pada tombol browse
+            browseButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                // Tidak perlu panggil fileInput.click() karena atribut for="upload_file" sudah melakukannya
+            });
 
-                // Ubah event listener untuk area file, kecualikan saat mengklik tombol browse
-                fileArea.addEventListener('click', function(e) {
-                    // Jika yang diklik bukan tombol browse, baru buka dialog file
-                    if (!e.target.closest('label[for="file"]')) {
-                        fileInput.click();
-                    }
-                });
-
-                fileInput.addEventListener('change', function() {
-                    const file = this.files[0];
-                    const fileExtension = file.name.split('.').pop();
-                    if (this.files.length > 0) {
-                        if (fileExtension == "pdf"){
-                            const file = this.files[0];
-                            fileName.textContent = file.name;
-                            // Format file size
-                            const size = file.size;
-                            let formattedSize;
-                            if (size < 1024) {
-                                formattedSize = size + ' bytes';
-                            } else if (size < 1024 * 1024) {
-                                formattedSize = (size / 1024).toFixed(1) + ' KB';
-                            } else {
-                                formattedSize = (size / (1024 * 1024)).toFixed(1) + ' MB';
-                            }
-
-                            fileSize.textContent = formattedSize;
-                            selectedFile.classList.remove('d-none');
-                        }
-                        else{
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                html: `You can upload a PDF file only`,
-                                confirmButtonText: 'Oke',
-                            });
-                        }
-                    }
-                });
-
-                removeBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    fileInput.value = '';
-                    selectedFile.classList.add('d-none');
-                });
-
-                // Prevent default browser behavior for drag and drop
-                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                    fileArea.addEventListener(eventName, preventDefaults, false);
-                });
-
-                function preventDefaults(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
+            // Ubah event listener untuk area file, kecualikan saat mengklik tombol browse
+            fileArea.addEventListener('click', function(e) {
+                // Jika yang diklik bukan tombol browse, baru buka dialog file
+                if (!e.target.closest('label[for="file"]')) {
+                    fileInput.click();
                 }
+            });
 
-                // Highlight drop area when file is dragged over it
-                ['dragenter', 'dragover'].forEach(eventName => {
-                    fileArea.addEventListener(eventName, highlight, false);
-                });
-
-                ['dragleave', 'drop'].forEach(eventName => {
-                    fileArea.addEventListener(eventName, unhighlight, false);
-                });
-
-                function highlight() {
-                    fileArea.closest('.file-upload-wrapper').classList.add('border-primary');
-                    fileArea.closest('.file-upload-wrapper').style.backgroundColor = 'rgba(0, 102, 204, 0.05)';
-                }
-
-                function unhighlight() {
-                    fileArea.closest('.file-upload-wrapper').classList.remove('border-primary');
-                    fileArea.closest('.file-upload-wrapper').style.backgroundColor = '';
-                }
-
-                // Handle files dropped into the area
-                fileArea.addEventListener('drop', handleDrop, false);
-
-                function handleDrop(e) {
-
-                    const dt = e.dataTransfer;
-                    const files = dt.files;
-                    fileInput.files = files;
-
-                    if (files.length > 0) {
-                        const file = files[0];
+            
+            fileInput.addEventListener('change', function() {
+                const file = this.files[0];
+                const fileExtension = file.name.split('.').pop();
+                if (this.files.length > 0) {
+                    if (fileExtension == "pdf"){
+                        const file = this.files[0];
                         fileName.textContent = file.name;
                         // Format file size
                         const size = file.size;
                         let formattedSize;
-
                         if (size < 1024) {
                             formattedSize = size + ' bytes';
                         } else if (size < 1024 * 1024) {
@@ -1398,118 +1464,117 @@
                         fileSize.textContent = formattedSize;
                         selectedFile.classList.remove('d-none');
                     }
+                    else{
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            html: `You can upload a PDF file only`,
+                            confirmButtonText: 'Oke',
+                        });
+                    }
                 }
             });
-        </script>
-    @else
-        <script>
-            // FORM GANTI EBOOK
-            document.getElementById('changeEbook').addEventListener('click', function() {
-                const fileInput = document.getElementById('upload_file');
-                const fileArea = document.querySelector('.file-upload-area-change');
-                const browseButton = document.querySelector('label[for="upload_file"]');
-                const selectedFile = document.querySelector('.selected-file-change');
-                const fileName = document.querySelector('.file-name-change');
-                const fileSize = document.querySelector('.file-size-change');
-                const removeBtn = document.querySelector('.btn-remove-file-change');
 
-                // Hentikan propagasi klik pada tombol browse
-                browseButton.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    // Tidak perlu panggil fileInput.click() karena atribut for="upload_file" sudah melakukannya
-                });
+            removeBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                fileInput.value = '';
+                selectedFile.classList.add('d-none');
+            });
 
-                // Ubah event listener untuk area file, kecualikan saat mengklik tombol browse
-                fileArea.addEventListener('click', function(e) {
-                    // Jika yang diklik bukan tombol browse, baru buka dialog file
-                    if (!e.target.closest('label[for="upload_file"]')) {
-                        fileInput.click();
+            // Prevent default browser behavior for drag and drop
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                fileArea.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            // Highlight drop area when file is dragged over it
+            ['dragenter', 'dragover'].forEach(eventName => {
+                fileArea.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                fileArea.addEventListener(eventName, unhighlight, false);
+            });
+
+            function highlight() {
+                fileArea.closest('.file-upload-wrapper').classList.add('border-primary');
+                fileArea.closest('.file-upload-wrapper').style.backgroundColor = 'rgba(0, 102, 204, 0.05)';
+            }
+
+            function unhighlight() {
+                fileArea.closest('.file-upload-wrapper').classList.remove('border-primary');
+                fileArea.closest('.file-upload-wrapper').style.backgroundColor = '';
+            }
+
+            // Handle files dropped into the area
+            fileArea.addEventListener('drop', handleDrop, false);
+
+            function handleDrop(e) {
+
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                fileInput.files = files;
+
+                if (files.length > 0) {
+                    const file = files[0];
+                    fileName.textContent = file.name;
+                    // Format file size
+                    const size = file.size;
+                    let formattedSize;
+
+                    if (size < 1024) {
+                        formattedSize = size + ' bytes';
+                    } else if (size < 1024 * 1024) {
+                        formattedSize = (size / 1024).toFixed(1) + ' KB';
+                    } else {
+                        formattedSize = (size / (1024 * 1024)).toFixed(1) + ' MB';
                     }
-                });
 
-                fileInput.addEventListener('change', function() {
-                    const file = this.files[0];
-                    const fileExtension = file.name.split('.').pop();
-                    if (this.files.length > 0) {
-                        if (fileExtension == "pdf"){
-                            const file = this.files[0];
-                            fileName.textContent = file.name;
-                            // Format file size
-                            const size = file.size;
-                            let formattedSize;
-                            if (size < 1024) {
-                                formattedSize = size + ' bytes';
-                            } else if (size < 1024 * 1024) {
-                                formattedSize = (size / 1024).toFixed(1) + ' KB';
-                            } else {
-                                formattedSize = (size / (1024 * 1024)).toFixed(1) + ' MB';
-                            }
-
-                            fileSize.textContent = formattedSize;
-                            selectedFile.classList.remove('d-none');
-                        }
-                        else{
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                html: `You can upload a PDF file only`,
-                                confirmButtonText: 'Oke',
-                            });
-                        }
-                    }
-                });
-
-                removeBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    fileInput.value = '';
-                    selectedFile.classList.add('d-none');
-                });
-
-                // Prevent default browser behavior for drag and drop
-                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                    fileArea.addEventListener(eventName, preventDefaults, false);
-                });
-
-                function preventDefaults(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
+                    fileSize.textContent = formattedSize;
+                    selectedFile.classList.remove('d-none');
                 }
+            }
+        });
+    </script>
+    <script>
+        // FORM GANTI EBOOK
+        document.getElementById('changeEbook').addEventListener('click', function() {
+            const fileInput = document.getElementById('upload_file');
+            const fileArea = document.querySelector('.file-upload-area-change');
+            const browseButton = document.querySelector('label[for="upload_file"]');
+            const selectedFile = document.querySelector('.selected-file-change');
+            const fileName = document.querySelector('.file-name-change');
+            const fileSize = document.querySelector('.file-size-change');
+            const removeBtn = document.querySelector('.btn-remove-file-change');
 
-                // Highlight drop area when file is dragged over it
-                ['dragenter', 'dragover'].forEach(eventName => {
-                    fileArea.addEventListener(eventName, highlight, false);
-                });
+            // Hentikan propagasi klik pada tombol browse
+            browseButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                // Tidak perlu panggil fileInput.click() karena atribut for="upload_file" sudah melakukannya
+            });
 
-                ['dragleave', 'drop'].forEach(eventName => {
-                    fileArea.addEventListener(eventName, unhighlight, false);
-                });
-
-                function highlight() {
-                    fileArea.closest('.file-upload-wrapper').classList.add('border-primary');
-                    fileArea.closest('.file-upload-wrapper').style.backgroundColor = 'rgba(0, 102, 204, 0.05)';
+            // Ubah event listener untuk area file, kecualikan saat mengklik tombol browse
+            fileArea.addEventListener('click', function(e) {
+                // Jika yang diklik bukan tombol browse, baru buka dialog file
+                if (!e.target.closest('label[for="upload_file"]')) {
+                    fileInput.click();
                 }
+            });
 
-                function unhighlight() {
-                    fileArea.closest('.file-upload-wrapper').classList.remove('border-primary');
-                    fileArea.closest('.file-upload-wrapper').style.backgroundColor = '';
-                }
-
-                // Handle files dropped into the area
-                fileArea.addEventListener('drop', handleDrop, false);
-
-                function handleDrop(e) {
-
-                    const dt = e.dataTransfer;
-                    const files = dt.files;
-                    fileInput.files = files;
-
-                    if (files.length > 0) {
-                        const file = files[0];
+            fileInput.addEventListener('change', function() {
+                const file = this.files[0];
+                const fileExtension = file.name.split('.').pop();
+                if (this.files.length > 0) {
+                    if (fileExtension == "pdf"){
+                        const file = this.files[0];
                         fileName.textContent = file.name;
                         // Format file size
                         const size = file.size;
                         let formattedSize;
-
                         if (size < 1024) {
                             formattedSize = size + ' bytes';
                         } else if (size < 1024 * 1024) {
@@ -1521,10 +1586,82 @@
                         fileSize.textContent = formattedSize;
                         selectedFile.classList.remove('d-none');
                     }
+                    else{
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            html: `You can upload a PDF file only`,
+                            confirmButtonText: 'Oke',
+                        });
+                    }
                 }
             });
-        </script>
-    @endif
+
+            removeBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                fileInput.value = '';
+                selectedFile.classList.add('d-none');
+            });
+
+            // Prevent default browser behavior for drag and drop
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                fileArea.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            // Highlight drop area when file is dragged over it
+            ['dragenter', 'dragover'].forEach(eventName => {
+                fileArea.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                fileArea.addEventListener(eventName, unhighlight, false);
+            });
+
+            function highlight() {
+                fileArea.closest('.file-upload-wrapper').classList.add('border-primary');
+                fileArea.closest('.file-upload-wrapper').style.backgroundColor = 'rgba(0, 102, 204, 0.05)';
+            }
+
+            function unhighlight() {
+                fileArea.closest('.file-upload-wrapper').classList.remove('border-primary');
+                fileArea.closest('.file-upload-wrapper').style.backgroundColor = '';
+            }
+
+            // Handle files dropped into the area
+            fileArea.addEventListener('drop', handleDrop, false);
+
+            function handleDrop(e) {
+
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                fileInput.files = files;
+
+                if (files.length > 0) {
+                    const file = files[0];
+                    fileName.textContent = file.name;
+                    // Format file size
+                    const size = file.size;
+                    let formattedSize;
+
+                    if (size < 1024) {
+                        formattedSize = size + ' bytes';
+                    } else if (size < 1024 * 1024) {
+                        formattedSize = (size / 1024).toFixed(1) + ' KB';
+                    } else {
+                        formattedSize = (size / (1024 * 1024)).toFixed(1) + ' MB';
+                    }
+
+                    fileSize.textContent = formattedSize;
+                    selectedFile.classList.remove('d-none');
+                }
+            }
+        });
+    </script>
 @endif
 
 <script>

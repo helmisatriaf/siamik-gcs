@@ -115,6 +115,17 @@
                                             @endif
                                         </div>
                                     </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <label for="open_date">Open Date <span style="color: red">(Kapan Assessment dapat diakses siswa)*</span></label>
+                                            <input name="open_date" type="date" class="form-control" id="open_date" value="{{ $data['dataExam']->open_date }}" required>
+                                            
+                                            @if($errors->has('open_date'))
+                                            <p style="color: red">{{ $errors->first('open_date') }}</p>
+                                            @endif
+                                        </div>
+                                    </div>
     
                                     <div class="form-group row">
                                         <div class="col-md-12">
@@ -179,7 +190,7 @@
                 <form action="{{route('change.file.exam')}}" method="POST" enctype="multipart/form-data">
                 @csrf
                     <div class="form-group row text-muted" id="file-form">
-                        <label for="upload_file">Upload File (Maks 1MB) <span style="color: red">*</span></label>
+                        <label for="upload_file">Upload File (Maks 5MB) <span style="color: red">*</span></label>
                         <input type="file" id="upload_file" name="upload_file" class="form-control" accept=".pdf" required>
                         <input type="number" id="exam_id" name="exam_id" class="form-control" value="{{$data['dataExam']->id}}" hidden>
                         <div class="text-danger mt-2" id="fileError" style="display: none;"></div>
@@ -276,19 +287,18 @@
       const file = this.files[0];
       const fileError = document.getElementById("fileError");
       const submitBtn = document.getElementById("submitBtn");
-
       //console.log(file);
       if (file) {
          const fileSize = file.size;
-         if (fileSize > 1048576) { // 1MB = 1048576 bytes
-            fileError.textContent = "Ukuran file terlalu besar! Maksimal 1MB.";
+         if (fileSize > 5048576) { // 1MB = 1048576 bytes
+            fileError.textContent = "Ukuran file terlalu besar! Maksimal 5MB.";
             fileError.style.display = "block";
             this.value = "";
             submitBtn.disabled = true;
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                html: `Ukuran file terlalu besar! Maksimal 1MB.<br><br>
+                html: `Ukuran file terlalu besar! Maksimal 5MB.<br><br>
                       <strong>Silakan kompres file Anda di:</strong> <br>
                       <a href="https://www.ilovepdf.com/compress_pdf" target="_blank" style="color: #3085d6; text-decoration: underline;">
                           iLovePDF - Compress PDF

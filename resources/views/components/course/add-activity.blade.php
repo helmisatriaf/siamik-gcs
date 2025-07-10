@@ -44,44 +44,44 @@
     </div>
 
     <script>
-        document.getElementById("file").addEventListener("change", function () {
-            const file = this.files[0];
-            const fileExtension = file.name.split('.').pop();
-            const fileError = document.getElementById("fileError");
-            const submitBtn = document.getElementById("submitBtn");
+        // document.getElementById("file").addEventListener("change", function () {
+        //     const file = this.files[0];
+        //     const fileExtension = file.name.split('.').pop();
+        //     const fileError = document.getElementById("fileError");
+        //     const submitBtn = document.getElementById("submitBtn");
       
-            if(fileExtension !== 'pdf') {
-                fileError.textContent = "Format file must be pdf !";
-                fileError.style.display = "block";
-                this.value = "";
-                submitBtn.disabled = true;
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Format file must be pdf !',
-                });
-            }
-            else {
-                if (file) {
-                    const fileSize = file.size;
-                    if (fileSize > 1048576) { // 1MB = 1048576 bytes
-                        this.value = "";
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            html: `Too Much! Maksimal size 1MB.<br><br>
-                                <strong>Compress your file in:</strong> <br>
-                                <a href="https://www.ilovepdf.com/compress_pdf" target="_blank" style="color: #3085d6; text-decoration: underline;">
-                                    iLovePDF - Compress PDF
-                                </a>`,
-                            confirmButtonText: 'Shappp',
-                        });
-                    } else {
-                        fileError.style.display = "none";
-                        submitBtn.disabled = false;
-                    }
-                }
-            }
-        });
+        //     if(fileExtension !== 'pdf') {
+        //         fileError.textContent = "Format file must be pdf !";
+        //         fileError.style.display = "block";
+        //         this.value = "";
+        //         submitBtn.disabled = true;
+        //         Swal.fire({
+        //             icon: 'error',
+        //             title: 'Oops...',
+        //             text: 'Format file must be pdf !',
+        //         });
+        //     }
+        //     else {
+        //         if (file) {
+        //             const fileSize = file.size;
+        //             if (fileSize > 1048576) { // 1MB = 1048576 bytes
+        //                 this.value = "";
+        //                 Swal.fire({
+        //                     icon: 'error',
+        //                     title: 'Oops...',
+        //                     html: `Too Much! Maksimal size 1MB.<br><br>
+        //                         <strong>Compress your file in:</strong> <br>
+        //                         <a href="https://www.ilovepdf.com/compress_pdf" target="_blank" style="color: #3085d6; text-decoration: underline;">
+        //                             iLovePDF - Compress PDF
+        //                         </a>`,
+        //                     confirmButtonText: 'Shappp',
+        //                 });
+        //             } else {
+        //                 fileError.style.display = "none";
+        //                 submitBtn.disabled = false;
+        //             }
+        //         }
+        //     }
+        // });
     </script>
 @endsection

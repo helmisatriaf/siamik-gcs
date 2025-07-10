@@ -6,7 +6,7 @@
     @if(count($data) !== 0)
         <div class="row">
             <div class="col">
-                <nav aria-label="breadcrumb" class="p-3 mb-3" style="background-color: #ffde9e;border-radius: 12px;">
+                 <nav aria-label="breadcrumb" class="p-3 mb-4" style="background-color: #ffde9e;border-radius: 12px;">
                     <ol class="breadcrumb mb-0" style="background-color: #fff3c0;">
                         <li class="breadcrumb-item">Home</li>
                         @if(session('role') == 'admin' || session('role') == 'superadmin')

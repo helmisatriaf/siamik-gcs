@@ -140,12 +140,12 @@ class ExamController extends Controller
 
    public function actionPost(Request $request)
    {
-      try {
+      try { 
          session()->flash('page',  $page = (object)[
             'page' => 'database exam',
             'child' => 'database exam',
          ]);
-         // dd($request);
+         
          // dd(session('section_id'));
          $rules = [
             'type_exam' => $request->type_exam,
@@ -154,6 +154,8 @@ class ExamController extends Controller
             'date_exam' => $request->date_exam,
             'materi' => $request->materi,
             'teacher_id' => $request->teacher_id,
+            'open_date' => $request->open_date,
+            'time_open' => $request->time_open,
             'created_at' => now(),
          ];
 
@@ -194,6 +196,8 @@ class ExamController extends Controller
                   'is_active' => 1,
                   'model'    => "mce",
                   'hasFile' => 0,
+                  'open_date' => $request->open_date,
+                  'time_open' => $request->time_open,
                   'semester' => session('semester'),
                   'academic_year' => session('academic_year'),
                   'created_at' => now(),
@@ -253,6 +257,8 @@ class ExamController extends Controller
                   'is_active' => 1,
                   'model'    => "mc",
                   'hasFile' => 0,
+                  'open_date' => $request->open_date,
+                  'time_open' => $request->time_open,
                   'semester' => session('semester'),
                   'academic_year' => session('academic_year'),
                   'created_at' => now(),
@@ -293,6 +299,8 @@ class ExamController extends Controller
                   'is_active' => 1,
                   'model'    => "essay",
                   'hasFile' => 0,
+                  'open_date' => $request->open_date,
+                  'time_open' => $request->time_open,
                   'semester' => session('semester'),
                   'academic_year' => session('academic_year'),
                   'created_at' => now(),
@@ -336,6 +344,8 @@ class ExamController extends Controller
                      'hasFile' => $request->file('upload_file') ? 1 : 0,
                      'file_name' => $fileName,
                      'file_path' => $filePath,
+                     'open_date' => $request->open_date,
+                     'time_open' => $request->time_open,
                      'semester' => session('semester'),
                      'academic_year' => session('academic_year'),
                   ];
@@ -349,6 +359,8 @@ class ExamController extends Controller
                      'teacher_id' => $request->teacher_id,
                      'created_at' => now(),
                      'is_active' => 1,
+                     'open_date' => $request->open_date,
+                     'time_open' => $request->time_open,
                      'hasFile' => $request->file('upload_file') ? 1 : 0,
                      'semester' => session('semester'),
                      'academic_year' => session('academic_year'),
@@ -919,6 +931,7 @@ class ExamController extends Controller
             'name_exam'  => $request->name,
             'type_exam'  => $request->type_exam,
             'date_exam'  => $request->date_exam,
+            'open_date'  => $request->open_date,
             'materi'     => $request->materi,
             'teacher_id' => $request->teacher_id,
             'semester'   => session('semester'),
@@ -1245,6 +1258,10 @@ class ExamController extends Controller
                ->join('type_exams', 'scores.type_exam_id', '=', 'type_exams.id')
                ->join('students', 'scores.student_id', '=', 'students.id')
                ->where('scores.student_id', $getIdStudent)
+               ->where(function($query){
+               $query->where('exams.open_date', '<=', now())
+                  ->orWhereNull('exams.open_date');
+               })
                ->where('exams.semester', session('semester'))
                ->where('exams.academic_year', session('academic_year'))
                ->when($sort !== 'all', function ($query) use ($sort) {

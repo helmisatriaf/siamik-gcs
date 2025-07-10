@@ -363,7 +363,9 @@
 
 </style>
 
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<body class="hold-transition 
+{{-- sidebar-mini  --}}
+layout-fixed layout-navbar-fixed layout-footer-fixed">
 {{-- <body class="layout-fixed layout-navbar-fixed layout-footer-fixed"> --}}
     <div class="wrapper">
         @if (session('preloader'))

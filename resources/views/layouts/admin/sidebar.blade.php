@@ -485,7 +485,7 @@
                             </li>
                         </ul>
                     </li>
-                @elseif (session('role') == 'parent' || session('role') == 'student')
+                @elseif (session('role') == 'parent')
                     <li
                         class="nav-item {{ session('page') && session('page')->page ? (session('page')->page == 'reports' ? 'menu-open' : '') : '' }}">
                         <a href="#"
