@@ -35,7 +35,9 @@ class Grade extends Model
 
     public function student()
     {
-      return $this->hasMany(Student::class);
+      return $this->hasMany(Student::class)
+        ->where('is_active', true)
+        ->where('is_graduate', false);
     }
 
     public function subject()

@@ -311,13 +311,6 @@ class CourseController extends Controller
                     ->where('grade_subjects.academic_year', session('academic_year'));
             }])->findOrFail($id);
 
-            // Get sections for this subject-grade combination
-            $sections = Section::where('grade_subject_id', $gradeSubject->id)
-                ->where('semester', session('semester'))
-                ->where('academic_year', session('academic_year'))
-                ->orderBy('created_at', 'asc')
-                ->paginate(10);
-
             $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->get();
             $material = CourseActivities::where('grade_subject_id', $gradeSubject->id)->count();
             
@@ -348,7 +341,7 @@ class CourseController extends Controller
                 ->where('exams.is_active', TRUE)
                 ->count();
 
-            return view('components.course.sections', compact('subject', 'sections', 'grade_id', 'gradeSubject', 'course', 'ebook',
+            return view('components.course.sections', compact('subject', 'grade_id', 'gradeSubject', 'course', 'ebook',
             'material', 'assessment', 'assessmentActive'));
         } catch (Exception $err) {
             dd($err);
@@ -888,9 +881,9 @@ class CourseController extends Controller
             ]);
 
             $subject = Subject::findOrFail($id);
-            $section = Section::findOrFail($section_id);
+            // $section = Section::findOrFail($section_id);
 
-            return view('components.course.add-activity', compact('subject', 'section', 'grade_id'));
+            return view('components.course.add-activity', compact('subject', 'section_id', 'grade_id'));
         } catch (Exception $err) {
             dd($err);
         }
@@ -1019,29 +1012,36 @@ class CourseController extends Controller
                 'due_time' => 'nullable|date|after:open_time'
             ]);
 
-            // Ambil section berdasarkan grade_subject_id
-            $section = Section::where('id', $section_id)
-                ->whereHas('gradeSubject', function ($query) use ($grade_id) {
-                    $query->where('grade_id', $grade_id);
-                })
-                ->firstOrFail();
-
             // Handle file upload
             $filePath = null;
+            // File PDF
             if ($request->hasFile('file')) {
                 $filePath = $request->file('file')->store('section_activities', 'public');
+                $embed = false;
             }
+            // EMBED HTML5
+            else {
+                $filePath = $request->embed_ebook;
+                $embed = true;
+            }
+
+
+            $gradeSubject = Grade_subject::where('subject_id', $id)
+                ->where('grade_id', $grade_id)
+                ->where('academic_year', session('academic_year'))
+                ->first();
+
 
             // Create new activity
             $activity = new CourseActivities([
-                'section_id' => $section->id,
+                'section_id' => $section_id,
                 'title' => $validatedData['title'],
                 'description' => $validatedData['description'] ?? null,
+                'grade_subject_id' => $gradeSubject->id,
                 'file_path' => $filePath,
+                'embed' => $embed,
                 'semester' => session('semester'),
                 'academic_year' => session('academic_year'),
-                'open_time' => $validatedData['open_time'],
-                'due_time' => $validatedData['due_time']
             ]);
             $activity->save();
 
@@ -1049,7 +1049,7 @@ class CourseController extends Controller
             return redirect()->route('course.sections', [
                 'role' => $role,
                 'id' => $id,
-                'grade_id' => $grade_id
+                'grade_id' => $grade_id,
             ])->with('success', 'Aktivitas berhasil ditambahkan');
         } catch (Exception $err) {
             dd($err);
@@ -1068,6 +1068,12 @@ class CourseController extends Controller
             $filePath = null;
             if ($request->hasFile('file')) {
                 $filePath = $request->file('file')->store('section_activities', 'public');
+                $embed = false;
+            }
+            // EMBED HTML5
+            else {
+                $filePath = $request->embed_ebook;
+                $embed = true;
             }
 
             $gradeSubject = Grade_subject::where('subject_id', $id)
@@ -1080,6 +1086,7 @@ class CourseController extends Controller
                 'title' => $validatedData['title'],
                 'description' => $validatedData['description'] ?? null,
                 'file_path' => $filePath,
+                'embed'=> $embed,
                 'grade_subject_id' => $gradeSubject->id,
                 'semester' => session('semester'),
                 'academic_year' => session('academic_year'),
@@ -1466,6 +1473,18 @@ class CourseController extends Controller
 
 
             $data = Ebook::where('id', $id)->first();
+            // dd($data);
+
+            return view('components.course.view-ebook', ['data'=> $data]);
+        } catch (Exception $err) {
+            dd($err);
+        }
+    }
+
+    public function viewMaterial($id)
+    {
+        try {
+            $data = CourseActivities::where('id', $id)->first();
             // dd($data);
 
             return view('components.course.view-ebook', ['data'=> $data]);

@@ -649,7 +649,12 @@
                                         </div>
                                         @if ($activity->file_path)
                                             <div class="mt-2">
-                                                <a href="{{ Storage::url($activity->file_path) }}"
+                                                <a
+                                                @if ($activity->embed)
+                                                href="/view/material/{{ $activity->id}}"
+                                                @else
+                                                href="{{ Storage::url($activity->file_path) }}"
+                                                @endif
                                                     class="btn btn-warning" target="_blank">
                                                     <i class="fas fa-book"></i> See Material
                                                 </a>

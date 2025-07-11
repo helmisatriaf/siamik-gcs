@@ -1596,6 +1596,7 @@ Route::middleware(['auth.login', 'role:superadmin,admin,teacher,student,parent']
    Route::post('scoreMCE', [ScoreController::class, 'scoreMCE'])->name('scoreMCE');
    Route::delete('/ebook/delete', [CourseController::class, 'deleteEbook'])->name('delete.ebook');
    Route::get('/view/ebook/{id}', [CourseController::class, 'viewEbook'])->name('view.ebook');
+   Route::get('/view/material/{id}', [CourseController::class, 'viewMaterial'])->name('view.material');
 });
 
 Route::get('/assessment-work', [ExamController::class, 'workplace'])->name('work.place');

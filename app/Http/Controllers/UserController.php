@@ -83,7 +83,12 @@ class UserController extends Controller
          }
          elseif ($user->role_id == 2) 
          {
-            $nameUser = "admin";
+            if($request->username == 'ebooks'){
+               $nameUser = "ebooks";
+            }
+            else{
+               $nameUser = "admin";
+            }
          }
          elseif ($user->role_id == 3) 
          {

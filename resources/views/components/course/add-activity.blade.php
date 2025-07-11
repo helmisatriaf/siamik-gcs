@@ -25,8 +25,13 @@
 
             <div class="form-group">
                 <label for="file">File <span class="text-danger">*</span></label>
-                <input type="file" class="form-control-file" id="file" name="file" accept=".pdf" required>
+                <input type="file" class="form-control-file" id="file" name="file" accept=".pdf">
                 <div class="text-danger mt-2" id="fileError" style="display: none;"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="embed_ebook">Embed For Flip HTML5 <span style="color: red">*</span></label>
+                <textarea name="embed_ebook" id="embed_html" rows="5" class="form-control w-100" ></textarea>
             </div>
 
             {{-- <div class="form-group">
