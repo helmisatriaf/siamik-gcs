@@ -400,7 +400,7 @@
                                     @if (in_array(session('role'), ['admin', 'superadmin', 'teacher']))
                                         <div class="col mb-2">
                                             <a href="#" class="btn-link text-secondary hover:cursor-pointer"
-                                                data-toggle="modal" data-target="#changeBook" id="changeEbook">
+                                                data-toggle="modal" data-target="#changeBook-{{$ebook->id}}" id="changeEbook">
                                                 <i class="fas fa-edit ml-1"></i> Change E-Book
                                             </a>
                                         </div>
@@ -408,11 +408,134 @@
                                     @if (in_array(session('role'), ['admin', 'superadmin', 'teacher']))
                                         <div class="col">
                                             <a href="#" class="btn-link text-danger hover:cursor-pointer"
-                                                data-toggle="modal" data-target="#deleteBook">
+                                                data-toggle="modal" data-target="#deleteBook-{{$ebook->id}}">
                                                 <i class="fas fa-trash ml-1"></i> Delete E-Book
                                             </a>
                                         </div>
                                     @endif
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal delete ebook -->
+                        <div class="modal fade" id="deleteBook-{{$ebook->id}}" tabindex="-1" role="dialog" aria-labelledby="changeFileLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content" style="background-color: #ffe8d6;border-radius: 36px;">
+                                    <div class="modal-body p-4">
+                                        <div class="row d-flex px-4">
+                                            <div class="col-3 align-items-end justify-content-end">
+                                                <img src="{{ asset('images/greta-face.png')}}" style="width:100%; height:100%;">
+                                            </div>
+                                            <div class="col-9 d-flex justify-content-center align-items-center">
+                                                <form action="{{ route('delete.ebook') }}" method="POST"
+                                                    enctype="multipart/form-data">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <input type="number" id="delebookid-{{$ebook->id}}" name="ebook_id" class="form-control"
+                                                        value="{{ $ebook->id }}" hidden>
+                        
+                                                        <strong>Are you sure want to delete this e-book ?</strong>
+                        
+                                                    <div class="d-grid gap-2 mt-4">
+                                                        <button type="submit" class="btn btn-primary"  id="deleteBtn-{{$ebook->id}}">
+                                                            <i class="fas fa-check mr-2"></i>Yes
+                                                        </button>
+                                                        <button type="button" class="btn btn-light" data-dismiss="modal">
+                                                            Cancel
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal change ebook -->
+                        <div class="modal fade" id="changeBook-{{$ebook->id}}" tabindex="-1" role="dialog" aria-labelledby="changeFileLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                                <div class="modal-content" style="background-color: #ffe8d6;">
+                                    <div class="modal-header" style="background-color: #ffe8d6;">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">
+                                            <i class="fas fa-book mr-2"></i>Update E-Book File
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true"><i class="fas fa-times"></i></span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body p-4">
+                                        <div class="text-center mb-4">
+                                            <div class="upload-icon mb-3">
+                                                <i class="fas fa-file-pdf fa-3x text-danger"></i>
+                                            </div>
+                                            <h6 class="fw-bold">Replace Current E-Book</h6>
+                                            <p class="text-muted small">The new file will replace the existing e-book while maintaining
+                                                all associated metadata and settings.</p>
+                                        </div>
+
+                                        <form action="{{ route('change.file.ebook') }}" method="POST"
+                                            enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="number" id="ebookid-{{$ebook->id}}" name="ebook_id" class="form-control"
+                                            value="{{ $ebook->id }}" hidden>
+
+
+                                            <div class="row grid md:flex col-12">
+                                                <div class="col-lg-6 mb-4">
+                                                    <div class="file-upload-container mb-4">
+                                                        <label for="upload_file" class="form-label fw-medium">Select PDF File</label>
+                                                        <div class="file-upload-wrapper">
+                                                            <div class="file-upload-area text-center p-4" id="upload-area">
+                                                                <input type="file" class="file-input" name="upload_file" accept=".pdf">
+                                                                <i class="fas fa-cloud-upload-alt fa-2x mb-3 text-primary"></i>
+                                                                <h6 class="mb-2">Drag and drop your file here</h6>
+                                                                <p class="text-muted small mb-3">or</p>
+                                                                <button type="button" class="btn btn-outline-primary btn-sm">Browse Files</button>
+                                                                <p class="text-muted small mt-2">Maximum file size: 10MB</p>
+                                                            </div>
+                                                            <div class="selected-file-change mt-3 d-none">
+                                                                <div class="selected-file-info p-2 d-flex align-items-center">
+                                                                    <i class="fas fa-file-pdf text-danger me-2"></i>
+                                                                    <span class="file-name-change text-truncate"></span>
+                                                                    <span class="file-size-change ms-2 text-muted small"></span>
+                                                                    <button type="button" id="btn-remove-file-change-{{$ebook->id}}" class="btn-remove-file-change ms-auto btn btn-sm">
+                                                                        <i class="fas fa-times-circle"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-text small text-muted mt-2">Only PDF format is supported for
+                                                            consistency and compatibility
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="embed_ebook">Embed from HTML5</label>
+                                                        <textarea name="embed_ebook" id="embed_ebook-{{$ebook->id}}" rows="5" class="form-control w-100">
+                                                        </textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="alert alert-info small" role="alert">
+                                                <i class="fas fa-info-circle me-2"></i>
+                                                <strong>Note:</strong> Please ensure your PDF is properly formatted and optimized for
+                                                online viewing. Larger files may take longer to load for students.
+                                            </div>
+
+                                            <div class="d-flex justify-content-end mt-4">
+                                                <button type="button" class="btn btn-outline-secondary mr-4"
+                                                    data-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-primary" id="submitBtnUpdate-{{$ebook->id}}">
+                                                    <i class="fas fa-save mr-2"></i>Update E-Book
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1051,7 +1174,7 @@
                                                         <i class="fas fa-file-pdf text-danger me-2"></i>
                                                         <span class="file-name text-truncate"></span>
                                                         <span class="file-size ms-2 text-muted small"></span>
-                                                        <button type="button" id="btn-remove-file" class="btn-remove-file ms-auto btn btn-sm">
+                                                        <button type="button" id="btn-remove-file-{{$ebook->id}}" class="btn-remove-file ms-auto btn btn-sm">
                                                             <i class="fas fa-times-circle"></i>
                                                         </button>
                                                     </div>
@@ -1094,130 +1217,9 @@
 
 
         @if ($ebook != null)
-            <!-- Modal change ebook -->
-            {{-- <div class="modal fade" id="changeBook" tabindex="-1" role="dialog" aria-labelledby="changeFileLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-                    <div class="modal-content" style="background-color: #ffe8d6;">
-                        <div class="modal-header" style="background-color: #ffe8d6;">
-                            <h5 class="modal-title" id="exampleModalLongTitle">
-                                <i class="fas fa-book mr-2"></i>Update E-Book File
-                            </h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true"><i class="fas fa-times"></i></span>
-                            </button>
-                        </div>
-                        <div class="modal-body p-4">
-                            <div class="text-center mb-4">
-                                <div class="upload-icon mb-3">
-                                    <i class="fas fa-file-pdf fa-3x text-danger"></i>
-                                </div>
-                                <h6 class="fw-bold">Replace Current E-Book</h6>
-                                <p class="text-muted small">The new file will replace the existing e-book while maintaining
-                                    all associated metadata and settings.</p>
-                            </div>
-
-                            <form action="{{ route('change.file.ebook') }}" method="POST"
-                                enctype="multipart/form-data">
-                                @csrf
-                                <input type="number" id="ebookid" name="ebook_id" class="form-control"
-                                value="{{ $ebook->id }}" hidden>
-
-
-                                <div class="row grid md:flex col-12">
-                                    <div class="col-lg-6 mb-4">
-                                        <div class="file-upload-container mb-4">
-                                            <label for="upload_file" class="form-label fw-medium">Select PDF File</label>
-                                            <div class="file-upload-wrapper">
-                                                <div class="file-upload-area-change text-center p-4" id="upload-area">
-                                                    <input type="file" id="upload_file" name="upload_file" accept=".pdf"
-                                                        class="file-input">
-                                                    <i class="fas fa-cloud-upload-alt fa-2x mb-3 text-primary"></i>
-                                                    <h6 class="mb-2">Drag and drop your file here</h6>
-                                                    <p class="text-muted small mb-3">or</p>
-                                                    <button type="button" class="btn btn-outline-primary btn-sm">Browse Files</button>
-                                                    <p class="text-muted small mt-2">Maximum file size: 10MB</p>
-                                                </div>
-                                                <div class="selected-file-change mt-3 d-none">
-                                                    <div class="selected-file-info p-2 d-flex align-items-center">
-                                                        <i class="fas fa-file-pdf text-danger me-2"></i>
-                                                        <span class="file-name-change text-truncate"></span>
-                                                        <span class="file-size-change ms-2 text-muted small"></span>
-                                                        <button type="button" id="btn-remove-file-change" class="btn-remove-file-change ms-auto btn btn-sm">
-                                                            <i class="fas fa-times-circle"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-text small text-muted mt-2">Only PDF format is supported for
-                                                consistency and compatibility
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label for="embed_ebook">Embed from HTML5</label>
-                                            <textarea name="embed_ebook" id="embed_ebook" rows="5" class="form-control w-100">
-                                            </textarea>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="alert alert-info small" role="alert">
-                                    <i class="fas fa-info-circle me-2"></i>
-                                    <strong>Note:</strong> Please ensure your PDF is properly formatted and optimized for
-                                    online viewing. Larger files may take longer to load for students.
-                                </div>
-
-                                <div class="d-flex justify-content-end mt-4">
-                                    <button type="button" class="btn btn-outline-secondary mr-4"
-                                        data-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-primary" id="submitBtnUpdate">
-                                        <i class="fas fa-save mr-2"></i>Update E-Book
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
-
-            <!-- Modal delete ebook -->
-            {{-- <div class="modal fade" id="deleteBook" tabindex="-1" role="dialog" aria-labelledby="changeFileLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content" style="background-color: #ffe8d6;border-radius: 36px;">
-                        <div class="modal-body p-4">
-                            <div class="row d-flex px-4">
-                                <div class="col-3 align-items-end justify-content-end">
-                                    <img src="{{ asset('images/greta-face.png')}}" style="width:100%; height:100%;">
-                                </div>
-                                <div class="col-9 d-flex justify-content-center align-items-center">
-                                    <form action="{{ route('delete.ebook') }}" method="POST"
-                                        enctype="multipart/form-data">
-                                        @csrf
-                                        @method('DELETE')
-                                        <input type="number" id="delebookid" name="ebook_id" class="form-control"
-                                            value="{{ $ebook->id }}" hidden>
             
-                                            <strong>Are you sure want to delete this e-book ?</strong>
+
             
-                                        <div class="d-grid gap-2 mt-4">
-                                            <button type="submit" class="btn btn-primary"  id="deleteBtn">
-                                                <i class="fas fa-check mr-2"></i>Yes
-                                            </button>
-                                            <button type="button" class="btn btn-light" data-dismiss="modal">
-                                                Cancel
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
         @endif
     @endif
 </div>
@@ -1548,7 +1550,7 @@
     <script>
         // FORM GANTI EBOOK
         document.getElementById('changeEbook').addEventListener('click', function() {
-            const fileInput = document.getElementById('upload_file');
+            const fileInput = document.querySelector('.upload_file');
             const fileArea = document.querySelector('.file-upload-area-change');
             const browseButton = document.querySelector('label[for="upload_file"]');
             const selectedFile = document.querySelector('.selected-file-change');
