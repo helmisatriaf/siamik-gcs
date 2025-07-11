@@ -1174,7 +1174,7 @@
                                                         <i class="fas fa-file-pdf text-danger me-2"></i>
                                                         <span class="file-name text-truncate"></span>
                                                         <span class="file-size ms-2 text-muted small"></span>
-                                                        <button type="button" id="btn-remove-file-{{$ebook->id}}" class="btn-remove-file ms-auto btn btn-sm">
+                                                        <button type="button" id="btn-remove-file" class="btn-remove-file ms-auto btn btn-sm">
                                                             <i class="fas fa-times-circle"></i>
                                                         </button>
                                                     </div>
