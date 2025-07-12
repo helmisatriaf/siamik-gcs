@@ -55,13 +55,13 @@
 
 <!-- Modal Detail-->
 <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered ">
-        <div class="modal-content custom-modal-dialog custom-swal-schedule-detail">
-                <h5 class="modal-title" id="eventModalLabel">Event Details</h5>
-                <p id="eventTitle"></p>
-                <p id="eventDescription"></p>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
-            </div>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content custom-swal-schedule-detail">
+            <h5 class="modal-title" id="eventModalLabel">Event Details</h5>
+            <p id="eventTitle"></p>
+            <p id="eventDescription"></p>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+        </div>
     </div>
 </div>
 
@@ -133,10 +133,6 @@
 
 <!-- Tambahkan CSS untuk modal khusus -->
 <style>
-.custom-modal-dialog {
-    max-width: 80%; /* Atur persentase sesuai kebutuhan Anda */
-    width: auto !important; /* Untuk memastikan lebar otomatis */
-}
 .fc {
     background-color: transparent !important;
 }
