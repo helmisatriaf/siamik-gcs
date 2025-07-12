@@ -702,22 +702,25 @@
                                                     
                         
                                                     foreach ($assessments as $assessment) {
-                                                        $info = \App\Models\Score::where('exam_id', $assessment->id)->first();
                                                         if(session('role') == 'student'){
                                                             $studentId = \App\Models\Student::where('user_id', session('id_user'))->value('id');
                                                             if($assessment->model == 'mc' || $assessment->model == 'mce' || $assessment->model == 'essay'){
-                                                                $status = $assessment->student_status;
+                                                                $status = $assessment['score'][0]->student_status;
                                                             }
                                                             else{
-                                                                $status = $assessment->student_upload;
+                                                                $info = \App\Models\Score::where('exam_id', $assessment->id)
+                                                                    ->where('student_id', $studentId)->value('file_name');
+                                                                $status = !is_null($info); // true jika file_name terisi
                                                             }
                                                         }
                                                         if (session('role') == 'parent') {
                                                             if($assessment->model == 'mc' || $assessment->model == 'mce' || $assessment->model == 'essay'){
-                                                                $status = $assessment->student_status;
+                                                                $status = $assessment['score'][0]->student_status;
                                                             }    
                                                             else{
-                                                                $status = $assessment->student_upload;
+                                                                $info = \App\Models\Score::where('exam_id', $assessment->id)
+                                                                    ->where('student_id', session('studentId'))->value('file_name');
+                                                                $status = !is_null($info); // true jika file_name terisi
                                                             }
                                                         }
                                                     }
@@ -774,7 +777,7 @@
                                         }
                                 }
 
-                                // dd($status);
+                                // dd($assessments);
                             @endphp
     
                             @if ($activities->count() > 0)
@@ -995,6 +998,30 @@
                                                         @endswitch
                                                         <br>
                                                     </span>
+                                                    @php
+                                                        if(session('role') == 'student'){
+                                                            $studentId = \App\Models\Student::where('user_id', session('id_user'))->value('id');
+                                                            if($assessment->model == 'mc' || $assessment->model == 'mce' || $assessment->model == 'essay'){
+                                                                $status = $assessment['score'][0]->student_status;
+                                                            }
+                                                            else{
+                                                                $info = \App\Models\Score::where('exam_id', $assessment->id)
+                                                                    ->where('student_id', $studentId)->value('file_name');
+                                                                $status = !is_null($info); // true jika file_name terisi
+                                                            }
+                                                        }
+                                                        if (session('role') == 'parent') {
+                                                            if($assessment->model == 'mc' || $assessment->model == 'mce' || $assessment->model == 'essay'){
+                                                                $status = $assessment['score'][0]->student_status;
+                                                            }    
+                                                            else{
+                                                                $info = \App\Models\Score::where('exam_id', $assessment->id)
+                                                                    ->where('student_id', session('studentId'))->value('file_name');
+                                                                $status = !is_null($info); // true jika file_name terisi
+                                                            }
+                                                        }
+                                                        //  echo $status ? 'Sudah Mengerjakan' : 'Belum';
+                                                    @endphp
                                                     <i class="fas fa-info-circle"></i>
                                                     Status :
                                                     @if ($assessment->is_active == 1)
