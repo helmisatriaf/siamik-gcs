@@ -96,7 +96,7 @@
     </div> --}}
 
     <div class="row">
-      <div class="col-lg-3 col-6">
+      <div class="col-lg-3 col-6 animate__animated animate__fadeIn">
           <!-- small box -->
           <div class="small-box bg-success" style="border-radius: 12px;">
               <div class="inner">
@@ -111,7 +111,7 @@
           </div>
       </div>
 
-      <div class="col-lg-3 col-6">
+      <div class="col-lg-3 col-6 animate__animated animate__fadeIn">
           <!-- small box -->
           <div class="small-box bg-success" style="border-radius: 12px;">
               <div class="inner">
@@ -127,7 +127,7 @@
       </div>
 
       <!-- SUBJECT ACTIVE -->
-      <div class="col-lg-3 col-6">
+      <div class="col-lg-3 col-6 animate__animated animate__fadeIn">
           <!-- small box -->
           <div class="small-box bg-warning" style="border-radius: 12px;">
               <div class="inner">
@@ -148,7 +148,7 @@
       <!-- ./col -->
 
       <!-- EXAM ACTIVE -->
-      <div class="col-lg-3 col-6">
+      <div class="col-lg-3 col-6 animate__animated animate__fadeIn">
           <!-- small box -->
           <div class="small-box bg-danger" style="border-radius: 12px;">
               <div class="inner">
@@ -168,7 +168,7 @@
     </div>
 
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-6 animate__animated animate__fadeIn">
         <div class="card bg-info" style="border-radius: 12px;">
           <div class="card-header">
             <h3 class="card-title">
@@ -179,7 +179,7 @@
   
           <div class="pt-3 px-4 px-md-3">
             <select required name="studentId" class="form-control" style="border-radius: 12px;" id="studentId" onchange="saveStudentId()">
-              <option value="">-- Your Relation -- </option>
+              {{-- <option value="">-- Your Relation -- </option> --}}
               @foreach ($data['totalRelation'] as $dtr)
                 <option value="{{ $dtr->student_id }}" {{ session('studentId') == $dtr->student_id ? "selected" : "" }}> {{ ucwords(strtolower($dtr->student_name)) }}</option>
               @endforeach
@@ -229,7 +229,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-3 animate__animated animate__fadeIn">
         <div class="card card-widget widget-user"style="border-radius: 12px;">
           <!-- Add the bg color to the header using any of the bg-* classes -->
           <div class="widget-user-header bg-info" style="border-top-left-radius: 12px; border-top-right-radius: 12px;">
@@ -258,7 +258,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-3 animate__animated animate__fadeIn">
         <div class="card bg-warning" style="border-radius: 12px;">
           <div class="card-header">
             <h3 class="card-title">
@@ -302,55 +302,11 @@
       </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            @if (isset($data['paymentStatus']) && $data['paymentStatus']['has_unpaid_bill'])
-                <div class="card bg-gradient-warning animate__animated animate__fadeIn" style="border-radius: 12px;">
-                    <div class="card-header border-0">
-                        <h3 class="card-title">
-                            <i class="fas fa-bell fa-shake mr-2"></i>
-                            Payment Notification
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        <div
-                            class="d-flex flex-column flex-md-row justify-content-between align-items-center bg-white rounded-lg p-4 shadow-sm">
-                            <div class="d-flex align-items-center mb-3 mb-md-0">
-                                <div class="flex-shrink-0">
-                                    <i class="fas fa-exclamation-circle text-warning fa-2x"></i>
-                                </div>
-                                <div class="ml-3">
-                                    <h5 class="font-weight-bold text-dark mb-1">
-                                        {{ $data['paymentStatus']['message'] }}
-                                    </h5>
-                                    <p class="text-muted mb-0">
-                                        Please make the payment as soon as possible to avoid late fees.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="text-center text-md-right">
-                                <div class="mb-2">
-                                    <span class="text-muted">Total Bill:</span>
-                                    <h4 class="text-danger font-weight-bold mb-0">
-                                        Rp {{ number_format($data['paymentStatus']['amount'], 0, ',', '.') }}
-                                    </h4>
-                                </div>
-                                {{-- <a href="#"
-                                    class="btn btn-sm btn-danger btn-lg px-5 waves-effect waves-light">
-                                    <i class="fas fa-credit-card mr-2"></i>
-                                    Pay Now
-                                </a> --}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endif
-        </div>
-    </div>
+    
 
     <div class="row">
         <section class="col-12 connectedSortable">
-            <div class="card bg-danger" style="border-radius: 12px;">
+            <div class="card bg-danger animate__animated animate__fadeIn" style="border-radius: 12px;">
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="fa-solid fa-calendar-xmark mr-1"></i>
@@ -394,6 +350,21 @@
                       </div>
                       <!-- todo text -->
                       <span class="text text-sm" class="hover:cursor-pointer">( {{$el->type_exam_name}} ) ({{ $el->subject }}) {{$el->name_exam}} </span>
+                      <span class="badge">
+                          @if ($el->model == 'mce' || $el->model == 'mc' || $el->model ==  'essay')
+                              @if ($el['exam'][0]['score'][0]->student_status)
+                                  ✔
+                              @else
+                                  ❌
+                              @endif
+                          @else
+                              @if ($el['exam'][0]['score'][0]->student_upload)
+                                  ✔
+                              @else
+                                  ❌
+                              @endif
+                          @endif
+                      </span>
                       
                       <span class="hover:cursor-pointer">
                         @if ($el->is_active)
@@ -449,9 +420,55 @@
             @endif
         </div>
     </div>
-
   </section>
   </div>
+
+  {{-- PAYMENT --}}
+    <div class="row">
+        <div class="col-md-12">
+            @if (isset($data['paymentStatus']) && $data['paymentStatus']['has_unpaid_bill'])
+                <div class="card bg-gradient-warning animate__animated animate__fadeIn" style="border-radius: 12px;">
+                    <div class="card-header border-0">
+                        <h3 class="card-title">
+                            <i class="fas fa-bell fa-shake mr-2"></i>
+                            Payment Notification
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div
+                            class="d-flex flex-column flex-md-row justify-content-between align-items-center bg-white rounded-lg p-4 shadow-sm">
+                            <div class="d-flex align-items-center mb-3 mb-md-0">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-exclamation-circle text-warning fa-2x"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <h5 class="font-weight-bold text-dark mb-1">
+                                        {{ $data['paymentStatus']['message'] }}
+                                    </h5>
+                                    <p class="text-muted mb-0">
+                                        Please make the payment as soon as possible to avoid late fees.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="text-center text-md-right">
+                                <div class="mb-2">
+                                    <span class="text-muted">Total Bill:</span>
+                                    <h4 class="text-danger font-weight-bold mb-0">
+                                        Rp {{ number_format($data['paymentStatus']['amount'], 0, ',', '.') }}
+                                    </h4>
+                                </div>
+                                {{-- <a href="#"
+                                    class="btn btn-sm btn-danger btn-lg px-5 waves-effect waves-light">
+                                    <i class="fas fa-credit-card mr-2"></i>
+                                    Pay Now
+                                </a> --}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+        </div>
+    </div>
 
     <!-- Payment History Card -->
     <div class="row">

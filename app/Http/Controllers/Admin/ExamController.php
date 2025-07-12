@@ -1230,6 +1230,10 @@ class ExamController extends Controller
                ->join('type_exams', 'scores.type_exam_id', '=', 'type_exams.id')
                ->join('students', 'scores.student_id', '=', 'students.id')
                ->where('scores.student_id', $getIdStudent)
+               ->where(function($query){
+               $query->where('exams.open_date', '<=', now())
+                  ->orWhereNull('exams.open_date');
+               })
                ->where('scores.semester', session('semester'))
                ->where('scores.academic_year', session('academic_year'))
                ->when($sort !== 'all', function ($query) use ($sort) {

@@ -544,6 +544,26 @@
             </div>
         </div>
     </div>
+
+    {{-- <div class="card" style="background-color: #ffde9e;border-radius: 12px;">
+        <div class="card-body">
+            <div class="row col-12">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Sort By Month :</label>
+                        <select name="month" class="form-control" id="month-select">
+                            <option value="all" selected>All Month</option>
+                            @foreach ($course as $month => $value)
+                                <option value="{{ $month }}">
+                                    {{ $month }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> --}}
     
     <div id="sections-container">
         @foreach ($course as $section => $month)

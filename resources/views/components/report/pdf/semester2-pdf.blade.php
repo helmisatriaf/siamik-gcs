@@ -98,6 +98,21 @@ $grade_name = $student->grade_name;
             text-align: center; /* Penataan teks */
             user-select: none; /* Teks tidak bisa disorot */
             pointer-events: none; /* Tidak mengganggu interaksi pengguna */
+        
+        }
+        .watermark-internal {
+            position: absolute;
+            top: 35%; /* Posisi vertikal tengah */
+            left: 50%; /* Posisi horizontal tengah */
+            transform: translate(-50%, -50%) rotate(-45deg); /* Pusatkan dan rotasi */
+            font-size: 40px; /* Ukuran font */
+           color: rgba(254,147,6, 0.5); /* Warna abu-abu dengan transparansi */
+            white-space: nowrap; /* Tidak memecah teks */
+            z-index: -1; /* Pastikan di belakang konten */
+            width: 100%; /* Lebar teks */
+            text-align: center; /* Penataan teks */
+            user-select: none; /* Teks tidak bisa disorot */
+            pointer-events: none; /* Tidak mengganggu interaksi pengguna */
         }
         
         @page {
@@ -113,6 +128,8 @@ $grade_name = $student->grade_name;
         @endif
         @if (session('role') == 'student' || session('role') == 'parent')
             <p class="watermark-school">Great Crystal School</p> 
+            <p class="watermark-internal">For Internal Purpose Only</p> 
+
         @endif
         
         <div class="header">
@@ -347,6 +364,7 @@ $grade_name = $student->grade_name;
         @endif
         @if (session('role') == 'student' || session('role') == 'parent')
             <p class="watermark-school">Great Crystal School</p> 
+            <p class="watermark-internal">For Internal Purpose Only</p> 
         @endif
         <div>
             <table class="table">

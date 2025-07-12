@@ -2144,14 +2144,14 @@ class ScheduleController extends Controller
             $religion = Student::where('id', $getIdStudent)->value('religion');
          }
 
-         $semester = Master_academic::first()->value('now_semester');
+         $semester = session('semester');
          if ($semester === 1) {
-            $startSemester = Master_academic::first()->value('semester1');
-            $endSemester = Master_academic::first()->value('end_semester1');
+            $startSemester = Master_academic::where('is_use', TRUE)->value('semester1');
+            $endSemester = Master_academic::where('is_use', TRUE)->value('end_semester1');
          }
          elseif ($semester === 2) {
-            $startSemester = Master_academic::first()->value('semester2');
-            $endSemester = Master_academic::first()->value('end_semester2');
+            $startSemester = Master_academic::where('is_use', TRUE)->value('semester2');
+            $endSemester = Master_academic::where('is_use', TRUE)->value('end_semester2');
          }
          
          $typeExam = Type_schedule::where('name', '=', 'lesson')->value('id');
@@ -2225,7 +2225,8 @@ class ScheduleController extends Controller
          $data = Grade::where('id', $getGradeId)
             ->select('grades.name as grade_name', 'grades.class as grade_class', 'grades.id as grade_id')
             ->first();
-
+         
+         // dd($semester);
          return view('components.student.detail-grade-student', compact('gradeSchedule', 'subtituteTeacher', 'startSemester', 'endSemester'))->with('data', $data);
          
       } catch (Exception $err) {

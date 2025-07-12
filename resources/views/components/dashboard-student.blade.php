@@ -85,12 +85,13 @@
                     <!-- small box -->
                     <div class="small-box bg-info" style="border-radius: 12px;">
                         <div class="inner">
-                            <h3>{{ $data['totalStudent'] }}</h3>
+                            <h3>{{ $data['totalLate'] }}</h3>
 
-                            <p>Total Students</p>
+                            <p>Total Latest</p>
                         </div>
                         <div class="icon">
-                            <i class="fa-solid fa-graduation-cap"></i>
+                             <i class="fa-solid fa-chalkboard-user"></i>
+                            {{-- <i class="fa-solid fa-graduation-cap"></i> --}}
                         </div>
                         <a href="#" class="small-box-footer" style="border-radius: 12px;">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
@@ -114,43 +115,42 @@
                         </div>
                         <a href="#" class="small-box-footer" style="border-radius: 12px;">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
-        </div>
-        <!-- ./col -->
-
-        <div class="col-lg-3 col-6">
-            <div class="small-box bg-warning" style="border-radius: 12px;">
-                <div class="inner">
-                    <h3>{{ $data['totalSubject'] }}
-                        {{-- <sup style="font-size: 20px">%</sup> --}}
-                    </h3>
-
-                    <p>Total Courses</p>
-                </div>
-                <div class="icon">
-                    {{-- <i class="ion ion-person-add"></i> --}}
-                    <i class="fa-solid fa-book"></i>
-                </div>
-
-                <a href="/student/course/" class="small-box-footer" style="border-radius: 12px;">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-        </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-warning" style="border-radius: 12px;">
+                    <div class="inner">
+                        <h3>{{ $data['totalSubject'] }}
+                            {{-- <sup style="font-size: 20px">%</sup> --}}
+                        </h3>
 
-        <!-- ASSESSMENT ACTIVE -->
-        <div class="col-lg-3 col-6">
-            <div class="small-box bg-danger" style="border-radius: 12px;">
-                <div class="inner">
-                    <h3>{{ $data['totalExam'] }}</h3>
+                        <p>Total Courses</p>
+                    </div>
+                    <div class="icon">
+                        {{-- <i class="ion ion-person-add"></i> --}}
+                        <i class="fa-solid fa-book"></i>
+                    </div>
 
-                    <p>Total Assessments</p>
+                    <a href="/student/course/" class="small-box-footer" style="border-radius: 12px;">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
-                <div class="icon">
-                <i class="fa-solid fa-book-open-reader"></i>
-                </div>
-            
-                <a href="/student/dashboard/exam" class="small-box-footer" style="border-radius: 12px;">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
+
+            <!-- ASSESSMENT ACTIVE -->
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-danger" style="border-radius: 12px;">
+                    <div class="inner">
+                        <h3>{{ $data['totalExam'] }}</h3>
+
+                        <p>Total Assessments</p>
+                    </div>
+                    <div class="icon">
+                    <i class="fa-solid fa-book-open-reader"></i>
+                    </div>
+                
+                    <a href="/student/dashboard/exam" class="small-box-footer" style="border-radius: 12px;">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
         </div>
-      </div>
 
 
         <div class="row">

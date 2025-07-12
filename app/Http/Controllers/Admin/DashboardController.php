@@ -241,6 +241,13 @@ class DashboardController extends Controller
                ->get()
                ->count();
 
+            $totalLate = Attendance::where('student_id', $id)
+               ->where('semester', session('semester'))
+               ->where('academic_year', session('academic_year'))
+               ->where('late', 1)
+               ->get()
+               ->count();
+
             $eca = Student_eca::where('student_id', $id)
                ->leftJoin('ecas', 'ecas.id', '=', 'student_ecas.eca_id')
                ->get();
@@ -333,8 +340,6 @@ class DashboardController extends Controller
                };
             }
 
-            // dd($dataExam);
-
             $data = [
                'eca'          => $eca,
                'dataStudent'  => $dataStudent,
@@ -343,6 +348,7 @@ class DashboardController extends Controller
                'totalSubject' => (int)$totalSubject,
                'totalStudent' => (int)$totalStudentGrade,
                'totalAbsent'  => (int)$totalAbsent,
+               'totalLate'  => (int)$totalLate,
                'paymentStatus' => $paymentStatus, // Add payment status to data array
                'paymentHistory' => $paymentHistory
 
@@ -393,7 +399,7 @@ class DashboardController extends Controller
                   'grades.name as grade_name',
                   'grades.class as grade_class'
                )
-               ->orderBy('grades.class', 'asc')
+               ->orderBy('grades.id', 'asc')
                ->get();
 
             $detailStudent = Student::where('students.id', $setStudentFirst)
@@ -524,8 +530,8 @@ class DashboardController extends Controller
                         ->orderBy('name', 'asc');
                   }])->where('id', $gradeIdStudent)->first();
    
-                  $dataExam  = Grade_exam::with(['exam.score' => function($query) use($id){
-                     $query->where('student_id', $id);
+                  $dataExam  = Grade_exam::with(['exam.score' => function($query) use($setStudentFirst){
+                     $query->where('student_id', $setStudentFirst);
                      }])
                      ->where(function($query){
                      $query->where('exams.open_date', '<=', now())
@@ -560,6 +566,8 @@ class DashboardController extends Controller
                   ->value('name_subject');
             };
 
+            // dd($dataExam);
+
             $data = [
                'parent'        => $parent,
                'eca'           => $eca,
@@ -573,7 +581,7 @@ class DashboardController extends Controller
                'totalSubject'  => (int)$totalSubject,
                'totalStudent'  => (int)$totalStudentGrade,
                'totalAbsent'   => (int)$totalAbsent,
-               'totalLate'     => $totalLate,
+               'totalLate'     => (int)$totalLate,
                'academicYears' => $academicYears,
                'paymentStatus' => $paymentStatus, // Add payment status to data array
                'paymentHistory' => $paymentHistory

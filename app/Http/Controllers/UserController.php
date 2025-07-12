@@ -168,7 +168,7 @@ class UserController extends Controller
                   'grades.name as grade_name',
                   'grades.class as grade_class'
                )
-               ->orderBy('grades.class', 'asc')
+               ->orderBy('grades.id', 'asc')
                ->take(1)
                ->get();
 

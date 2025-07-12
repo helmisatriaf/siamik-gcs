@@ -6980,7 +6980,7 @@ class ReportController extends Controller
                 Log::info("Current month payment status determined as: " . ($isPaid ? 'PAID' : 'UNPAID'));
 
                 if (!$isPaid) {
-                    return false;
+                    return true;
                 }
             }
 
@@ -7023,7 +7023,7 @@ class ReportController extends Controller
                     Log::info("Previous month payment status determined as: " . ($isPaid ? 'PAID' : 'UNPAID'));
 
                     if (!$isPaid) {
-                        return false;
+                        return true;
                     }
                 }
             }
