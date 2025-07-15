@@ -86,16 +86,27 @@ class DashboardController extends Controller
 
             $subjectData   = Subject::all();
 
+            $getIdLesson = Type_schedule::where('name', '=', 'Lesson')->value('id');
+            $events = Schedule::join('type_schedules', 'schedules.type_schedule_id', '=', 'type_schedules.id')
+               ->where('type_schedule_id', '!=', $getIdLesson)  
+               ->where('academic_year', session('academic_year')) 
+               ->where('date', '>=', now())
+               ->whereNotNull('file_path')
+               ->select('schedules.*', 'type_schedules.name as type_schedule', 'type_schedules.color as color')
+               ->orderBy('date', 'ASC')
+               ->first();
+
             $data = [
                'totalStudent' => (int)$totalStudent,
                'totalTeacher' => (int)$totalTeacher,
                'totalGrade'   => (int)$totalGrade,
                'totalExam'    => (int)$totalExam,
-               'grade' => $gradeData,
-               'subject' => $subjectData,
-               'exam' => $examData,
-               'dataTeacher' => $teacherData,
-               'dataStudent' => $studentData,
+               'grade'        => $gradeData,
+               'subject'      => $subjectData,
+               'exam'         => $examData,
+               'dataTeacher'  => $teacherData,
+               'dataStudent'  => $studentData,
+               'events'       => $events,
             ];
 
             // dd($data);
@@ -175,6 +186,16 @@ class DashboardController extends Controller
             $totalSubject   = Teacher_subject::where('teacher_id', $id)
                ->where('academic_year', session('academic_year'))->get()->count('id');
 
+            $getIdLesson = Type_schedule::where('name', '=', 'Lesson')->value('id');
+            $events = Schedule::join('type_schedules', 'schedules.type_schedule_id', '=', 'type_schedules.id')
+               ->where('type_schedule_id', '!=', $getIdLesson)  
+               ->where('academic_year', session('academic_year')) 
+               ->where('date', '>=', now())
+               ->whereNotNull('file_path')
+               ->select('schedules.*', 'type_schedules.name as type_schedule', 'type_schedules.color as color')
+               ->orderBy('date', 'ASC')
+               ->first();
+
             $data = [
                'dataTeacher'    => $dataTeacher,
                'gradeTeacher'   => $gradeTeacher,
@@ -185,6 +206,7 @@ class DashboardController extends Controller
                'totalExam'      => (int)$totalExam,
                'totalGrade'     => (int)$totalGrade,
                'totalSubject'   => (int)$totalSubject,
+               'events'         => $events,
             ];
 
             return view('components.dashboard-teacher')->with('data', $data);
@@ -593,6 +615,7 @@ class DashboardController extends Controller
                ->where('date', '>=', now())
                ->whereNotNull('file_path')
                ->select('schedules.*', 'type_schedules.name as type_schedule', 'type_schedules.color as color')
+               ->orderBy('date', 'ASC')
                ->first();
 
             $data = [

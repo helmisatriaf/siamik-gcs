@@ -85,7 +85,7 @@
                         @endphp
 
                         @if ($extension === 'mp4')
-                            <video id="posterVideo" autoplay loop playsinline class="w-100" style="max-height: 80vh;">
+                            <video id="posterVideo" autoplay loop muted playsinline class="w-100" style="max-height: 80vh;">
                                 <source src="{{ Storage::url($filePath) }}" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>

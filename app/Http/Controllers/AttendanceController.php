@@ -43,6 +43,7 @@ class AttendanceController extends Controller
                     $query->where('is_active', true); // Hitung hanya siswa aktif
                 }, 'subject as active_subject_count'])
                 ->orderBy('grades.id', 'asc')
+                ->where('academic_year', session('academic_year'))
                 ->get();
 
             return view('components.attendance.all-attendance')->with('data', $data);
