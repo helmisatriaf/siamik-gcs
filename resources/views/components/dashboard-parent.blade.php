@@ -1,77 +1,103 @@
 @extends('layouts.admin.master')
 @section('content')
 
-  <style>
-      .bg-gradient-warning {
-          background: linear-gradient(45deg, #ffc107, #ffdb4d);
-      }
+<style>
+    .bg-gradient-warning {
+        background: linear-gradient(45deg, #ffc107, #ffdb4d);
+    }
 
-      .badge-soft-success {
-          color: #0f5132;
-          background-color: #d1e7dd;
-      }
+    .badge-soft-success {
+        color: #0f5132;
+        background-color: #d1e7dd;
+    }
 
-      .badge-soft-danger {
-          color: #842029;
-          background-color: #f8d7da;
-      }
+    .badge-soft-danger {
+        color: #842029;
+        background-color: #f8d7da;
+    }
 
-      .waves-effect {
-          position: relative;
-          overflow: hidden;
-          transform: translate3d(0, 0, 0);
-      }
+    .waves-effect {
+        position: relative;
+        overflow: hidden;
+        transform: translate3d(0, 0, 0);
+    }
 
-      .fa-shake {
-          animation: fa-shake 2.5s infinite linear;
-      }
+    .fa-shake {
+        animation: fa-shake 2.5s infinite linear;
+    }
 
-      @keyframes fa-shake {
-          0% {
-              transform: rotate(0deg);
-          }
+    @keyframes fa-shake {
+        0% {
+            transform: rotate(0deg);
+        }
 
-          4% {
-              transform: rotate(-10deg);
-          }
+        4% {
+            transform: rotate(-10deg);
+        }
 
-          8% {
-              transform: rotate(10deg);
-          }
+        8% {
+            transform: rotate(10deg);
+        }
 
-          12% {
-              transform: rotate(-10deg);
-          }
+        12% {
+            transform: rotate(-10deg);
+        }
 
-          16% {
-              transform: rotate(10deg);
-          }
+        16% {
+            transform: rotate(10deg);
+        }
 
-          20% {
-              transform: rotate(0deg);
-          }
+        20% {
+            transform: rotate(0deg);
+        }
 
-          100% {
-              transform: rotate(0deg);
-          }
-      }
+        100% {
+            transform: rotate(0deg);
+        }
+    }
 
-      .animate__fadeIn {
-          animation: fadeIn 0.5s ease-in;
-      }
+    .animate__fadeIn {
+        animation: fadeIn 0.5s ease-in;
+    }
 
-      @keyframes fadeIn {
-          from {
-              opacity: 0;
-              transform: translateY(-20px);
-          }
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
 
-          to {
-              opacity: 1;
-              transform: translateY(0);
-          }
-      }
-  </style>
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+@if ($data['events'] !== null)
+    <div class="modal fade" id="eventModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background-color: #ffde9e;">
+                <div class="modal-body p-0">
+                    <div class="container-fluid p-0 m-0">
+                        @php
+                            $filePath = $data['events']->file_path;
+                            $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+                        @endphp
+
+                        @if ($extension === 'mp4')
+                            <video id="posterVideo" autoplay loop playsinline class="w-100" style="max-height: 80vh;">
+                                <source src="{{ Storage::url($filePath) }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        @else
+                            <img src="{{ Storage::url($filePath) }}" alt="Poster" title="" class="product-img img-fluid w-auto h-100 hover:cursor-pointer">
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
 
 <section class="content">
   <div class="container-fluid">
@@ -757,5 +783,14 @@
         });
     </script>
 @endif
+
+@if ($data['events'] !== null)
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        var myModal = new bootstrap.Modal(document.getElementById('eventModal'));
+        myModal.show();
+        });
+    </script>
+ @endif
 
 @endsection

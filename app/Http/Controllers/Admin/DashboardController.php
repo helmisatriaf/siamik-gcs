@@ -21,7 +21,8 @@ use App\Services\BillingService;
 use App\Models\Master_academic;
 use App\Models\Chinese_lower;
 use App\Models\Chinese_higher;
-use App\Models\Plan_visit;
+use App\Models\Schedule;
+use App\Models\Type_schedule;
 
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -340,6 +341,20 @@ class DashboardController extends Controller
                };
             }
 
+            $academic_year = Master_academic::first()->value('academic_year');
+            $getIdLesson = Type_schedule::where('name', '=', 'Lesson')->value('id');
+            $events = Schedule::join('type_schedules', 'schedules.type_schedule_id', '=', 'type_schedules.id')
+               ->where('type_schedule_id', '!=', $getIdLesson)  
+               ->where('academic_year', $academic_year) 
+               ->where('date', '>=', now())
+               ->whereNotNull('file_path')
+               ->select('schedules.*', 'type_schedules.name as type_schedule', 'type_schedules.color as color')
+               ->orderBy('date', 'ASC')
+               ->first();
+
+            // dd($events);
+
+
             $data = [
                'eca'          => $eca,
                'dataStudent'  => $dataStudent,
@@ -350,9 +365,12 @@ class DashboardController extends Controller
                'totalAbsent'  => (int)$totalAbsent,
                'totalLate'  => (int)$totalLate,
                'paymentStatus' => $paymentStatus, // Add payment status to data array
-               'paymentHistory' => $paymentHistory
-
+               'paymentHistory' => $paymentHistory,
+               'events' => $events,
             ];
+            
+
+            // dd($events);
 
             // dd($data['exam']);
             return view('components.dashboard-student')->with('data', $data);
@@ -566,7 +584,16 @@ class DashboardController extends Controller
                   ->value('name_subject');
             };
 
-            // dd($dataExam);
+            $academic_year = Master_academic::first()->value('academic_year');
+            $getIdLesson = Type_schedule::where('name', '=', 'Lesson')->value('id');
+
+            $events = Schedule::join('type_schedules', 'schedules.type_schedule_id', '=', 'type_schedules.id')
+               ->where('type_schedule_id', '!=', $getIdLesson)  
+               ->where('academic_year', $academic_year) 
+               ->where('date', '>=', now())
+               ->whereNotNull('file_path')
+               ->select('schedules.*', 'type_schedules.name as type_schedule', 'type_schedules.color as color')
+               ->first();
 
             $data = [
                'parent'        => $parent,
@@ -584,7 +611,8 @@ class DashboardController extends Controller
                'totalLate'     => (int)$totalLate,
                'academicYears' => $academicYears,
                'paymentStatus' => $paymentStatus, // Add payment status to data array
-               'paymentHistory' => $paymentHistory
+               'paymentHistory' => $paymentHistory,
+               'events' => $events,
             ];
 
             return view('components.dashboard-parent')->with('data', $data);

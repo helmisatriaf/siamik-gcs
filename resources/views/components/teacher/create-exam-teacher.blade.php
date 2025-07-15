@@ -157,7 +157,7 @@
                               <div class="form-group row">
                                  <div class="col-md-12">
                                     <label for="open_date">Open date <span style="color: red">* (Kapan soal diakses)</span></label>
-                                    <input name="open_date" type="date" class="form-control" id="open_date" required>
+                                    <input name="open_date" type="date" class="form-control" id="open_date">
                                     
                                     @if($errors->has('open_date'))
                                        <p style="color: red">{{ $errors->first('open_date') }}</p>
@@ -165,7 +165,7 @@
                                  </div>
                               </div>
                               
-                              <div class="form-group row">
+                              {{-- <div class="form-group row">
                                  <div class="col-md-12">
                                     <label for="time_open">Time open <span style="color: red">(spesifik jam soal diakses)</span> <span style="color: green;">*Opsional*</span></label>
                                     <input name="time_open" type="time" class="form-control" id="time_open">
@@ -174,7 +174,7 @@
                                        <p style="color: red">{{ $errors->first('time_open') }}</p>
                                     @endif
                                  </div>
-                              </div>
+                              </div> --}}
       
                               <div class="form-group row">
                                  <div class="col-md-12">
@@ -542,6 +542,7 @@
    // COMBINE
    document.addEventListener("DOMContentLoaded", function () {
       document.querySelector(".btn-create-mce").addEventListener("click", function (event) {
+         this.disabled = true;
          event.preventDefault();
          let isFormDirty = true; // set true jika ada perubahan penting
 
@@ -636,7 +637,7 @@
             mcSection.innerHTML += `
                   <div class="card p-3 mb-2">
                      <label>Question ${i + 1}</label>
-                     <textarea id="ckeditor" name="question_mc[${i}][question]"></textarea>
+                     <textarea id="ckeditor" class="summernote" name="question_mc[${i}][question]"></textarea>
                      <div class="mt-2">
                         <label>Options:</label>
                         <input type="text" name="question_mc[${i}][answer][a]" class="form-control" placeholder="Option A" required>
@@ -663,7 +664,7 @@
             essaySection.innerHTML += `
                   <div class="card p-3 mb-2">
                      <label>Question ${i + 1}</label>
-                     <textarea id="ckeditor" name="essay[${i}][question]"></textarea>
+                     <textarea id="ckeditor" class="summernote" name="essay[${i}][question]"></textarea>
                      <label class="mt-2">Answer Key:</label>
                      <input type="text" name="essay[${i}][answer]" class="form-control" placeholder="Enter correct answer" required>
                   </div>
@@ -685,7 +686,7 @@
             mcSection.innerHTML += `
                   <div class="card p-3 mb-2">
                      <label>Question ${i + 1}</label>
-                     <textarea id="ckeditor" name="question_mc[${i}][question]"></textarea>
+                     <textarea id="ckeditor" class="summernote" name="question_mc[${i}][question]"></textarea>
                      <div class="mt-2">
                         <label>Options:</label>
                         <input type="text" name="question_mc[${i}][answer][a]" class="form-control" placeholder="Option A" required>
@@ -732,32 +733,32 @@
    // END COMBINE
 
    function initializeSummerNote() {
-      CKEDITOR.replace('ckeditor');
-      // $('.summernote').summernote({
-      //    tabsize: 2,
-      //    height: 200,
-      //    callbacks: {
-      //       onImageUpload: function(files) {
-      //          for (let i = 0; i < files.length; i++) {
-      //             uploadImage(files[i], this);
-      //          }
-      //       }
-      //    }
-      // })
-      // $("#hint").summernote({
-      //    height: 100,
-      //    toolbar: false,
-      //    placeholder: 'type with apple, orange, watermelon and lemon',
-      //    hint: {
-      //       words: ['apple', 'orange', 'watermelon', 'lemon'],
-      //       match: /\b(\w{1,})$/,
-      //       search: function(keyword, callback) {
-      //          callback($.grep(this.words, function(item) {
-      //             return item.indexOf(keyword) === 0;
-      //          }));
-      //       }
-      //    }
-      // });
+      // CKEDITOR.replace('ckeditor');
+      $('.summernote').summernote({
+         tabsize: 2,
+         height: 200,
+         callbacks: {
+            onImageUpload: function(files) {
+               for (let i = 0; i < files.length; i++) {
+                  uploadImage(files[i], this);
+               }
+            }
+         }
+      })
+      $("#hint").summernote({
+         height: 100,
+         toolbar: false,
+         placeholder: 'type with apple, orange, watermelon and lemon',
+         hint: {
+            words: ['apple', 'orange', 'watermelon', 'lemon'],
+            match: /\b(\w{1,})$/,
+            search: function(keyword, callback) {
+               callback($.grep(this.words, function(item) {
+                  return item.indexOf(keyword) === 0;
+               }));
+            }
+         }
+      });
    }
 
    function uploadImage(file, editor) {

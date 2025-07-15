@@ -146,7 +146,7 @@
                         </div>
                         <div class="pl-2">
                             <p class="flex-grow-1">
-                                {{$el->type_exam}} | {{$el->subject_name}} <br>
+                                {{$el->type_exam}} | {{$el->subject_name}}<br>
                                 {{$el->grade_name}} - {{ $el->grade_class }} <br>
                                 {{$el->name_exam}} <br>
                                 @switch($el->model)
@@ -171,10 +171,12 @@
                                         </span>
                                     @break
                                 @endswitch
+                                
+                                <i class="fas fa-book"></i> <span class="text-sm text-primary">{{ $el->open_date ? \Carbon\Carbon::parse($el->open_date)->translatedFormat('l, d F Y') : '-' }}</span><br>
                                 <i class="fas fa-clock"></i> 
                                 @php
-                                    $currentDate = \Carbon\Carbon::now();
-                                    $dateExam = \Carbon\Carbon::parse($el->date_exam);
+                                    $currentDate = \Carbon\Carbon::now()->startOfDay();
+                                    $dateExam = \Carbon\Carbon::parse($el->date_exam)->startOfDay();
                                     $daysRemaining = $currentDate->diffInDays($dateExam, false);
                                 @endphp
                                 @if ($el->is_active)
@@ -408,7 +410,7 @@
     @if(session('after_create_exam')) 
         <script>
             Swal.fire({
-                title: 'Successfully created new assessment',
+                title: 'Successfully',
                 timer: 1800, // Swal akan hilang dalam 2000ms (2 detik)
                 showConfirmButton: false, // Sembunyikan tombol "OK",
                 imageUrl: '/images/happy.png', // pastikan path ini bisa diakses dari browser

@@ -266,11 +266,11 @@
             </nav>
         </div>
     @else
-        <div class="card">
+        <div class="card" style="background-color: #ffde9e;border-radius: 12px;">
             <div class="container-fluid full-height p-4">
                 <div class="icon-wrapper">
-                    <i class="fas fa-search"></i>
-                    <p class="my-2">The assessment you are looking for is not found</p>
+                    <i class="fas fa-search text-warning"></i>
+                    <p class="my-2">Empty Data</p>
                 </div>
             </div>
         </div>

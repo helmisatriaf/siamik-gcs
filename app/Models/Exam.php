@@ -23,9 +23,17 @@ class Exam extends Model
         return $this->belongsToMany(Student::class, 'student_exams');
     }
 
-    public function score(){
-        return $this->hasMany(Score::class);
+    public function score()
+    {
+        return $this->hasMany(Score::class, 'exam_id');
     }
+
+    // relasi khusus untuk siswa tertentu (opsional)
+    public function studentScore($studentId)
+    {
+        return $this->hasOne(Score::class, 'exam_id')->where('student_id', $studentId);
+    }
+
     
     public function question(){
         return $this->hasMany(Question::class);
@@ -39,4 +47,6 @@ class Exam extends Model
     {
         return $this->hasMany(Score::class);
     }
+
+    
 }

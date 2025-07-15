@@ -9,24 +9,7 @@ class Schedule extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'id',
-        'grade_id',
-        'subject_id',
-        'teacher_id',
-        'teacher_companion',
-        'type_schedule_id',
-        'note',
-        'date',
-        'end_date',
-        'day',
-        'start_time',
-        'end_time',
-        'semester',
-        'created_at',
-        'updated_at',
-        'academic_year',
-    ];
+    protected $guarded = ['id'];
 
     public function grade()
     {

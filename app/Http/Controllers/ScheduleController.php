@@ -196,6 +196,7 @@ class ScheduleController extends Controller
             ->get();
 
 
+         // dd($schedules);
          $typeSchedule = Type_schedule::where('name', '!=', 'Lesson')->get();
  
          return view('components.schedule.schedule', compact('exams', 'schedules', 'midExam', 'finalExam'))->with('data', $typeSchedule);
@@ -1672,7 +1673,7 @@ class ScheduleController extends Controller
    // Menambahkan jadwal lainnya (event,hari libur)
    public function actionCreateOther(Request $request)
    {
-      // dd($request);
+      // dd($request->poster);
       try {
          session()->flash('page',  $page = (object)[
             'page' => 'schedules',
@@ -1681,22 +1682,41 @@ class ScheduleController extends Controller
 
          if(count($request->type_schedule) > 1)
          {
+            dd($request);
             for ($i=0; $i < count($request->type_schedule) ; $i++) { 
                if($request->end_date[$i])
                {
+                 $filePath = null;
+                  if ($request->hasFile('poster') && isset($request->poster[$i])) {
+                     $file = $request->poster[$i];
+                     if ($file->isValid()) {
+                        $filePath = $file->store('event', 'public');
+                     }
+                  }
+
                   $rules = [
                      'type_schedule_id' => $request->type_schedule[$i],
                      'date' => $request->date[$i],
                      'end_date' => $request->end_date[$i],
                      'note' => $request->notes[$i],
+                     'file_path' => $filePath,
                      'academic_year' => session('academic_year'),
                   ];   
                }
                else {
+                  $filePath = null;
+                  if ($request->hasFile('poster') && isset($request->poster[$i])) {
+                     $file = $request->poster[$i];
+                     if ($file->isValid()) {
+                        $filePath = $file->store('event', 'public');
+                     }
+                  }
+
                   $rules = [
                      'type_schedule_id' => $request->type_schedule[$i],
                      'date' => $request->date[$i],
                      'note' => $request->notes[$i],
+                     'file_path' => $filePath,
                      'academic_year' => session('academic_year'),
                   ];
                }
@@ -1706,22 +1726,37 @@ class ScheduleController extends Controller
          }
          else 
          {
+            // dd($request);
             for ($j=0; $j < count($request->type_schedule) ; $j++) { 
                if($request->end_date[$j])
                {
+                  $filePath = null;
+                  $requestFile = $request->poster[$j];
+                  $filePath = $requestFile->store('event', 'public');
+                  
                   $rules = [
                      'type_schedule_id' => $request->type_schedule[$j],
                      'date' => $request->date[$j],
                      'end_date' => $request->end_date[$j],
                      'note' => $request->notes[$j],
+                     'file_path' => $filePath,
                      'academic_year' => session('academic_year'),
-                  ];   
+                  ];
                }
                else {
+                  $filePath = null;
+                  if ($request->hasFile('poster') && isset($request->poster[$j])) {
+                     $file = $request->poster[$j];
+                     if ($file->isValid()) {
+                        $filePath = $file->store('event', 'public');
+                     }
+                  }
+
                   $rules = [
                      'type_schedule_id' => $request->type_schedule[$j],
                      'date' => $request->date[$j],
                      'note' => $request->notes[$j],
+                     'file_path' => $filePath,
                      'academic_year' => session('academic_year'),
                   ];
                }

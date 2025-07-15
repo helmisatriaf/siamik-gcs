@@ -57,6 +57,7 @@
 <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content custom-swal-schedule-detail">
+            
             <h5 class="modal-title" id="eventModalLabel">Event Details</h5>
             <p id="eventTitle"></p>
             <p id="eventDescription"></p>
@@ -67,7 +68,7 @@
 
 <!-- Modal Add Other Schedule -->
 <div class="modal fade" id="modalAddOtherSchedule" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered custom-modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered custom-modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">Create Other Schedule</h5>
@@ -78,9 +79,9 @@
             <div class="modal-body">
                 <div>
                     @if (session('role') == 'superadmin')
-                        <form method="POST" action={{route('actionSuperCreateOtherSchedule')}}>
+                        <form method="POST" action={{route('actionSuperCreateOtherSchedule')}} enctype="multipart/form-data">
                     @elseif (session('role') == 'admin')
-                        <form method="POST" action={{route('actionAdminCreateOtherSchedule')}}>
+                        <form method="POST" action={{route('actionAdminCreateOtherSchedule')}} enctype="multipart/form-data">
                     @endif
                         @csrf
                         <div class="card card-dark">
@@ -91,6 +92,7 @@
                                         <th>Date</th>
                                         <th>Until</th>
                                         <th>Notes</th>
+                                        <th>Poster Event</th>
                                     </thead>
                                     <tbody id="scheduleTableBody">
                                         <tr>
@@ -112,6 +114,9 @@
                                                 <textarea required name="notes[]" class="form-control" id="notes" cols="10" rows="1"></textarea>
                                             </td>
                                             <td>
+                                                <input type="file" class="file-input" id="file" name="poster[]">
+                                            </td>
+                                            <td>
                                                 <button type="button" class="btn btn-success btn-sm btn-tambah mt-1" title="Tambah Data" id="tambah"><i class="fa fa-plus"></i></button>
                                                 <button type="button" class="btn btn-danger btn-sm btn-hapus mt-1 d-none" title="Hapus Baris" id="hapus"><i class="fa fa-times"></i></button>
                                             </td>
@@ -129,6 +134,26 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="posterModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="background-color: #ffde9e;">
+      <div class="modal-body p-0">
+        <div class="container-fluid p-0 m-0">
+          {{-- Gambar --}}
+          <img id="posterImage" src="" alt="Poster" class="product-img img-fluid w-auto h-100 hover:cursor-pointer d-none">
+
+          {{-- Video --}}
+          <video id="posterVideo" autoplay muted loop playsinline class="w-100 d-none" style="max-height: 80vh;">
+            <source id="posterVideoSource" src="" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 <!-- Tambahkan CSS untuk modal khusus -->
@@ -194,23 +219,55 @@
                             color: schedule.color,
                             jadwal: new Date(schedule.date).toLocaleDateString('en-EN', { month: 'long', day: 'numeric', year: 'numeric' }),
                             sampai: schedule.end_date ? new Date(schedule.end_date).toLocaleDateString('en-EN', { month: 'long', day: 'numeric', year: 'numeric' }) : null,
+                            filePath: schedule.file_path ? schedule.file_path : null,
                         };
                     }),
                     
                 ],
                 eventClick: function(info) {
-                    document.getElementById('eventTitle').innerText = 'Event : ' + info.event.title;
-                    if (info.event.extendedProps.sampai === null) {
-                        document.getElementById('eventDescription').innerHTML = 'Description : <br>' + info.event.extendedProps.description + ' (' + info.event.extendedProps.jadwal + ')';
+                    const filePath = info.event.extendedProps.filePath;
+
+                    if (!filePath) {
+                        document.getElementById('eventTitle').innerText = 'Event : ' + info.event.title;
+                        if (info.event.extendedProps.sampai === null) {
+                            document.getElementById('eventDescription').innerHTML =
+                                'Description : <br>' + info.event.extendedProps.description +
+                                ' (' + info.event.extendedProps.jadwal + ')';
+                        } else {
+                            document.getElementById('eventDescription').innerHTML =
+                                'Description : <br>' + info.event.extendedProps.description +
+                                ' (' + info.event.extendedProps.jadwal + ' until ' + info.event.extendedProps.sampai + ')';
+                        }
+
+                        var eventModal = new bootstrap.Modal(document.getElementById('eventModal'), {
+                            keyboard: false
+                        });
+                        eventModal.show();
+                    } else {
+                        const extension = filePath.split('.').pop().toLowerCase();
+
+                        const img = document.getElementById('posterImage');
+                        const video = document.getElementById('posterVideo');
+                        const videoSource = document.getElementById('posterVideoSource');
+
+                        if (extension === 'mp4') {
+                            img.classList.add('d-none');
+                            video.classList.remove('d-none');
+                            videoSource.src = '/storage/' + filePath;
+                            video.load();
+                        } else {
+                            video.classList.add('d-none');
+                            img.classList.remove('d-none');
+                            img.src = '/storage/' + filePath;
+                        }
+
+                        var poster = new bootstrap.Modal(document.getElementById('posterModal'), {
+                            keyboard: false
+                        });
+                        poster.show();
                     }
-                    else {
-                        document.getElementById('eventDescription').innerHTML = 'Description : <br>' + info.event.extendedProps.description + ' (' + info.event.extendedProps.jadwal + ' until ' + info.event.extendedProps.sampai + ')';
-                    }
-                    var eventModal = new bootstrap.Modal(document.getElementById('eventModal'), {
-                        keyboard: false
-                    });
-                    eventModal.show();
                 }
+
             });
         }
         else{
@@ -252,23 +309,55 @@
                             color: schedule.color,
                             backgroundColor: schedule.color,
                             jadwal: new Date(schedule.date).toLocaleDateString('en-EN', { month: 'long', day: 'numeric', year: 'numeric' }),
-                            sampai: schedule.end_date ? new Date(schedule.end_date).toLocaleDateString('en-EN', { month: 'long', day: 'numeric', year: 'numeric' }) : null
+                            sampai: schedule.end_date ? new Date(schedule.end_date).toLocaleDateString('en-EN', { month: 'long', day: 'numeric', year: 'numeric' }) : null,
+                            filePath: schedule.file_path ? schedule.file_path : null,
                         };
                     }),  
                 ],
                 eventClick: function(info) {
-                    document.getElementById('eventTitle').innerText = 'Event : ' + info.event.title;
-                    if (info.event.extendedProps.sampai === null) {
-                        document.getElementById('eventDescription').innerHTML = 'Description : <br>' + info.event.extendedProps.description + ' (' + info.event.extendedProps.jadwal + ')';
+                    const filePath = info.event.extendedProps.filePath;
+
+                    if (!filePath) {
+                        document.getElementById('eventTitle').innerText = 'Event : ' + info.event.title;
+                        if (info.event.extendedProps.sampai === null) {
+                            document.getElementById('eventDescription').innerHTML =
+                                'Description : <br>' + info.event.extendedProps.description +
+                                ' (' + info.event.extendedProps.jadwal + ')';
+                        } else {
+                            document.getElementById('eventDescription').innerHTML =
+                                'Description : <br>' + info.event.extendedProps.description +
+                                ' (' + info.event.extendedProps.jadwal + ' until ' + info.event.extendedProps.sampai + ')';
+                        }
+
+                        var eventModal = new bootstrap.Modal(document.getElementById('eventModal'), {
+                            keyboard: false
+                        });
+                        eventModal.show();
+                    } else {
+                        const extension = filePath.split('.').pop().toLowerCase();
+
+                        const img = document.getElementById('posterImage');
+                        const video = document.getElementById('posterVideo');
+                        const videoSource = document.getElementById('posterVideoSource');
+
+                        if (extension === 'mp4') {
+                            img.classList.add('d-none');
+                            video.classList.remove('d-none');
+                            videoSource.src = '/storage/' + filePath;
+                            video.load();
+                        } else {
+                            video.classList.add('d-none');
+                            img.classList.remove('d-none');
+                            img.src = '/storage/' + filePath;
+                        }
+
+                        var poster = new bootstrap.Modal(document.getElementById('posterModal'), {
+                            keyboard: false
+                        });
+                        poster.show();
                     }
-                    else {
-                        document.getElementById('eventDescription').innerHTML = 'Description : <br>' + info.event.extendedProps.description + ' (' + info.event.extendedProps.jadwal + ' until ' + info.event.extendedProps.sampai + ')';
-                    }
-                    var eventModal = new bootstrap.Modal(document.getElementById('eventModal'), {
-                        keyboard: false
-                    });
-                    eventModal.show();
                 },
+
                 dayCellDidMount: function(info) {
                     var day = info.date.getDay(); // 0 = Minggu, 6 = Sabtu
                     if (day === 0 || day === 6) {
@@ -383,6 +472,9 @@
                 </td>
                 <td>
                     <textarea required name="notes[]" class="form-control" id="notes" cols="10" rows="1"></textarea>
+                </td>
+                <td>
+                    <input name="poster[]" type="file" class="form-control">
                 </td>
                 <td>
                     <button type="button" class="btn btn-success btn-sm btn-tambah mt-1" title="Tambah Data" id="tambah"><i class="fa fa-plus"></i></button>
