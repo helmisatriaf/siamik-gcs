@@ -214,7 +214,6 @@ class ScheduleController extends Controller
          ]);
 
          $getIdTeacher = Teacher::where('user_id', session('id_user'))->value('id'); 
-         $academic_year = Master_academic::first()->value('academic_year');        
          
          $exams =  Exam::join('grade_exams', 'exams.id', '=', 'grade_exams.exam_id')
             ->join('grades', 'grade_exams.grade_id', '=', 'grades.id')
@@ -224,7 +223,7 @@ class ScheduleController extends Controller
             ->join('type_exams', 'exams.type_exam', '=', 'type_exams.id')
             // ->where('exams.is_active', 1)
             ->where('exams.teacher_id', $getIdTeacher)
-            ->where('exams.academic_year', $academic_year)
+            ->where('exams.academic_year', session('academic_year'))
             ->select('exams.*', 'grades.name as grade_name', 'grades.class as grade_class', 'subjects.name_subject as subject_name', 'teachers.name as teacher_name', 'type_exams.name as type_exam')
             ->get();
 
@@ -276,7 +275,7 @@ class ScheduleController extends Controller
             $getGradeStudent = Student::where('user_id', $id)->value('grade_id');
          }
          
-         $academic_year = Master_academic::first()->value('academic_year');
+         $academic_year = session('academic_year');
          
          $exams =  Exam::join('grade_exams', 'exams.id', '=', 'grade_exams.exam_id')
             ->join('grades', 'grade_exams.grade_id', '=', 'grades.id')
@@ -1681,8 +1680,7 @@ class ScheduleController extends Controller
          ]);
 
          if(count($request->type_schedule) > 1)
-         {
-            dd($request);
+         {  
             for ($i=0; $i < count($request->type_schedule) ; $i++) { 
                if($request->end_date[$i])
                {

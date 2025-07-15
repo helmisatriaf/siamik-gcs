@@ -341,7 +341,7 @@ class DashboardController extends Controller
                };
             }
 
-            $academic_year = Master_academic::first()->value('academic_year');
+            $academic_year = session('academic_year');
             $getIdLesson = Type_schedule::where('name', '=', 'Lesson')->value('id');
             $events = Schedule::join('type_schedules', 'schedules.type_schedule_id', '=', 'type_schedules.id')
                ->where('type_schedule_id', '!=', $getIdLesson)  
@@ -584,7 +584,7 @@ class DashboardController extends Controller
                   ->value('name_subject');
             };
 
-            $academic_year = Master_academic::first()->value('academic_year');
+            $academic_year = session('academic_year');
             $getIdLesson = Type_schedule::where('name', '=', 'Lesson')->value('id');
 
             $events = Schedule::join('type_schedules', 'schedules.type_schedule_id', '=', 'type_schedules.id')

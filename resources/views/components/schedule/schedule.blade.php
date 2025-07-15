@@ -518,9 +518,17 @@
 @if(session('after_create_otherSchedule')) 
     <script>
         Swal.fire({
-            icon: 'success',
-            title: 'Successfully'
-            text: 'Successfully created new other schedule in the database.'
+            title: 'Successfully create schedule',
+            showConfirmButton: false, // Sembunyikan tombol "OK",
+            timer: 1800, // Swal akan hilang dalam 2000ms (2 detik)
+            showConfirmButton: false, // Sembunyikan tombol "OK",
+            imageUrl: '/images/happy.png', // pastikan path ini bisa diakses dari browser
+            imageWidth: 100,
+            imageHeight: 100,
+            imageAlt: 'Custom image',
+            customClass: {
+                popup: 'custom-swal-style'
+            },
         });
     </script>
 @endif
