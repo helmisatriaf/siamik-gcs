@@ -480,6 +480,10 @@
                                             @csrf
                                             <input type="number" id="ebookid-{{$ebook->id}}" name="ebook_id" class="form-control"
                                             value="{{ $ebook->id }}" hidden>
+                                             <label for="title" class="form-label fw-semibold">Book Title <span
+                                                class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="title" name="title"
+                                                placeholder="Enter a descriptive title for this resource" required value="{{$ebook->title}}">
 
 
                                             <div class="row grid md:flex col-12">
@@ -515,6 +519,7 @@
                                                     <div class="form-group">
                                                         <label for="embed_ebook">Embed from HTML5</label>
                                                         <textarea name="embed_ebook" id="embed_ebook-{{$ebook->id}}" rows="5" class="form-control w-100">
+                                                            {{$ebook->file_path}}
                                                         </textarea>
                                                     </div>
                                                 </div>

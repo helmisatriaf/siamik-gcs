@@ -439,6 +439,7 @@ class DashboardController extends Controller
                   'grades.name as grade_name',
                   'grades.class as grade_class'
                )
+               ->where('students.is_active', true)
                ->orderBy('grades.id', 'asc')
                ->get();
 
