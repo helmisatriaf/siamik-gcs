@@ -746,16 +746,18 @@ class AttendanceController extends Controller
             $nameGrade    = "$grade->name - $grade->class";
             $nameTeacher  = $teacher;
 
-            $semester = Master_academic::first()->value('now_semester');
+            $semester = Master_academic::where('is_use', true)->value('now_semester');
 
             if ($semester == 1) {
-                $startSemester = Master_academic::first()->value('semester1');
-                $endSemester   = Master_academic::first()->value('end_semester1');
+                $startSemester = Master_academic::where('is_use', true)->value('semester1');
+                $endSemester   = Master_academic::where('is_use', true)->value('end_semester1');
             }
             elseif ($semester == 2) {
-                $startSemester = Master_academic::first()->value('semester2');
-                $endSemester   = Master_academic::first()->value('end_semester2');
+                $startSemester = Master_academic::where('is_use', true)->value('semester2');
+                $endSemester   = Master_academic::where('is_use', true)->value('end_semester2');
             }
+
+            // dd($startSemester);
 
             $data = [
                 'student'     => $student,
