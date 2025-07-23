@@ -487,6 +487,8 @@ class CourseController extends Controller
                 $weekNumber++;
             }
 
+            // dd($course);
+
             // Ambil data grade_subject berdasarkan subject dan grade
             $gradeSubject = Grade_subject::where('subject_id', $id)
                 ->where('grade_id', $grade_id)
@@ -1062,7 +1064,6 @@ class CourseController extends Controller
             $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
                 'description' => 'nullable|string',
-                'file' => 'nullable|file|max:10240',
             ]);
 
             $filePath = null;
@@ -1090,7 +1091,7 @@ class CourseController extends Controller
                 'grade_subject_id' => $gradeSubject->id,
                 'semester' => session('semester'),
                 'academic_year' => session('academic_year'),
-            ]);
+            ]); 
             $activity->save();
 
             session()->flash('success_add_activity');
@@ -1438,6 +1439,7 @@ class CourseController extends Controller
             }
             
             $data = [
+                'title' => $request->title,
                 'file_path' => $filePath,
                 'embed' => $embed,
             ];
@@ -1473,9 +1475,13 @@ class CourseController extends Controller
 
 
             $data = Ebook::where('id', $id)->first();
-            // dd($data);
-
-            return view('components.course.view-ebook', ['data'=> $data]);
+            
+            if($data == null){
+                return view('error-403');
+            }
+            else{
+                return view('components.course.view-ebook', ['data'=> $data]);
+            }
         } catch (Exception $err) {
             dd($err);
         }
