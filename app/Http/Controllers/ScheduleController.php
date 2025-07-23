@@ -49,8 +49,8 @@ class ScheduleController extends Controller
          $typeFinalExam = Type_schedule::where('name', '=', 'final exam')->value('id');
 
          $masterAcademic = Master_academic::where('is_use', true)->first();
-         $semester = Master_academic::first()->value('now_semester');
-         $academic_year = Master_academic::first()->value('academic_year');
+         $semester = Master_academic::where('is_use', true)->value('now_semester');
+         $academic_year = Master_academic::where('is_use', true)->value('academic_year');
 
         $substitutes = Subtitute_teacher::whereDate('date', Carbon::today())
          ->join('teachers', 'subtitute_teachers.teacher_id', '=', 'teachers.id')
@@ -459,12 +459,12 @@ class ScheduleController extends Controller
          $academic_year = session('academic_year');
 
          if ($semester === 1) {
-            $startSemester = Master_academic::first()->value('semester1');
-            $endSemester = Master_academic::first()->value('end_semester1');
+            $startSemester = Master_academic::where('is_use', true)->value('semester1');
+            $endSemester = Master_academic::where('is_use', true)->value('end_semester1');
          }
          elseif ($semester === 2) {
-            $startSemester = Master_academic::first()->value('semester2');
-            $endSemester = Master_academic::first()->value('end_semester2');
+            $startSemester = Master_academic::where('is_use', true)->value('semester2');
+            $endSemester = Master_academic::where('is_use', true)->value('end_semester2');
          }
          
          $typeSchedule = Type_schedule::where('name','=', 'lesson')->value('id');
@@ -548,12 +548,12 @@ class ScheduleController extends Controller
          $academic_year = session('academic_year');
 
          if ($semester === 1) {
-            $startSemester = Master_academic::first()->value('semester1');
-            $endSemester = Master_academic::first()->value('end_semester1');
+            $startSemester = Master_academic::where('is_use', true)->value('semester1');
+            $endSemester = Master_academic::where('is_use', true)->value('end_semester1');
          }
          elseif ($semester === 2) {
-            $startSemester = Master_academic::first()->value('semester2');
-            $endSemester = Master_academic::first()->value('end_semester2');
+            $startSemester = Master_academic::where('is_use', true)->value('semester2');
+            $endSemester = Master_academic::where('is_use', true)->value('end_semester2');
          }
 
          $typeSchedule = Type_schedule::where('name', '=', 'mid exam')->value('id');
@@ -616,12 +616,12 @@ class ScheduleController extends Controller
          $academic_year = session('academic_year');
          
          if ($semester === 1) {
-            $startSemester = Master_academic::first()->value('semester1');
-            $endSemester = Master_academic::first()->value('end_semester1');
+            $startSemester = Master_academic::where('is_use', true)->value('semester1');
+            $endSemester = Master_academic::where('is_use', true)->value('end_semester1');
          }
          elseif ($semester === 2) {
-            $startSemester = Master_academic::first()->value('semester2');
-            $endSemester = Master_academic::first()->value('end_semester2');
+            $startSemester = Master_academic::where('is_use', true)->value('semester2');
+            $endSemester = Master_academic::where('is_use', true)->value('end_semester2');
          }
 
          $typeSchedule = Type_schedule::where('name', '=', 'final exam')->value('id');
@@ -772,7 +772,7 @@ class ScheduleController extends Controller
             ->where('academic_year', $academic_year)
             ->get();
             
-         $semester = Master_academic::first()->value('now_semester');
+         $semester = Master_academic::where('is_use', true)->value('now_semester');
 
          $date = Schedule::where('type_schedule_id', $typeSchedule)
             ->where('semester', $semester)
@@ -1794,12 +1794,12 @@ class ScheduleController extends Controller
          $semester      = session('semester');
          
          if ($semester === 1) {
-            $startSemester = Master_academic::first()->value('semester1');
-            $endSemester = Master_academic::first()->value('end_semester1');
+            $startSemester = Master_academic::where('is_use', true)->value('semester1');
+            $endSemester = Master_academic::where('is_use', true)->value('end_semester1');
          }
          elseif ($semester === 2) {
-            $startSemester = Master_academic::first()->value('semester2');
-            $endSemester = Master_academic::first()->value('end_semester2');
+            $startSemester = Master_academic::where('is_use', true)->value('semester2');
+            $endSemester = Master_academic::where('is_use', true)->value('end_semester2');
          }
 
 
@@ -1885,16 +1885,16 @@ class ScheduleController extends Controller
          $getIdTeacher = Teacher::where('user_id', session('id_user'))->value('id');
          $getGradeId = Teacher_grade::where('teacher_id', $getIdTeacher)->value('grade_id');
 
-         $semester = Master_academic::first()->value('now_semester');
-         $academic_year = Master_academic::first()->value('academic_year');
+         $semester = Master_academic::where('is_use', true)->value('now_semester');
+         $academic_year = Master_academic::where('is_use', true)->value('academic_year');
 
          if ($semester === 1) {
-            $startSemester = Master_academic::first()->value('semester1');
-            $endSemester = Master_academic::first()->value('end_semester1');
+            $startSemester = Master_academic::where('is_use', true)->value('semester1');
+            $endSemester = Master_academic::where('is_use', true)->value('end_semester1');
          }
          elseif ($semester === 2) {
-            $startSemester = Master_academic::first()->value('semester2');
-            $endSemester = Master_academic::first()->value('end_semester2');
+            $startSemester = Master_academic::where('is_use', true)->value('semester2');
+            $endSemester = Master_academic::where('is_use', true)->value('end_semester2');
          }
          $lesson = Type_schedule::where('name', '=', 'Lesson')->value('id');
 
@@ -1993,16 +1993,16 @@ class ScheduleController extends Controller
          $getIdTeacher = Teacher::where('user_id', session('id_user'))->value('id');
          $getGradeId = Teacher_grade::where('teacher_id', $getIdTeacher)->value('grade_id');
 
-         $semester = Master_academic::first()->value('now_semester');
-         $academic_year = Master_academic::first()->value('academic_year');
+         $semester = Master_academic::where('is_use', true)->value('now_semester');
+         $academic_year = Master_academic::where('is_use', true)->value('academic_year');
 
          if ($semester === 1) {
-            $startSemester = Master_academic::first()->value('semester1');
-            $endSemester = Master_academic::first()->value('end_semester1');
+            $startSemester = Master_academic::where('is_use', true)->value('semester1');
+            $endSemester = Master_academic::where('is_use', true)->value('end_semester1');
          }
          elseif ($semester === 2) {
-            $startSemester = Master_academic::first()->value('semester2');
-            $endSemester = Master_academic::first()->value('end_semester2');
+            $startSemester = Master_academic::where('is_use', true)->value('semester2');
+            $endSemester = Master_academic::where('is_use', true)->value('end_semester2');
          }
 
          $midExam = Type_schedule::where('name', '=', 'Mid Exam')->value('id');
@@ -2448,16 +2448,16 @@ class ScheduleController extends Controller
             $getIdTeacher = Teacher_grade::where('grade_id', $id)->value('teacher_id');
             $getGradeId = $id;
 
-            $semester = Master_academic::first()->value('now_semester');
-            $academic_year = Master_academic::first()->value('academic_year');
+            $semester = Master_academic::where('is_use', true)->value('now_semester');
+            $academic_year = Master_academic::where('is_use', true)->value('academic_year');
             
             if ($semester === 1) {
-               $startSemester = Master_academic::first()->value('semester1');
-               $endSemester = Master_academic::first()->value('end_semester1');
+               $startSemester = Master_academic::where('is_use', true)->value('semester1');
+               $endSemester = Master_academic::where('is_use', true)->value('end_semester1');
             }
             elseif ($semester === 2) {
-               $startSemester = Master_academic::first()->value('semester2');
-               $endSemester = Master_academic::first()->value('end_semester2');
+               $startSemester = Master_academic::where('is_use', true)->value('semester2');
+               $endSemester = Master_academic::where('is_use', true)->value('end_semester2');
             }
 
             $lesson = Type_schedule::where('name', '=', 'Lesson')->value('id');
