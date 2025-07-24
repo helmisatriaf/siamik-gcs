@@ -1009,7 +1009,6 @@ class CourseController extends Controller
             $validatedData = $request->validate([
                 'title' => 'required|string|max:255',
                 'description' => 'nullable|string',
-                'file' => 'nullable|file|max:10240', // 10MB max
                 'open_time' => 'nullable|date',
                 'due_time' => 'nullable|date|after:open_time'
             ]);
