@@ -239,12 +239,18 @@
                                                             @else
                                                                 ❌
                                                             @endif
-                                                        @else
+                                                        @elseif ($el->hasFile == true)   
                                                             @if ($el['exam'][0]['score'][0]->student_upload)
                                                                 ✔
                                                             @else
                                                                 ❌
-                                                            @endif
+                                                            @endif    
+                                                        @else
+                                                            {{-- @if ($el['exam'][0]['score'][0]->student_upload)
+                                                                ✔
+                                                            @else
+                                                                ❌
+                                                            @endif --}}
                                                         @endif
                                                     </span>
                                                         @if ($el->is_active)
