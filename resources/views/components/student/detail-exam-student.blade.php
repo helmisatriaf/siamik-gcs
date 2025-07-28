@@ -81,9 +81,39 @@
                     <p class="text-bold">Question :</p> 
                     {{-- <div id="pdf-container" style="width: 100%; max-width: 100vw; overflow-x: auto;">
                     </div> --}}
-                    <div class="col-12">
-                      <iframe src="{{ asset('storage/file/assessment/'.$data->file_name) }}#toolbar=0 " width="100%" height="500px"></iframe>
+                    <div class="col-12 col-md-6">
+                      <div class="info-box small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="border-radius: 12px;background-color: #ffcc00;">
+                          <a 
+                              href="{{ asset('storage/file/assessment/'.$data->file_name) }}"  
+                              class="stretched-link d-flex flex-column text-center justify-content-center align-items-center">
+                          
+                              <!-- Ribbon -->
+                              <div class="ribbon-wrapper ribbon-lg">
+                                  <div class="ribbon bg-dark">
+                                    Assessment
+                                  </div>
+                              </div>
+                          
+                              <!-- Bagian Utama -->
+                              <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
+                                  <!-- Ikon -->
+                                  <div>
+                                      <img loading="lazy" src="{{ asset('images/greta-greti-baju-olga.png') }}" 
+                                        alt="avatar" class="profileImage img-fluid" 
+                                        style="width:85px; height: 60px; cursor: pointer;">
+                                  </div>
+                                  <!-- Nama Subject -->
+                                  <div class="inner">
+                                      <p class="info-box-text text-center text-white text-bold">See Question !</p>
+                                  </div>
+                              </div>
+                          </a>
+                      </div>       
                     </div>
+
+                    {{-- <div class="col-12">
+                      <iframe src="{{ asset('storage/file/assessment/'.$data->file_name) }}#toolbar=0" width="100%" height="500px"></iframe>
+                    </div> --}}
                    </div>
                 </div>  
               @else
@@ -190,13 +220,13 @@
               </p>
               <p class="">Status
                 <b class="d-block">
-                  @if($data->is_active)
-                    <span class="badge badge-success">Ongoing</span>
-                    @if (\Carbon\Carbon::now()->gt($data->date_exam))
+                  @if ($status == true)
+                      <span class="badge badge-light text-sm">Completed</span>
+                    {{-- @if (\Carbon\Carbon::now()->gt($data->date_exam))
                       <span class="badge badge-warning">Today</span>
-                    @endif
-                  @else
-                    <span class="badge badge-light text-sm">Completed</span>
+                    @endif --}}
+                  @else 
+                    <span class="badge badge-success">Ongoing</span>
                   @endif
                 </b>
               </p>
@@ -211,7 +241,7 @@
                 <a href="{{ route('download.watermark', ['fileName' => $data->file_name]) }}" 
                   class="btn-link text-secondary d-block" 
                   title="Download file dengan watermark">
-                  <i class="far fa-fw fa-file-pdf"></i> {{ $data->file_name }}
+                  <i class="far fa-fw fa-file-pdf"></i> Click this to download assessment file
                 </a>
               </p>
               @endif
@@ -222,18 +252,17 @@
               </p>
             </div>
 
-
             @if (session('role') == 'student')
               @if ($data->hasFile == true)
-                @if (date('Y-m-d') > $data->date_exam)
+                {{-- @if (date('Y-m-d') > $data->date_exam) --}}
                   {{-- <p class="text-danger">Oops.. deadline has passed</p> --}}
-                @else
+                {{-- @else --}}
                   @if($status == false)
                     <form action="{{route('upload.answer')}}" method="POST" enctype="multipart/form-data">
                       @csrf
                       <div class="form-group row text-muted" id="file-form">
                         <label for="upload_file">Upload Your Answer File (Maks 5MB) <span style="color: red">*</span></label>
-                        <input type="file" id="upload_file" name="upload_file" class="" accept=".pdf" required>
+                        <input type="file" name="upload_file" accept=".pdf, .png, .jpg, .jpeg, .heic" required>
                         <div class="text-danger mt-2" id="fileError" style="display: none;"></div>
                       </div>      
                       <div class="form-group row">
@@ -241,7 +270,7 @@
                       </div>
                     </form>
                   @endif
-                @endif
+                {{-- @endif --}}
               @endif
             @endif
 
@@ -270,7 +299,8 @@
                     </div>
                 
                     @if (session('role') !== 'parent')
-                      @if ($data->is_active)
+                      {{-- @if ($data->is_active) --}}
+                      @if($getStatus->score == 0)
                         <div class="mt-1">
                           <a href="#" 
                             class="btn-link text-danger d-block text-xs hover:cursor-pointer" 
@@ -280,6 +310,7 @@
                           </a>
                         </div>              
                       @endif
+                      {{-- @endif --}}
                     @endif
                   </div>                
                 </div>
@@ -310,7 +341,7 @@
                 @csrf
                 <label for="upload_file">Upload Your Answer File (Maks 5MB) <span style="color: red">*</span></label>
                 <div class="form-group row text-muted" id="file-form">
-                  <input type="file" id="upload_file" name="upload_file" class="" accept=".pdf" required>
+                  <input type="file" name="upload_file" accept=".pdf, .png, .jpg, .jpeg, .heic" required>
                   <div class="text-danger mt-2" id="fileError" style="display: none;"></div>
                 </div>      
               </div>
@@ -335,8 +366,8 @@
       const allowedExtensions = /(\.pdf)$/i;
       const fileExtension = file.name.split('.').pop();
 
-      if(fileExtension !== 'pdf') {
-        fileError.textContent = "Format file must be pdf !";
+      if(fileExtension !== 'pdf' || fileExtension !== 'png' || fileExtension !== 'jpg' || fileExtension !== 'jpeg' || fileExtension !== 'heic') {
+        fileError.textContent = "Oops format file doesnt support!";
         fileError.style.display = "block";
         this.value = "";
         submitBtn.disabled = true;

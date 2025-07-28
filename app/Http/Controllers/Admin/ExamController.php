@@ -631,9 +631,29 @@ class ExamController extends Controller
                $scores = Score::create($score);
             }
          } else {
+            // belum
+            if (strtolower($subject) == "chinese") {
+               $studentIds = Student::where('grade_id', $request->grade_id)->pluck('id')->toArray();
+               $haveChineseHigher = Chinese_higher::whereIn('student_id', $studentIds)
+                  ->pluck('student_id')
+                  ->toArray();
+
+                $getStudentId = Student::where("grade_id", $request->grade_id)
+               ->where('is_active', true)
+               ->pluck('id')
+               ->toArray();
+
+               $getStudentId = array_values(array_diff($getStudentId, $haveChineseHigher));
+            }
+
             $getStudentId = Student::where("grade_id", $request->grade_id)
                ->where('is_active', true)
-               ->pluck('id')->toArray();
+               ->pluck('id')
+               ->toArray();
+
+           
+
+            // dd($getStudentId);
 
             for ($i = 0; $i < sizeof($getStudentId); $i++) {
                $postStudentExam = [
@@ -824,6 +844,7 @@ class ExamController extends Controller
                ->where('student_id', $student)
                ->first();
 
+               // dd($getStatus);
             $status = $getStatus->hasFile == 1 ? true : false;
             $profile = Student::where('user_id', session('id_user'))->value('profil');
             $statusQuestion = QuestionStatus::where('exam_id', $id)
@@ -831,6 +852,7 @@ class ExamController extends Controller
                ->where('semester', session('semester'))
                ->where('academic_year', session('academic_year'))
                ->first();
+
          } elseif (session('role') == 'parent') {
             $getStatus = Score::where('exam_id', $id)
                ->where('student_id', session('studentId'))
@@ -1437,32 +1459,44 @@ class ExamController extends Controller
 
    public function uploadAnswer(Request $request)
    {
-      $id   = session('exam_id');
+      $id = session('exam_id');
       $file = $request->file('upload_file');
-      $exam = Exam::where('id', $id)->first();
+      $exam = Exam::findOrFail($id);
       $subjectId = Subject_exam::where('exam_id', $id)->value('subject_id');
       $subject = Subject::where('id', $subjectId)->value('name_subject');
       $gradeId = Grade_exam::where('exam_id', $id)->value('grade_id');
-      $grade   = Grade::where('id', $gradeId)->selectRaw("CONCAT(name, '-', class) as grade_name")->first();
-      $student  = Student::where('user_id', session('id_user'))->first();
+      $grade = Grade::where('id', $gradeId)->selectRaw("CONCAT(name, '-', class) as grade_name")->first();
+      $student = Student::where('user_id', session('id_user'))->first();
       $time = session('academic_year') . '_' . session('semester');
-      $fileName = 'Answer_' . ucwords(strtolower($exam->name_exam)) . '_' . $subject . '_' . $grade->grade_name . '_' . ucwords(strtolower($student->name) . '_' . $time . '.pdf');
 
-      // Simpan file sementara
+      // Ambil ekstensi asli
+      $originalExtension = strtolower($file->getClientOriginalExtension());
+
+      // Nama file disesuaikan dengan ekstensi asli
+      $fileName = 'Answer_' . ucwords(strtolower($exam->name_exam)) . '_' . $subject . '_' .
+         $grade->grade_name . '_' . ucwords(strtolower($student->name)) . '_' . $time . '.' . $originalExtension;
+
+      // Simpan sementara
       $tempPath = $file->storeAs('temp', $fileName);
       $source = storage_path("app/" . $tempPath);
       $destination = storage_path("app/public/file/answers/" . $fileName);
 
-      // Kompres file PDF (jika gagal, copy saja)
-      $compressed = $this->compressPdf($source, $destination);
-      if (!$compressed) {
+      // Tangani berdasarkan jenis file
+      // dd($originalExtension);
+      if ($originalExtension === 'pdf') {
+         $flattened = $this->flattenPdf($source, $destination);
+         if (!$flattened) {
+               \Illuminate\Support\Facades\File::copy($source, $destination);
+         }
+      } else {
+         // Jika gambar, langsung salin saja
          \Illuminate\Support\Facades\File::copy($source, $destination);
       }
 
-      // Hapus file sementara
+      // Hapus file temp
       Storage::delete($tempPath);
 
-      // Update database
+      // Simpan ke DB
       $data = [
          'hasFile' => true,
          'file_name' => $fileName,
@@ -1477,6 +1511,20 @@ class ExamController extends Controller
       session()->flash('after_upload_answer');
       return redirect()->back();
    }
+
+
+   private function flattenPdf($source, $destination)
+   {
+      $gs = '/usr/bin/gs'; // atau 'gs' jika global path
+      $cmd = "$gs -o " . escapeshellarg($destination) .
+         " -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -dNOPAUSE -dBATCH -dQUIET " .
+         "-dDetectDuplicateImages=true -dCompressFonts=true -dFlattenAllForms=true " .
+         escapeshellarg($source);
+
+      exec($cmd, $output, $return_var);
+      return $return_var === 0;
+   }
+
 
 
    /**

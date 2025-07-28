@@ -642,8 +642,6 @@
                                                             'exams.is_active',
                                                         )
                                                         ->get();
-
-                                                    
                         
                                                     foreach ($assessments as $assessment) {
                                                         if(session('role') == 'student'){
@@ -931,7 +929,7 @@
                                                     Status :
                                                     @if ($status)
                                                         Already submit answer <br>
-                                                        <i class="fas fa-file ml-1"></i> {{ $info->file_name }}
+                                                        <i class="fas fa-file ml-1"></i> {{ $info }}
                                                     @else
                                                         <span class="text-danger">
                                                            {{$status}}

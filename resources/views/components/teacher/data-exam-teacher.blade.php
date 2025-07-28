@@ -207,14 +207,14 @@
                                 <i class="fas fa-eye mr-1"></i>View
                             </a>
                         </div>
-                        @if($el->is_active)
+                        {{-- @if($el->is_active) --}}
                         <div class="p-0">
                             <a class="btn btn-warning btn-app text-sm"
                                 href="{{ url('teacher/dashboard/exam') . '/edit/' . $el->id }}">
                                 <i class="fas fa-pencil-alt mr-1"></i> Edit
                             </a>
                         </div>
-                        @endif
+                        {{-- @endif --}}
                         <div class="p-0">
                             <a class="btn btn-info btn-app text-sm"
                                 href="{{ url('teacher/dashboard/exam') . '/score/' . $el->id }}" style="z-index: 1;">
