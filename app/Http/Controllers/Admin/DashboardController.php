@@ -515,7 +515,7 @@ class DashboardController extends Controller
 
                if($gradeIdStudent >= 11){
                   $dataStudent  = Grade::with(['subject' => function ($query) use($cek, $chinese){
-                     $query->whereNotIn('subjects.id', [34, 35, 36, 37])
+                  $query->whereNotIn('subjects.id', [34, 35, 36, 37])
                      ->where(function ($query) use ($chinese) {
                         $query->whereNotIn('subjects.id', [38, 39])
                         ->orWhere('subjects.id', $chinese);
@@ -526,9 +526,9 @@ class DashboardController extends Controller
                      $query->where('is_active', true)
                         ->orderBy('name', 'asc');
                   }])->where('id', $gradeIdStudent)->first();
-   
-                  $dataExam  = Grade_exam::with(['exam.score' => function($query) use($id){
-                        $query->where('student_id', $id);
+
+                  $dataExam = Grade_exam::with(['exam.score' => function($query) use($setStudentFirst){
+                        $query->where('student_id', $setStudentFirst);
                      }])
                      ->where(function($query){
                      $query->where('exams.open_date', '<=', now())
@@ -553,9 +553,7 @@ class DashboardController extends Controller
                      })
                      ->orderByRaw('is_active = 1 ASC, date_exam DESC')
                      ->get();
-   
-                  // dd($dataExam);
-   
+
                   foreach ($dataExam as $ed ) {
                      $ed->subject = Subject_exam::join('subjects', 'subjects.id', '=', 'subject_exams.subject_id')
                         ->where('exam_id', $ed->id)
@@ -638,6 +636,8 @@ class DashboardController extends Controller
                'paymentHistory' => $paymentHistory,
                'events' => $events,
             ];
+
+            // dd($data['exam']);
 
             return view('components.dashboard-parent')->with('data', $data);
          }

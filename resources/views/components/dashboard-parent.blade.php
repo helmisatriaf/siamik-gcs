@@ -376,32 +376,19 @@
                       </div>
                       <!-- todo text -->
                       <span class="text text-sm" class="hover:cursor-pointer">( {{$el->type_exam_name}} ) ({{ $el->subject }}) {{$el->name_exam}} </span>
-                      {{-- @php
-                        dd($el['exam'][0]);
-                      @endphp --}}
                       <span class="badge">
-                           @if ($el->model == 'mce' || $el->model == 'mc' || $el->model ==  'essay')
+                          @if ($el->model == 'mce' || $el->model == 'mc' || $el->model ==  'essay')
                               @if ($el['exam'][0]['score'][0]->student_status)
-                                ✔
-                              @else
-                                ❌
-                              @endif
-                          @elseif ($el->hasFile == true)   
-                              @if (empty($el['exam'][0]['score']))
-                                @if ($el['exam'][0]['score'][0]->student_upload)
                                   ✔
-                                @else
-                                  ❌
-                                @endif    
                               @else
-                                ❌
+                                  ❌
                               @endif
                           @else
-                              {{-- @if ($el['exam'][0]['score'][0]->student_upload)
+                              @if ($el['exam'][0]['score'][0]->student_upload)
                                   ✔
                               @else
                                   ❌
-                              @endif --}}
+                              @endif
                           @endif
                       </span>
                       
