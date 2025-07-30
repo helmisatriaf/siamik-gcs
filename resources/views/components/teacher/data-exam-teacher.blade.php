@@ -172,7 +172,7 @@
                                     @break
                                 @endswitch
                                 
-                                <i class="fas fa-book"></i> <span class="text-sm text-primary">{{ $el->open_date ? \Carbon\Carbon::parse($el->open_date)->translatedFormat('l, d F Y') : '-' }}</span><br>
+                                <i class="fas fa-book"></i> <span class="text-sm text-primary">{{ $el->open_date ? 'Acces By Student in ' .\Carbon\Carbon::parse($el->open_date)->translatedFormat('l, d F Y')  : '-' }}</span><br>
                                 <i class="fas fa-clock"></i> 
                                 @php
                                     $currentDate = \Carbon\Carbon::now()->startOfDay();

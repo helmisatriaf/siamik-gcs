@@ -1508,7 +1508,12 @@ class ExamController extends Controller
          ->where('student_id', $student->id)
          ->update($data);
 
-      session()->flash('after_upload_answer');
+      if($exam->date_exam < now()){
+         session()->flash('late_upload_answer');
+      }else{
+         session()->flash('after_upload_answer');
+      }
+      
       return redirect()->back();
    }
 

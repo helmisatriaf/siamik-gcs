@@ -48,26 +48,26 @@
           <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
             <div class="row">
               <div class="col-12 col-sm-4">
-                <div class="info-box bg-light" style="border-radius: 12px;">
+                <div class="info-box d-flex justify-content-center align-items-center" style="border-radius: 12px;background-color: #fff3c0;">
+                  <p class="text-center text-black font-weight-bold mb-0">
+                    {{ ucwords(strtolower($data->name_exam)) }}
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-4">
+                <div class="info-box" style="border-radius: 12px;background-color: #fff3c0;">
                   <div class="info-box-content">
-                    <span class="info-box-text text-center text-black text-bold">{{ucwords(strtolower($data->name_exam))}}</span>
-                    {{-- <span class="info-box-number text-center text-muted mb-0">2300</span> --}}
+                    <span class="info-box-text text-center text-black text-bold">{{$data->type_exam}}</span>
+                    <span class="info-box-number text-center text-muted mb-0">{{$data->subject_name}}</span>
                   </div>
                 </div>
               </div>
               <div class="col-12 col-sm-4">
-                <div class="info-box bg-light" style="border-radius: 12px;">
+                <div class="info-box" style="border-radius: 12px;background-color: #fff3c0;">
                   <div class="info-box-content">
-                    <span class="info-box-text text-center text-black text-bold">{{$data->type_exam}} - {{$data->subject_name}}</span>
-                    {{-- <span class="info-box-number text-center text-muted mb-0">2000</span> --}}
-                  </div>
-                </div>
-              </div>
-              <div class="col-12 col-sm-4">
-                <div class="info-box bg-light" style="border-radius: 12px;">
-                  <div class="info-box-content">
-                    <span class="info-box-text text-center text-black text-bold">Deadline {{ \Carbon\Carbon::parse($data->date_exam)->translatedFormat('d F Y') }} </span>
-                    {{-- <span class="info-box-number text-center text-muted mb-0">20</span> --}}
+                    <span class="info-box-text text-center text-black text-bold">Deadline</span>
+                    <span class="info-box-number text-center text-muted mb-0">{{ \Carbon\Carbon::parse($data->date_exam)->translatedFormat('d F Y') }} </span>
                   </div>
                 </div>
               </div>
@@ -81,16 +81,16 @@
                     <p class="text-bold">Question :</p> 
                     {{-- <div id="pdf-container" style="width: 100%; max-width: 100vw; overflow-x: auto;">
                     </div> --}}
-                    <div class="col-12 col-md-6">
-                      <div class="info-box small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="border-radius: 12px;background-color: #ffcc00;">
+                    <div class="col-12 col-md-4">
+                      <div class="info-box bg-danger   small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="border-radius: 12px;">
                           <a 
                               href="{{ asset('storage/file/assessment/'.$data->file_name) }}"  
                               class="stretched-link d-flex flex-column text-center justify-content-center align-items-center">
                           
                               <!-- Ribbon -->
-                              <div class="ribbon-wrapper ribbon-lg">
+                              <div class="ribbon-wrapper ribbon-sm">
                                   <div class="ribbon bg-dark">
-                                    Assessment
+                                    Question
                                   </div>
                               </div>
                           
@@ -124,14 +124,14 @@
                   @if ($statusQuestion !== null)
                     @if ($data->model !== null)
                       <div class="col-12 col-md-4">
-                          <div class="info-box small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="border-radius: 12px;background-color: #ffcc00;">
+                          <div class="info-box bg-danger small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="border-radius: 12px;">
                               <a 
                                   href="#"
                                   id="detail-workplace"
                                   class="stretched-link d-flex flex-column text-center justify-content-center align-items-center">
                               
                                   <!-- Ribbon -->
-                                  <div class="ribbon-wrapper ribbon-lg">
+                                  <div class="ribbon-wrapper ribbon-sm">
                                       <div class="ribbon bg-dark">
                                         CBT
                                       </div>
@@ -170,7 +170,7 @@
                       </div>
                     @endif
                   @else 
-                    <div class="col-12 col-md-4">
+                    <div class="col-12 col-md-6">
                       <div class="info-box small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="border-radius: 12px;background-color: #ffcc00;">
                           <a 
                               href="#"
@@ -218,16 +218,36 @@
               <p class="">Grade
                 <b class="d-block">{{$data->grade_name}} - {{$data->grade_class}}</b>
               </p>
-              <p class="">Status
+              <p class="">Status Activity
                 <b class="d-block">
-                  @if ($status == true)
-                      <span class="badge badge-light text-sm">Completed</span>
-                    {{-- @if (\Carbon\Carbon::now()->gt($data->date_exam))
-                      <span class="badge badge-warning">Today</span>
-                    @endif --}}
-                  @else 
-                    <span class="badge badge-success">Ongoing</span>
+                  {{-- STATUS PENGERJAAN CBT SISWA --}}
+                  @if($data->model !== null)
+                    @if ($statusQuestion !== null)
+                      @if ($data->model !== null)
+                        <span class="badge badge-light text-sm">Completed</span>
+                      @else
+                      <span class="badge badge-secondary">You haven't completed this assessment</span>
+                      @endif
+                    @endif
                   @endif
+                      
+                  {{-- STATUS PENGERJAAN UPLOAD FILE SISWA --}}
+                  @if ($data->hasFile == true)
+                    @if ($status == true)
+                      <span class="badge badge-light text-sm">Completed</span>
+                    @else
+                      <span class="badge badge-secondary">You haven't completed this assessment</span>
+                    @endif
+                  @endif
+                  
+                    {{-- @if ($status == true)
+                      <span class="badge badge-light text-sm">Completed</span>
+                    @if (\Carbon\Carbon::now()->gt($data->date_exam))
+                      <span class="badge badge-warning">Today</span>
+                    @endif
+                  @else 
+                    <span class="badge badge-secondary">You haven't completed this assessment</span>
+                  @endif --}}
                 </b>
               </p>
               @if ($data->hasFile == true)
@@ -241,7 +261,7 @@
                 <a href="{{ route('download.watermark', ['fileName' => $data->file_name]) }}" 
                   class="btn-link text-secondary d-block" 
                   title="Download file dengan watermark">
-                  <i class="far fa-fw fa-file-pdf"></i> Click this to download assessment file
+                  <i class="far fa-fw fa-file-pdf text-decoration-underline"></i> Click this to download assessment file
                 </a>
               </p>
               @endif
@@ -278,7 +298,11 @@
             @if ($data->hasFile == true)
               @if ($status == true)
                 <div class="post">
-                  <p>Recent Activity</p>
+                  <p>Recent Activity
+                    @if ($getStatus->desc_late)
+                      <span class="badge badge-warning">Late</span>
+                    @endif
+                  </p>
                   <div class="user-block">
                     <img class="img-circle img-bordered-sm" src="{{asset('storage/file/profile/'. $profile)}}" alt="user image">
                     <span class="username">
@@ -289,7 +313,7 @@
                   
                   <div class="col d-flex flex-column align-items-start text-left">
                     <div>
-                      <a href="{{ asset('storage/file/answers/'.$getStatus->file_name) }}"  
+                     <a href="{{ asset('storage/file/answers/'.$getStatus->file_name) }}"  
                         class="btn-link text-secondary d-block text-xs" 
                         target="_blank" 
                         title="See Your Answer"
@@ -410,7 +434,7 @@
   </script>
 @endif
 
-@if (session('role') == 'student' || session('role') == 'parent')
+{{-- @if (session('role') == 'student' || session('role') == 'parent')
   @if($data->hasFile == true)
     <script>
       const url = "{{ asset('storage/file/assessment/'.$data->file_name) }}";
@@ -458,7 +482,7 @@
       });
     </script>
   @endif
-@endif
+@endif --}}
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -532,6 +556,82 @@
   });
 </script>
 
+@if ($dateExam < $data->created_at)
+  @if ($getStatus->desc_late == NULL)
+    <script>
+      Swal.fire({
+        title: 'Keterangan Terlambat',
+        input: 'text',
+        inputAttributes: {
+          maxlength: 100
+        },
+        customClass: {
+          popup: 'custom-swal-style'
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: true,
+        showCancelButton: false,
+        confirmButtonText: 'Kirim',
+        inputValidator: (value) => {
+          if (!value) {
+            return 'Keterangan wajib diisi!';
+          }
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const keterangan = result.value;
+          const url = "{{ route('action.desc.late.answer.student') }}";
+
+          $.ajax({
+            url: url,
+            method: 'POST',
+            data: {
+              id: {{$getStatus->id}},
+              desc_late: keterangan,
+              _token: '{{ csrf_token() }}',
+            },
+            success: function(response) {
+              if (response.success) {
+                Swal.fire({
+                  title: 'Successfully',
+                  text: 'Your description already save',
+                  timer: 2000,
+                  showConfirmButton: false,
+                  imageUrl: '/images/happy.png', 
+                  imageWidth: 100,
+                  imageHeight: 100,
+                  imageAlt: 'Custom image',
+                  customClass: {
+                    popup: 'custom-swal-style'
+                  },
+                });
+              } else {
+                Swal.fire({
+                  title: 'Oops',
+                  text: 'Error Sistem',
+                  timer: 3000,
+                  showConfirmButton: false,
+                  imageUrl: '/images/confuse.png', 
+                  imageWidth: 100,
+                  imageHeight: 100,
+                  imageAlt: 'Custom image',
+                  customClass: {
+                    popup: 'custom-swal-style'
+                  },
+                });
+              }
+            },
+            error: function(xhr, status, error) {
+              alert('Error: ' + error);
+            }
+          });
+        }
+      });
+    </script>
+  @endif
+@endif
+  
 @if(session('after_upload_answer')) 
   <script>
     Swal.fire({
@@ -547,7 +647,56 @@
         popup: 'custom-swal-style'
       },
     });
-</script>
+  </script>
+@endif
+
+@if(session('late_upload_answer')) 
+  <script>
+    Swal.fire({
+      title: 'Successfully',
+      text: 'Oops you submitted the task past the assessment deadline',
+      timer: 8000,
+      showConfirmButton: false,
+      imageUrl: '/images/confuse.png',
+      imageWidth: 100,
+      imageHeight: 100,
+      imageAlt: 'Custom image',
+      customClass: {
+        popup: 'custom-swal-style'
+      },
+      didClose: () => {
+        // Setelah Swal pertama tertutup, tampilkan Swal kedua (tidak bisa diclose)
+        Swal.fire({
+          title: 'Keterangan Terlambat',
+          input: 'text',
+          inputAttributes: {
+            maxlength: 100
+          },
+          customClass: {
+            popup: 'custom-swal-style'
+          },
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          allowEnterKey: true,
+          showCancelButton: false,
+          confirmButtonText: 'Kirim',
+          inputValidator: (value) => {
+            if (!value) {
+              return 'Keterangan wajib diisi!';
+            }
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const keterangan = result.value;
+            // Kirim ke server atau proses lebih lanjut
+            console.log('Keterangan:', keterangan);
+            // Contoh: kirim via AJAX atau simpan ke form
+
+          }
+        });
+      }
+    });
+  </script>
 @endif
 
 @if(session('error_handling_file_pdf')) 

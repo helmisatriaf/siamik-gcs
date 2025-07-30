@@ -116,6 +116,7 @@
                                     {{ ucwords($el->name_exam) }}<br>
                         
                                     <i class="fas fa-clock"></i> 
+                                    
                                     @php
                                         $currentDate = \Carbon\Carbon::now();
                                         $dateExam = \Carbon\Carbon::parse($el->date_exam);
@@ -131,10 +132,12 @@
                                     @else
                                         @if ($el->is_active)
                                             <span class="text-dark text-sm">
-                                                {{ $dateExam->format('l, d F Y') }}
+                                                Deadline : {{ $dateExam->format('l, d F Y') }}
                                             </span>  <br>
                                             @if ($daysRemaining == 0)
                                                 <span class="badge bg-danger">Today</span>
+                                            @elseif ($dateExam < now())
+                                                <span class="badge bg-danger">Past Deadline</span>
                                             @else
                                                 <span class="badge bg-warning">{{ $daysRemaining }} days again</span>
                                             @endif
