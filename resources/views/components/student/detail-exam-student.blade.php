@@ -555,12 +555,11 @@
     });
   });
 </script>
-
-@if ($dateExam < $data->created_at)
+@if (\Carbon\Carbon::parse($dateExam)->toDateString() < $data->created_at->toDateString())
   @if ($getStatus->desc_late == NULL)
     <script>
       Swal.fire({
-        title: 'Keterangan Terlambat',
+        title: 'Why late ???',
         input: 'text',
         inputAttributes: {
           maxlength: 100
@@ -575,7 +574,7 @@
         confirmButtonText: 'Kirim',
         inputValidator: (value) => {
           if (!value) {
-            return 'Keterangan wajib diisi!';
+            return 'You must fill the description!';
           }
         }
       }).then((result) => {

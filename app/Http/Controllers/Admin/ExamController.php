@@ -1508,7 +1508,7 @@ class ExamController extends Controller
          ->where('student_id', $student->id)
          ->update($data);
 
-      if($exam->date_exam < now()){
+      if($exam->date_exam < \Carbon\Carbon::parse(now())->toDateString()){
          session()->flash('late_upload_answer');
       }else{
          session()->flash('after_upload_answer');
