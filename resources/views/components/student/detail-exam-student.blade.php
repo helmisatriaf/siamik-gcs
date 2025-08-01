@@ -559,7 +559,7 @@
   @if ($getStatus->desc_late == NULL)
     <script>
       Swal.fire({
-        title: 'Why late ???',
+        title: 'why are you late in submitting ???',
         input: 'text',
         inputAttributes: {
           maxlength: 100
@@ -571,7 +571,7 @@
         allowEscapeKey: false,
         allowEnterKey: true,
         showCancelButton: false,
-        confirmButtonText: 'Kirim',
+        confirmButtonText: 'Send',
         inputValidator: (value) => {
           if (!value) {
             return 'You must fill the description!';
@@ -666,7 +666,7 @@
       didClose: () => {
         // Setelah Swal pertama tertutup, tampilkan Swal kedua (tidak bisa diclose)
         Swal.fire({
-          title: 'Keterangan Terlambat',
+          title: 'why are you late in submitting ??',
           input: 'text',
           inputAttributes: {
             maxlength: 100
@@ -678,7 +678,7 @@
           allowEscapeKey: false,
           allowEnterKey: true,
           showCancelButton: false,
-          confirmButtonText: 'Kirim',
+          confirmButtonText: 'Send',
           inputValidator: (value) => {
             if (!value) {
               return 'Keterangan wajib diisi!';

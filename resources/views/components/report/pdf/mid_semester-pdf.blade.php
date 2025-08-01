@@ -398,7 +398,7 @@ $grade_name = $student->grade_name;
                         <tr>
                             <td style="width:15%;text-align:center;"><b>Participation</b></td>
                             @foreach ($monthlyAct as $ma)
-                                <td style="text-align:center;"><b>{{$ma->name_activity}}</b></td>
+                                <td style="text-align:center;"><b>{{$ma->name}}</b></td>
                             @endforeach
                         </tr>
                         <tr>

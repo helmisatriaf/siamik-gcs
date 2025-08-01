@@ -323,44 +323,107 @@ class DashboardController extends Controller
                };
             }
             else{
-               $dataStudent  = Grade::with(['subject' => function ($query) use($cek){
-                  $query->whereNotIn('subjects.id', [34, 35, 36, 37]) // Eksklusi semua pelajaran agama
-                  ->orWhere('subjects.id', $cek)
-                  ->distinct()
-                  ->orderBy('name_subject', 'asc');
-               }, 'exam', 'teacher', 'student' => function ($query) {
-                  $query->where('is_active', true)
-                     ->orderBy('name', 'asc');
-               }])->where('id', $gradeIdStudent)->first();
+               if($chineseHigher){
+                  $chinese = 39;
+                  $dataStudent  = Grade::with(['subject' => function ($query) use($cek, $chinese){
+                     $query->whereNotIn('subjects.id', [34, 35, 36, 37]) // Eksklusi semua pelajaran agama
+                     ->where(function ($query) use ($chinese) {
+                        $query->whereNotIn('subjects.id', [1])
+                        ->orWhere('subjects.id', $chinese);
+                     })
+                     ->orWhere('subjects.id', $cek)
+                     ->distinct()
+                     ->orderBy('name_subject', 'asc');
+                  }, 'exam', 'teacher', 'student' => function ($query) {
+                     $query->where('is_active', true)
+                        ->orderBy('name', 'asc');
+                  }])->where('id', $gradeIdStudent)->first();
+               }
+               else{
+                  $dataStudent  = Grade::with(['subject' => function ($query) use($cek){
+                     $query->whereNotIn('subjects.id', [34, 35, 36, 37]) // Eksklusi semua pelajaran agama
+                     ->where(function ($query) {
+                        $query->whereNotIn('subjects.id', [39])
+                        ->orWhere('subjects.id', 1);
+                     })
+                     ->orWhere('subjects.id', $cek)
+                     ->distinct()
+                     ->orderBy('name_subject', 'asc');
+                  }, 'exam', 'teacher', 'student' => function ($query) {
+                     $query->where('is_active', true)
+                        ->orderBy('name', 'asc');
+                  }])->where('id', $gradeIdStudent)->first();
+               }
 
-               $dataExam  = Grade_exam::with(['exam.score' => function($query) use($id){
-                     $query->where('student_id', $id);
-                  }])
-                  ->where(function($query){
-                  $query->where('exams.open_date', '<=', now())
-                     ->orWhereNull('exams.open_date');
-                  })
-                  ->join('grades', 'grades.id', '=', 'grade_exams.grade_id')
-                  ->join('exams', 'exams.id', '=', 'grade_exams.exam_id')
-                  ->join('type_exams', 'type_exams.id', '=', 'exams.type_exam')
-                  ->join('subject_exams', 'subject_exams.exam_id', '=', 'exams.id')
-                  ->select('exams.*', 'type_exams.name as type_exam_name', 'grades.name as grade_name', 'grades.class as grade_class')
-                  ->where('grades.id', $gradeIdStudent)
-                  ->where('exams.semester', session('semester'))
-                  ->where('exams.academic_year', session('academic_year'))
-                  ->where('exams.is_active', true)
-                  ->where(function ($query) use ($cek) {
-                     $query->whereNotIn('subject_exams.subject_id', [34, 35, 36, 37]) // Eksklusi semua pelajaran agama
-                     ->orWhere('subject_exams.subject_id', $cek); // Masukkan hanya pelajaran agama sesuai agama siswa
-                  })  
-                  ->orderByRaw('is_active = 1 ASC, date_exam ASC')
-                  ->get();
-               
-               foreach ($dataExam as $ed ) {
-                  $ed->subject = Subject_exam::join('subjects', 'subjects.id', '=', 'subject_exams.subject_id')
-                     ->where('exam_id', $ed->id)
-                     ->value('name_subject');
-               };
+               if($chineseHigher == true){
+                  $chinese = 39;
+                  $dataExam  = Grade_exam::with(['exam.score' => function($query) use($id){
+                        $query->where('student_id', $id);
+                     }])
+                     ->where(function($query){
+                     $query->where('exams.open_date', '<=', now())
+                        ->orWhereNull('exams.open_date');
+                     })
+                     ->join('grades', 'grades.id', '=', 'grade_exams.grade_id')
+                     ->join('exams', 'exams.id', '=', 'grade_exams.exam_id')
+                     ->join('type_exams', 'type_exams.id', '=', 'exams.type_exam')
+                     ->join('subject_exams', 'subject_exams.exam_id', '=', 'exams.id')
+                     ->select('exams.*', 'type_exams.name as type_exam_name', 'grades.name as grade_name', 'grades.class as grade_class')
+                     ->where('grades.id', $gradeIdStudent)
+                     ->where('exams.semester', session('semester'))
+                     ->where('exams.academic_year', session('academic_year'))
+                     ->where('exams.is_active', true)
+                     ->where(function ($query) use ($cek) {
+                        $query->whereNotIn('subject_exams.subject_id', [34, 35, 36, 37]) // Eksklusi semua pelajaran agama
+                        ->orWhere('subject_exams.subject_id', $cek); // Masukkan hanya pelajaran agama sesuai agama siswa
+                     })  
+                     ->where(function ($query) use ($chinese) {
+                        $query->whereNotIn('subject_exams.subject_id', [1])
+                        ->orWhere('subject_exams.subject_id', $chinese);
+                     })
+                     ->orderByRaw('is_active = 1 ASC, date_exam ASC')
+                     ->get();
+                  
+                  foreach ($dataExam as $ed ) {
+                     $ed->subject = Subject_exam::join('subjects', 'subjects.id', '=', 'subject_exams.subject_id')
+                        ->where('exam_id', $ed->id)
+                        ->value('name_subject');
+                  };
+               }
+               else{
+                  $dataExam  = Grade_exam::with(['exam.score' => function($query) use($id){
+                        $query->where('student_id', $id);
+                     }])
+                     ->where(function($query){
+                     $query->where('exams.open_date', '<=', now())
+                        ->orWhereNull('exams.open_date');
+                     })
+                     ->join('grades', 'grades.id', '=', 'grade_exams.grade_id')
+                     ->join('exams', 'exams.id', '=', 'grade_exams.exam_id')
+                     ->join('type_exams', 'type_exams.id', '=', 'exams.type_exam')
+                     ->join('subject_exams', 'subject_exams.exam_id', '=', 'exams.id')
+                     ->select('exams.*', 'type_exams.name as type_exam_name', 'grades.name as grade_name', 'grades.class as grade_class')
+                     ->where('grades.id', $gradeIdStudent)
+                     ->where('exams.semester', session('semester'))
+                     ->where('exams.academic_year', session('academic_year'))
+                     ->where('exams.is_active', true)
+                     ->where(function ($query) use ($cek) {
+                        $query->whereNotIn('subject_exams.subject_id', [34, 35, 36, 37]) // Eksklusi semua pelajaran agama
+                        ->orWhere('subject_exams.subject_id', $cek); // Masukkan hanya pelajaran agama sesuai agama siswa
+                     })  
+                     ->where(function ($query) {
+                        $query->whereNotIn('subject_exams.subject_id', [38, 39])
+                        ->orWhere('subject_exams.subject_id', 1);
+                     })
+                     ->orderByRaw('is_active = 1 ASC, date_exam ASC')
+                     ->get();
+                  
+                  foreach ($dataExam as $ed ) {
+                     $ed->subject = Subject_exam::join('subjects', 'subjects.id', '=', 'subject_exams.subject_id')
+                        ->where('exam_id', $ed->id)
+                        ->value('name_subject');
+                  };
+               }
             }
 
             $academic_year = session('academic_year');
@@ -374,7 +437,7 @@ class DashboardController extends Controller
                ->orderBy('date', 'ASC')
                ->first();
 
-            // dd($events);
+            
 
 
             $data = [
@@ -391,6 +454,7 @@ class DashboardController extends Controller
                'events' => $events,
             ];
             
+            // dd($data['exam']);
 
             // dd($events);
 
@@ -513,22 +577,89 @@ class DashboardController extends Controller
                ->count();
 
 
-               if($gradeIdStudent >= 11){
+            if($gradeIdStudent >= 11){
+               $dataStudent  = Grade::with(['subject' => function ($query) use($cek, $chinese){
+               $query->whereNotIn('subjects.id', [34, 35, 36, 37])
+                  ->where(function ($query) use ($chinese) {
+                     $query->whereNotIn('subjects.id', [38, 39])
+                     ->orWhere('subjects.id', $chinese);
+                  })
+                  ->orWhere('subjects.id', $cek)
+                  ->orderBy('name_subject', 'asc');
+               }, 'exam', 'teacher', 'student' => function ($query) {
+                  $query->where('is_active', true)
+                     ->orderBy('name', 'asc');
+               }])->where('id', $gradeIdStudent)->first();
+
+               $dataExam = Grade_exam::with(['exam.score' => function($query) use($setStudentFirst){
+                     $query->where('student_id', $setStudentFirst);
+                  }])
+                  ->where(function($query){
+                  $query->where('exams.open_date', '<=', now())
+                     ->orWhereNull('exams.open_date');
+                  })
+                  ->join('grades', 'grades.id', '=', 'grade_exams.grade_id')
+                  ->join('exams', 'exams.id', '=', 'grade_exams.exam_id')
+                  ->join('type_exams', 'type_exams.id', '=', 'exams.type_exam')
+                  ->join('subject_exams', 'subject_exams.exam_id', '=', 'exams.id')
+                  ->select('exams.*', 'type_exams.name as type_exam_name', 'grades.name as grade_name', 'grades.class as grade_class')
+                  ->where('grades.id', $gradeIdStudent)
+                  ->where('exams.semester', session('semester'))
+                  ->where('exams.academic_year', session('academic_year'))
+                  ->where('exams.is_active', true)
+                  ->where(function ($query) use ($cek) {
+                     $query->whereNotIn('subject_exams.subject_id', [34, 35, 36, 37]) // Eksklusi semua pelajaran agama
+                     ->orWhere('subject_exams.subject_id', $cek); // Masukkan hanya pelajaran agama sesuai agama siswa
+                  })  
+                  ->where(function ($query) use ($chinese) {
+                     $query->whereNotIn('subject_exams.subject_id', [38, 39])
+                     ->orWhere('subject_exams.subject_id', $chinese);
+                  })
+                  ->orderByRaw('is_active = 1 ASC, date_exam DESC')
+                  ->get();
+
+               foreach ($dataExam as $ed ) {
+                  $ed->subject = Subject_exam::join('subjects', 'subjects.id', '=', 'subject_exams.subject_id')
+                     ->where('exam_id', $ed->id)
+                     ->value('name_subject');
+               };
+            }else{
+               if($chineseHigher){
+                  $chinese = 39;
                   $dataStudent  = Grade::with(['subject' => function ($query) use($cek, $chinese){
-                  $query->whereNotIn('subjects.id', [34, 35, 36, 37])
+                     $query->whereNotIn('subjects.id', [34, 35, 36, 37]) // Eksklusi semua pelajaran agama
                      ->where(function ($query) use ($chinese) {
-                        $query->whereNotIn('subjects.id', [38, 39])
+                        $query->whereNotIn('subjects.id', [1])
                         ->orWhere('subjects.id', $chinese);
                      })
                      ->orWhere('subjects.id', $cek)
+                     ->distinct()
                      ->orderBy('name_subject', 'asc');
                   }, 'exam', 'teacher', 'student' => function ($query) {
                      $query->where('is_active', true)
                         ->orderBy('name', 'asc');
                   }])->where('id', $gradeIdStudent)->first();
+               }
+               else{
+                  $dataStudent  = Grade::with(['subject' => function ($query) use($cek){
+                     $query->whereNotIn('subjects.id', [34, 35, 36, 37]) // Eksklusi semua pelajaran agama
+                     ->where(function ($query) {
+                        $query->whereNotIn('subjects.id', [39])
+                        ->orWhere('subjects.id', 1);
+                     })
+                     ->orWhere('subjects.id', $cek)
+                     ->distinct()
+                     ->orderBy('name_subject', 'asc');
+                  }, 'exam', 'teacher', 'student' => function ($query) {
+                     $query->where('is_active', true)
+                        ->orderBy('name', 'asc');
+                  }])->where('id', $gradeIdStudent)->first();
+               }
 
-                  $dataExam = Grade_exam::with(['exam.score' => function($query) use($setStudentFirst){
-                        $query->where('student_id', $setStudentFirst);
+               if($chineseHigher == true){
+                  $chinese = 39;
+                  $dataExam  = Grade_exam::with(['exam.score' => function($query) use($id){
+                        $query->where('student_id', $id);
                      }])
                      ->where(function($query){
                      $query->where('exams.open_date', '<=', now())
@@ -548,56 +679,53 @@ class DashboardController extends Controller
                         ->orWhere('subject_exams.subject_id', $cek); // Masukkan hanya pelajaran agama sesuai agama siswa
                      })  
                      ->where(function ($query) use ($chinese) {
-                        $query->whereNotIn('subject_exams.subject_id', [38, 39])
+                        $query->whereNotIn('subject_exams.subject_id', [1])
                         ->orWhere('subject_exams.subject_id', $chinese);
                      })
-                     ->orderByRaw('is_active = 1 ASC, date_exam DESC')
-                     ->get();
-
-                  foreach ($dataExam as $ed ) {
-                     $ed->subject = Subject_exam::join('subjects', 'subjects.id', '=', 'subject_exams.subject_id')
-                        ->where('exam_id', $ed->id)
-                        ->value('name_subject');
-                  };
-               }else{
-                  $dataStudent  = Grade::with(['subject' => function ($query) use($cek){
-                     $query->whereNotIn('subjects.id', [34, 35, 36, 37]) // Eksklusi semua pelajaran agama
-                     ->orWhere('subjects.id', $cek)
-                     ->orderBy('name_subject', 'asc');
-                  }, 'exam', 'teacher', 'student' => function ($query) {
-                     $query->where('is_active', true)
-                        ->orderBy('name', 'asc');
-                  }])->where('id', $gradeIdStudent)->first();
-   
-                  $dataExam  = Grade_exam::with(['exam.score' => function($query) use($setStudentFirst){
-                     $query->where('student_id', $setStudentFirst);
-                     }])
-                     ->where(function($query){
-                     $query->where('exams.open_date', '<=', now())
-                        ->orWhereNull('exams.open_date');
-                     })
-                     ->join('grades', 'grades.id', '=', 'grade_exams.grade_id')
-                     ->join('exams', 'exams.id', '=', 'grade_exams.exam_id')
-                     ->join('type_exams', 'type_exams.id', '=', 'exams.type_exam')
-                     ->join('subject_exams', 'subject_exams.exam_id', '=', 'exams.id')
-                     ->select('exams.*', 'type_exams.name as type_exam_name', 'grades.name as grade_name', 'grades.class as grade_class')
-                     ->where('grades.id', $gradeIdStudent)
-                     ->where('exams.semester', session('semester'))
-                     ->where('exams.academic_year', session('academic_year'))
-                     ->where('exams.is_active', true)
-                     ->where(function ($query) use ($cek) {
-                        $query->whereNotIn('subject_exams.subject_id', [34, 35, 36, 37]) // Eksklusi semua pelajaran agama
-                        ->orWhere('subject_exams.subject_id', $cek); // Masukkan hanya pelajaran agama sesuai agama siswa
-                     })  
                      ->orderByRaw('is_active = 1 ASC, date_exam ASC')
                      ->get();
-   
+                  
                   foreach ($dataExam as $ed ) {
                      $ed->subject = Subject_exam::join('subjects', 'subjects.id', '=', 'subject_exams.subject_id')
                         ->where('exam_id', $ed->id)
                         ->value('name_subject');
                   };
                }
+               else{
+                  $dataExam  = Grade_exam::with(['exam.score' => function($query) use($id){
+                        $query->where('student_id', $id);
+                     }])
+                     ->where(function($query){
+                     $query->where('exams.open_date', '<=', now())
+                        ->orWhereNull('exams.open_date');
+                     })
+                     ->join('grades', 'grades.id', '=', 'grade_exams.grade_id')
+                     ->join('exams', 'exams.id', '=', 'grade_exams.exam_id')
+                     ->join('type_exams', 'type_exams.id', '=', 'exams.type_exam')
+                     ->join('subject_exams', 'subject_exams.exam_id', '=', 'exams.id')
+                     ->select('exams.*', 'type_exams.name as type_exam_name', 'grades.name as grade_name', 'grades.class as grade_class')
+                     ->where('grades.id', $gradeIdStudent)
+                     ->where('exams.semester', session('semester'))
+                     ->where('exams.academic_year', session('academic_year'))
+                     ->where('exams.is_active', true)
+                     ->where(function ($query) use ($cek) {
+                        $query->whereNotIn('subject_exams.subject_id', [34, 35, 36, 37]) // Eksklusi semua pelajaran agama
+                        ->orWhere('subject_exams.subject_id', $cek); // Masukkan hanya pelajaran agama sesuai agama siswa
+                     })  
+                     ->where(function ($query) {
+                        $query->whereNotIn('subject_exams.subject_id', [38, 39])
+                        ->orWhere('subject_exams.subject_id', 1);
+                     })
+                     ->orderByRaw('is_active = 1 ASC, date_exam ASC')
+                     ->get();
+                  
+                  foreach ($dataExam as $ed ) {
+                     $ed->subject = Subject_exam::join('subjects', 'subjects.id', '=', 'subject_exams.subject_id')
+                        ->where('exam_id', $ed->id)
+                        ->value('name_subject');
+                  };
+               }
+            }
 
             foreach ($dataExam as $ed) {
                $ed->subject = Subject_exam::join('subjects', 'subjects.id', '=', 'subject_exams.subject_id')

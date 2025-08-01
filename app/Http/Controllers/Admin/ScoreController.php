@@ -54,9 +54,9 @@ class ScoreController extends Controller
                 ->join('teachers', 'exams.teacher_id', '=', 'teachers.id')
                 ->join('type_exams', 'exams.type_exam', '=', 'type_exams.id')
                 ->join('student_exams', 'exams.id', '=', 'student_exams.exam_id')
-                ->join('students', 'student_exams.student_id', '=', 'students.id')
+                ->join('students', 'grades.id', '=', 'students.grade_id')
                 ->join('scores', function($join) {
-                        $join->on('student_exams.student_id', '=', 'scores.student_id')
+                        $join->on('students.id', '=', 'scores.student_id')
                             ->on('exams.id', '=', 'scores.exam_id');
                     })
                 ->where('exams.id', $id, 'exams.is_active')
@@ -69,6 +69,7 @@ class ScoreController extends Controller
                 'students.id as student_id', 'students.name as student_name',
                 'scores.score as score', 'scores.file_name as file_name')
                 ->orderBy('student_name', 'asc')
+                ->distinct()
                 ->get();
 
             // SCORE MULTIPLE CHOICE DAN ESSAY
@@ -194,9 +195,9 @@ class ScoreController extends Controller
                         ->join('teachers', 'exams.teacher_id', '=', 'teachers.id')
                         ->join('type_exams', 'exams.type_exam', '=', 'type_exams.id')
                         ->join('student_exams', 'exams.id', '=', 'student_exams.exam_id')
-                        ->join('students', 'student_exams.student_id', '=', 'students.id')
+                        ->join('students', 'grades.id', '=', 'students.grade_id')
                         ->join('scores', function($join) {
-                            $join->on('student_exams.student_id', '=', 'scores.student_id')
+                            $join->on('students.id', '=', 'scores.student_id')
                                 ->on('exams.id', '=', 'scores.exam_id');
                         })
                         ->where('exams.id', $id, 'exams.is_active')
@@ -210,6 +211,7 @@ class ScoreController extends Controller
                         'students.id as student_id', 'students.name as student_name',
                         'scores.score as score' , 'scores.file_name as file_name')
                         ->orderBy('student_name', 'asc')
+                        ->distinct()
                         ->get();
                 }
                 elseif (strtolower($subject) == "religion catholic") {
@@ -220,9 +222,9 @@ class ScoreController extends Controller
                         ->join('teachers', 'exams.teacher_id', '=', 'teachers.id')
                         ->join('type_exams', 'exams.type_exam', '=', 'type_exams.id')
                         ->join('student_exams', 'exams.id', '=', 'student_exams.exam_id')
-                        ->join('students', 'student_exams.student_id', '=', 'students.id')
+                        ->join('students', 'grades.id', '=', 'students.grade_id')
                         ->join('scores', function($join) {
-                            $join->on('student_exams.student_id', '=', 'scores.student_id')
+                            $join->on('students.id', '=', 'scores.student_id')
                                 ->on('exams.id', '=', 'scores.exam_id');
                         })
                         ->where('exams.id', $id, 'exams.is_active')
@@ -236,6 +238,7 @@ class ScoreController extends Controller
                         'students.id as student_id', 'students.name as student_name',
                         'scores.score as score' , 'scores.file_name as file_name')
                         ->orderBy('student_name', 'asc')
+                        ->distinct()
                         ->get();
                 }
                 elseif (strtolower($subject) == "religion christian") {
@@ -246,9 +249,9 @@ class ScoreController extends Controller
                         ->join('teachers', 'exams.teacher_id', '=', 'teachers.id')
                         ->join('type_exams', 'exams.type_exam', '=', 'type_exams.id')
                         ->join('student_exams', 'exams.id', '=', 'student_exams.exam_id')
-                        ->join('students', 'student_exams.student_id', '=', 'students.id')
+                        ->join('students', 'grades.id', '=', 'students.grade_id')
                         ->join('scores', function($join) {
-                            $join->on('student_exams.student_id', '=', 'scores.student_id')
+                            $join->on('students.id', '=', 'scores.student_id')
                                 ->on('exams.id', '=', 'scores.exam_id');
                         })
                         ->where('exams.id', $id, 'exams.is_active')
@@ -262,6 +265,7 @@ class ScoreController extends Controller
                         'students.id as student_id', 'students.name as student_name',
                         'scores.score as score' , 'scores.file_name as file_name')
                         ->orderBy('student_name', 'asc')
+                        ->distinct()
                         ->get();
                 }
                 elseif (strtolower($subject) == "religion buddhism") {
@@ -272,9 +276,9 @@ class ScoreController extends Controller
                         ->join('teachers', 'exams.teacher_id', '=', 'teachers.id')
                         ->join('type_exams', 'exams.type_exam', '=', 'type_exams.id')
                         ->join('student_exams', 'exams.id', '=', 'student_exams.exam_id')
-                        ->join('students', 'student_exams.student_id', '=', 'students.id')
+                        ->join('students', 'grades.id', '=', 'students.grade_id')
                         ->join('scores', function($join) {
-                            $join->on('student_exams.student_id', '=', 'scores.student_id')
+                            $join->on('students.id', '=', 'scores.student_id')
                                 ->on('exams.id', '=', 'scores.exam_id');
                         })
                         ->where('exams.id', $id, 'exams.is_active')
@@ -288,6 +292,7 @@ class ScoreController extends Controller
                         'students.id as student_id', 'students.name as student_name',
                         'scores.score as score' , 'scores.file_name as file_name')
                         ->orderBy('student_name', 'asc')
+                        ->distinct()
                         ->get();
                 }
                 elseif (strtolower($subject) == "religion hinduism") {
@@ -298,9 +303,9 @@ class ScoreController extends Controller
                         ->join('teachers', 'exams.teacher_id', '=', 'teachers.id')
                         ->join('type_exams', 'exams.type_exam', '=', 'type_exams.id')
                         ->join('student_exams', 'exams.id', '=', 'student_exams.exam_id')
-                        ->join('students', 'student_exams.student_id', '=', 'students.id')
+                        ->join('students', 'grades.id', '=', 'students.grade_id')
                         ->join('scores', function($join) {
-                            $join->on('student_exams.student_id', '=', 'scores.student_id')
+                            $join->on('students.id', '=', 'scores.student_id')
                                 ->on('exams.id', '=', 'scores.exam_id');
                         })
                         ->where('exams.id', $id, 'exams.is_active')
@@ -314,6 +319,7 @@ class ScoreController extends Controller
                         'students.id as student_id', 'students.name as student_name',
                         'scores.score as score' , 'scores.file_name as file_name')
                         ->orderBy('student_name', 'asc')
+                        ->distinct()
                         ->get();
                 }
                 elseif (strtolower($subject) == "religion confucianism") {
@@ -325,9 +331,9 @@ class ScoreController extends Controller
                         ->join('teachers', 'exams.teacher_id', '=', 'teachers.id')
                         ->join('type_exams', 'exams.type_exam', '=', 'type_exams.id')
                         ->join('student_exams', 'exams.id', '=', 'student_exams.exam_id')
-                        ->join('students', 'student_exams.student_id', '=', 'students.id')
+                        ->join('students', 'grades.id', '=', 'students.grade_id')
                         ->join('scores', function($join) {
-                            $join->on('student_exams.student_id', '=', 'scores.student_id')
+                            $join->on('students.id', '=', 'scores.student_id')
                                 ->on('exams.id', '=', 'scores.exam_id');
                         })
                         ->where('exams.id', $id, 'exams.is_active')
@@ -341,6 +347,7 @@ class ScoreController extends Controller
                         'students.id as student_id', 'students.name as student_name',
                         'scores.score as score' , 'scores.file_name as file_name')
                         ->orderBy('student_name', 'asc')
+                        ->distinct()
                         ->get();
                 }
                 elseif (strtolower($subject) == "chinese lower") {
@@ -353,9 +360,9 @@ class ScoreController extends Controller
                         ->join('teachers', 'exams.teacher_id', '=', 'teachers.id')
                         ->join('type_exams', 'exams.type_exam', '=', 'type_exams.id')
                         ->join('student_exams', 'exams.id', '=', 'student_exams.exam_id')
-                        ->join('students', 'student_exams.student_id', '=', 'students.id')
+                        ->join('students', 'grades.id', '=', 'students.grade_id')
                         ->join('scores', function($join) {
-                            $join->on('student_exams.student_id', '=', 'scores.student_id')
+                            $join->on('students.id', '=', 'scores.student_id')
                                 ->on('exams.id', '=', 'scores.exam_id');
                         })
                         ->where('exams.id', $id, 'exams.is_active')
@@ -369,6 +376,7 @@ class ScoreController extends Controller
                         'students.id as student_id', 'students.name as student_name',
                         'scores.score as score' , 'scores.file_name as file_name')
                         ->orderBy('student_name', 'asc')
+                        ->distinct()
                         ->get();
                 }
                 elseif (strtolower($subject) == "chinese higher") {
@@ -380,9 +388,9 @@ class ScoreController extends Controller
                         ->join('teachers', 'exams.teacher_id', '=', 'teachers.id')
                         ->join('type_exams', 'exams.type_exam', '=', 'type_exams.id')
                         ->join('student_exams', 'exams.id', '=', 'student_exams.exam_id')
-                        ->join('students', 'student_exams.student_id', '=', 'students.id')
+                        ->join('students', 'grades.id', '=', 'students.grade_id')
                         ->join('scores', function($join) {
-                            $join->on('student_exams.student_id', '=', 'scores.student_id')
+                            $join->on('students.id', '=', 'scores.student_id')
                                 ->on('exams.id', '=', 'scores.exam_id');
                         })
                         ->where('exams.id', $id, 'exams.is_active')
@@ -396,6 +404,7 @@ class ScoreController extends Controller
                         'students.id as student_id', 'students.name as student_name',
                         'scores.score as score' , 'scores.file_name as file_name')
                         ->orderBy('student_name', 'asc')
+                        ->distinct()
                         ->get();
 
                 }
@@ -407,9 +416,9 @@ class ScoreController extends Controller
                         ->join('teachers', 'exams.teacher_id', '=', 'teachers.id')
                         ->join('type_exams', 'exams.type_exam', '=', 'type_exams.id')
                         ->join('student_exams', 'exams.id', '=', 'student_exams.exam_id')
-                        ->join('students', 'student_exams.student_id', '=', 'students.id')
+                        ->join('students', 'grades.id', '=', 'students.grade_id')
                         ->join('scores', function($join) {
-                                $join->on('student_exams.student_id', '=', 'scores.student_id')
+                                $join->on('students.id', '=', 'scores.student_id')
                                     ->on('exams.id', '=', 'scores.exam_id');
                             })
                         ->where('exams.id', $id, 'exams.is_active')
@@ -422,8 +431,11 @@ class ScoreController extends Controller
                         'students.id as student_id', 'students.name as student_name',
                         'scores.score as score', 'scores.file_name as file_name')
                         ->orderBy('student_name', 'asc')
+                        ->distinct()
                         ->get();
                 }
+
+                // dd($data);
 
                 return view('components.exam.data-exam-score')->with('data', $data);
             }
@@ -467,7 +479,7 @@ class ScoreController extends Controller
                 $semester       = session('semester');
                 $academic_year  = session('academic_year');
                 $subjectName    = Subject::where('id', '=', $request->subject_id)->value('name_subject');
-                $classTeacher   = Teacher_grade::where('grade_id', $gradeId)->value('teacher_id');
+                $classTeacher   = Teacher_grade::where('grade_id', $gradeId)->where('academic_year', session('academic_year'))->value('teacher_id');
                 // dd($subjectName);
                 if($subjectName == "Character Building"){
                     $subjectName = "character_building";
@@ -621,8 +633,17 @@ class ScoreController extends Controller
     
                 // check apakah major subject
                 $majorSubject = Major_subject::select('subject_id')->get();
+                
                 $isMajorSubject = $majorSubject->pluck('subject_id')->contains($subjectId);
-    
+                
+                if($gradeId <= 10){
+                    if(strtolower($subject->subject_name) == 'chinese higher'){
+                        $getChineseId = Subject::where('name_subject', '=', 'chinese')->value('id');
+                        $chineseId = $getChineseId;
+                        $isMajorSubject = $majorSubject->pluck('subject_id')->contains($chineseId);
+                    }
+                }
+
                 $homework = Type_exam::where('name', '=', 'homework')->value('id');
                 $exercise = Type_exam::where('name', '=', 'exercise')->value('id');
                 $participation = Type_exam::where('name', '=', 'participation')->value('id');
@@ -808,6 +829,34 @@ class ScoreController extends Controller
                     ->get();
                 
                 }
+                elseif(strtolower($subject->subject_name) == 'chinese higher'){
+                    $chineseHigherStudent = Chinese_higher::where('grade_id', $request->grade_id)->pluck('student_id')->toArray();
+                    $results = Grade::join('students', 'students.grade_id', '=', 'grades.id')
+                        ->join('grade_exams', 'grade_exams.grade_id', '=', 'grades.id')
+                        ->join('exams', 'exams.id', '=', 'grade_exams.exam_id')
+                        ->leftJoin('subject_exams', function($join){
+                            $join->on('subject_exams.exam_id', '=', 'exams.id');
+                        })
+                        ->leftJoin('scores', function ($join) {
+                            $join->on('scores.student_id', '=', 'students.id')
+                                ->on('scores.exam_id', '=', 'exams.id');
+                        })
+                        ->select(
+                            'students.id as student_id',
+                            'students.name as student_name',
+                            'exams.id as exam_id',
+                            'exams.type_exam as type_exam',
+                            'scores.score as score',
+                        )
+                        ->whereIn('students.id', $chineseHigherStudent)
+                        ->where('grades.id', $gradeId)
+                        ->where('subject_exams.subject_id', $subjectId)
+                        ->where('exams.semester', $semester)
+                        ->where('exams.academic_year', $academic_year)
+                        ->where('exams.teacher_id', $teacherId)
+                        ->orderBy('students.name', 'asc')
+                        ->get();
+                }
                 else{
                     $results = Grade::join('students', 'students.grade_id', '=', 'grades.id')
                     ->join('grade_exams', 'grade_exams.grade_id', '=', 'grades.id')
@@ -835,10 +884,11 @@ class ScoreController extends Controller
                     ->orderBy('students.name', 'asc')
                     ->get();
                 }
+
+                // dd($isMajorSubject);
     
                 // Perhitungan ACAR PRIMARY
                 if ($gradeId <= 10){
-                    // dd($request);
                     // Perhitungan ACAR Primary Major Subject
                     if ($isMajorSubject) {
                         $totalExam = Grade::with(['student', 'exam' => function ($query) use ($subjectId, $homework, $exercise, $participation, $quiz, $finalExam) {
@@ -892,6 +942,37 @@ class ScoreController extends Controller
                         ->first();
                     
                         $type = "major_subject_assessment";
+                        if(strtolower($subject->subject_name) == 'chinese higher'){
+                            $chineseHigherStudent = Chinese_higher::where('grade_id', $request->grade_id)->pluck('student_id')->toArray();
+                            $results = Grade::join('students', 'students.grade_id', '=', 'grades.id')
+                                ->join('grade_exams', 'grade_exams.grade_id', '=', 'grades.id')
+                                ->join('exams', 'exams.id', '=', 'grade_exams.exam_id')
+                                ->leftJoin('subject_exams', function($join){
+                                    $join->on('subject_exams.exam_id', '=', 'exams.id');
+                                })
+                                ->leftJoin('scores', function ($join) {
+                                    $join->on('scores.student_id', '=', 'students.id')
+                                        ->on('scores.exam_id', '=', 'exams.id');
+                                })
+                                ->select(
+                                    'students.id as student_id',
+                                    'students.name as student_name',
+                                    'exams.id as exam_id',
+                                    'exams.type_exam as type_exam',
+                                    'scores.score as score',
+                                )
+                                ->whereIn('students.id', $chineseHigherStudent)
+                                ->where('grades.id', $gradeId)
+                                ->where('subject_exams.subject_id', $subjectId)
+                                ->where('exams.semester', $semester)
+                                ->where('exams.academic_year', $academic_year)
+                                ->where('exams.teacher_id', $teacherId)
+                                ->orderBy('students.name', 'asc')
+                                ->get();
+
+                            // dd($chineseHigherStudent);
+                        }
+                        // dd($results);
     
                         $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) {
                             $homework = Type_exam::where('name', '=', 'homework')->value('id');
@@ -934,7 +1015,18 @@ class ScoreController extends Controller
                                 'comment' => '',
                             ];
                         })->values()->all();
-    
+
+                        // dd($scoresByStudent);
+
+                        if (strtolower($subject->subject_name) == "chinese higher") {
+                            $subject = Subject::where('id', $request->subject_id)->value('name_subject');
+                            $getChineseId = Subject::where('name_subject', '=', 'chinese')->value('id');
+                
+                            if (strtolower($subject) == "chinese higher") {
+                                $subjectId = $getChineseId;
+                            }
+                        }
+                        
                         foreach($scoresByStudent as $student){
                             $matchingScoring = [
                                 'student_id'         => $student['student_id'],
@@ -951,7 +1043,7 @@ class ScoreController extends Controller
                                 'final_score' => $student['total_score'],
                                 'comment'     => "",
                             ];
-                        
+                            
                             // Gunakan updateOrCreate untuk tabel Acar
                             Acar::updateOrCreate($matchingScoring, $updateScoring);
                         }
@@ -1127,7 +1219,7 @@ class ScoreController extends Controller
                     }else {
                         $subjectId = $request->subject_id;
                     }
-                    // Perhitungan ACAR Secondary Major Subject
+                    // Perhitungan ACAR Secondary Minor Subject
                     if (strtolower($checkSubject) !== 'science' &&
                         strtolower($checkSubject) !== 'english' &&
                         strtolower($checkSubject) !== 'mathematics' &&
@@ -2624,6 +2716,21 @@ class ScoreController extends Controller
                 'line' => $err->getLine(),
                 'trace' => $err->getTraceAsString(),
             ]);
+        }
+    }
+
+    public function actionPostLateAnswer(Request $request){
+        try{
+            Score::where('id', $request->id)->update([
+                'desc_late' => $request->desc_late,
+            ]);
+
+            return response()->json([
+                'success' => true
+            ]);
+        }
+        catch(Exception $err){
+            dd($err);
         }
     }
 

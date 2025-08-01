@@ -51,6 +51,8 @@ class CourseController extends Controller
                 $cek = 35;
                 }
 
+                $chineseHigherStudent = Chinese_higher::where('student_id', $studentId)->value('id');
+
                 if($gradeId >= 11){
                     $chineseLower = Chinese_lower::where('student_id', $studentId)->exists();
                     $chineseHigher = Chinese_higher::where('student_id', $studentId)->exists();
@@ -71,24 +73,47 @@ class CourseController extends Controller
                         ->orWhere('subjects.id', $cek); // Masukkan hanya pelajaran agama sesuai agama siswa
                     })
                     ->where(function ($query) use ($chinese) {
-                        $query->whereNotIn('subjects.id', [38, 39]) // Eksklusi semua pelajaran agama
-                        ->orWhere('subjects.id', $chinese); // Masukkan hanya pelajaran agama sesuai agama siswa
+                        $query->whereNotIn('subjects.id', [38, 39])
+                        ->orWhere('subjects.id', $chinese);
                     })
                     ->orderBy('name_subject', 'asc')
                     ->paginate(30);
                 }
                 else{
+                    $chineseHigher = Chinese_higher::where('student_id', $studentId)->exists();
                     $grade = Grade::findOrFail($gradeId);
-                    $data = Subject::whereHas('grade', function ($query) use ($gradeId) {
-                        $query->where('grade_id', $gradeId)
-                            ->where('grade_subjects.academic_year', session('academic_year'));
-                    })
-                    ->where(function ($query) use ($cek) {
-                        $query->whereNotIn('subjects.id', [34, 35, 36, 37]) // Eksklusi semua pelajaran agama
-                        ->orWhere('subjects.id', $cek); // Masukkan hanya pelajaran agama sesuai agama siswa
-                    })
-                    ->orderBy('name_subject', 'asc')
-                    ->paginate(30);
+                    if($chineseHigher == true){
+                        $chinese = 39;
+                        $data = Subject::whereHas('grade', function ($query) use ($gradeId) {
+                            $query->where('grade_id', $gradeId)
+                                ->where('grade_subjects.academic_year', session('academic_year'));
+                        })
+                        ->where(function ($query) use ($cek) {
+                            $query->whereNotIn('subjects.id', [34, 35, 36, 37]) // Eksklusi semua pelajaran agama
+                            ->orWhere('subjects.id', $cek); // Masukkan hanya pelajaran agama sesuai agama siswa
+                        })
+                         ->where(function ($query) use ($chinese) {
+                            $query->whereNotIn('subjects.id', [1])
+                            ->orWhere('subjects.id', $chinese);
+                        })
+                        ->orderBy('name_subject', 'asc')
+                        ->paginate(30);
+                    }else{
+                        $data = Subject::whereHas('grade', function ($query) use ($gradeId) {
+                            $query->where('grade_id', $gradeId)
+                                ->where('grade_subjects.academic_year', session('academic_year'));
+                        })
+                        ->where(function ($query) use ($cek) {
+                            $query->whereNotIn('subjects.id', [34, 35, 36, 37]) // Eksklusi semua pelajaran agama
+                            ->orWhere('subjects.id', $cek); // Masukkan hanya pelajaran agama sesuai agama siswa
+                        })
+                         ->where(function ($query){
+                            $query->whereNotIn('subjects.id', [39])
+                            ->orWhere('subjects.id', 1);
+                        })
+                        ->orderBy('name_subject', 'asc')
+                        ->paginate(30);
+                    }
                 }
 
                 if (!$gradeId) {
@@ -140,16 +165,40 @@ class CourseController extends Controller
                     ->paginate(30);
                 }
                 else{
-                    $data = Subject::whereHas('grade', function ($query) use ($gradeId) {
-                        $query->where('grade_id', $gradeId)
-                            ->where('grade_subjects.academic_year', session('academic_year'));
-                    })
-                    ->where(function ($query) use ($cek) {
-                        $query->whereNotIn('subjects.id', [34, 35, 36, 37]) // Eksklusi semua pelajaran agama
-                        ->orWhere('subjects.id', $cek); // Masukkan hanya pelajaran agama sesuai agama siswa
-                    })
-                    ->orderBy('name_subject', 'asc')
-                    ->paginate(30);
+                    $chineseHigher = Chinese_higher::where('student_id', session('studentId'))->exists();
+                    $grade = Grade::findOrFail($gradeId);
+                    if($chineseHigher == true){
+                        $chinese = 39;
+                        $data = Subject::whereHas('grade', function ($query) use ($gradeId) {
+                            $query->where('grade_id', $gradeId)
+                                ->where('grade_subjects.academic_year', session('academic_year'));
+                        })
+                        ->where(function ($query) use ($cek) {
+                            $query->whereNotIn('subjects.id', [34, 35, 36, 37]) // Eksklusi semua pelajaran agama
+                            ->orWhere('subjects.id', $cek); // Masukkan hanya pelajaran agama sesuai agama siswa
+                        })
+                         ->where(function ($query) use ($chinese) {
+                            $query->whereNotIn('subjects.id', [1])
+                            ->orWhere('subjects.id', $chinese);
+                        })
+                        ->orderBy('name_subject', 'asc')
+                        ->paginate(30);
+                    }else{
+                        $data = Subject::whereHas('grade', function ($query) use ($gradeId) {
+                            $query->where('grade_id', $gradeId)
+                                ->where('grade_subjects.academic_year', session('academic_year'));
+                        })
+                        ->where(function ($query) use ($cek) {
+                            $query->whereNotIn('subjects.id', [34, 35, 36, 37]) // Eksklusi semua pelajaran agama
+                            ->orWhere('subjects.id', $cek); // Masukkan hanya pelajaran agama sesuai agama siswa
+                        })
+                         ->where(function ($query){
+                            $query->whereNotIn('subjects.id', [39])
+                            ->orWhere('subjects.id', 1);
+                        })
+                        ->orderBy('name_subject', 'asc')
+                        ->paginate(30);
+                    }
                 }
 
                 $grade = Grade::findOrFail($gradeId);
@@ -1070,7 +1119,6 @@ class CourseController extends Controller
                 $filePath = $request->file('file')->store('section_activities', 'public');
                 $embed = false;
             }
-            // EMBED HTML5
             else {
                 $filePath = $request->embed_ebook;
                 $embed = true;

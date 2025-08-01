@@ -191,7 +191,7 @@
                               <div class="form-group row" id="model-form">
                                  <div class="col-md-12">
                                     <label for="model">Model <span style="color: red">*</span></label>
-                                    <select name="model" class="form-control" id="model">
+                                    <select name="model" class="form-control" id="model" required>
                                           <option selected disabled value="">--- SELECT MODEL ---</option>
                                           <option value="mce">Multiple Choice & Essay</option>
                                           <option value="mc">Multiple Choice</option>
@@ -207,8 +207,8 @@
       
                               <div class="form-group row" id="file-form" style="display: none;">
                                  <div class="col-md-12">
-                                    <label for="upload_file">Upload File (Maks 5MB)<span style="color: red">*</span></label><br>
-                                    <input type="file" id="upload_file" name="upload_file" accept=".pdf">
+                                    <label for="upload_file">Upload Soal Assessment (Maks 5MB)<span style="color: red">*</span></label><br>
+                                    <input type="file" id="upload_file" name="upload_file" accept=".pdf" required>
                                     <div class="text-danger mt-2" id="fileError" style="display: none;"></div>
                                  </div>
                               </div>
@@ -413,6 +413,8 @@
    document.getElementById('type_exam').addEventListener('change', function() {
       if (this.value == '5') {
          document.getElementById('model-form').style.display = 'none';
+         document.getElementById('upload_file').removeAttribute('required');
+         document.getElementById('model').removeAttribute('required');
       }
    });
 
@@ -447,6 +449,7 @@
    document.getElementById('model').addEventListener('change', function() {
       if (this.value === 'uf') {
          document.getElementById('file-form').style.display = 'block';
+         document.getElementById('upload_file').setAttribute('required', true);
          document.getElementById('question-combine').style.display = 'none';
          document.getElementById('question-mc').style.display = 'none';
          document.getElementById('question-essay').style.display = 'none';
@@ -456,6 +459,7 @@
       }
       else if(this.value === 'mce') {
          document.getElementById('combine').style.display = 'block';
+         document.getElementById('upload_file').removeAttribute('required');
          document.getElementById('file-form').style.display = 'none';
          document.getElementById('mc').style.display = 'none';
          document.getElementById('essay').style.display = 'none';
@@ -464,6 +468,7 @@
       }
       else if(this.value === 'mc') {
          document.getElementById('mc').style.display = 'block';
+         document.getElementById('upload_file').removeAttribute('required');
          document.getElementById('file-form').style.display = 'none';
          document.getElementById('combine').style.display = 'none';
          document.getElementById('essay').style.display = 'none';
@@ -472,6 +477,7 @@
       }
       else if(this.value === 'essay') {
          document.getElementById('essay').style.display = 'block';
+         document.getElementById('upload_file').removeAttribute('required');
          document.getElementById('file-form').style.display = 'none';
          document.getElementById('combine').style.display = 'none';
          document.getElementById('mc').style.display = 'none';
@@ -479,6 +485,7 @@
          document.getElementById('question-mc').style.display = 'none';
       }
       else {
+         document.getElementById('upload_file').removeAttribute('required');
          document.getElementById('file-form').style.display = 'none';
          document.getElementById('combine').style.display = 'none';
          document.getElementById('mc').style.display = 'none';

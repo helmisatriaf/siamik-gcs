@@ -33,6 +33,7 @@ use App\Models\MonthlyActivity;
 use App\Models\Student_Monthly_Activity;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 class ScoringController extends Controller
 {
     public function actionPostMajorPrimary(Request $request){
@@ -907,10 +908,45 @@ class ScoringController extends Controller
     public function actionPostMidReportCard(Request $request)
     {
         try {
+            $semester = intval(session('semester'));
+            if ($semester == 1) {
+                $getRangeDateSemester = Master_academic::where('is_use', true)->first();
+                $startSemester = Carbon::parse($getRangeDateSemester->semester1);
+                $endSemester = Carbon::parse($getRangeDateSemester->end_semester1);
 
-            // dd($request);
+                // Ambil semua nama bulan di antara dua tanggal
+                $monthsInRange = [];
+                $current = $startSemester->copy();
+                while ($current <= $endSemester) {
+                    $monthsInRange[] = $current->format('F'); // 'F' = nama bulan full, contoh: 'July'
+                    $current->addMonth();
+                }
 
-            $monthlyActivity = MonthlyActivity::where('grades', '=', 'upper')->get();
+                // Query monthly_activities
+                $monthlyActivity = MonthlyActivity::where('grades', 'upper')
+                    ->whereIn('month', $monthsInRange)
+                    ->where('academic_year', session('academic_year'))
+                    ->get();
+                
+            } elseif ($semester == 2) {
+                $getRangeDateSemester = Master_academic::where('is_use', true)->first();
+                $startSemester = Carbon::parse($getRangeDateSemester->semester2);
+                $endSemester = Carbon::parse($getRangeDateSemester->end_semester2);
+
+                // Ambil semua nama bulan di antara dua tanggal
+                $monthsInRange = [];
+                $current = $startSemester->copy();
+                while ($current <= $endSemester) {
+                    $monthsInRange[] = $current->format('F'); // 'F' = nama bulan full, contoh: 'July'
+                    $current->addMonth();
+                }
+
+                // Query monthly_activities
+                $monthlyActivity = MonthlyActivity::where('grades', 'upper')
+                    ->whereIn('month', $monthsInRange)
+                    ->where('academic_year', session('academic_year'))
+                    ->get();
+            }
 
             for($i=0; $i < count($request->student_id); $i++){
 

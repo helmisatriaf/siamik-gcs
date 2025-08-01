@@ -145,6 +145,8 @@ class ExamController extends Controller
             'page' => 'database exam',
             'child' => 'database exam',
          ]);
+
+         
          
          // dd(session('section_id'));
          $rules = [
@@ -638,22 +640,19 @@ class ExamController extends Controller
                   ->pluck('student_id')
                   ->toArray();
 
-                $getStudentId = Student::where("grade_id", $request->grade_id)
-               ->where('is_active', true)
-               ->pluck('id')
-               ->toArray();
+               $getStudentId = Student::where("grade_id", $request->grade_id)
+                  ->where('is_active', true)
+                  ->pluck('id')
+                  ->toArray();
 
                $getStudentId = array_values(array_diff($getStudentId, $haveChineseHigher));
             }
-
-            $getStudentId = Student::where("grade_id", $request->grade_id)
-               ->where('is_active', true)
-               ->pluck('id')
-               ->toArray();
-
-           
-
-            // dd($getStudentId);
+            else {
+               $getStudentId = Student::where("grade_id", $request->grade_id)
+                  ->where('is_active', true)
+                  ->pluck('id')
+                  ->toArray();
+            }
 
             for ($i = 0; $i < sizeof($getStudentId); $i++) {
                $postStudentExam = [

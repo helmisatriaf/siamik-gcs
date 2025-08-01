@@ -283,6 +283,7 @@ class ReportController extends Controller
 
             $classTeacher = Teacher_grade::where('grade_id', $gradeId)
                 ->join('teachers', 'teachers.id', '=', 'teacher_grades.teacher_id')
+                ->where('teacher_grades.academic_year', session('academic_year'))
                 ->select('teachers.id as teacher_id', 'teachers.name as teacher_name')
                 ->first();
 
@@ -1695,7 +1696,6 @@ class ReportController extends Controller
                 ];
             })->values()->all();
 
-            // dd($scoresByStudent);
             $status = Tcop::where('grade_id', $grade->grade_id)
                 ->where('class_teacher_id', $classTeacher->teacher_id)
                 ->where('academic_year', $academic_year)
@@ -2078,7 +2078,17 @@ class ReportController extends Controller
                 ->first();
 
             $majorSubject = Major_subject::select('subject_id')->get();
+            
             $isMajorSubject = $majorSubject->pluck('subject_id')->contains($subjectId);
+            
+            if($gradeId <= 10){
+                if(strtolower($subject->subject_name) == 'chinese higher'){
+                    $getChineseId = Subject::where('name_subject', '=', 'chinese')->value('id');
+                    $chineseId = $getChineseId;
+                    $isMajorSubject = $majorSubject->pluck('subject_id')->contains($chineseId);
+                }
+            }
+
 
             $homework = Type_exam::where('name', '=', 'homework')->value('id');
             $exercise = Type_exam::where('name', '=', 'exercise')->value('id');
@@ -2254,7 +2264,10 @@ class ReportController extends Controller
                     ->where('exams.teacher_id', $teacherId)
                     ->orderBy('students.name', 'asc')
                     ->get();
-            } else {
+            } elseif (strtolower($subject->subject_name) == "chinese higher") {
+                $chineseHigherStudent = Chinese_higher::where('grade_id', '<=', 10)->pluck('student_id')->toArray();
+                $getChineseHigherId = Subject::where('name_subject', '=', 'chinese higher')->value('id');
+
                 $results = Grade::join('students', 'students.grade_id', '=', 'grades.id')
                     ->join('grade_exams', 'grade_exams.grade_id', '=', 'grades.id')
                     ->join('exams', 'exams.id', '=', 'grade_exams.exam_id')
@@ -2272,17 +2285,85 @@ class ReportController extends Controller
                         'exams.type_exam as type_exam',
                         'scores.score as score',
                     )
+                    ->whereIn('students.id', $chineseHigherStudent)
                     ->where('students.is_active', true)
                     ->where('grades.id', $gradeId)
-                    ->where('students.is_active', true)
-                    ->where('subject_exams.subject_id', $subjectId)
+                    ->where('subject_exams.subject_id', $getChineseHigherId)
                     ->where('exams.semester', $semester)
                     ->where('exams.academic_year', $academic_year)
-                    // ->where('exams.teacher_id', $teacherId)
-                    ->orderBy('students.name', 'asc')
                     ->get();
             }
+            else {
+                // TABEL SUBJECT SCORING PRIMARY YANG ADA CHINESE HIGHER
+                if(strtolower($subject->subject_name) == 'chinese'){
+                    $studentIds = Student::where('grade_id', $gradeId)->pluck('id')->toArray();
+                    $studentChineseHigher = Chinese_higher::whereIn('student_id', $studentIds)
+                        ->pluck('student_id')
+                        ->toArray();
 
+                    $plotJustChinese = array_values(array_diff($studentIds, $studentChineseHigher));
+
+                    // CHINESE HIGHER PRIMARY
+                    
+                    $results = Grade::join('students', 'students.grade_id', '=', 'grades.id')
+                        ->join('grade_exams', 'grade_exams.grade_id', '=', 'grades.id')
+                        ->join('exams', 'exams.id', '=', 'grade_exams.exam_id')
+                        ->leftJoin('subject_exams', function ($join) {
+                            $join->on('subject_exams.exam_id', '=', 'exams.id');
+                        })
+                        ->leftJoin('scores', function ($join) {
+                            $join->on('scores.student_id', '=', 'students.id')
+                                ->on('scores.exam_id', '=', 'exams.id');
+                        })
+                        ->select(
+                            'students.id as student_id',
+                            'students.name as student_name',
+                            'exams.id as exam_id',
+                            'exams.type_exam as type_exam',
+                            'scores.score as score',
+                        )
+                        ->whereIn('students.id', $plotJustChinese)
+                        ->where('students.is_active', true)
+                        ->where('grades.id', $gradeId)
+                        ->where('subject_exams.subject_id', 1)
+                        ->where('exams.semester', $semester)
+                        ->where('exams.academic_year', $academic_year)
+                        // ->where('exams.teacher_id', $teacherId)
+                        ->orderBy('students.name', 'asc')
+                        ->get();
+                }
+
+                // SUBJECT LAIN
+                else{
+                    $results = Grade::join('students', 'students.grade_id', '=', 'grades.id')
+                        ->join('grade_exams', 'grade_exams.grade_id', '=', 'grades.id')
+                        ->join('exams', 'exams.id', '=', 'grade_exams.exam_id')
+                        ->leftJoin('subject_exams', function ($join) {
+                            $join->on('subject_exams.exam_id', '=', 'exams.id');
+                        })
+                        ->leftJoin('scores', function ($join) {
+                            $join->on('scores.student_id', '=', 'students.id')
+                                ->on('scores.exam_id', '=', 'exams.id');
+                        })
+                        ->select(
+                            'students.id as student_id',
+                            'students.name as student_name',
+                            'exams.id as exam_id',
+                            'exams.type_exam as type_exam',
+                            'scores.score as score',
+                        )
+                        ->where('students.is_active', true)
+                        ->where('grades.id', $gradeId)
+                        ->where('subject_exams.subject_id', $subjectId)
+                        ->where('exams.semester', $semester)
+                        ->where('exams.academic_year', $academic_year)
+                        // ->where('exams.teacher_id', $teacherId)
+                        ->orderBy('students.name', 'asc')
+                        ->get();
+                }
+            }
+
+            // MAJOR SUBJECT
             if ($isMajorSubject) {
                 $totalExam = Grade::with(['student', 'exam' => function ($query) use ($subjectId, $homework, $exercise, $participation, $quiz, $finalExam) {
                     $query->whereHas('subject', function ($subQuery) use ($subjectId) {
@@ -2345,7 +2426,10 @@ class ReportController extends Controller
                     ->get()
                     ->keyBy('student_id');
 
-                $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) use ($comments, $subjectId) {
+                $studentIds = Student::where('grade_id', $gradeId)->pluck('id');
+                $haveChineseHigher = Chinese_higher::whereIn('student_id', $studentIds)->exists();
+                
+                $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) use ($comments, $subjectId, $haveChineseHigher) {
                     $homework = Type_exam::where('name', '=', 'homework')->value('id');
                     $exercise = Type_exam::where('name', '=', 'exercise')->value('id');
                     $participation = Type_exam::where('name', '=', 'participation')->value('id');
@@ -2359,37 +2443,76 @@ class ReportController extends Controller
                     $quizScores         = $scores->where('type_exam', $quiz)->pluck('score');
                     $finalExamScores    = $scores->where('type_exam', $finalExam)->pluck('score');
 
-                    return [
-                        'student_id' => $student->student_id,
-                        'student_name' => $student->student_name,
-                        'scores' => $scores->map(function ($score) {
-                            return [
-                                'exam_id' => $score->exam_id,
-                                'type_exam' => $score->type_exam,
-                                'score' => $score->score,
-                            ];
-                        })->all(),
-                        'avg_homework'      => round($homeworkScores->avg()),
-                        'avg_exercise'      => round($exerciseScores->avg()),
-                        'avg_participation' => round($participationScore->avg()),
-                        'avg_quiz'          => round($quizScores->avg()),
+                    // JIKA PRIMARY CHINESE HIGHER
+                    if($haveChineseHigher){
+                        $getChineseId = Subject::where('name_subject', '=', 'chinese')->value('id');
+                        return [
+                            'student_id' => $student->student_id,
+                            'student_name' => $student->student_name,
+                            'scores' => $scores->map(function ($score) {
+                                return [
+                                    'exam_id' => $score->exam_id,
+                                    'type_exam' => $score->type_exam,
+                                    'score' => $score->score,
+                                ];
+                            })->all(),
+                            'avg_homework'      => round($homeworkScores->avg()),
+                            'avg_exercise'      => round($exerciseScores->avg()),
+                            'avg_participation' => round($participationScore->avg()),
+                            'avg_quiz'          => round($quizScores->avg()),
+    
+                            'percent_homework'      => round($homeworkScores->avg() * 0.1, 2),
+                            'percent_exercise'      => round($exerciseScores->avg() * 0.15, 2),
+                            'percent_participation' => round($participationScore->avg() * 0.05, 2),
+                            'h+e+p'                 => (round($homeworkScores->avg() * 0.1, 2) + round($exerciseScores->avg() * 0.15, 2) + round($participationScore->avg() * 0.05, 2)),
+    
+                            'percent_quiz' => $quizScores->avg() * 0.3,
+                            'percent_fe'   => $finalExamScores->avg() * 0.4,
+                            'total_score'  => round(($homeworkScores->avg() * 0.1) + ($exerciseScores->avg() * 0.15) + ($participationScore->avg() * 0.05) + ($quizScores->avg() * 0.3) + ($finalExamScores->avg() * 0.4)),
+                            'acar'      =>  ACAR::where('student_id', $student->student_id)
+                                    ->where('subject_id', $getChineseId)
+                                    ->where('semester', session('semester'))
+                                    ->where('academic_year', session('academic_year'))
+                                    ->value('final_score'),
+        
+                                'comment' => $comments->get($student->student_id)?->comment ?? '',
+                        ];
+                    }
+                    // SUBJECT SELAIN CHINESE HIGHER PRIMARY
+                    else{
+                        return [
+                            'student_id' => $student->student_id,
+                            'student_name' => $student->student_name,
+                            'scores' => $scores->map(function ($score) {
+                                return [
+                                    'exam_id' => $score->exam_id,
+                                    'type_exam' => $score->type_exam,
+                                    'score' => $score->score,
+                                ];
+                            })->all(),
+                            'avg_homework'      => round($homeworkScores->avg()),
+                            'avg_exercise'      => round($exerciseScores->avg()),
+                            'avg_participation' => round($participationScore->avg()),
+                            'avg_quiz'          => round($quizScores->avg()),
+    
+                            'percent_homework'      => round($homeworkScores->avg() * 0.1, 2),
+                            'percent_exercise'      => round($exerciseScores->avg() * 0.15, 2),
+                            'percent_participation' => round($participationScore->avg() * 0.05, 2),
+                            'h+e+p'                 => (round($homeworkScores->avg() * 0.1, 2) + round($exerciseScores->avg() * 0.15, 2) + round($participationScore->avg() * 0.05, 2)),
+    
+                            'percent_quiz' => $quizScores->avg() * 0.3,
+                            'percent_fe'   => $finalExamScores->avg() * 0.4,
+                            'total_score'  => round(($homeworkScores->avg() * 0.1) + ($exerciseScores->avg() * 0.15) + ($participationScore->avg() * 0.05) + ($quizScores->avg() * 0.3) + ($finalExamScores->avg() * 0.4)),
+                            'acar'      =>  ACAR::where('student_id', $student->student_id)
+                                    ->where('subject_id', $subjectId)
+                                    ->where('semester', session('semester'))
+                                    ->where('academic_year', session('academic_year'))
+                                    ->value('final_score'),
+        
+                                'comment' => $comments->get($student->student_id)?->comment ?? '',
+                        ];
+                    }
 
-                        'percent_homework'      => round($homeworkScores->avg() * 0.1, 2),
-                        'percent_exercise'      => round($exerciseScores->avg() * 0.15, 2),
-                        'percent_participation' => round($participationScore->avg() * 0.05, 2),
-                        'h+e+p'                 => (round($homeworkScores->avg() * 0.1, 2) + round($exerciseScores->avg() * 0.15, 2) + round($participationScore->avg() * 0.05, 2)),
-
-                        'percent_quiz' => $quizScores->avg() * 0.3,
-                        'percent_fe'   => $finalExamScores->avg() * 0.4,
-                        'total_score'  => round(($homeworkScores->avg() * 0.1) + ($exerciseScores->avg() * 0.15) + ($participationScore->avg() * 0.05) + ($quizScores->avg() * 0.3) + ($finalExamScores->avg() * 0.4)),
-                        'acar'      => ACAR::where('student_id', $student->student_id)
-                            ->where('subject_id', $subjectId)
-                            ->where('semester', session('semester'))
-                            ->where('academic_year', session('academic_year'))
-                            ->value('final_score'),
-
-                        'comment' => $comments->get($student->student_id)?->comment ?? '',
-                    ];
                 })->values()->all();
 
                 // foreach($scoresByStudent as $student){
@@ -2412,9 +2535,9 @@ class ReportController extends Controller
                 //     Acar::updateOrCreate($matchingScoring, $updateScoring);
                 // }
 
-            } else {
-
-
+            } 
+            // MINOR SUBJECT
+            else {
                 $totalExam = Grade::with(['student', 'exam' => function ($query) use ($subjectId, $homework, $exercise, $participation, $quiz, $finalAssessment, $semester) {
                     $query->whereHas('subject', function ($subQuery) use ($subjectId) {
                         $subQuery->where('subject_id', $subjectId);
@@ -2976,6 +3099,8 @@ class ReportController extends Controller
                     ->get();
             }
 
+            // dd($results);
+
             $type = "subject_assessment_secondary";
 
             $comments = Comment::where('grade_id', $gradeId)
@@ -3332,9 +3457,45 @@ class ReportController extends Controller
 
             if ($semester == 1) {
                 $mid = 0.5;
+                $getRangeDateSemester = Master_academic::where('is_use', true)->first();
+                $startSemester = Carbon::parse($getRangeDateSemester->semester1);
+                $endSemester = Carbon::parse($getRangeDateSemester->end_semester1);
+
+                // Ambil semua nama bulan di antara dua tanggal
+                $monthsInRange = [];
+                $current = $startSemester->copy();
+                while ($current <= $endSemester) {
+                    $monthsInRange[] = $current->format('F'); // 'F' = nama bulan full, contoh: 'July'
+                    $current->addMonth();
+                }
+
+                // Query monthly_activities
+                $monthlyActivity = MonthlyActivity::where('grades', 'upper')
+                    ->whereIn('month', $monthsInRange)
+                    ->where('academic_year', session('academic_year'))
+                    ->get();
+                
             } elseif ($semester == 2) {
                 $mid = 1.5;
+                $getRangeDateSemester = Master_academic::where('is_use', true)->first();
+                $startSemester = Carbon::parse($getRangeDateSemester->semester2);
+                $endSemester = Carbon::parse($getRangeDateSemester->end_semester2);
+
+                // Ambil semua nama bulan di antara dua tanggal
+                $monthsInRange = [];
+                $current = $startSemester->copy();
+                while ($current <= $endSemester) {
+                    $monthsInRange[] = $current->format('F'); // 'F' = nama bulan full, contoh: 'July'
+                    $current->addMonth();
+                }
+
+                // Query monthly_activities
+                $monthlyActivity = MonthlyActivity::where('grades', 'upper')
+                    ->whereIn('month', $monthsInRange)
+                    ->where('academic_year', session('academic_year'))
+                    ->get();
             }
+
 
             $grade = Teacher_grade::join('grades', 'grades.id', '=', 'teacher_grades.grade_id')
                 ->join('teachers', 'teachers.id', '=', 'teacher_grades.teacher_id')
@@ -3367,7 +3528,6 @@ class ReportController extends Controller
                 ->orderBy('students.name', 'asc')
                 ->get();
 
-            $monthlyActivity = MonthlyActivity::where('grades', '=', 'upper')->get();
 
             $studentMonthlyActivity = Student_Monthly_Activity::join('students', 'students.id', '=', 'student_monthly_activities.student_id')
                 ->join('monthly_activities', 'monthly_activities.id', '=', 'student_monthly_activities.monthly_activity_id')
@@ -4781,6 +4941,7 @@ class ReportController extends Controller
 
             $learningSkills = Report_card::where('student_id', $id)
                 ->where('semester', $semester)
+                ->where('academic_year', session('academic_year'))
                 ->first();
 
             $gradeId = Student::where('id', $id)->value('grade_id');
@@ -4800,14 +4961,13 @@ class ReportController extends Controller
                 ->join('teachers', 'teachers.id', 'teacher_grades.teacher_id')
                 ->select('teachers.name as teacher_name')
                 ->first();
-
-            // $remarks = Mid_report::where('mid_reports.student_id', '=', $id)->value('remarks'); 
-            $ct = Mid_report::where('mid_reports.student_id', '=', $id)->value('critical_thinking');
-            $cs = Mid_report::where('mid_reports.student_id', '=', $id)->value('cognitive_skills');
-            $ls = Mid_report::where('mid_reports.student_id', '=', $id)->value('life_skills');
-            $les = Mid_report::where('mid_reports.student_id', '=', $id)->value('learning_skills');
-            $saed = Mid_report::where('mid_reports.student_id', '=', $id)->value('social_and_emotional_development');
-            $academicYear = Master_academic::first()->value('academic_year');
+ 
+            $ct = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->value('critical_thinking');
+            $cs = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->value('cognitive_skills');
+            $ls = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->value('life_skills');
+            $les = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->value('learning_skills');
+            $saed = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->value('social_and_emotional_development');
+            $academicYear = Master_academic::where('is_use', true)->value('academic_year');
 
             $resultsAttendance = Grade::join('students', 'students.grade_id', '=', 'grades.id')
                 ->leftJoin('attendances', function ($join) {
@@ -4849,6 +5009,20 @@ class ReportController extends Controller
             $practical = Type_exam::where('name', 'practical')->value('id');
 
             if (strtolower($student->grade_name) === "primary") {
+                $chineseHigher = Chinese_higher::where('student_id', $id)->exists();
+
+                
+                // dd($chineseHigher);
+
+                if ($chineseHigher) {
+                    $chinese = "Chinese Higher";
+                }
+                else {
+                    $chinese = "Chinese";
+                }
+
+
+                
                 $checkReligion = Student::where('id', $id)->value('religion');
 
                 if ($checkReligion == "Islam") {
@@ -4884,7 +5058,7 @@ class ReportController extends Controller
                 } else {
                     $order = [
                         'English',
-                        'Chinese',
+                        $chinese,
                         'Mathematics',
                         'Science',
                         $religion,
@@ -4971,6 +5145,8 @@ class ReportController extends Controller
                         'isRestricted' => $isRestricted,
                     ];
                 })->values()->all();
+
+                // dd($scoresByStudent);
             } elseif (strtolower($student->grade_name) === "secondary") {
                 $chineseLower  = Chinese_lower::where('student_id', $id)->exists();
                 $chineseHigher = Chinese_higher::where('student_id', $id)->exists();
@@ -5088,7 +5264,45 @@ class ReportController extends Controller
                 })->values()->all();
             }
 
-            $monthlyActivity = MonthlyActivity::where('grades', '=', 'upper')->get();
+            $semester = intval(session('semester'));
+            if ($semester == 1) {
+                $getRangeDateSemester = Master_academic::where('is_use', true)->first();
+                $startSemester = Carbon::parse($getRangeDateSemester->semester1);
+                $endSemester = Carbon::parse($getRangeDateSemester->end_semester1);
+
+                // Ambil semua nama bulan di antara dua tanggal
+                $monthsInRange = [];
+                $current = $startSemester->copy();
+                while ($current <= $endSemester) {
+                    $monthsInRange[] = $current->format('F'); // 'F' = nama bulan full, contoh: 'July'
+                    $current->addMonth();
+                }
+
+                // Query monthly_activities
+                $monthlyActivity = MonthlyActivity::where('grades', 'upper')
+                    ->whereIn('month', $monthsInRange)
+                    ->where('academic_year', session('academic_year'))
+                    ->get();
+                
+            } elseif ($semester == 2) {
+                $getRangeDateSemester = Master_academic::where('is_use', true)->first();
+                $startSemester = Carbon::parse($getRangeDateSemester->semester2);
+                $endSemester = Carbon::parse($getRangeDateSemester->end_semester2);
+
+                // Ambil semua nama bulan di antara dua tanggal
+                $monthsInRange = [];
+                $current = $startSemester->copy();
+                while ($current <= $endSemester) {
+                    $monthsInRange[] = $current->format('F'); // 'F' = nama bulan full, contoh: 'July'
+                    $current->addMonth();
+                }
+
+                // Query monthly_activities
+                $monthlyActivity = MonthlyActivity::where('grades', 'upper')
+                    ->whereIn('month', $monthsInRange)
+                    ->where('academic_year', session('academic_year'))
+                    ->get();
+            }
 
             $studentMonthlyActivity = Student_Monthly_Activity::join('students', 'students.id', '=', 'student_monthly_activities.student_id')
                 ->join('monthly_activities', 'monthly_activities.id', '=', 'student_monthly_activities.monthly_activity_id')
@@ -5099,6 +5313,7 @@ class ReportController extends Controller
                 ->orderBy('students.name', 'asc')
                 ->get();
 
+            // dd($monthlyActivity);
             $data = [
                 'semester'      => $semester,
                 'student'       => $student,
@@ -5142,6 +5357,7 @@ class ReportController extends Controller
 
             $learningSkills = Report_card::where('student_id', $id)
                 ->where('semester', $semester)
+                ->where('academic_year', session('academic_year'))
                 ->first();
 
             $gradeId = Student::where('id', $id)->value('grade_id');
@@ -5468,9 +5684,9 @@ class ReportController extends Controller
 
             $student->date_of_registration = Carbon::parse($student->date_of_registration);
 
-            $academicYear = Master_academic::first()->value('academic_year');
+            $academicYear = Master_academic::where('is_use', true)->value('academic_year');
 
-            $remarks = Acar_comment::where('student_id', $id)->value('comment');
+            $remarks = Acar_comment::where('student_id', $id)->where('academic_year', session('academic_year'))->value('comment');
 
             $data = [
                 'student' => $student,
@@ -5487,6 +5703,8 @@ class ReportController extends Controller
                 'date' => $date,
                 'date_of_registration' => $date_of_registration,
             ];
+
+            // dd($data);
 
             $pdf = app('dompdf.wrapper');
             $pdf->set_option('isRemoteEnabled', true);
@@ -5508,6 +5726,7 @@ class ReportController extends Controller
 
             $learningSkills = Report_card::where('student_id', $id)
                 ->where('semester', $semester)
+                ->where('academic_year', session('academic_year'))
                 ->first();
 
             $date = Master_academic::where('is_use', TRUE)->value('report_card2');
@@ -5614,7 +5833,7 @@ class ReportController extends Controller
 
             $classTeacher = Teacher_grade::where('teacher_grades.grade_id', $student->grade_id)
                 ->join('teachers', 'teachers.id', 'teacher_grades.teacher_id')
-                ->select('teachers.name as teacher_name')
+                ->select('teachers.name as teacher_name', 'teachers.id as id')
                 ->first();
 
             $relation = Student_relationship::where('student_relations.student_id', $id)
@@ -5806,7 +6025,7 @@ class ReportController extends Controller
                                 'grades_academic' => $score->grades_academic,
                                 'eca_1' => $score->eca_1,
                                 'grades_eca_1' => $score->grades_eca_1,
-                                'eca_2' => $score->grades_eca_2,
+                                'eca_2' => $score->eca_2,
                                 'grades_eca_2' => $score->grades_eca_2,
                                 'self_development' => $score->self_development,
                                 'grades_self_development' => $score->grades_self_development,
@@ -5826,12 +6045,64 @@ class ReportController extends Controller
                 })->values()->all();
             }
 
+            $results = Sooa_primary::join('students', 'students.id', '=', 'sooa_primaries.student_id')
+                ->where('sooa_primaries.grade_id', $gradeId)
+                ->where('sooa_primaries.academic_year', $academic_year)
+                ->where('students.id', $student->student_id)
+                ->where('students.is_active', true)
+                ->orderBy('students.name', 'asc')
+                ->get();
+
+
+            $countAverageMarks = $results->groupBy('student_id')->map(function ($scores) {
+                $student = $scores->first();
+
+                $scoresBySemester = $scores->groupBy('semester')->map(function ($semesterScores) {
+                    return $semesterScores->map(function ($score) {
+                        return [
+                            'final_score' => $score->final_score,
+                            'grades_final_score' => $score->grades_final_score,
+                            'semester' => $score->semester,
+                        ];
+                    })->all();
+                });
+
+                $finalScores = $scores->pluck('final_score');
+                $averageFinalScore = $finalScores->count() > 0 ? round($finalScores->sum() / $finalScores->count(), 1) : 0;
+                $marks = $this->determineGrade($averageFinalScore);
+
+                return [
+                    'student_id' => $student->student_id,
+                    'student_name' => $student->name,
+                    'scores' => $scoresBySemester,
+                    'average_final_score' => $averageFinalScore,
+                    'marks' => $marks,
+                ];
+            })->values()->all();
+
+            $data = [
+                'student_id'         => $id,
+                'grade_id'           => $gradeId,
+                'class_teacher_id'   => $classTeacher->id,
+                'final_score'        => $countAverageMarks[0]['average_final_score'],
+                'grades_final_score' => $countAverageMarks[0]['marks'],
+                'promotion'          => 1,
+                'academic_year'      => session('academic_year'),
+                'created_at'         => now(),
+            ];
+
+            Tcop::updateOrCreate(
+                ['student_id' => $id, 'grade_id' => $gradeId, 
+                'class_teacher_id' => $classTeacher->id, 'academic_year' => session('academic_year')],
+                $data
+            );
+
             $tcop = Tcop::where('student_id', $id)
                 ->where('academic_year', $academic_year)
                 ->select('tcops.final_score as final_score', 'tcops.grades_final_score as grades_final_score')
                 ->get();
 
-            $academicYear = Master_academic::first()->value('academic_year');
+            $academicYear = Master_academic::where('is_use', true)->value('academic_year');
 
             $data = [
                 'student' => $student,
@@ -5849,6 +6120,8 @@ class ReportController extends Controller
                 'date' => $date,
                 'date_of_registration' => $date_of_registration,
             ];
+
+            // dd($data);
 
             $pdf = app('dompdf.wrapper');
             $pdf->set_option('isRemoteEnabled', true);
@@ -5941,7 +6214,7 @@ class ReportController extends Controller
                 ];
             })->values()->all();
 
-            $academicYear = Master_academic::first()->value('academic_year');
+            $academicYear = Master_academic::where('is_use', true)->value('academic_year');
 
             if ($semester == 1) {
                 $data = [
@@ -6059,7 +6332,7 @@ class ReportController extends Controller
                 ];
             })->values()->all();
 
-            $academicYear = Master_academic::first()->value('academic_year');
+            $academicYear = Master_academic::where('is_use', true)->value('academic_year');
 
             $monthlyActivity = MonthlyActivity::where('grades', '=', 'lower')->get();
 
@@ -6200,7 +6473,7 @@ class ReportController extends Controller
 
             // dd($studentMonthlyActivity);
 
-            $academicYear = Master_academic::first()->value('academic_year');
+            $academicYear = Master_academic::where('is_use', true)->value('academic_year');
 
             if ($semester == 1) {
                 $data = [
@@ -6322,7 +6595,7 @@ class ReportController extends Controller
                 ];
             })->values()->all();
 
-            $academicYear = Master_academic::first()->value('academic_year');
+            $academicYear = Master_academic::where('is_use', true)->value('academic_year');
 
             $monthlyActivity = MonthlyActivity::where('grades', '=', 'lower')->get();
 
@@ -6452,7 +6725,7 @@ class ReportController extends Controller
                 ];
             })->values()->all();
 
-            $academicYear = Master_academic::first()->value('academic_year');
+            $academicYear = Master_academic::where('is_use', true)->value('academic_year');
 
             $results = Grade::join('students', 'students.grade_id', '=', 'grades.id')
                 ->join('grade_exams', 'grade_exams.grade_id', '=', 'grades.id')
@@ -6662,7 +6935,7 @@ class ReportController extends Controller
                 ];
             })->values()->all();
 
-            $academicYear = Master_academic::first()->value('academic_year');
+            $academicYear = Master_academic::where('is_use', true)->value('academic_year');
 
             if ($semester == 1) {
                 $data = [
@@ -7396,6 +7669,7 @@ class ReportController extends Controller
 
             $learningSkills = Report_card::where('student_id', $id)
                 ->where('semester', $semester)
+                ->where('academic_year', session('academic_year'))
                 ->first();
 
             $gradeId = Student::where('id', $id)->value('grade_id');
@@ -7703,9 +7977,9 @@ class ReportController extends Controller
 
             $student->date_of_registration = Carbon::parse($student->date_of_registration);
 
-            $academicYear = Master_academic::first()->value('academic_year');
+            $academicYear = Master_academic::where('is_use', true)->value('academic_year');
 
-            $remarks = Acar_comment::where('student_id', $id)->value('comment');
+            $remarks = Acar_comment::where('student_id', $id)->where('academic_year', session('academic_year'))->value('comment');
 
             // dd($scoresByStudent);
 
@@ -7738,6 +8012,7 @@ class ReportController extends Controller
 
             $learningSkills = Report_card::where('student_id', $id)
                 ->where('semester', $semester)
+                ->where('academic_year', session('academic_year'))
                 ->first();
 
             $date = Master_academic::where('is_use', TRUE)->value('report_card2');
@@ -8050,7 +8325,7 @@ class ReportController extends Controller
 
             $student->date_of_registration = Carbon::parse($student->date_of_registration);
 
-            $academicYear = Master_academic::first()->value('academic_year');
+            $academicYear = Master_academic::where('is_use', true)->value('academic_year');
 
             // dd($scoresByStudentSooa);
 
@@ -8100,13 +8375,12 @@ class ReportController extends Controller
                 ->select('teachers.name as teacher_name')
                 ->first();
 
-            // $remarks = Mid_report::where('mid_reports.student_id', '=', $id)->value('remarks'); 
-            $ct = Mid_report::where('mid_reports.student_id', '=', $id)->value('critical_thinking');
-            $cs = Mid_report::where('mid_reports.student_id', '=', $id)->value('cognitive_skills');
-            $ls = Mid_report::where('mid_reports.student_id', '=', $id)->value('life_skills');
-            $les = Mid_report::where('mid_reports.student_id', '=', $id)->value('learning_skills');
-            $saed = Mid_report::where('mid_reports.student_id', '=', $id)->value('social_and_emotional_development');
-            $academicYear = Master_academic::first()->value('academic_year');
+            $ct = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->value('critical_thinking');
+            $cs = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->value('cognitive_skills');
+            $ls = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->value('life_skills');
+            $les = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->value('learning_skills');
+            $saed = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->value('social_and_emotional_development');
+            $academicYear = Master_academic::where('is_use', true)->value('academic_year');
 
             $resultsAttendance = Grade::join('students', 'students.grade_id', '=', 'grades.id')
                 ->leftJoin('attendances', function ($join) {

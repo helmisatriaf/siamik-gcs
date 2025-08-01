@@ -384,11 +384,14 @@
                                   ❌
                               @endif
                           @else
+                            @if ($el->model == 'uf')
                               @if ($el['exam'][0]['score'][0]->student_upload)
                                   ✔
                               @else
                                   ❌
                               @endif
+                            @else
+                            @endif
                           @endif
                       </span>
                       

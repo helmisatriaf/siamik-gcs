@@ -1457,6 +1457,7 @@ Route::middleware(['auth.login', 'role:student'])->prefix('/student')->group(fun
    });
 
    Route::post('/post-answer', [ScoreController::class, 'actionAnswerQuestionStudent'])->name('action.answer.student');
+   Route::post('/post-desc-late', [ScoreController::class, 'actionPostLateAnswer'])->name('action.desc.late.answer.student');
 });
 
 Route::middleware(['auth.login', 'role:parent'])->prefix('/parent')->group(function () {

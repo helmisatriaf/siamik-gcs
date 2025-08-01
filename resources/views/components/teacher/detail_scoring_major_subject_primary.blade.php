@@ -28,7 +28,7 @@
     </div>
 
     <div class="card" style="height:70vh;overflow-y: auto;border-radius:12px;">
-        <div class="card-header position-relative">
+        <div class="card-header">
             <div class="row">
                 <div class="col-6">
                     <p class="text-bold">Major Subject Assessment</p>
@@ -100,45 +100,45 @@
                 <table class="table table-striped table-bordered" style="width:3000px;">
                     <thead>
                         <tr>
-                            <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">S/N</th>
-                            <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">First Name</th>
-                            <th colspan="{{ $data['grade']->total_homework + 2 }}" class="text-center" style="vertical-align : middle;text-align:center;">Homework</th>
-                            <th colspan="{{ $data['grade']->total_exercise + 2 }}" class="text-center" style="vertical-align : middle;text-align:center;">Exercise</th>
-                            <th colspan="{{ $data['grade']->total_participation + 2 }}" class="text-center" style="vertical-align : middle;text-align:center;">Participation</th>
-                            <th class="text-center" style="vertical-align : middle;text-align:center;">R (30%)</th>
-                            <th colspan="{{ $data['grade']->total_quiz + 1 }}" class="text-center" style="vertical-align : middle;text-align:center;">Quiz</th>
-                            <th class="text-center" style="vertical-align : middle;text-align:center;">R (30%)</th>
-                            <th colspan="1" class="text-center" style="vertical-align : middle;text-align:center;">Final</th>
-                            <th class="text-center" style="vertical-align : middle;text-align:center;">R (40%)</th>
-                            <th class="text-center" style="vertical-align : middle;text-align:center;">Total</th>
-                            <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Remedial</th>
-                            <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;width: 20%;">Comment</th>
+                            <th rowspan="2" class="text-center align-middle" style="vertical-align : middle;text-align:center;">S/N</th>
+                            <th rowspan="2" class="text-center align-middle" style="vertical-align : middle;text-align:center;width: 10%;">First Name</th>
+                            <th colspan="{{ $data['grade']->total_homework + 2 }}" class="text-center align-middle" style="vertical-align : middle;text-align:center;">Homework</th>
+                            <th colspan="{{ $data['grade']->total_exercise + 2 }}" class="text-center align-middle" style="vertical-align : middle;text-align:center;">Exercise</th>
+                            <th colspan="{{ $data['grade']->total_participation + 2 }}" class="text-center align-middle" style="vertical-align : middle;text-align:center;">Participation</th>
+                            <th class="text-center align-middle" style="vertical-align : middle;text-align:center;">R (30%)</th>
+                            <th colspan="{{ $data['grade']->total_quiz + 1 }}" class="text-center align-middle" style="vertical-align : middle;text-align:center;">Quiz</th>
+                            <th class="text-center align-middle" style="vertical-align : middle;text-align:center;">R (30%)</th>
+                            <th colspan="1" class="text-center align-middle" style="vertical-align : middle;text-align:center;">Final</th>
+                            <th class="text-center align-middle" style="vertical-align : middle;text-align:center;">R (40%)</th>
+                            <th class="text-center align-middle" style="vertical-align : middle;text-align:center;">Total</th>
+                            <th rowspan="2" class="text-center align-middle" style="vertical-align : middle;text-align:center;">Remedial</th>
+                            <th rowspan="2" class="text-center align-middle" style="vertical-align : middle;text-align:center;width: 20%;">Comment</th>
                         </tr>
                         <tr>
                             @for ($i=1; $i <= $data['grade']->total_homework; $i++)
-                                <td class="text-center">{{ $i }}</td>
+                                <td class="text-center align-middle">{{ $i }}</td>
                             @endfor
-                            <td class="text-center">Avg</td>
-                            <td style="background-color:beige;" class="text-center">10%</td>
+                            <td class="text-center align-middle">Avg</td>
+                            <td style="background-color:beige;" class="text-center align-middle">10%</td>
                             @for ($j=1; $j <= $data['grade']->total_exercise; $j++)
-                                <td class="text-center">{{ $j }}</td>
+                                <td class="text-center align-middle">{{ $j }}</td>
                             @endfor
-                            <td class="text-center">Avg</td>
-                            <td style="background-color:beige;" class="text-center">15%</td>
+                            <td class="text-center align-middle">Avg</td>
+                            <td style="background-color:beige;" class="text-center align-middle">15%</td>
                             @for ($k=1; $k <= $data['grade']->total_participation; $k++)
-                                <td class="text-center">{{ $k }}</td>
+                                <td class="text-center align-middle">{{ $k }}</td>
                             @endfor
-                            <td class="text-center">Avg</td>
-                            <td style="background-color:beige;" class="text-center">5%</td>
-                            <td style="background-color:beige;" class="text-center">H+E+P</td>
+                            <td class="text-center align-middle">Avg</td>
+                            <td style="background-color:beige;" class="text-center align-middle">5%</td>
+                            <td style="background-color:beige;" class="text-center align-middle">H+E+P</td>
                             @for ($l=1; $l <= $data['grade']->total_quiz; $l++)
-                                <td class="text-center">{{ $l }}</td>
+                                <td class="text-center align-middle">{{ $l }}</td>
                             @endfor
-                            <td class="text-center">Avg</td>
-                            <td style="background-color:beige;" class="text-center">Quiz</td>
-                            <td class="text-center">Exam</td>
-                            <td style="background-color:beige;" class="text-center">F.E</td>
-                            <td style="background-color:beige;" class="text-center">100%</td>
+                            <td class="text-center align-middle">Avg</td>
+                            <td style="background-color:beige;" class="text-center align-middle">Quiz</td>
+                            <td class="text-center align-middle">Exam</td>
+                            <td style="background-color:beige;" class="text-center align-middle">F.E</td>
+                            <td style="background-color:beige;" class="text-center align-middle">100%</td>
                         </tr>
                     </thead>
         
@@ -146,72 +146,72 @@
                     @if (!empty($data['students']))
                         @foreach ($data['students'] as $student)                    
                             <tr>
-                                <td class="text-center" style="vertical-align : middle;text-align:center;">{{ $loop->iteration }}</td>  <!-- nomer -->
-                                <td style="position: sticky; left: 0; background: #ffffff; z-index: 99;">{{ $student['student_name'] }}</td> <!-- name -->
+                                <td class="text-center align-middle" style="vertical-align : middle;text-align:center;">{{ $loop->iteration }}</td>  <!-- nomer -->
+                                <td class="align-middle" style="position: sticky; left: 0; background: #ffffff; z-index: 99;">{{ $student['student_name'] }}</td> <!-- name -->
                             
         
                                 <!-- COUNT HOMEWORK -->
                                 @foreach ($student['scores'] as $index => $score)
                                     @if($score['type_exam'] == 1)
-                                        <td class="text-center">{{ $score['score'] }}</td>
+                                        <td class="text-center align-middle">{{ $score['score'] }}</td>
                                     @endif
                                 @endforeach
-                                <td>{{ $student['avg_homework'] }} </td>
-                                <td style="background-color:beige;">{{ $student['percent_homework'] }} </td>
+                                <td class="text-center align-middle">{{ $student['avg_homework'] }} </td>
+                                <td class="text-center align-middle" style="background-color:beige;">{{ $student['percent_homework'] }} </td>
                                 <!-- END HOMEWORK -->
         
         
                                 <!-- COUNT EXERCISE -->
                                 @foreach ($student['scores'] as $index => $score)
                                     @if($score['type_exam'] == 2)
-                                        <td class="text-center">{{ $score['score'] }}</td>
+                                        <td class="text-center align-middle">{{ $score['score'] }}</td>
                                     @endif
                                 @endforeach
         
-                                <td class="text-center">{{ $student['avg_exercise'] }}</td> <!-- nilai rata-rata exercise -->
-                                <td style="background-color:beige;" class="text-center">{{ $student['percent_exercise'] }}</td> <!-- 15% dari nilai rata-rata exercise -->
+                                <td class="text-center align-middle">{{ $student['avg_exercise'] }}</td> <!-- nilai rata-rata exercise -->
+                                <td style="background-color:beige;" class="text-center align-middle">{{ $student['percent_exercise'] }}</td> <!-- 15% dari nilai rata-rata exercise -->
                                 <!-- END COUNT EXERCISE -->
         
         
                                 <!-- COUNT PARTICIPATION -->
                                 @foreach ($student['scores'] as $index => $score)
                                     @if($score['type_exam'] == 5)
-                                        <td class="text-center">{{ $score['score'] }}</td> 
+                                        <td class="text-center align-middle">{{ $score['score'] }}</td> 
                                     @endif
                                 @endforeach
         
-                                <td class="text-center">{{ $student['avg_participation'] }}</td> <!-- nilai rata-rata exercise -->
-                                <td style="background-color:beige;" class="text-center">{{ $student['percent_participation'] }}</td> <!-- 15% dari nilai rata-rata exercise -->
+                                <td class="text-center align-middle">{{ $student['avg_participation'] }}</td> <!-- nilai rata-rata exercise -->
+                                <td style="background-color:beige;" class="text-center align-middle">{{ $student['percent_participation'] }}</td> <!-- 15% dari nilai rata-rata exercise -->
                                 
                                 <!-- END COUNT PARTICIPATION -->
         
                                 <!-- H+E+P -->
-                                <td style="background-color:beige;">{{$student['h+e+p'] }}</td>
+                                <td class="text-center align-middle" style="background-color:beige;">{{$student['h+e+p'] }}</td>
                                 <!-- END H+E+P -->
         
         
                                 <!-- COUNT QUIZ -->
                                 @foreach ($student['scores'] as $index => $score)
                                     @if($score['type_exam'] == 3)
-                                        <td class="text-center">{{ $score['score'] }}</td> <!-- total jumlah homework -->
+                                        <td class="text-center align-middle">{{ $score['score'] }}</td> <!-- total jumlah homework -->
                                     @endif
                                 @endforeach
-                                <td>{{ $student['avg_quiz'] }}</td>
-                                <td style="background-color:beige;">{{ $student['percent_quiz'] }}</td>
+                                <td class="text-center align-middle">{{ $student['avg_quiz'] }}</td>
+                                <td class="text-center align-middle" style="background-color:beige;">{{ $student['percent_quiz'] }}</td>
                                 <!-- END COUNT QUIZ -->
         
                                 <!-- COUNT F.EXAM -->
                                 @php $foundFinalExam = false; @endphp
                                 @foreach ($student['scores'] as $score)
                                     @if($score['type_exam'] == 4)
-                                        <td class="text-center">{{ $score['score'] }}</td>
+                                        <td class="text-center align-middle">{{ $score['score'] }}</td>
                                         @php $foundFinalExam = true; @endphp
                                     @endif
                                 @endforeach
                                 @if(!$foundFinalExam)
-                                    <td>&nbsp;</td>
+                                    <td class="text-center align-middle">&nbsp;</td>
                                 @endif
-                                <td style="background-color:beige;">{{ $student['percent_fe'] ?? '&nbsp;' }}</td>
+                                <td class="text-center align-middle" style="background-color:beige;">{{ $student['percent_fe'] ?? '&nbsp;' }}</td>
                                 <!-- END COUNT F.EXAM -->
         
                                 <!-- FINAL SCORE -->
@@ -289,7 +289,7 @@
                     </form>
                     @else
                     <tr>
-                        <td colspan="15" class="text-center">
+                        <td colspan="15" class="text-center align-middle">
                             Data Empty
                         </td>    
                     </tr>

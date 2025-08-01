@@ -23,7 +23,7 @@ class MonthlyActivitiesController extends Controller
             'child' => 'database monthly activities',
             ]);
 
-            $data = MonthlyActivity::get();
+            $data = MonthlyActivity::orderBy('id', 'desc')->get();
             $monthActive = Master_academic::where('is_use', 1)->first();
             $monthActivity = [];
 

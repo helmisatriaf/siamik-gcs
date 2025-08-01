@@ -331,29 +331,6 @@
                         <div class="col-lg-2 col-md-4 col-6">
                            <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
                               <a  type="button"
-                                 href="{{url('teacher/dashboard/report') . '/tcop/detail/' . $dgt->id}}"
-                                 class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
-                              
-                                 <!-- Bagian Utama -->
-                                 <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
-                                       <!-- Ikon -->
-                                       <div>
-                                          <img src="{{ asset('images/paper.png') }}" 
-                                          alt="avatar" class="profileImage img-fluid" 
-                                          style="width: 50px; height: 50px; cursor: pointer;">
-                                       </div>
-
-                                       <!-- Nama Subject -->
-                                       <div class="inner mt-2">
-                                          <p class="mb-0 text-lg fw-bold text-center text-dark">TCOP</p>
-                                       </div>
-                                 </div>
-                              </a>
-                           </div>       
-                        </div>
-                        <div class="col-lg-2 col-md-4 col-6">
-                           <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
-                              <a  type="button"
                                  href="{{url('teacher/dashboard/report') . '/sooa/detail/' . $dgt->id}}"
                                  class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
                               
@@ -469,6 +446,29 @@
                               </div>       
                            </div>
                         @endif
+                        <div class="col-lg-2 col-md-4 col-6">
+                           <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
+                              <a  type="button"
+                                 href="{{url('teacher/dashboard/report') . '/tcop/detail/' . $dgt->id}}"
+                                 class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
+                              
+                                 <!-- Bagian Utama -->
+                                 <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
+                                       <!-- Ikon -->
+                                       <div>
+                                          <img src="{{ asset('images/paper.png') }}" 
+                                          alt="avatar" class="profileImage img-fluid" 
+                                          style="width: 50px; height: 50px; cursor: pointer;">
+                                       </div>
+
+                                       <!-- Nama Subject -->
+                                       <div class="inner mt-2">
+                                          <p class="mb-0 text-lg fw-bold text-center text-dark">TCOP</p>
+                                       </div>
+                                 </div>
+                              </a>
+                           </div>       
+                        </div>
                      @elseif (strtolower($dgt->name) === "secondary")
                         <div class="col-lg-2 col-md-4 col-6">
                            <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
@@ -511,29 +511,6 @@
                                        <!-- Nama Subject -->
                                        <div class="inner mt-2">
                                           <p class="mb-0 text-lg fw-bold text-center text-dark">SOOA</p>
-                                       </div>
-                                 </div>
-                              </a>
-                           </div>       
-                        </div>
-                        <div class="col-lg-2 col-md-4 col-6">
-                           <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
-                              <a  type="button"
-                                 href="{{url('teacher/dashboard/report') . '/tcop/detailSec/' . $dgt->id}}"
-                                 class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
-                              
-                                 <!-- Bagian Utama -->
-                                 <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
-                                       <!-- Ikon -->
-                                       <div>
-                                          <img src="{{ asset('images/paper.png') }}" 
-                                          alt="avatar" class="profileImage img-fluid" 
-                                          style="width: 50px; height: 50px; cursor: pointer;">
-                                       </div>
-
-                                       <!-- Nama Subject -->
-                                       <div class="inner mt-2">
-                                          <p class="mb-0 text-lg fw-bold text-center text-dark">TCOP</p>
                                        </div>
                                  </div>
                               </a>
@@ -635,6 +612,29 @@
                               </div>       
                            </div>                         
                         @endif
+                        <div class="col-lg-2 col-md-4 col-6">
+                           <div class="small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="background-color: #ffe8d6;border-radius:12px;">
+                              <a  type="button"
+                                 href="{{url('teacher/dashboard/report') . '/tcop/detailSec/' . $dgt->id}}"
+                                 class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
+                              
+                                 <!-- Bagian Utama -->
+                                 <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
+                                       <!-- Ikon -->
+                                       <div>
+                                          <img src="{{ asset('images/paper.png') }}" 
+                                          alt="avatar" class="profileImage img-fluid" 
+                                          style="width: 50px; height: 50px; cursor: pointer;">
+                                       </div>
+
+                                       <!-- Nama Subject -->
+                                       <div class="inner mt-2">
+                                          <p class="mb-0 text-lg fw-bold text-center text-dark">TCOP</p>
+                                       </div>
+                                 </div>
+                              </a>
+                           </div>       
+                        </div>
                      @endif   
                   </div>
                </div> 
