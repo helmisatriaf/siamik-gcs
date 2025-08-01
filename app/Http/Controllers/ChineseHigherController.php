@@ -56,10 +56,10 @@ class ChineseHigherController extends Controller
             $chineseLowerStudent = Chinese_lower::pluck('student_id')->toArray();
             
 
-            // dd($chineseHigherStudent);
+            // dd($chineseLowerStudent);
             if(!empty($chineseHigherStudent) || !empty($chineseLowerStudent)){
                 $data = Student::leftJoin('grades', 'grades.id', '=', 'students.grade_id')
-                    ->whereIn('students.grade_id', $gradeSecondary)
+                    // ->whereIn('students.grade_id', $gradeSecondary)
                     ->whereNotIn('students.id', $chineseHigherStudent)
                     ->whereNotIn('students.id', $chineseLowerStudent)
                     ->where('students.is_active', true)
@@ -68,7 +68,7 @@ class ChineseHigherController extends Controller
                     ->get();
             }else{
                 $data = Student::leftJoin('grades', 'grades.id', '=', 'students.grade_id')
-                    ->whereIn('students.grade_id', $gradeSecondary)
+                    // ->whereIn('students.grade_id', $gradeSecondary)
                     ->where('students.is_active', true)
                     ->select('students.*','grades.name as grade_name', 'grades.class as grade_class')
                     ->orderByRaw('FIELD(grades.class, "1", "2", "3")')
