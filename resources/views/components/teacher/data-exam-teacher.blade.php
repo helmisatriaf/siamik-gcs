@@ -171,7 +171,29 @@
                                         </span>
                                     @break
                                 @endswitch
-                                
+                                @switch($el->scoring_status)
+                                    @case(1)
+                                        <span class="text-sm badge badge-danger">
+                                            Belum dinilai 
+                                        </span><br>
+                                        @break
+                                    @case(2)
+                                        <span class="text-sm badge badge-warning">
+                                            Sebagian Sudah dinilai
+                                        </span><br>
+                                        @break
+                                    @case(3)
+                                        <span class="text-sm badge badge-success">
+                                            Sudah dinilai
+                                        </span><br>
+                                        @break
+                                    @default
+                                         <span class="text-sm badge badge-danger">
+                                            Belum dinilai 
+                                        </span><br>
+                                    @break
+                                @endswitch
+
                                 <i class="fas fa-book"></i> <span class="text-sm text-primary">{{ $el->open_date ? 'Acces By Student in ' .\Carbon\Carbon::parse($el->open_date)->translatedFormat('l, d F Y')  : '-' }}</span><br>
                                 <i class="fas fa-clock"></i> 
                                 @php
@@ -194,8 +216,6 @@
                                     </span> <br>
                                     <span class="badge bg-light"><i class="fas fa-check"></i> Completed</span>
                                 @endif
-
-                                
                             </p>                         
                         </div>
                     </div>

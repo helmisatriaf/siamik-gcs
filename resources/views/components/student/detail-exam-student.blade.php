@@ -306,7 +306,7 @@
                 <div class="post">
                   <p>Recent Activity
                     @if ($getStatus->desc_late)
-                      <span class="badge badge-warning">Late</span>
+                      <span class="badge badge-warning">Late : {{$getStatus->desc_late}}</span>
                     @endif
                   </p>
                   <div class="user-block">
@@ -660,7 +660,7 @@
     Swal.fire({
       title: 'Successfully',
       text: 'Oops you submitted the task past the assessment deadline',
-      timer: 8000,
+      timer: 5000,
       showConfirmButton: false,
       imageUrl: '/images/confuse.png',
       imageWidth: 100,
@@ -693,9 +693,51 @@
         }).then((result) => {
           if (result.isConfirmed) {
             const keterangan = result.value;
-            // Kirim ke server atau proses lebih lanjut
-            console.log('Keterangan:', keterangan);
-            // Contoh: kirim via AJAX atau simpan ke form
+            const url = "{{ route('action.desc.late.answer.student') }}";
+
+            $.ajax({
+              url: url,
+              method: 'POST',
+              data: {
+                id: {{$getStatus->id}},
+                desc_late: keterangan,
+                _token: '{{ csrf_token() }}',
+              },
+              success: function(response) {
+                if (response.success) {
+                  Swal.fire({
+                    title: 'Successfully',
+                    text: 'Your description already save',
+                    timer: 2000,
+                    showConfirmButton: false,
+                    imageUrl: '/images/happy.png', 
+                    imageWidth: 100,
+                    imageHeight: 100,
+                    imageAlt: 'Custom image',
+                    customClass: {
+                      popup: 'custom-swal-style'
+                    },
+                  });
+                } else {
+                  Swal.fire({
+                    title: 'Oops',
+                    text: 'Error Sistem',
+                    timer: 3000,
+                    showConfirmButton: false,
+                    imageUrl: '/images/confuse.png', 
+                    imageWidth: 100,
+                    imageHeight: 100,
+                    imageAlt: 'Custom image',
+                    customClass: {
+                      popup: 'custom-swal-style'
+                    },
+                  });
+                }
+              },
+              error: function(xhr, status, error) {
+                alert('Error: ' + error);
+              }
+            });
 
           }
         });

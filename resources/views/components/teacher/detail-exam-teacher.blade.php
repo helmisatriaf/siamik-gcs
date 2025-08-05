@@ -37,7 +37,7 @@ $days = floor($diff / (60 * 60 * 24)); // Konversi detik ke hari
             <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
               <div class="row">
                 <div class="col-12 col-sm-4">
-                  <div class="info-box bg-light" style="border-radius: 12px;">
+                  <div class="info-box" style="border-radius: 12px;background-color: #fff3c0;">
                     <div class="info-box-content">
                       <span class="info-box-text text-center text-black text-bold">{{$data->name_exam}}</span>
                       {{-- <span class="info-box-number text-center text-muted mb-0">2300</span> --}}
@@ -45,7 +45,7 @@ $days = floor($diff / (60 * 60 * 24)); // Konversi detik ke hari
                   </div>
                 </div>
                 <div class="col-12 col-sm-4">
-                  <div class="info-box bg-light" style="border-radius: 12px;">
+                  <div class="info-box" style="border-radius: 12px;background-color: #fff3c0;">
                     <div class="info-box-content">
                       <span class="info-box-text text-center text-black text-bold">{{$data->type_exam}} - {{$data->subject_name}}</span>
                       {{-- <span class="info-box-number text-center text-muted mb-0">2000</span> --}}
@@ -53,7 +53,7 @@ $days = floor($diff / (60 * 60 * 24)); // Konversi detik ke hari
                   </div>
                 </div>
                 <div class="col-12 col-sm-4">
-                  <div class="info-box bg-light" style="border-radius: 12px;">
+                  <div class="info-box" style="border-radius: 12px;background-color: #fff3c0;">
                     <div class="info-box-content">
                       <span class="info-box-text text-center text-black text-bold">Deadline {{ \Carbon\Carbon::parse($data->date_exam)->translatedFormat('d F Y') }} </span>
                       {{-- <span class="info-box-number text-center text-muted mb-0">20</span> --}}
@@ -305,7 +305,10 @@ $days = floor($diff / (60 * 60 * 24)); // Konversi detik ke hari
                   </a>
                 </p>
                 @endif
-                <div class="row flex justify-content-center ">
+
+                <a href="{{ url('teacher/dashboard/exam') . '/score/' . $data->id }}" class="btn btn-success btn-sm w-100">See Score Student</a>
+                
+                <div class="row flex justify-content-center">
                   <div class="col-md-12">
                     @if (session('role') == 'teacher')
                       @php

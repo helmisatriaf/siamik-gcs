@@ -42,14 +42,14 @@
                         <tbody>
                             @foreach ($data as $el)
                             <tr id="{{'index_grade_' . $el->id}}">
-                                <td style="width: 75%">
+                                <td style="width: 65%">
                                     @php
                                         $ext = pathinfo($el->file_name, PATHINFO_EXTENSION);
                                     @endphp
 
                                     @if ($el->file_name !== null)
                                         @if (in_array(strtolower($ext), ['jpg', 'jpeg', 'png', 'gif', 'webp', 'heic']))
-                                            <img src="{{ asset('storage/file/answers/'.$el->file_name) }}" class="img-fluid" alt="">
+                                            <img src="{{ asset('storage/file/answers/'.$el->file_name) }}" class="img-fluid">
                                         @elseif (strtolower($ext) === 'pdf')
                                             {{-- <a href="{{ asset('storage/file/answers/'.$el->file_name) }}" target="_blank">Lihat PDF</a> --}}
                                             <iframe src="{{ asset('storage/file/answers/'.$el->file_name) }}" width="100%" height="500px"></iframe>
@@ -60,6 +60,9 @@
                                     @endif
                                 </td>
                                 <td class="">
+                                    @if ($el->late !== NULL)
+                                        <span class="badge badge-warning">Late : {{$el->late}}</span>
+                                    @endif
                                     <p class="text-sm">
                                         {{ $loop->index + 1 }}. {{ $el->student_name }}
                                     </p>
