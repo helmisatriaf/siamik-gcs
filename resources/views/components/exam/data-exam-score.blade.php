@@ -43,8 +43,18 @@
                             @foreach ($data as $el)
                             <tr id="{{'index_grade_' . $el->id}}">
                                 <td style="width: 75%">
+                                    @php
+                                        $ext = pathinfo($el->file_name, PATHINFO_EXTENSION);
+                                    @endphp
+
                                     @if ($el->file_name !== null)
-                                        <iframe src="{{ asset('storage/file/answers/'.$el->file_name) }}" width="100%" height="700px"></iframe>
+                                        @if (in_array(strtolower($ext), ['jpg', 'jpeg', 'png', 'gif', 'webp', 'heic']))
+                                            <img src="{{ asset('storage/file/answers/'.$el->file_name) }}" class="img-fluid" alt="">
+                                        @elseif (strtolower($ext) === 'pdf')
+                                            {{-- <a href="{{ asset('storage/file/answers/'.$el->file_name) }}" target="_blank">Lihat PDF</a> --}}
+                                            <iframe src="{{ asset('storage/file/answers/'.$el->file_name) }}" width="100%" height="500px"></iframe>
+                                        @endif
+                                        {{-- <img src="{{ asset('storage/file/answers/'.$el->file_name) }}" class="img-fluid" alt=""> --}}
                                     @else
                                         <p class="text-center text-danger">Student has not submitted the answer yet.</p>
                                     @endif
@@ -54,13 +64,19 @@
                                         {{ $loop->index + 1 }}. {{ $el->student_name }}
                                     </p>
                                     <div class="input-group">
-                                        <input name="exam_id" type="text" class="form-control d-none" id="exam_id" value="{{ $el->exam_id }}">
-                                        <input name="subject_id" type="text" class="form-control d-none" id="subject_id" value="{{ $el->subject_id }}">
-                                        <input name="grade_id" type="text" class="form-control d-none" id="grade_id" value="{{ $el->grade_id }}">
-                                        <input name="teacher_id" type="text" class="form-control d-none" id="teacher_id" value="{{ $el->teacher_id }}">
-                                        <input name="type_exam_id" type="text" class="form-control d-none" id="type_exam_id" value="{{ $el->type_exam_id }}">
-                                        <input name="student_id[]" type="text" class="form-control d-none" id="student_id" value="{{ $el->student_id }}">
-                                        <input name="score[]" type="number" class="form-control score-input" id="score" placeholder="Score" value="{{ old('score', $el->score) }}" autocomplete="off" min="0" max="100" required>
+                                        <input name="exam_id" type="text" class="form-control d-none" id="exam_id-{{$el->student_id}}" value="{{ $el->exam_id }}">
+                                        <input name="subject_id" type="text" class="form-control d-none" id="subject_id-{{$el->student_id}}" value="{{ $el->subject_id }}">
+                                        <input name="grade_id" type="text" class="form-control d-none" id="grade_id-{{$el->student_id}}" value="{{ $el->grade_id }}">
+                                        <input name="teacher_id" type="text" class="form-control d-none" id="teacher_id-{{$el->student_id}}" value="{{ $el->teacher_id }}">
+                                        <input name="type_exam_id" type="text" class="form-control d-none" id="type_exam_id-{{$el->student_id}}" value="{{ $el->type_exam_id }}">
+                                        <input name="student_id[]" type="text" class="form-control d-none" id="student_id-{{$el->student_id}}" value="{{ $el->student_id }}">
+                                        <input name="score[]" type="number" class="form-control score-input" id="score-{{$el->student_id}}" placeholder="Score" value="{{ old('score', $el->score) }}" autocomplete="off" min="0" max="100" required>
+                                    </div>
+                                     <p class="mt-3 text-sm">
+                                        Comment <br> <span class="text-danger text-xs">**(Boleh diisi Apresiasi/Pembenaran jawaban)</span>
+                                    </p>
+                                    <div>
+                                        <textarea name="justification[]" id="justification-{{$el->student_id}}" class="summernote">{{$el->justification}}</textarea>
                                     </div>
                                     @if($errors->has('score'))
                                     <p style="color: red">{{ $errors->first('score') }}</p>
@@ -138,11 +154,75 @@
 @if(session('after_update_score'))
     <script>
         Swal.fire({
-            icon: 'success',
-            title: 'Successfully',
-            text: 'Successfully updated the scores in the database.'
+            title: 'Successfully update score',
+            showConfirmButton: false, // Sembunyikan tombol "OK",
+            timer: 1800, // Swal akan hilang dalam 2000ms (2 detik)
+            showConfirmButton: false, // Sembunyikan tombol "OK",
+            imageUrl: '/images/happy.png', // pastikan path ini bisa diakses dari browser
+            imageWidth: 100,
+            imageHeight: 100,
+            imageAlt: 'Custom image',
+            customClass: {
+                popup: 'custom-swal-style'
+            },
         });
     </script>
 @endif
+
+<script src={{asset('assets/vendors/summernote/summernote-lite.min.js')}}></script>
+
+<script>
+    $('.summernote').summernote({
+        tabsize: 2,
+        height: 200,
+        toolbar: [
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['insert', ['picture']]
+        ],
+        callbacks: {
+            onImageUpload: function(files) {
+                for (let i = 0; i < files.length; i++) {
+                    uploadImage(files[i], this);
+                }
+            }
+        }
+    });
+
+    $("#hint").summernote({
+        height: 100,
+        toolbar: false,
+        placeholder: 'type with apple, orange, watermelon and lemon',
+        hint: {
+        words: ['apple', 'orange', 'watermelon', 'lemon'],
+        match: /\b(\w{1,})$/,
+            search: function(keyword, callback) {
+                callback($.grep(this.words, function(item) {
+                    return item.indexOf(keyword) === 0;
+                }));
+            }
+        }
+    });
+    function uploadImage(file, editor) {
+      let data = new FormData();
+      data.append("file", file);
+      data.append("_token", $('meta[name="csrf-token"]').attr('content'));
+
+      $.ajax({
+         url: '/upload-image-question',
+         method: "POST",
+         data: data,
+         contentType: false,
+         cache: false,
+         processData: false,
+         success: function(resp) {
+            $(editor).summernote('insertImage', resp.link);
+         },
+         error: function(err) {
+            alert("Upload gagal");
+            console.error(err);
+         }
+      });
+   }
+</script>
 
 @endsection

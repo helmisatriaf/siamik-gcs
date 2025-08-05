@@ -67,7 +67,7 @@ class ScoreController extends Controller
                 'teachers.name as teacher_name', 'teachers.id as teacher_id', 
                 'type_exams.name as type_exam', 'type_exams.id as type_exam_id',
                 'students.id as student_id', 'students.name as student_name',
-                'scores.score as score', 'scores.file_name as file_name')
+                'scores.score as score', 'scores.file_name as file_name', 'scores.justification as justification')
                 ->orderBy('student_name', 'asc')
                 ->distinct()
                 ->get();
@@ -209,7 +209,7 @@ class ScoreController extends Controller
                         'teachers.name as teacher_name', 'teachers.id as teacher_id', 
                         'type_exams.name as type_exam', 'type_exams.id as type_exam_id',
                         'students.id as student_id', 'students.name as student_name',
-                        'scores.score as score' , 'scores.file_name as file_name')
+                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification')
                         ->orderBy('student_name', 'asc')
                         ->distinct()
                         ->get();
@@ -236,7 +236,7 @@ class ScoreController extends Controller
                         'teachers.name as teacher_name', 'teachers.id as teacher_id', 
                         'type_exams.name as type_exam', 'type_exams.id as type_exam_id',
                         'students.id as student_id', 'students.name as student_name',
-                        'scores.score as score' , 'scores.file_name as file_name')
+                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification')
                         ->orderBy('student_name', 'asc')
                         ->distinct()
                         ->get();
@@ -263,7 +263,7 @@ class ScoreController extends Controller
                         'teachers.name as teacher_name', 'teachers.id as teacher_id', 
                         'type_exams.name as type_exam', 'type_exams.id as type_exam_id',
                         'students.id as student_id', 'students.name as student_name',
-                        'scores.score as score' , 'scores.file_name as file_name')
+                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification')
                         ->orderBy('student_name', 'asc')
                         ->distinct()
                         ->get();
@@ -290,7 +290,7 @@ class ScoreController extends Controller
                         'teachers.name as teacher_name', 'teachers.id as teacher_id', 
                         'type_exams.name as type_exam', 'type_exams.id as type_exam_id',
                         'students.id as student_id', 'students.name as student_name',
-                        'scores.score as score' , 'scores.file_name as file_name')
+                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification')
                         ->orderBy('student_name', 'asc')
                         ->distinct()
                         ->get();
@@ -317,7 +317,7 @@ class ScoreController extends Controller
                         'teachers.name as teacher_name', 'teachers.id as teacher_id', 
                         'type_exams.name as type_exam', 'type_exams.id as type_exam_id',
                         'students.id as student_id', 'students.name as student_name',
-                        'scores.score as score' , 'scores.file_name as file_name')
+                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification')
                         ->orderBy('student_name', 'asc')
                         ->distinct()
                         ->get();
@@ -345,7 +345,7 @@ class ScoreController extends Controller
                         'teachers.name as teacher_name', 'teachers.id as teacher_id', 
                         'type_exams.name as type_exam', 'type_exams.id as type_exam_id',
                         'students.id as student_id', 'students.name as student_name',
-                        'scores.score as score' , 'scores.file_name as file_name')
+                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification')
                         ->orderBy('student_name', 'asc')
                         ->distinct()
                         ->get();
@@ -374,7 +374,7 @@ class ScoreController extends Controller
                         'teachers.name as teacher_name', 'teachers.id as teacher_id', 
                         'type_exams.name as type_exam', 'type_exams.id as type_exam_id',
                         'students.id as student_id', 'students.name as student_name',
-                        'scores.score as score' , 'scores.file_name as file_name')
+                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification')
                         ->orderBy('student_name', 'asc')
                         ->distinct()
                         ->get();
@@ -402,7 +402,7 @@ class ScoreController extends Controller
                         'teachers.name as teacher_name', 'teachers.id as teacher_id', 
                         'type_exams.name as type_exam', 'type_exams.id as type_exam_id',
                         'students.id as student_id', 'students.name as student_name',
-                        'scores.score as score' , 'scores.file_name as file_name')
+                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification')
                         ->orderBy('student_name', 'asc')
                         ->distinct()
                         ->get();
@@ -429,7 +429,7 @@ class ScoreController extends Controller
                         'teachers.name as teacher_name', 'teachers.id as teacher_id', 
                         'type_exams.name as type_exam', 'type_exams.id as type_exam_id',
                         'students.id as student_id', 'students.name as student_name',
-                        'scores.score as score', 'scores.file_name as file_name')
+                        'scores.score as score', 'scores.file_name as file_name', 'scores.justification as justification')
                         ->orderBy('student_name', 'asc')
                         ->distinct()
                         ->get();
@@ -455,13 +455,27 @@ class ScoreController extends Controller
 
             $students = $request->student_id;
             $scores = $request->score;
+            $justification = $request->justification;
 
+            // dd($scores);  
             // Update scores for each student
             for ($i = 0; $i < count($students); $i++) {
-                $post = [
-                    'score' => $scores[$i],
-                    'updated_at' => now(),
-                ];
+
+                if($justification[$i] == null)
+                {
+                    $post = [
+                        'score' => $scores[$i],
+                        'updated_at' => now(),
+                    ];
+                } 
+                else{
+                    $post = [
+                        'score' => $scores[$i],
+                        'justification' => $justification[$i],
+                        'updated_at' => now(),
+                    ];
+
+                }
 
                 Score::where('student_id', $students[$i])
                     ->where('exam_id', $request->exam_id)
@@ -1503,7 +1517,8 @@ class ScoreController extends Controller
             } elseif (session('role') == 'admin') {
                 return redirect('/admin/exams');
             } elseif (session('role') == 'teacher') {
-                return redirect('/teacher/dashboard/exam/teacher');
+                return redirect()->back();
+                // return redirect('/teacher/dashboard/exam/teacher');
             }
         } catch (Exception $err) {
             DB::rollBack();

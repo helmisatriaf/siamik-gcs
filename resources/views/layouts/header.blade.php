@@ -40,3 +40,6 @@
 {{-- Summernote --}}
 {{-- <link rel="stylesheet" href={{asset('assets/vendors/summernote/summernote-lite.min.css')}}> --}}
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+
+{{-- CKEDITOR --}}
+{{-- <script src="{{asset('assets/vendors/ckeditor/ckeditor.js')}}" ></script> --}}

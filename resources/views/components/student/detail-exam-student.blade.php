@@ -266,10 +266,16 @@
               </p>
               @endif
               <p class="text-muted">Score  
-                <span class="text-bold  text-danger">
+                <span class="text-bold text-danger">
                   {{ $getStatus->score }}
                 </span>
               </p>
+              @if ($getStatus->justification !== NULL)
+              <p class="text-muted">Feedback from subject teacher :</p>
+                <span class="text-bold text-danger">
+                  {!! $getStatus->justification !!}
+                </span>
+              @endif
             </div>
 
             @if (session('role') == 'student')
