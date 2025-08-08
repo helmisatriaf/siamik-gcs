@@ -32,9 +32,9 @@
             </div>
             <div class="card-body p-0">
                 @if (session('role') == 'superadmin' || session('role') == 'admin')
-                    <form method="POST" action="{{ route('actionUpdateScoreExam') }}">
+                    <form method="POST" action="{{ route('actionUpdateScoreExam') }}" enctype="multipart/form-data">
                 @else
-                    <form method="POST" action="{{ route('actionUpdateScoreExamTeacher') }}">
+                    <form method="POST" action="{{ route('actionUpdateScoreExamTeacher') }}" enctype="multipart/form-data">
                 @endif
                     @csrf
                     @method('PUT')
@@ -48,6 +48,12 @@
                                     @endphp
 
                                     @if ($el->file_name !== null)
+                                        <a href="{{ asset('storage/file/answers/'.$el->file_name) }}" 
+                                            class="btn-link text-secondary d-block" 
+                                            title="download file"
+                                            download="{{ $el->file_name }}">
+                                            <i class="far fa-fw fa-file-pdf"></i>Download Answer
+                                        </a>
                                         @if (in_array(strtolower($ext), ['jpg', 'jpeg', 'png', 'gif', 'webp', 'heic']))
                                             <img src="{{ asset('storage/file/answers/'.$el->file_name) }}" class="img-fluid">
                                         @elseif (strtolower($ext) === 'pdf')
@@ -75,12 +81,78 @@
                                         <input name="student_id[]" type="text" class="form-control d-none" id="student_id-{{$el->student_id}}" value="{{ $el->student_id }}">
                                         <input name="score[]" type="number" class="form-control score-input" id="score-{{$el->student_id}}" placeholder="Score" value="{{ old('score', $el->score) }}" autocomplete="off" min="0" max="100" required>
                                     </div>
-                                     <p class="mt-3 text-sm">
+                                    
+                                    <p class="mt-3 text-sm">
                                         Comment <br> <span class="text-danger text-xs">**(Boleh diisi Apresiasi/Pembenaran jawaban)</span>
                                     </p>
-                                    <div>
-                                        <textarea name="justification[]" id="justification-{{$el->student_id}}" class="summernote">{{$el->justification}}</textarea>
-                                    </div>
+                                    
+                                    <nav>
+                                        <div class="nav nav-tabs mb-4" id="nav-tab" role="tablist">
+                                            @if ($el->justification == NULL && $el->justification_file == NULL)
+                                                <a id="commentText" class="nav-item nav-link active text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('text', {{$el->student_id}})">Text</a>
+                                                <a id="commentUploadFile" class="nav-item nav-link text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('file', {{$el->student_id}})">Upload File</a>
+                                            @else
+                                                @if ($el->justification !== NULL)
+                                                    <a id="commentText" class="nav-item nav-link active text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('text', {{$el->student_id}})">Text</a>
+                                                    <a id="commentUploadFile" class="nav-item nav-link   text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('file', {{$el->student_id}})">Upload File</a>
+                                                    @elseif($el->justification_file !== NULL)
+                                                    <a id="commentText" class="nav-item nav-link text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('text', {{$el->student_id}})">Text</a>
+                                                    <a id="commentUploadFile" class="nav-item nav-link active text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('file', {{$el->student_id}})">Upload File</a>
+                                                @else
+                                                    <a id="commentText" class="nav-item nav-link active text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('text', {{$el->student_id}})">Text</a>
+                                                    <a id="commentUploadFile" class="nav-item nav-link text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('file', {{$el->student_id}})">Upload File</a>
+                                                @endif
+                                            @endif
+                                        </div>
+                                    </nav>
+
+
+                                    @if ($el->justification == NULL && $el->justification_file == NULL)
+                                        <div id="text-input-{{$el->student_id}}">
+                                            <textarea name="justification[]" id="justification-{{$el->student_id}}" class="summernote">{{$el->justification}}</textarea>
+                                        </div>
+
+                                        <!-- Konten upload file -->
+                                        <div id="file-input-{{$el->student_id}}" style="display: none;">
+                                            <input type="file" name="upload_file_justification[{{$el->student_id}}]" accept=".pdf, .png, .jpg, .jpeg, .heic">
+                                        </div>
+                                    @else
+                                        @if ($el->justification !== NULL)
+                                            <div id="text-input-{{$el->student_id}}">
+                                                <textarea name="justification[]" id="justification-{{$el->student_id}}" class="summernote">{{$el->justification}}</textarea>
+                                            </div>
+
+                                            <!-- Konten upload file -->
+                                            <div id="file-input-{{$el->student_id}}" style="display: none;">
+                                                <input type="file" name="upload_file_justification[{{$el->student_id}}]" accept=".pdf, .png, .jpg, .jpeg, .heic">
+                                            </div>
+                                        @elseif($el->justification_file !== NULL)
+                                             <div id="text-input-{{$el->student_id}}" style="display: none;">
+                                                <textarea name="justification[]" id="justification-{{$el->student_id}}" class="summernote">{{$el->justification}}</textarea>
+                                            </div>
+
+                                            <!-- Konten upload file -->
+                                            <div id="file-input-{{$el->student_id}}">
+                                                <a href="{{ asset('storage/file/correction/'.$el->justification_file) }}" 
+                                                    class="btn-link text-secondary d-block" 
+                                                    target="_blank" 
+                                                    rel="noopener noreferrer">
+                                                    <i class="fas fa-link mr-1"></i> See Correction
+                                                </a>
+                                                <input type="file" name="upload_file_justification[{{$el->student_id}}]" accept=".pdf, .png, .jpg, .jpeg, .heic">
+                                            </div>
+                                        @else
+                                            <div id="text-input-{{$el->student_id}}">
+                                                <textarea name="justification[]" id="justification-{{$el->student_id}}" class="summernote">{{$el->justification}}</textarea>
+                                            </div>
+
+                                            <!-- Konten upload file -->
+                                            <div id="file-input-{{$el->student_id}}" style="display: none;">
+                                                <input type="file" name="upload_file_justification[{{$el->student_id}}]" accept=".pdf, .png, .jpg, .jpeg, .heic">
+                                            </div>
+                                        @endif
+                                    @endif
+
                                     @if($errors->has('score'))
                                     <p style="color: red">{{ $errors->first('score') }}</p>
                                     @endif
@@ -142,6 +214,29 @@
         });
     });
 </script>
+
+<script>
+    function toggleInput(type, studentId) {
+        const textTab = document.getElementById("commentText");
+        const fileTab = document.getElementById("commentUploadFile");
+
+        const textInput = document.getElementById("text-input-" + studentId);
+        const fileInput = document.getElementById("file-input-" + studentId);
+
+        if (type === 'text') {
+            textInput.style.display = 'block';
+            fileInput.style.display = 'none';
+            textTab.classList.add("active");
+            fileTab.classList.remove("active");
+        } else {
+            textInput.style.display = 'none';
+            fileInput.style.display = 'block';
+            textTab.classList.remove("active");
+            fileTab.classList.add("active");
+        }
+    }
+</script>
+
 
 
 @if(session('after_create_score'))

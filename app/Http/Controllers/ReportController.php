@@ -6005,6 +6005,15 @@ class ReportController extends Controller
                         })->all(),
                     ];
                 })->values()->all();
+
+                $results = Sooa_primary::join('students', 'students.id', '=', 'sooa_primaries.student_id')
+                    ->where('sooa_primaries.grade_id', $gradeId)
+                    ->where('sooa_primaries.academic_year', $academic_year)
+                    ->where('students.id', $student->student_id)
+                    ->where('students.is_active', true)
+                    ->orderBy('students.name', 'asc')
+                    ->get();
+
             } elseif (strtolower($student->grade_name) === "secondary") {
                 $resultsSooa = Sooa_secondary::join('students', 'students.id', '=', 'sooa_secondaries.student_id')
                     ->where('sooa_secondaries.student_id', $id)
@@ -6043,15 +6052,19 @@ class ReportController extends Controller
                         })->all(),
                     ];
                 })->values()->all();
+                
+                $results = Sooa_secondary::join('students', 'students.id', '=', 'sooa_secondaries.student_id')
+                    ->where('sooa_secondaries.grade_id', $gradeId)
+                    ->where('sooa_secondaries.academic_year', $academic_year)
+                    ->where('students.id', $student->student_id)
+                    ->where('students.is_active', true)
+                    ->orderBy('students.name', 'asc')
+                    ->get();
             }
 
-            $results = Sooa_primary::join('students', 'students.id', '=', 'sooa_primaries.student_id')
-                ->where('sooa_primaries.grade_id', $gradeId)
-                ->where('sooa_primaries.academic_year', $academic_year)
-                ->where('students.id', $student->student_id)
-                ->where('students.is_active', true)
-                ->orderBy('students.name', 'asc')
-                ->get();
+            
+
+            // dd($results);
 
 
             $countAverageMarks = $results->groupBy('student_id')->map(function ($scores) {
@@ -6080,6 +6093,7 @@ class ReportController extends Controller
                 ];
             })->values()->all();
 
+            // dd($countAverageMarks);
             $data = [
                 'student_id'         => $id,
                 'grade_id'           => $gradeId,
@@ -6120,8 +6134,6 @@ class ReportController extends Controller
                 'date' => $date,
                 'date_of_registration' => $date_of_registration,
             ];
-
-            // dd($data);
 
             $pdf = app('dompdf.wrapper');
             $pdf->set_option('isRemoteEnabled', true);

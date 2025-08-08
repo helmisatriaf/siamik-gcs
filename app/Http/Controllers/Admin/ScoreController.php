@@ -34,6 +34,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class ScoreController extends Controller
 {
@@ -67,7 +68,7 @@ class ScoreController extends Controller
                 'teachers.name as teacher_name', 'teachers.id as teacher_id', 
                 'type_exams.name as type_exam', 'type_exams.id as type_exam_id',
                 'students.id as student_id', 'students.name as student_name',
-                'scores.score as score', 'scores.file_name as file_name', 'scores.justification as justification', 'scores.desc_late as late')
+                'scores.score as score', 'scores.file_name as file_name', 'scores.justification as justification', 'scores.desc_late as late', 'scores.justification_file as justification_file')
                 ->orderBy('student_name', 'asc')
                 ->distinct()
                 ->get();
@@ -209,7 +210,7 @@ class ScoreController extends Controller
                         'teachers.name as teacher_name', 'teachers.id as teacher_id', 
                         'type_exams.name as type_exam', 'type_exams.id as type_exam_id',
                         'students.id as student_id', 'students.name as student_name',
-                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification', 'scores.desc_late as late')
+                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification', 'scores.desc_late as late', 'scores.justification_file as justification_file')
                         ->orderBy('student_name', 'asc')
                         ->distinct()
                         ->get();
@@ -236,7 +237,7 @@ class ScoreController extends Controller
                         'teachers.name as teacher_name', 'teachers.id as teacher_id', 
                         'type_exams.name as type_exam', 'type_exams.id as type_exam_id',
                         'students.id as student_id', 'students.name as student_name',
-                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification', 'scores.desc_late as late')
+                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification', 'scores.desc_late as late', 'scores.justification_file as justification_file')
                         ->orderBy('student_name', 'asc')
                         ->distinct()
                         ->get();
@@ -263,7 +264,7 @@ class ScoreController extends Controller
                         'teachers.name as teacher_name', 'teachers.id as teacher_id', 
                         'type_exams.name as type_exam', 'type_exams.id as type_exam_id',
                         'students.id as student_id', 'students.name as student_name',
-                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification', 'scores.desc_late as late')
+                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification', 'scores.desc_late as late', 'scores.justification_file as justification_file')
                         ->orderBy('student_name', 'asc')
                         ->distinct()
                         ->get();
@@ -290,7 +291,7 @@ class ScoreController extends Controller
                         'teachers.name as teacher_name', 'teachers.id as teacher_id', 
                         'type_exams.name as type_exam', 'type_exams.id as type_exam_id',
                         'students.id as student_id', 'students.name as student_name',
-                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification', 'scores.desc_late as late')
+                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification', 'scores.desc_late as late', 'scores.justification_file as justification_file')
                         ->orderBy('student_name', 'asc')
                         ->distinct()
                         ->get();
@@ -317,7 +318,7 @@ class ScoreController extends Controller
                         'teachers.name as teacher_name', 'teachers.id as teacher_id', 
                         'type_exams.name as type_exam', 'type_exams.id as type_exam_id',
                         'students.id as student_id', 'students.name as student_name',
-                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification', 'scores.desc_late as late')
+                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification', 'scores.desc_late as late', 'scores.justification_file as justification_file')
                         ->orderBy('student_name', 'asc')
                         ->distinct()
                         ->get();
@@ -345,7 +346,7 @@ class ScoreController extends Controller
                         'teachers.name as teacher_name', 'teachers.id as teacher_id', 
                         'type_exams.name as type_exam', 'type_exams.id as type_exam_id',
                         'students.id as student_id', 'students.name as student_name',
-                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification', 'scores.desc_late as late')
+                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification', 'scores.desc_late as late', 'scores.justification_file as justification_file')
                         ->orderBy('student_name', 'asc')
                         ->distinct()
                         ->get();
@@ -374,7 +375,7 @@ class ScoreController extends Controller
                         'teachers.name as teacher_name', 'teachers.id as teacher_id', 
                         'type_exams.name as type_exam', 'type_exams.id as type_exam_id',
                         'students.id as student_id', 'students.name as student_name',
-                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification', 'scores.desc_late as late')
+                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification', 'scores.desc_late as late', 'scores.justification_file as justification_file')
                         ->orderBy('student_name', 'asc')
                         ->distinct()
                         ->get();
@@ -402,7 +403,7 @@ class ScoreController extends Controller
                         'teachers.name as teacher_name', 'teachers.id as teacher_id', 
                         'type_exams.name as type_exam', 'type_exams.id as type_exam_id',
                         'students.id as student_id', 'students.name as student_name',
-                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification', 'scores.desc_late as late')
+                        'scores.score as score' , 'scores.file_name as file_name', 'scores.justification as justification', 'scores.desc_late as late', 'scores.justification_file as justification_file')
                         ->orderBy('student_name', 'asc')
                         ->distinct()
                         ->get();
@@ -429,7 +430,7 @@ class ScoreController extends Controller
                         'teachers.name as teacher_name', 'teachers.id as teacher_id', 
                         'type_exams.name as type_exam', 'type_exams.id as type_exam_id',
                         'students.id as student_id', 'students.name as student_name',
-                        'scores.score as score', 'scores.file_name as file_name', 'scores.justification as justification', 'scores.desc_late as late')
+                        'scores.score as score', 'scores.file_name as file_name', 'scores.justification as justification', 'scores.desc_late as late', 'scores.justification_file as justification_file')
                         ->orderBy('student_name', 'asc')
                         ->distinct()
                         ->get();
@@ -456,6 +457,12 @@ class ScoreController extends Controller
             $students = $request->student_id;
             $scores = $request->score;
             $justification = $request->justification;
+            $id = $request->exam_id;
+            $exam = Exam::findOrFail($id);
+            $subjectId = Subject_exam::where('exam_id', $id)->value('subject_id');
+            $subject = Subject::where('id', $subjectId)->value('name_subject');
+            $gradeId = Grade_exam::where('exam_id', $id)->value('grade_id');
+            $grade = Grade::where('id', $gradeId)->selectRaw("CONCAT(name, '-', class) as grade_name")->first();
 
             // cek jika score hanya berisi beberapa nilai yang > 0 maka scoring_status == 2
             // cek jika score berisi nilai 0 maka scoring_status == 1
@@ -470,35 +477,114 @@ class ScoreController extends Controller
                 $scoringStatus = '1'; // Semua 0
             }
 
-
             // Simpan ke database
             Exam::where('id', $request->exam_id)->update([
                 'scoring_status' => $scoringStatus
             ]);
-            
+
+            // dd($request);
 
             // Update scores for each student
+            $remarks = null;
             for ($i = 0; $i < count($students); $i++) {
+                $studentName = Student::where('id', $students[$i])->value('name');
+                $files = $request->file('upload_file_justification');
+                $studentId = $students[$i];
 
-                if($justification[$i] == null)
-                {
-                    $post = [
-                        'score' => $scores[$i],
-                        'updated_at' => now(),
-                    ];
-                } 
-                else{
-                    $post = [
-                        'score' => $scores[$i],
-                        'justification' => $justification[$i],
-                        'updated_at' => now(),
-                    ];
+                // Jika upload file null maka simpan sebagai text
+                if(!isset($files[$studentId])) {
+                    if($justification[$i] !== null){
+                        $remarks = $justification[$i];
+                        // Cek apakah punya justification_file
+                        $checkFile = Score::where('student_id', $students[$i])
+                        ->where('exam_id', $request->exam_id)->value('justification_file');
+                        if($checkFile !== NULL){
+                            Storage::delete('public/file/correction/' . $checkFile);
+                        }
 
+                        $post = [
+                            'score' => $scores[$i],
+                            'justification' => $remarks,
+                            'justification_file' => NULL,
+                            'updated_at' => now(),
+                        ];
+                        
+
+                        Score::where('student_id', $students[$i])
+                            ->where('exam_id', $request->exam_id)
+                            ->update($post);
+                    }
+                    else{
+                        $post = [
+                            'score' => $scores[$i],
+                            'updated_at' => now(),
+                        ];
+                        
+
+                        Score::where('student_id', $students[$i])
+                        ->where('exam_id', $request->exam_id)
+                        ->update($post);
+                    }
                 }
 
-                Score::where('student_id', $students[$i])
-                    ->where('exam_id', $request->exam_id)
-                    ->update($post);
+                // Correction berupa file upload
+                else{
+                    if($request->file('upload_file_justification') !== null){
+                        $files = $request->file('upload_file_justification');
+                        if (is_array($files)) {
+                            $studentId = $students[$i];
+
+                            // Cek apakah ada file untuk student ini
+                            if (isset($files[$studentId]) && $files[$studentId] instanceof \Illuminate\Http\UploadedFile) {
+                                $file = $files[$studentId];
+                                $checkFile = Score::where('student_id', $students[$i])
+                                ->where('exam_id', $request->exam_id)->value('justification_file');
+                                if($checkFile !== NULL){
+                                    Storage::delete('public/file/correction/' . $checkFile);
+                                }
+
+                                $originalExtension = strtolower($file->getClientOriginalExtension());
+
+                                $fileName = 'Correction_' . ucwords(strtolower($exam->name_exam)) . '_' . $studentName . '_' . $subject . '_' .
+                                    $grade->grade_name . '.' . $originalExtension;
+
+                                $tempPath = $file->storeAs('temp', $fileName);
+                                $source = storage_path("app/" . $tempPath);
+                                $destination = storage_path("app/public/file/correction/" . $fileName);
+
+                                if ($originalExtension === 'pdf') {
+                                    $flattened = $this->flattenPdf($source, $destination);
+                                    if (!$flattened) {
+                                        \Illuminate\Support\Facades\File::copy($source, $destination);
+                                    }
+                                } else {
+                                    \Illuminate\Support\Facades\File::copy($source, $destination);
+                                }
+
+                                $post = [
+                                    'score' => $scores[$i],
+                                    'justification' => NULL,
+                                    'justification_file' => $fileName,
+                                    'updated_at' => now(),
+                                ];
+
+                                Score::where('student_id', $studentId)
+                                    ->where('exam_id', $request->exam_id)
+                                    ->update($post);
+                            }
+                        }
+                    }
+                    else{
+                        $post = [
+                            'score' => $scores[$i],
+                            'updated_at' => now(),
+                        ];
+
+                        Score::where('student_id', $students[$i])
+                        ->where('exam_id', $request->exam_id)
+                        ->update($post);
+                    }
+                }
             }
 
             $userId = session('id_user');
@@ -2766,6 +2852,18 @@ class ScoreController extends Controller
         catch(Exception $err){
             dd($err);
         }
+    }
+
+    private function flattenPdf($source, $destination)
+    {
+        $gs = '/usr/bin/gs'; // atau 'gs' jika global path
+        $cmd = "$gs -o " . escapeshellarg($destination) .
+            " -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -dNOPAUSE -dBATCH -dQUIET " .
+            "-dDetectDuplicateImages=true -dCompressFonts=true -dFlattenAllForms=true " .
+            escapeshellarg($source);
+
+        exec($cmd, $output, $return_var);
+        return $return_var === 0;
     }
 
 }

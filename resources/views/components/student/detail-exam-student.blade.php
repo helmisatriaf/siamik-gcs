@@ -259,7 +259,7 @@
                     <i class="far fa-fw fa-file-pdf"></i> {{ $data->file_name }}
                 </a> --}}
                 <a href="{{ route('download.watermark', ['fileName' => $data->file_name]) }}" 
-                  class="btn-link text-secondary d-block" 
+                  class="btn-link text-danger d-block" 
                   title="Download file dengan watermark">
                   <i class="far fa-fw fa-file-pdf text-decoration-underline"></i> Click this to download assessment file
                 </a>
@@ -272,9 +272,21 @@
               </p>
               @if ($getStatus->justification !== NULL)
               <p class="text-muted">Feedback from subject teacher :</p>
-                <span class="text-bold text-danger">
-                  {!! $getStatus->justification !!}
+              <span class="text-bold text-danger">
+                {!! $getStatus->justification !!}
+              </span>
+              @endif
+              @if ($getStatus->justification_file !== NULL)
+              <p class="text-muted">Feedback from subject teacher :
+                <span>
+                  <a href="{{ asset('storage/file/correction/'.$getStatus->justification_file) }}" 
+                    class="btn-link text-danger d-block" 
+                    target="_blank" 
+                    rel="noopener noreferrer">
+                    <i class="fas fa-link mr-1"></i> See Correction
+                  </a>
                 </span>
+              </p> 
               @endif
             </div>
 
@@ -561,7 +573,7 @@
     });
   });
 </script>
-@if (\Carbon\Carbon::parse($dateExam)->toDateString() < $data->created_at->toDateString())
+{{-- @if (\Carbon\Carbon::parse($dateExam)->toDateString() < $data->created_at->toDateString())
   @if ($getStatus->desc_late == NULL)
     <script>
       Swal.fire({
@@ -635,7 +647,7 @@
       });
     </script>
   @endif
-@endif
+@endif --}}
   
 @if(session('after_upload_answer')) 
   <script>
