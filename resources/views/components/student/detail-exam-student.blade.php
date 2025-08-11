@@ -265,28 +265,31 @@
                 </a>
               </p>
               @endif
-              <p class="text-muted">Score  
+
+              @if ($getStatus !== null)
+                <p class="text-muted">Score  
+                  <span class="text-bold text-danger">
+                    {{ $getStatus->score }}
+                  </span>
+                </p>
+                @if ($getStatus->justification !== NULL)
+                <p class="text-muted">Feedback from subject teacher :</p>
                 <span class="text-bold text-danger">
-                  {{ $getStatus->score }}
+                  {!! $getStatus->justification !!}
                 </span>
-              </p>
-              @if ($getStatus->justification !== NULL)
-              <p class="text-muted">Feedback from subject teacher :</p>
-              <span class="text-bold text-danger">
-                {!! $getStatus->justification !!}
-              </span>
-              @endif
-              @if ($getStatus->justification_file !== NULL)
-              <p class="text-muted">Feedback from subject teacher :
-                <span>
-                  <a href="{{ asset('storage/file/correction/'.$getStatus->justification_file) }}" 
-                    class="btn-link text-danger d-block" 
-                    target="_blank" 
-                    rel="noopener noreferrer">
-                    <i class="fas fa-link mr-1"></i> See Correction
-                  </a>
-                </span>
-              </p> 
+                @endif
+                @if ($getStatus->justification_file !== NULL)
+                <p class="text-muted">Feedback from subject teacher :
+                  <span>
+                    <a href="{{ asset('storage/file/correction/'.$getStatus->justification_file) }}" 
+                      class="btn-link text-danger d-block" 
+                      target="_blank" 
+                      rel="noopener noreferrer">
+                      <i class="fas fa-link mr-1"></i> See Correction
+                    </a>
+                  </span>
+                </p> 
+                @endif
               @endif
             </div>
 

@@ -720,6 +720,7 @@ Route::middleware(['auth.login', 'role:superadmin'])->prefix('/superadmin')->gro
    Route::prefix('/register')->group(function () {
       Route::get('/', [RegisterController::class, 'index']);
       Route::post('/post', [RegisterController::class, 'register'])->name('actionRegisterSuper');
+      Route::post('/post-in-middle', [RegisterController::class, 'registerInMiddle'])->name('actionRegisterSuperInMiddle');
       Route::get('/imports', [Import::class, 'index']);
       Route::post('/imports', [Import::class, 'upload'])->name('import.register_super');
       Route::get('/templates/students', [Import::class, 'downloadTemplate']);

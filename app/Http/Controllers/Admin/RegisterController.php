@@ -8,6 +8,7 @@ use App\Mail\SppMail;
 use App\Models\Bill;
 use App\Models\Brother_or_sister;
 use App\Models\Grade;
+use App\Models\Grade_exam;
 use App\Models\Installment_Paket;
 use App\Models\InstallmentPaket;
 use App\Models\Payment_grade;
@@ -16,6 +17,9 @@ use App\Models\Relationship;
 use App\Models\Student;
 use App\Models\Student_relationship;
 use App\Models\User;
+use App\Models\Exam;
+use App\Models\Score;
+use App\Models\Student_exam;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Exception;
@@ -287,6 +291,296 @@ class RegisterController extends Controller
          // abort(500);
          return dd($err);
       }
+   
+   }
+
+   // PENDAFTARAN SISWA YANG MASUK DI TENGAH PROSES PEMBELAJARAN
+   public function registerInMiddle(Request $request)
+   {
+      try {
+         // dd($request);
+         session()->flash('preloader', true);
+         session()->flash('page',  $page = (object)[
+            'page' => 'students',
+            'child' => 'register students',
+         ]);
+
+         $var = Student::orderBy('id', 'desc')->first();
+         $unique_id = '';
+         
+         if( $var && date('Ym') == substr($var->unique_id, 0, 6))
+         {
+            $unique_id = (string)date('Ym') . str_pad(ltrim(substr($var->unique_id, 7) + 1, '0'), 4, '0', STR_PAD_LEFT);
+         } else {
+            $unique_id = (string)date('Ym') . str_pad('1', 4, '0', STR_PAD_LEFT);
+         } 
+
+
+         $credentials = [
+            'is_active' => 1,
+            'unique_id' => $unique_id,
+            'user_id' => $request->user_id,
+            'name' => $request->studentName,
+            'grade_id' => (int)$request->gradeId,
+            'gender' => $request->studentGender,
+            'religion' => $request->studentReligion,
+            'nisn' => $request->nisn,
+            'place_birth' => $request->studentPlace_birth,
+            'date_birth' => $request->studentDate_birth ? $this->changeDateFormat($request->studentDate_birth) : null,
+            'id_or_passport' => $request->studentId_or_passport,
+            'nationality' => $request->studentNationality,
+            'place_of_issue' => $request->studentPlace_of_issue,
+            'date_exp' => $request->studentDate_exp ? $this->changeDateFormat($request->studentDate_exp) : null,
+            'is_graduate' => false,
+            'created_at' => $request->created_at ? date('Y-m-d H:i:s', strtotime($this->changeDateFormat($request->created_at))) : date('Y-m-d H:i:s'),
+         ];
+
+         // dd($credentials);
+         
+         $rules = [
+            'name' => $request->studentName,
+            'grade_id' => $request->gradeId,
+            'gender' => $request->studentGender,
+            'religion' => $request->studentReligion,
+            'nisn' => $request->nisn,
+            'place_birth' => $request->studentPlace_birth,
+            'date_birth' => $request->studentDate_birth ? $this->changeDateFormat($request->studentDate_birth) : null,
+            'id_or_passport' => $request->studentId_or_passport,
+            'nationality' => $request->studentNationality,
+            'place_of_issue' => $request->studentPlace_of_issue,
+            'date_exp' => $request->studentDate_exp !== '' ? $this->changeDateFormat($request->studentDate_exp) : null,
+            'created_at' => $request->created_at ? date('Y-m-d H:i:s', strtotime($this->changeDateFormat($request->created_at))) : date('Y-m-d H:i:s'),
+            // Father rules
+            'father_relation' => 'father',
+            'father_name' => $request->fatherName,
+            'father_religion' => $request->fatherReligion,
+            'father_place_birth' => $request->fatherPlace_birth,
+            'father_date_birth' => $request->fatherBirth_date ? $this->changeDateFormat($request->fatherBirth_date) : null,
+            'father_id_or_passport' => $request->fatherId_or_passport,
+            'father_nationality' => $request->fatherNationality,
+            'father_occupation' => $request->fatherOccupation,
+            'father_company_name' => $request->fatherCompany_name,
+            'father_company_address' => $request->fatherCompany_address,
+            'father_phone' => $request->fatherCompany_phone,
+            'father_home_address' => $request->fatherHome_address,
+            'father_telephone' => $request->fatherTelephhone,
+            'father_mobilephone' => $request->fatherMobilephone,
+            'father_email' => $request->fatherEmail,
+            // Mother rules
+            'mother_relation' => 'mother',
+            'mother_name' => $request->motherName,
+            'mother_religion' => $request->motherReligion,
+            'mother_place_birth' => $request->motherPlace_birth,
+            'mother_date_birth' => $request->motherBirth_date ? $this->changeDateFormat($request->motherBirth_date) : null,
+            'mother_id_or_passport' => $request->motherId_or_passport,
+            'mother_nationality' => $request->motherNationality,
+            'mother_occupation' => $request->motherOccupation,
+            'mother_company_name' => $request->motherCompany_name,
+            'mother_company_address' => $request->motherCompany_address,
+            'mother_phone' => $request->motherCompany_phone,
+            'mother_home_address' => $request->motherHome_address,
+            'mother_telephone' => $request->motherTelephhone,
+            'mother_mobilephone' => $request->motherMobilephone,
+            'mother_email' => $request->motherEmail,
+            //brother and sister
+
+            'brotherOrSisterName1' => $request->brotherOrSisterName1, 
+            'brotherOrSisterBirth_date1' => $request->brotherOrSisterBirth_date1? $this->changeDateFormat($request->brotherOrSisterBirth_date1) : null,
+            'brotherOrSisterGrade1' => $request->brotherOrSisterGrade1,
+            'brotherOrSisterName2' => $request->brotherOrSisterName2, 
+            'brotherOrSisterBirth_date2' => $request->brotherOrSisterBirth_date2? $this->changeDateFormat($request->brotherOrSisterBirth_date2) : null,
+            'brotherOrSisterGrade2' => $request->brotherOrSisterGrade2,
+            'brotherOrSisterName3' => $request->brotherOrSisterName3, 
+            'brotherOrSisterBirth_date3' => $request->brotherOrSisterBirth_date3? $this->changeDateFormat($request->brotherOrSisterBirth_date3) : null,
+            'brotherOrSisterGrade3' => $request->brotherOrSisterGrade3,
+            'brotherOrSisterName4' => $request->brotherOrSisterName4, 
+            'brotherOrSisterBirth_date4' => $request->brotherOrSisterBirth_date4? $this->changeDateFormat($request->brotherOrSisterBirth_date4) : null,
+            'brotherOrSisterGrade4' => $request->brotherOrSisterGrade4,
+            'brotherOrSisterName5' => $request->brotherOrSisterName5, 
+            'brotherOrSisterBirth_date5' => $request->brotherOrSisterBirth_date5? $this->changeDateFormat($request->brotherOrSisterBirth_date5) : null,
+            'brotherOrSisterGrade5' => $request->brotherOrSisterGrade5,
+
+         ];     
+         
+         // return $rules;
+         
+         // $validator = Validator::make($rules, [
+         //    'name' => 'string|required|min:3',
+         //    'grade_id' => 'integer|required',
+         //    'gender' => 'string|required',
+         //    'religion' => 'string|required',
+         //    'nisn' => 'string|nullable|min:7|max:12|unique:students',
+         //    'place_birth' => 'string|required',
+         //    'date_birth' => 'date|required',
+         //    'id_or_passport' => 'nullable|string|min:9|max:16|unique:students',
+         //    'nationality' => 'string|required|min:3',
+         //    'place_of_issue' => 'nullable|string',
+         //    'date_exp' => 'nullable|date',
+         //    // father validation 
+         //    'father_name' => 'string|required|min:3',
+         //    'father_religion' => 'string|required',
+         //    'father_place_birth' => 'string|required',
+         //    'father_date_birth' => 'date|required',
+         //    'father_id_or_passport' => 'string|required|min:12|max:16',
+         //    'father_nationality' => 'string|required',
+         //    'father_phone' => 'nullable|string|max:15|min:6',
+         //    'father_home_address' => 'required|string',
+         //    'father_mobilephone' => 'required|string|max:15|min:6',
+         //    'father_telephone' => 'nullable|string|max:15|min:6',
+         //    'father_email' => 'required|string|email',
+         //    //mother validation
+         //    'mother_name' => 'string|required|min:3',
+         //    'mother_religion' => 'string|required',
+         //    'mother_place_birth' => 'string|required',
+         //    'mother_date_birth' => 'date|required',
+         //    'mother_id_or_passport' => 'string|required|min:15|max:16',
+         //    'mother_nationality' => 'string|required',
+         //    'mother_occupation' => 'nullable|string',
+         //    'mother_company_name' => 'nullable|string',
+         //    'mother_company_address' => 'nullable|string',
+         //    'mother_phone' => 'nullable|string|max:15|min:6',
+         //    'mother_home_address' => 'required|string',
+         //    'mother_telephone' => 'nullable|string|max:15|min:6',
+         //    'mother_mobilephone' => 'required|string|max:15|min:6',
+         //    'mother_telephone' => 'nullable|string|max:15|min:6',
+         //    'mother_email' => 'required|string|email',
+
+         //    'brotherOrSisterName1' => 'nullable|string',
+         //    'brotherOrSisterBirth_date1' => 'nullable|string',
+         //    'brotherOrSisterGrade1' => 'nullable|string',
+         //    'brotherOrSisterName2' =>  'nullable|string',
+         //    'brotherOrSisterBirth_date2'=>'nullable|string',
+         //    'brotherOrSisterGrade2' => 'nullable|string',
+         //    'brotherOrSisterName3' =>  'nullable|string',
+         //    'brotherOrSisterBirth_date3'=>'nullable|string',
+         //    'brotherOrSisterGrade3' => 'nullable|string',
+         //    'brotherOrSisterName4' =>  'nullable|string',
+         //    'brotherOrSisterBirth_date4'=>'nullable|string',
+         //    'brotherOrSisterGrade4' => 'nullable|string',
+         //    'brotherOrSisterName5' =>  'nullable|string',
+         //    'brotherOrSisterBirth_date5'=>'nullable|string',
+         //    'brotherOrSisterGrade5' => 'nullable|string',
+         // ]);
+
+         
+         // if($validator->fails())
+         // {
+         //    // DB::rollBack();
+            
+         //    return redirect('/superadmin/register')->withErrors($validator->messages())->withInput($rules);
+         // }
+
+         // $fatherExist = Relationship::where('id_or_passport', $rules['father_id_or_passport'])->first(); 
+
+         // if($fatherExist && $fatherExist->relation == 'mother')
+         // {
+         //    // DB::rollBack();
+         //    return redirect('/superadmin/register')->withErrors([
+         //       'father_id_or_passport' => ['This id or passport has been registered with mother relation.'],
+         //    ])->withInput($rules);
+         // }
+
+         // $motherExist = Relationship::where('id_or_passport', $rules['mother_id_or_passport'])->first(); 
+
+         // if($motherExist && $motherExist->relation == 'father')
+         // {
+         //    // DB::rollBack();
+         //    return redirect('/superadmin/register')->withErrors([
+         //       'mother_id_or_passport' => ['This id or passport has been registered with father relation.'],
+         //    ])->withInput($rules);
+         // }
+
+         // DB::beginTransaction();
+
+         // Student::create($credentials);
+         // $relationship = $this->handleRelationship($request, $student);
+         // $brotherOrSister = $this->handleBrotherOrSister($request, $student);
+         
+         // return $relationship;
+         // if(!$relationship->success){
+         //    DB::rollBack();
+         //    return dd($relationship->error);
+         // }
+         //  else if (!$brotherOrSister->success){
+         //    DB::rollBack();
+         //    return dd('error at brother or sisters');
+         // }
+
+         // MEMBUAT EXAM STUDENT
+         $lastStudent = Student::orderBy('id', 'desc')->first();
+
+
+
+         // dd($lastStudent['id']);
+         $gradeExam = Grade_exam::join('exams', 'exams.id', '=', 'grade_exams.exam_id')
+            ->where('grade_exams.grade_id', $credentials['grade_id'])
+            ->where('exams.semester', session('semester'))
+            ->where('exams.academic_year', session('academic_year'))
+            ->pluck('grade_exams.exam_id')
+            ->toArray();
+
+         foreach($gradeExam as $exam){
+            $firstExam = Score::where('exam_id', $exam)->first();
+
+            // TAMBAHKAN ASSESSMENT KE MURID BARU
+            $score = [
+               'exam_id'      => $exam,
+               'subject_id'   => $firstExam['subject_id'],
+               'grade_id'     => $firstExam['grade_id'],
+               'teacher_id'   => $firstExam['teacher_id'],
+               'type_exam_id' => $firstExam['type_exam_id'],
+               'student_id'   => $lastStudent['id'],
+               'hasFile'      => NULL,
+               'score'        => 0,
+               'created_at'   => now(),
+               'updated_at'   => now(),
+               'academic_year' => $firstExam['academic_year'],
+               'semester'      => $firstExam['semester'], 
+               'file_name'     => NULL,
+               'file_path'     => NULL,
+               'time_upload'   => NULL,
+               'desc_late'     => NULL,
+               'justification' => NULL,
+               'justification_file' => NULL,
+            ];
+
+            Student_exam::create([
+               'student_id' => $lastStudent['id'],
+               'exam_id' => $exam,
+            ]);
+            Score::create($score);
+         }
+
+         // return 'post';
+         $id = DB::table('students')->latest('id')->value('unique_id');
+            
+         $student = Student::with(['relationship', 'grade', 'user'])->where('unique_id', $id)->first();
+        
+         // dd($brotherOrSister);
+         $data = (object) [
+            'student' => $student,
+            // 'brother_or_sisters' => $brotherOrSister,
+            'after_create' => 'Success register student with name ' . $student->name,
+         ];
+         
+         // return $data;
+         session()->flash('after_create_student');
+         session()->flash('page',  $page = (object)[
+            'page' => 'students',
+            'child' => 'database students',
+         ]);
+         
+         DB::commit();
+
+         return view('components.student.detailStudent')->with('data', $data);
+
+
+      } catch (Exception $err) {
+         
+         DB::rollBack();
+         // abort(500);
+         return dd($err);
+      }
    }
 
 
@@ -382,7 +676,7 @@ class RegisterController extends Controller
             array_push($credentialsBrotherOrSister, (array)['name' => $request->brotherOrSisterName5, 'date_birth' => $this->changeDateFormat($request->brotherOrSisterBirth_date5), 'grade' => $request->brotherOrSisterGrade5, 'student_id' => $student->id]);
          }
 
-         Brother_or_sister::insert($credentialsBrotherOrSister);
+         // Brother_or_sister::insert($credentialsBrotherOrSister);
          
          return (object)['success' => true, 'dataBrotherOrSister' => $credentialsBrotherOrSister];
       } catch (Exception $err) {

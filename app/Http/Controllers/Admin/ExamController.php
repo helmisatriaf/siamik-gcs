@@ -843,8 +843,13 @@ class ExamController extends Controller
                ->where('student_id', $student)
                ->first();
 
-               // dd($getStatus);
-            $status = $getStatus->hasFile == 1 ? true : false;
+            if($getStatus !== NULL){
+               $status = $getStatus->hasFile == 1 ? true : false;
+            }
+            else{
+               $status = false;
+            }
+            
             $profile = Student::where('user_id', session('id_user'))->value('profil');
             $statusQuestion = QuestionStatus::where('exam_id', $id)
                ->where('student_id', $student)
