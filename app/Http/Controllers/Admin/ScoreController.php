@@ -28,6 +28,7 @@ use App\Models\Chinese_higher;
 use App\Models\Chinese_lower;
 use App\Models\Teacher_grade;
 use App\Models\Kindergarten;
+use App\Models\Enroll;
 
 
 use Exception;
@@ -147,6 +148,7 @@ class ScoreController extends Controller
                     'data' => $questions,
                     'exam' => $exam,
                     'dataExam' => $dataExam,
+                    'examId' => $id,
                 ]);
             }
 
@@ -1907,24 +1909,24 @@ class ScoreController extends Controller
                                 'point' => $point,
                             ],
                         );
-
-                        $totalPoint = StudentAnswer::where('exam_id', session('exam_id'))
-                            ->where('student_id', $studentId)
-                            ->sum('point');
-
-                        $question = Question::where('exam_id', session('exam_id'))
-                            ->count();
-                        
-                        $finalScore = ($question > 0) ? ($totalPoint / $question) * 100 : 0;
-
-                        Score::where('student_id', $studentId)
-                            ->where('exam_id', session('exam_id'))
-                            ->update([
-                                'score' => $finalScore,
-                            ]);
-
-                        $this->updateScoreMC(session('exam_id'));
                     }
+
+                    $totalPoint = StudentAnswer::where('exam_id', session('exam_id'))
+                        ->where('student_id', $studentId)
+                        ->sum('point');
+
+                    $question = Question::where('exam_id', session('exam_id'))
+                        ->count();
+
+                    $finalScore = ($question > 0) ? ($totalPoint / $question) * 100 : 0;
+
+                    Score::where('student_id', $studentId)
+                        ->where('exam_id', session('exam_id'))
+                        ->update([
+                            'score' => $finalScore,
+                        ]);
+
+                    $this->updateScoreMC(session('exam_id'));
                     break;
                 case "essay" :
                     foreach ($request['answers'] as $answer) {
@@ -2866,4 +2868,107 @@ class ScoreController extends Controller
         return $return_var === 0;
     }
 
+    public function enrollScoreMC($examId){
+        try{
+            $getGradeId = Grade_exam::where('exam_id', $examId)
+                ->where('academic_year', session('academic_year'))
+                ->value('grade_id'); 
+
+            $getStudents = Student::where('grade_id', $getGradeId)->get();
+
+            // Koreksi ulang jawaban siswa 
+            
+            foreach($getStudents as $student){
+                $studentAnswer = StudentAnswer::where('student_id', $student['id'])
+                    ->where('exam_id', $examId)
+                    ->get();
+
+                    // $questions = Question::select([
+                    //     'questions.*',
+                    //     DB::raw("(SELECT id FROM answers WHERE answers.question_id = questions.id AND is_correct = 1 LIMIT 1) as correct_answer_id")
+                    // ])
+                    // ->where('exam_id', $examId)
+                    // ->with('answer') // kalau masih mau load jawaban-jawaban lain
+                    // ->get();
+
+                if(count($studentAnswer) !== 0){
+                    $questions = Question::select([
+                        'questions.*',
+                        DB::raw("(SELECT id FROM answers WHERE answers.question_id = questions.id AND is_correct = 1 LIMIT 1) as correct_answer_id")
+                    ])
+                    ->where('exam_id', $examId)
+                    ->with('answer') // kalau masih mau load jawaban-jawaban lain
+                    ->get();
+
+                    foreach($questions as $question){
+                        $getAnswerStudent = StudentAnswer::where('student_id', $student['id'])
+                            ->where('exam_id', $examId)
+                            ->where('question_id', $question['id'])
+                            ->value('answer_id');
+                        
+                        $point = $getAnswerStudent == $question['correct_answer_id'] ? 1 : 0;
+                        
+                        Enroll::where('student_id', $student['id'])
+                            ->where('exam_id', $examId)
+                            ->where('question_id', $question['id'])
+                            ->update([
+                                'point' => $point,
+                            ]);
+
+                        Enroll::create(
+                            [
+                                'student_id' => $student['id'],
+                                'exam_id' => $examId,
+                                'question_id' => $question['id'],
+                                'answer_id' => $getAnswerStudent,
+                                'essay_answer' => null,
+                                'point' => $point,
+                            ],
+                        );
+
+                    }
+
+                    $question = Question::where('exam_id', $examId)
+                        ->count();
+
+                    $totalPoint = Enroll::where('exam_id', $examId)
+                        ->where('student_id', $student['id'])
+                        ->sum('point');
+
+                    $finalScore = ($totalPoint / $question) * 100;
+
+                    // dd($totalPoint);
+
+                    Score::where('student_id', $student['id'])
+                        ->where('exam_id', $examId)
+                        ->update([
+                            'score' => $finalScore,
+                        ]);
+                    
+                    $this->updateScoreMC($examId);
+                }
+            }
+            
+            $totalPoint = Enroll::where('exam_id', $examId)
+                ->where('student_id', 65)
+                ->sum('point');
+
+            $question = Question::where('exam_id', $examId)
+            ->count();
+
+            $finalScore = ($question > 0) ? ($totalPoint / $question) * 100 : 0;
+            
+            Score::where('student_id', 65)
+                ->where('exam_id', $examId)
+                ->update([
+                    'score' => $finalScore,
+                ]);
+            
+            return redirect()->back();
+        }
+
+        catch(Exception $err){
+            dd($err);
+        }
+    }
 }

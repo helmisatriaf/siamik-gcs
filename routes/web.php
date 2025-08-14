@@ -49,6 +49,7 @@ use App\Models\Schedule;
 use App\Models\Type_schedule;
 use App\Models\Page_Tutorials;
 use App\Models\Chat_bot;
+use App\Models\Exam;
 use App\Models\Subtitute_teacher;
 
 use App\Services\BillingService;
@@ -74,7 +75,6 @@ Route::get('/', [UserController::class, 'login']);
 Route::post('/login', [UserController::class, 'actionLogin'])->name('actionLogin');
 Route::post('/login-library', [UserController::class, 'actionLoginLibrary'])->name('login.library');
 Route::get('/logout', [UserController::class, 'logout']);
-
 
 // Route untuk mengambil data subject
 Route::get('/get-subjects/{gradeId}', function ($gradeId) {
@@ -1329,6 +1329,7 @@ Route::middleware(['auth.login', 'role:teacher'])->prefix('/teacher')->group(fun
       Route::put('exam/edit/{id}', [ExamController::class, 'actionPut'])->name('actionUpdateExamTeacher');
       Route::post('exam/delete', [ExamController::class, 'delete'])->name('delete.exam');
       Route::put('/{id}', [ScoreController::class, 'doneExam'])->name('doneExam');
+      Route::post('/check-assessment-name', [ExamController::class, 'cekNameExam'])->name('check.assessment.name');
 
       Route::get('exam/score/{id}', [ScoreController::class, 'score']);
       Route::put('/', [ScoreController::class, 'actionUpdateScore'])->name('actionUpdateScoreExamTeacher');
@@ -1427,6 +1428,8 @@ Route::middleware(['auth.login', 'role:teacher'])->prefix('/teacher')->group(fun
       Route::post('/activity/update/{id}', [CourseController::class, 'updateActivityTeacher'])->name('update-activity.teacher');
       Route::delete('/activity/delete/{id}', [CourseController::class, 'deleteActivityTeacher'])->name('delete-activity.teacher');
    });
+
+   Route::get('enroll/{examId}', [ScoreController::class, 'enrollScoreMC']);
 });
 
 Route::middleware(['auth.login', 'role:student'])->prefix('/student')->group(function () {

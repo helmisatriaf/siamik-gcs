@@ -338,6 +338,10 @@
 
         // Mengirim jawaban ke server Laravel
         function submitAnswers() {
+            var completedModal = bootstrap.Modal.getInstance(document.getElementById('completed'));
+            if (completedModal) {
+                completedModal.hide();
+            }
             fetch("{{ route('action.answer.student') }}", {
                     method: "POST",
                     headers: {
