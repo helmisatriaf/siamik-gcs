@@ -90,7 +90,7 @@
                                 Your browser does not support the video tag.
                             </video>
                         @else
-                            <img src="{{ Storage::url($filePath) }}" alt="Poster" title="" class="product-img img-fluid w-auto h-100 hover:cursor-pointer">
+                            <img src="{{ Storage::url($filePath) }}" alt="Poster" title="" class="product-img img-fluid hover:cursor-pointer">
                         @endif
                     </div>
                 </div>

@@ -92,7 +92,7 @@
                                 Your browser does not support the video tag.
                             </video>
                         @else
-                            <img src="{{ Storage::url($filePath) }}" alt="Poster" title="" class="product-img img-fluid w-auto h-100 hover:cursor-pointer">
+                            <img src="{{ Storage::url($filePath) }}" alt="Poster" title="" class="product-img img-fluid hover:cursor-pointer">
                         @endif
                     </div>
                 </div>
@@ -231,7 +231,6 @@
                                                         {{ $el->model }}
                                                     </span>
 
-                                                    <span>
                                                     <span class="badge">
                                                         @if ($el->model == 'mce' || $el->model == 'mc' || $el->model ==  'essay')
                                                             @if ($el['exam'][0]['score'][0]->student_status)
@@ -246,11 +245,11 @@
                                                                 ❌
                                                             @endif    
                                                         @else
-                                                            {{-- @if ($el['exam'][0]['score'][0]->student_upload)
+                                                            @if ($el['exam'][0]['score'][0]->student_upload)
                                                                 ✔
                                                             @else
                                                                 ❌
-                                                            @endif --}}
+                                                            @endif
                                                         @endif
                                                     </span>
                                                         @if ($el->is_active)
@@ -302,6 +301,14 @@
                                                         <span class="badge badge-success">Done</span>
                                                         @endif
                                                     </span>
+
+                                                    @if ($el->time_open !== null)
+                                                        <span>Open in {{ \Carbon\Carbon::parse($el->time_open)->translatedFormat('H:i') }} 
+                                                        @if ($el->end_time !== null)
+                                                            - {{ \Carbon\Carbon::parse($el->end_time)->translatedFormat('H:i') }} 
+                                                        @endif
+                                                        WIB</span>
+                                                    @endif
 
                                                     <div class="tools">
                                                     <i class="fas fa-search hover:cursor-pointer"></i>
