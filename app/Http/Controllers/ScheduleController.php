@@ -1728,9 +1728,17 @@ class ScheduleController extends Controller
             for ($j=0; $j < count($request->type_schedule) ; $j++) { 
                if($request->end_date[$j])
                {
+
                   $filePath = null;
-                  $requestFile = $request->poster[$j];
-                  $filePath = $requestFile->store('event', 'public');
+                  $uploadPoster = data_get($request->poster, $j, false);
+
+                  if($uploadPoster == true){
+                     $requestFile = $request->poster[$j];
+                     $filePath = $requestFile->store('event', 'public');
+                  }
+                  else{
+                     $filePath = null;
+                  }
                   
                   $rules = [
                      'type_schedule_id' => $request->type_schedule[$j],
