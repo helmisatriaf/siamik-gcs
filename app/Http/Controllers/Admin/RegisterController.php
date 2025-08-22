@@ -490,9 +490,9 @@ class RegisterController extends Controller
          //    ])->withInput($rules);
          // }
 
-         // DB::beginTransaction();
+         DB::beginTransaction();
+         Student::create($credentials);
 
-         // Student::create($credentials);
          // $relationship = $this->handleRelationship($request, $student);
          // $brotherOrSister = $this->handleBrotherOrSister($request, $student);
          
