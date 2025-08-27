@@ -55,7 +55,7 @@
                                         </div>
                                     </div>
     
-                                    <div class="form-group row">
+                                    <div class="form-group row d-none">
                                         <div class="col-md-6">
                                             <label for="grade_id">Grade<span style="color: red">*</span></label>
                                             <select required name="grade_id" class="form-control" id="grade_id">
@@ -78,7 +78,7 @@
                                         </div>
                                     </div>
     
-                                    <div class="form-group row">
+                                    <div class="form-group row d-none">
                                         <div class="col-md-12">
                                             <label for="semester">Semester<span style="color: red">*</span></label>
                                             <select required name="semester" class="form-control" id="semester">
@@ -91,7 +91,7 @@
                                         </div>
                                     </div>
     
-                                    <div class="form-group row">
+                                    <div class="form-group row d-none">
                                         <div class="col-md-12">
                                             <label for="teacher_id">Teacher<span style="color: red">*</span></label>
                                             <select required name="teacher_id" class="form-control" id="teacher_id">
@@ -107,7 +107,7 @@
     
                                     <div class="form-group row">
                                         <div class="col-md-12">
-                                            <label for="date_exam">Date<span style="color: red">*</span></label>
+                                            <label for="date_exam">Date<span style="color: red"> (Deadline pengerjaan)*</span></label>
                                             <input name="date_exam" type="date" class="form-control" id="date_exam" value="{{ $data['dataExam']->date_exam }}" required>
                                             
                                             @if($errors->has('date_exam'))
@@ -118,8 +118,30 @@
 
                                     <div class="form-group row">
                                         <div class="col-md-12">
-                                            <label for="open_date">Open Date <span style="color: red">(Kapan Assessment dapat diakses siswa)*</span></label>
-                                            <input name="open_date" type="date" class="form-control" id="open_date" value="{{ $data['dataExam']->open_date }}" required>
+                                            <label for="open_date">Open Date <span style="color: red">(Kapan Assessment dapat diakses siswa)</span></label>
+                                            <input name="open_date" type="date" class="form-control" id="open_date" value="{{ $data['dataExam']->open_date }}">
+                                            
+                                            @if($errors->has('open_date'))
+                                            <p style="color: red">{{ $errors->first('open_date') }}</p>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <label for="time_opne">Time Open <span style="color: red">(Jam berapa Assessment dapat diakses siswa)</span></label>
+                                            <input name="time_open" type="time" class="form-control" id="open_date" value="{{ $data['dataExam']->time_open }}">
+                                            
+                                            @if($errors->has('open_date'))
+                                            <p style="color: red">{{ $errors->first('open_date') }}</p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <label for="end_time">End Timer <span style="color: red">(Jam berapa deadline assessment)</span></label>
+                                            <input name="end_time" type="time" class="form-control" id="end_time" value="{{ $data['dataExam']->end_time }}">
                                             
                                             @if($errors->has('open_date'))
                                             <p style="color: red">{{ $errors->first('open_date') }}</p>

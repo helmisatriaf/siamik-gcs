@@ -146,33 +146,34 @@ class ExamController extends Controller
             'child' => 'database exam',
          ]);
 
-         
-         
-         // dd(session('section_id'));
-         $rules = [
-            'type_exam' => $request->type_exam,
-            'name_exam' => $request->name,
-            'is_active' => 1,
-            'date_exam' => $request->date_exam,
-            'materi' => $request->materi,
-            'teacher_id' => $request->teacher_id,
-            'open_date' => $request->open_date,
-            'time_open' => $request->time_open,
-            'created_at' => now(),
-         ];
+         // dd($request);
 
-         if (Exam::where('name_exam', $request->name)
-            ->where('teacher_id', $request->teacher_id)
-            ->where('section_id', session('section_id'))
-            ->where('semester', session('semester'))
-            ->where('academic_year', session('academic_year'))
-            ->first()
-         ) {
-            DB::rollBack();
-            return redirect('/' . session('role') . '/dashboard/exam/create')->withErrors([
-               'name' => 'Exams is has been created ',
-            ])->withInput($rules);
-         }
+         // dd(session('section_id'));
+         // $rules = [
+         //    'type_exam' => $request->type_exam,
+         //    'name_exam' => $request->name,
+         //    'is_active' => 1,
+         //    'date_exam' => $request->date_exam,
+         //    'materi' => $request->materi,
+         //    'teacher_id' => $request->teacher_id,
+         //    'open_date' => $request->open_date,
+         //    'time_open' => $request->open_time,
+         //    'end_time' => $request->end_time,
+         //    'created_at' => now(),
+         // ];
+
+         // if (Exam::where('name_exam', $request->name)
+         //    ->where('teacher_id', $request->teacher_id)
+         //    ->where('section_id', session('section_id'))
+         //    ->where('semester', session('semester'))
+         //    ->where('academic_year', session('academic_year'))
+         //    ->first()
+         // ) {
+         //    DB::rollBack();
+         //    return redirect('/' . session('role') . '/dashboard/exam/create')->withErrors([
+         //       'name' => 'Exams is has been created ',
+         //    ])->withInput($rules);
+         // }
 
          $file = $request->file('upload_file');
 
@@ -199,7 +200,8 @@ class ExamController extends Controller
                   'model'    => "mce",
                   'hasFile' => 0,
                   'open_date' => $request->open_date,
-                  'time_open' => $request->time_open,
+                  'time_open' => $request->open_time,
+                  'end_time' => $request->end_time,
                   'semester' => session('semester'),
                   'academic_year' => session('academic_year'),
                   'created_at' => now(),
@@ -260,7 +262,8 @@ class ExamController extends Controller
                   'model'    => "mc",
                   'hasFile' => 0,
                   'open_date' => $request->open_date,
-                  'time_open' => $request->time_open,
+                  'time_open' => $request->open_time,
+                  'end_time' => $request->end_time,
                   'semester' => session('semester'),
                   'academic_year' => session('academic_year'),
                   'created_at' => now(),
@@ -302,7 +305,8 @@ class ExamController extends Controller
                   'model'    => "essay",
                   'hasFile' => 0,
                   'open_date' => $request->open_date,
-                  'time_open' => $request->time_open,
+                  'time_open' => $request->open_time,
+                  'end_time' => $request->end_time,
                   'semester' => session('semester'),
                   'academic_year' => session('academic_year'),
                   'created_at' => now(),
@@ -347,7 +351,8 @@ class ExamController extends Controller
                      'file_name' => $fileName,
                      'file_path' => $filePath,
                      'open_date' => $request->open_date,
-                     'time_open' => $request->time_open,
+                     'time_open' => $request->open_time,
+                     'end_time' => $request->end_time,
                      'semester' => session('semester'),
                      'academic_year' => session('academic_year'),
                   ];
@@ -362,7 +367,8 @@ class ExamController extends Controller
                      'created_at' => now(),
                      'is_active' => 1,
                      'open_date' => $request->open_date,
-                     'time_open' => $request->time_open,
+                     'time_open' => $request->open_time,
+                     'end_time' => $request->end_time,
                      'hasFile' => $request->file('upload_file') ? 1 : 0,
                      'semester' => session('semester'),
                      'academic_year' => session('academic_year'),
@@ -634,25 +640,30 @@ class ExamController extends Controller
             }
          } else {
             // belum
-            if (strtolower($subject) == "chinese") {
-               $studentIds = Student::where('grade_id', $request->grade_id)->pluck('id')->toArray();
-               $haveChineseHigher = Chinese_higher::whereIn('student_id', $studentIds)
-                  ->pluck('student_id')
-                  ->toArray();
+            // if (strtolower($subject) == "chinese") {
+            //    $studentIds = Student::where('grade_id', $request->grade_id)->pluck('id')->toArray();
+            //    $haveChineseHigher = Chinese_higher::whereIn('student_id', $studentIds)
+            //       ->pluck('student_id')
+            //       ->toArray();
 
-               $getStudentId = Student::where("grade_id", $request->grade_id)
-                  ->where('is_active', true)
-                  ->pluck('id')
-                  ->toArray();
+            //    $getStudentId = Student::where("grade_id", $request->grade_id)
+            //       ->where('is_active', true)
+            //       ->pluck('id')
+            //       ->toArray();
 
-               $getStudentId = array_values(array_diff($getStudentId, $haveChineseHigher));
-            }
-            else {
-               $getStudentId = Student::where("grade_id", $request->grade_id)
-                  ->where('is_active', true)
-                  ->pluck('id')
-                  ->toArray();
-            }
+            //    $getStudentId = array_values(array_diff($getStudentId, $haveChineseHigher));
+            // }
+            // else {
+            //    $getStudentId = Student::where("grade_id", $request->grade_id)
+            //       ->where('is_active', true)
+            //       ->pluck('id')
+            //    -  >toArray();
+            // }
+
+            $getStudentId = Student::where("grade_id", $request->grade_id)
+               ->where('is_active', true)
+               ->pluck('id')
+               ->toArray();
 
             for ($i = 0; $i < sizeof($getStudentId); $i++) {
                $postStudentExam = [
@@ -945,9 +956,8 @@ class ExamController extends Controller
 
    public function actionPut(Request $request, $id)
    {
-      // DB::beginTransaction();
       try {
-
+         // dd($request);
          session()->flash('page',  $page = (object)[
             'page' => 'database exam',
             'child' => 'database exam',
@@ -960,6 +970,8 @@ class ExamController extends Controller
             'open_date'  => $request->open_date,
             'materi'     => $request->materi,
             'teacher_id' => $request->teacher_id,
+            'time_open'  => $request->time_open,
+            'end_time'   => $request->end_time,
             'semester'   => session('semester'),
             'academic_year' => session('academic_year'),
             'updated_at' => now(),
@@ -1512,10 +1524,21 @@ class ExamController extends Controller
          ->where('student_id', $student->id)
          ->update($data);
 
-      if($exam->date_exam < \Carbon\Carbon::parse(now())->toDateString()){
-         session()->flash('late_upload_answer');
-      }else{
-         session()->flash('after_upload_answer');
+      if($exam->end_time !== null){
+         $todayOpenTime = \Carbon\Carbon::parse($exam->end_time)->translatedFormat('H:i');
+         if(\Carbon\Carbon::parse(now())->translatedFormat('H:i') > $todayOpenTime){
+            session()->flash('late_upload_answer');
+         }
+         else{
+            session()->flash('after_upload_answer');
+         }
+      }
+      else{
+         if($exam->date_exam < \Carbon\Carbon::parse(now())->toDateString()){
+            session()->flash('late_upload_answer');
+         }else{
+            session()->flash('after_upload_answer');
+         }
       }
       
       return redirect()->back();
@@ -1761,4 +1784,16 @@ class ExamController extends Controller
          dd($err);
       }
    }
+
+   public function cekNameExam(Request $request)
+   {
+      $exists = Exam::where('name_exam', $request->name)
+         ->where('section_id', session('section_id'))
+         ->where('semester', session('semester'))
+         ->where('academic_year', session('academic_year'))
+         ->exists();
+
+      return response()->json(['exists' => $exists]);
+   }
+
 }

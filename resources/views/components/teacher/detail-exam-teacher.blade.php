@@ -55,8 +55,18 @@ $days = floor($diff / (60 * 60 * 24)); // Konversi detik ke hari
                 <div class="col-12 col-sm-4">
                   <div class="info-box" style="border-radius: 12px;background-color: #fff3c0;">
                     <div class="info-box-content">
-                      <span class="info-box-text text-center text-black text-bold">Deadline {{ \Carbon\Carbon::parse($data->date_exam)->translatedFormat('d F Y') }} </span>
-                      {{-- <span class="info-box-number text-center text-muted mb-0">20</span> --}}
+                      <span class="info-box-text text-start text-black text-bold">Deadline {{ \Carbon\Carbon::parse($data->date_exam)->translatedFormat('d F Y') }} </span>
+                        @if ($data->open_date !== null)
+                          <span class="info-box-text text-start text-black text-bold">Open in {{ \Carbon\Carbon::parse($data->open_date)->translatedFormat('d F Y') }} 
+                            @if ($data->time_open !== null)
+                              {{ \Carbon\Carbon::parse($data->time_open)->translatedFormat('H:i') }} WIB
+                            @endif
+                        @endif
+                      </span>
+
+                      @if ($data->end_time !== null)
+                        <span class="info-box-text text-start text-black text-bold">End in {{ \Carbon\Carbon::parse($data->end_time)->translatedFormat('H:i') }} WIB
+                      @endif
                     </div>
                   </div>
                 </div>
@@ -306,7 +316,7 @@ $days = floor($diff / (60 * 60 * 24)); // Konversi detik ke hari
                 </p>
                 @endif
 
-                <a href="{{ url('teacher/dashboard/exam') . '/score/' . $data->id }}" class="btn btn-success btn-sm w-100">See Score Student</a>
+                {{-- <a href="{{ url('teacher/dashboard/exam') . '/score/' . $data->id }}" class="btn btn-success btn-sm w-100">See Score Student</a> --}}
                 
                 <div class="row flex justify-content-center">
                   <div class="col-md-12">

@@ -128,6 +128,7 @@
                                     @endif
                                  </div>
                               </div>
+                              
       
                               <div class="form-group row d-none">
                                  <div class="col-md-12">
@@ -156,7 +157,7 @@
                               
                               <div class="form-group row">
                                  <div class="col-md-12">
-                                    <label for="open_date">Open date <span style="color: red">* (Kapan soal diakses)</span></label>
+                                    <label for="open_date">Open date <span style="color: red"> (Kapan soal diakses)</span></label>
                                     <input name="open_date" type="date" class="form-control" id="open_date">
                                     
                                     @if($errors->has('open_date'))
@@ -164,6 +165,33 @@
                                     @endif
                                  </div>
                               </div>
+                              
+                              <div class="form-group row">
+                                 <div class="col-md-12">
+                                    <label for="open_time">Open time 
+                                          <span style="color: red">  (Jam berapa soal diakses)</span>
+                                    </label>
+                                    <input name="open_time" type="time" class="form-control" id="open_time">
+                                    
+                                    @if($errors->has('open_time'))
+                                          <p style="color: red">{{ $errors->first('open_time') }}</p>
+                                    @endif
+                                 </div>
+                              </div>
+
+                              <div class="form-group row">
+                                 <div class="col-md-12">
+                                    <label for="end_time">End time 
+                                          <span style="color: red">(Batas pengerjaan soal)</span>
+                                    </label>
+                                    <input name="end_time" type="time" class="form-control" id="end_time">
+                                    
+                                    @if($errors->has('end_time'))
+                                          <p style="color: red">{{ $errors->first('end_time') }}</p>
+                                    @endif
+                                 </div>
+                              </div>
+
                               
                               {{-- <div class="form-group row">
                                  <div class="col-md-12">
@@ -802,6 +830,80 @@
       container.innerHTML = "";
    }
 
+   // document.addEventListener('DOMContentLoaded', function() {
+   //    let nameInput = document.getElementById('name');
+
+   //    nameInput.addEventListener('blur', function() {
+   //       let nameValue = this.value.trim();
+   //       console.log(nameValue);
+
+   //       if (nameValue !== '') {
+   //          fetch(`{{ route('check.assessment.name') }}?name=${encodeURIComponent(nameValue)}`)
+   //          .then(response => response.json())
+   //          .then(data => {
+   //             console.log(data);
+   //             if (data.exists) {
+   //                Swal.fire({
+   //                   // icon: 'error',
+   //                   title: 'Oops...',
+   //                   imageUrl: '/images/confuse.png',
+   //                   imageWidth: 100,
+   //                   imageHeight: 100,
+   //                   html: `Ukuran file terlalu besar! Maksimal 5MB.<br><br>
+   //                         <strong>Silakan kompres file Anda di:</strong> <br>
+   //                         <a href="https://www.ilovepdf.com/compress_pdf" target="_blank" style="color: #3085d6; text-decoration: underline;">
+   //                            iLovePDF - Compress PDF
+   //                         </a>`,
+   //                   confirmButtonText: 'Oke, Saya Mengerti',
+   //                   customClass: {
+   //                      popup: 'custom-swal-style'
+   //                   },
+   //                });
+   //                nameInput.focus();
+   //             }
+   //          })
+   //          .catch(err => console.error(err));
+   //       }
+   //    });
+   // });
+
+   // $('#name').on('keyup', function () {
+   //    var name = $(this).val();
+   //    if (name) {
+   //       $.ajax({
+   //             url: "{{ route('check.assessment.name') }}",
+   //             method: "POST",
+   //             data: {
+   //                "_token": "{{ csrf_token() }}",
+   //                name: name
+   //             },
+   //             success: function (response) {
+   //                if (response.exists) {
+   //                   let nameInput = document.getElementById('name');
+   //                   Swal.fire({
+   //                      // icon: 'error',
+   //                      title: 'Oops...',
+   //                      imageUrl: '/images/confuse.png',
+   //                      imageWidth: 100,
+   //                      imageHeight: 100,
+   //                      html: `Name Assessment Already Exist`,
+   //                      confirmButtonText: 'Oke, Saya Mengerti',
+   //                      customClass: {
+   //                         popup: 'custom-swal-style'
+   //                      },
+   //                   });
+   //                   nameInput.focus();
+   //                } else {
+   //                }
+   //             },
+   //             complete: function() {
+   //             },
+   //             error: function() {
+   //                alert('error');
+   //             }
+   //       });
+   //    }
+   // });
 </script>
 
 @endsection
