@@ -81,7 +81,7 @@
               @if ($data->hasFile == true)
                 <div class="row">
                   <div class="col-12">
-                    <p class="text-bold">Question UF:</p> 
+                    <p class="text-bold">Question :</p> 
                     @php
                       $todayOpenTime = \Carbon\Carbon::parse($data->time_open)->translatedFormat('H:i');
                       $openDate = \Carbon\Carbon::parse($data->open_date)->translatedFormat('d-m-Y');
@@ -640,8 +640,6 @@
                             name="upload_file" 
                             accept=".pdf, .png, .jpg, .jpeg, .heic, .mp4, .avi, .mov, .mkv, .webm" 
                             required>
-
-
                             <div class="text-danger mt-2" id="fileError" style="display: none;"></div>
                           </div>      
                           <div class="form-group row">
@@ -694,8 +692,38 @@
                             </div>
                           </form>
                         @else
+                          <form action="{{route('upload.answer')}}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="form-group row text-muted" id="file-form">
+                              <label for="upload_file">Upload Your Answer File (Maks 5MB) <span style="color: red">*</span></label>
+                              <input type="file" 
+                              id="upload_file"
+                              name="upload_file" 
+                              accept=".pdf, .png, .jpg, .jpeg, .heic, .mp4, .avi, .mov, .mkv, .webm" 
+                              required>
+                              <div class="text-danger mt-2" id="fileError" style="display: none;"></div>
+                            </div>      
+                            <div class="form-group row">
+                              <button type="submit" class="btn btn-sm btn-success w-100" id="submitBtn">Submit</button>
+                            </div>
+                          </form>
                         @endif
                       @else
+                          <form action="{{route('upload.answer')}}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="form-group row text-muted" id="file-form">
+                              <label for="upload_file">Upload Your Answer File (Maks 5MB) <span style="color: red">*</span></label>
+                              <input type="file" 
+                              id="upload_file"
+                              name="upload_file" 
+                              accept=".pdf, .png, .jpg, .jpeg, .heic, .mp4, .avi, .mov, .mkv, .webm" 
+                              required>
+                              <div class="text-danger mt-2" id="fileError" style="display: none;"></div>
+                            </div>      
+                            <div class="form-group row">
+                              <button type="submit" class="btn btn-sm btn-success w-100" id="submitBtn">Submit</button>
+                            </div>
+                          </form>
                       @endif
                     @endif
                   @endif
