@@ -355,10 +355,7 @@ $days = floor($diff / (60 * 60 * 24)); // Konversi detik ke hari
                           </a>
                         @endif
                       @endif
-                      
-                      
-                    @elseif (session('role') == 'admin' || session('role') == 'superadmin')
-                      <a href="/exams/score/{{ $data->id }}" class="btn btn-success btn-sm col-12">See Score Student</a>
+                      <a href="{{ url('teacher/dashboard/exam') . '/score/' . $data->id }}" class="btn btn-success btn-sm col-12">See Score Student</a>
                     @endif
                   </div>
                 </div>

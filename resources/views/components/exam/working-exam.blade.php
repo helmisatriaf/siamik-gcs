@@ -142,7 +142,7 @@
             <!-- Sidebar kiri untuk nomor soal -->
             <div class="col-md-3">
                 <div class="card p-3" style="background-color: #fff3c0; border-radius: 12px;">
-                    <img loading="lazy" src="{{ asset('/images') }}/logo-school.png" class="img-fluid bg-transparent" alt="Sample image">
+                    <img loading="lazy" src="{{ asset('/images')    }}/logo-school.png" class="img-fluid bg-transparent" alt="Sample image">
                     <h5 class="text-center text-lg">Question Number</h5>
                     <div class="d-flex flex-wrap gap-1">
                         @foreach ($questions as $index => $question)
@@ -155,9 +155,7 @@
                 </div>
                 @if (session('role') !== 'parent')
                     @if ($assessment->is_active == true)
-                        @if ($currentDateTime <= $examDateTime)
-                            <button class="btn btn-danger w-100 mb-3" data-bs-toggle="modal" data-bs-target="#completed" style="border-radius: 12px;">Completed</button>
-                        @endif
+                        <button class="btn btn-danger w-100 mb-3" data-bs-toggle="modal" data-bs-target="#completed" style="border-radius: 12px;">Completed</button>
                     @endif
                 @endif
             </div>
@@ -196,8 +194,6 @@
                                         rows="5" oninput="saveEssayAnswer({{ $question->id }})"></textarea>
                                 @endif
                             @endif
-
-
                         </div>
                     @endforeach
                 </div>
@@ -293,7 +289,55 @@
     <script src="{{ asset('template') }}/plugins/sweetalert2/sweetalert2.min.js"></script>
 
     <script>
-        let answers = {}; // Menyimpan jawaban siswa
+        // Ambil jawaban dari draft
+        @if(count($draftAnswer) > 0)
+            let answers = {};
+            const draftAnswer = @json($draftAnswer);
+
+            draftAnswer.forEach(item => {
+                // Kalau jawaban MC
+                if (item.answer_id) {
+                    answers[item.question_id] = {
+                        question_id: item.question_id,
+                        answer_id: item.answer_id,
+                        essay_answer: null
+                    };
+
+                    // Tandai jawaban di UI
+                    const el = document.getElementById(`answer-${item.question_id}-${item.answer_id}`);
+                    if (el) {
+                        el.classList.add('selected');
+                    }
+                }
+
+                // Kalau jawaban essay
+                if (item.essay_answer) {
+                    answers[item.question_id] = {
+                        question_id: item.question_id,
+                        answer_id: null,
+                        essay_answer: item.essay_answer
+                    };
+
+                    // Isi textarea di UI
+                    const textarea = document.getElementById(`essay-answer-${item.question_id}`);
+                    if (textarea) {
+                        textarea.value = item.essay_answer;
+                    }
+                }
+
+                // Tambahkan status "answered" di nomor soal
+                const qnum = document.getElementById(`qnum-${item.question_id}`);
+                if (qnum) {
+                    qnum.classList.add('answered');
+                }
+            });
+        // Jawaban baru
+        @else
+            let answers = {};
+        @endif
+    
+
+        let emptyAnswers = [];
 
         // Menampilkan soal berdasarkan ID
         function showQuestion(id, number) {
@@ -317,6 +361,7 @@
             document.getElementById(`answer-${questionId}-${answerId}`).classList.add('selected');
 
             document.getElementById(`qnum-${questionId}`).classList.add('answered');
+            saveDraftAnswer(questionId, answerId, null);
         }
 
         // Menyimpan jawaban essay
@@ -334,102 +379,164 @@
             } else {
                 document.getElementById(`qnum-${questionId}`).classList.remove('answered');
             }
+
+            saveDraftAnswer(questionId, null, answerText);
         }
 
         // Mengirim jawaban ke server Laravel
         function submitAnswers() {
+            Object.values(answers).forEach(function(ans) {
+                // Kalau dua-duanya kosong/null
+                if ((ans.answer_id === null || ans.answer_id === '') && 
+                    (ans.essay_answer === null || ans.essay_answer.trim() === '')) {
+                    emptyAnswers.push(ans.question_id);
+                }
+            });
+
+            // console.log(emptyAnswers);
+            const totalQuestions = {{ count($questions) }};
+            const totalAnswered = Object.keys(answers).length;
+            let incompleted = false;
+
+            // Kalau ada jawaban kosong
+            if(emptyAnswers.length > 0){
+                incompleted = true;
+            }
+
+            // console.log(incompleted);
+            // cek jika terdapat incompleted
+
+            if(incompleted){
+                Swal.fire({
+                    title: 'Incomplete Answers',
+                    text: 'Please answer all questions before submitting.',
+                    showConfirmButton: false,
+                    imageUrl: '/images/confuse.png', 
+                    imageWidth: 100,
+                    imageHeight: 100,
+                    confirmButtonColor: '#ffffff',
+                    imageAlt: 'Custom image',
+                    customClass: {
+                        popup: 'custom-popup' // pakai class custom
+                    }
+                });
+                return; // hentikan proses submit
+            }
+            else{
+                if (totalAnswered < totalQuestions) {
+                    Swal.fire({
+                        title: 'Incomplete Answers',
+                        text: 'Please answer all questions before submitting.',
+                        showConfirmButton: false,
+                        imageUrl: '/images/confuse.png', 
+                        imageWidth: 100,
+                        imageHeight: 100,
+                        confirmButtonColor: '#ffffff',
+                        imageAlt: 'Custom image',
+                        customClass: {
+                            popup: 'custom-popup' // pakai class custom
+                        }
+                    });
+
+                    return; // hentikan proses submit
+                }
+            }
+
             var completedModal = bootstrap.Modal.getInstance(document.getElementById('completed'));
             if (completedModal) {
                 completedModal.hide();
             }
+            
+            // console.log(answers);
+
             fetch("{{ route('action.answer.student') }}", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                    },
-                    body: JSON.stringify({
-                        answers: Object.values(answers) // Mengubah objek menjadi array
-                    })
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({
+                    answers: Object.values(answers) // Mengubah objek menjadi array
                 })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        alert("❌ Error: " + data.error); // Tampilkan error di alert
-                        console.error("Error Details:", data.details); // Log detail error di console
-                    } else {
-                        Swal.fire({
-                            title: '',
-                            html: `
-                                <div style="text-align: center; padding: 10px;">
-                                    <div style="margin-bottom: 15px;">
-                                        <img loading="lazy" src="{{ asset('images/greta-greti-baju-olga.png') }}" 
-                                            alt="Success Icon" 
-                                            class="profileImage img-fluid"
-                                            style="max-width: 100px; max-height: 120px; border-radius: 4px; margin-bottom: 15px;">
-                                        <h3 style="color: #2d3748; font-weight: 600; margin-bottom: 10px; font-size: 22px;">
-                                            Excellent Work!
-                                        </h3>
-                                        <p style="color: #4a5568; font-size: 16px; line-height: 1.5; margin-bottom: 5px;">
-                                            Your answer has been successfully saved.
-                                        </p>
-                                        <div style="display: flex; align-items: center; justify-content: center; margin-top: 15px;">
-                                            <span style="display: inline-block; background-color: #f0f9ff; border-radius: 20px; padding: 5px 15px; font-size: 14px; color: #3182ce;">
-                                                <i class="fas fa-check-circle" style="margin-right: 5px; color: #38b2ac;"></i>
-                                                Completed successfully
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div style="margin-top: 15px; border-top: 1px solid #edf2f7; padding-top: 15px;">
-                                        <p style="color: #718096; font-size: 14px;">
-                                            You'll be redirected to your dashboard shortly
-                                        </p>
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert("❌ Error: " + data.error); // Tampilkan error di alert
+                    console.error("Error Details:", data.details); // Log detail error di console
+                } else {
+                    Swal.fire({
+                        title: '',
+                        html: `
+                            <div style="text-align: center; padding: 10px;">
+                                <div style="margin-bottom: 15px;">
+                                    <img loading="lazy" src="{{ asset('images/greta-greti-baju-olga.png') }}" 
+                                        alt="Success Icon" 
+                                        class="profileImage img-fluid"
+                                        style="max-width: 100px; max-height: 120px; border-radius: 4px; margin-bottom: 15px;">
+                                    <h3 style="color: #2d3748; font-weight: 600; margin-bottom: 10px; font-size: 22px;">
+                                        Excellent Work!
+                                    </h3>
+                                    <p style="color: #4a5568; font-size: 16px; line-height: 1.5; margin-bottom: 5px;">
+                                        Your answer has been successfully saved.
+                                    </p>
+                                    <div style="display: flex; align-items: center; justify-content: center; margin-top: 15px;">
+                                        <span style="display: inline-block; background-color: #f0f9ff; border-radius: 20px; padding: 5px 15px; font-size: 14px; color: #3182ce;">
+                                            <i class="fas fa-check-circle" style="margin-right: 5px; color: #38b2ac;"></i>
+                                            Completed successfully
+                                        </span>
                                     </div>
                                 </div>
-                            `,
-                            background: "#ffffff",
-                            showConfirmButton: true,
-                            confirmButtonText: "Continue",
-                            confirmButtonColor: "#4299e1",
-                            timer: 3000,
-                            timerProgressBar: true,
-                            customClass: {
-                                container: 'elegant-swal-container',
-                                popup: 'elegant-swal-popup',
-                                confirmButton: 'elegant-swal-confirm-button'
-                            },
-                            didOpen: () => {
-                                Swal.showLoading();
+                                <div style="margin-top: 15px; border-top: 1px solid #edf2f7; padding-top: 15px;">
+                                    <p style="color: #718096; font-size: 14px;">
+                                        You'll be redirected to your dashboard shortly
+                                    </p>
+                                </div>
+                            </div>
+                        `,
+                        background: "#ffffff",
+                        showConfirmButton: true,
+                        confirmButtonText: "Continue",
+                        confirmButtonColor: "#4299e1",
+                        timer: 3000,
+                        timerProgressBar: true,
+                        customClass: {
+                            container: 'elegant-swal-container',
+                            popup: 'elegant-swal-popup',
+                            confirmButton: 'elegant-swal-confirm-button'
+                        },
+                        didOpen: () => {
+                            Swal.showLoading();
 
-                                // Add custom styles for the SweetAlert container
-                                const style = document.createElement('style');
-                                style.innerHTML = `
-                                    .elegant-swal-popup {
-                                        border-radius: 12px !important;
-                                        box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
-                                    }
-                                    .elegant-swal-confirm-button {
-                                        border-radius: 6px !important;
-                                        font-weight: 500 !important;
-                                        padding: 10px 24px !important;
-                                        text-transform: none !important;
-                                    }
-                                    .swal2-timer-progress-bar {
-                                        background: #4299e1 !important;
-                                    }
-                                `;
-                                document.head.appendChild(style);
-                            },
-                            willClose: () => {
-                                window.location.href = "{{ url('student/dashboard/exam/detail') }}";
-                            }
-                        });
-                    }
-                })
-                .catch(error => {
-                    alert("⚠️ Terjadi kesalahan dalam pengiriman.");
-                    console.error("Fetch Error:", error);
-                });
+                            // Add custom styles for the SweetAlert container
+                            const style = document.createElement('style');
+                            style.innerHTML = `
+                                .elegant-swal-popup {
+                                    border-radius: 12px !important;
+                                    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+                                }
+                                .elegant-swal-confirm-button {
+                                    border-radius: 6px !important;
+                                    font-weight: 500 !important;
+                                    padding: 10px 24px !important;
+                                    text-transform: none !important;
+                                }
+                                .swal2-timer-progress-bar {
+                                    background: #4299e1 !important;
+                                }
+                            `;
+                            document.head.appendChild(style);
+                        },
+                        willClose: () => {
+                            window.location.href = "{{ url('student/dashboard/exam/detail') }}";
+                        }
+                    });
+                }
+            })
+            .catch(error => {
+                alert("⚠️ Terjadi kesalahan dalam pengiriman.");
+                console.error("Fetch Error:", error);
+            });
         }
 
         // Menampilkan soal pertama secara default
@@ -439,6 +546,31 @@
                 showQuestion(firstQuestionId, 1);
             }
         };
+
+        function saveDraftAnswer(questionId, answerId = null, answerText = null) {
+            fetch("{{ route('draft.answer') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({   
+                    question_id: questionId,
+                    answer_id: answerId,
+                    essay_answer: answerText
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("✅ Draft saved", data.message);
+                } else {
+                    console.error("❌ Draft failed", data.message);
+                }
+            })
+            .catch(err => console.error("❌ Error saving draft:", err));
+        }
+
     </script>
 
     {{-- POP-UP --}}

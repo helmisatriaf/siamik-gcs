@@ -48,7 +48,11 @@
                                             <div class="row">
                                                 @foreach ($el->students as $index => $student)
                                                     <div class="user-block col-4 col-md-2">
-                                                        <img class="img-circle img-bordered-sm" src="{{asset('storage/file/profile/'. $student->profil)}}" alt="user image">
+                                                        @if ($student->profil == null)
+                                                            <img loading="lazy" src="{{asset('images/admin.png') }}" class="img-circle img-bordered-sm">
+                                                        @else
+                                                            <img class="img-circle img-bordered-sm" src="{{asset('storage/file/profile/'. $student->profil)}}" alt="user image">
+                                                        @endif
                                                         <span class="username">
                                                             <span class="text-dark">
                                                                 {{$student->name}}

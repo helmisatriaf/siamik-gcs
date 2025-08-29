@@ -1076,6 +1076,11 @@ Route::middleware(['auth.login', 'role:admin'])->prefix('/admin')->group(functio
       Route::put('/{id}', [GradeController::class, 'actionPut'])->name('actionAdminUpdateGrade');
    });
 
+   Route::prefix('/eca')->group(function () {
+      Route::get('/delete/{id}', [EcaController::class, 'delete'])->name('delete-eca');
+      Route::get('/delete/student/{ecaId}/{studentId}', [EcaController::class, 'deleteStudent'])->name('delete-eca-student');
+   });
+
    Route::prefix('/exams')->group(function () {
       Route::get('/', [ExamController::class, 'index']);
       Route::get('/create', [ExamController::class, 'pageCreate']);
@@ -1429,6 +1434,11 @@ Route::middleware(['auth.login', 'role:teacher'])->prefix('/teacher')->group(fun
       Route::delete('/activity/delete/{id}', [CourseController::class, 'deleteActivityTeacher'])->name('delete-activity.teacher');
    });
 
+   Route::prefix('/eca')->group(function () {
+      Route::get('/section', [EcaController::class, 'section']);
+   });
+   
+
    Route::get('enroll/{examId}', [ScoreController::class, 'enrollScoreMC']);
 });
 
@@ -1529,8 +1539,8 @@ Route::middleware(['auth.login', 'role:superadmin,admin'])->group(function () {
       Route::post('/addStudent', [EcaController::class, 'actionAddStudent'])->name('actionAdminAddStudent');
       Route::post('/', [EcaController::class, 'actionPost'])->name('actionAdminCreateEca');
       Route::put('/{id}', [EcaController::class, 'actionPut'])->name('actionAdminUpdateEca');
-      Route::get('/delete/{id}', [EcaController::class, 'delete'])->name('delete-eca');
-      Route::get('/delete/student/{ecaId}/{studentId}', [EcaController::class, 'deleteStudent'])->name('delete-eca-student');
+      // Route::put('/delete/{id}', [EcaController::class, 'delete'])->name('delete-eca');
+      // Route::get('/delete/student/{ecaId}/{studentId}', [EcaController::class, 'deleteStudent'])->name('delete-eca-student');
    });
 
    Route::prefix('{role}')->group(function () {
@@ -1741,3 +1751,5 @@ Route::post('/search-book',[LibraryController::class, 'search'])->name('search')
 Route::post('/cancel/{id}', [LibraryController::class, 'cancel'])->name('cancel.book');
 Route::post('/plan-visit', [LibraryController::class, 'planVisit'])->name('action.plan.visit');
 Route::get('/others', [LibraryController::class, 'others'])->name('others');
+
+Route::post('/draft-answer', [ScoreController::class, 'draftAnswer'])->name('draft.answer');

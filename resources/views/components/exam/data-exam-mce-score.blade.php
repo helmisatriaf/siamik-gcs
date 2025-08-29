@@ -41,74 +41,69 @@
                                 <td>
                                     <div>
                                         <h1>Question {{ $loop->index + 1 }} :</h1>
-                                        <div class="row">
-                                            <div class="grid d-md-flex">
-                                                <div class="col-md-6">
-                                                    <textarea id="froala-editor"> {{ $el->text }} {{$el->answer[0]['answer_text']}}</textarea>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="post">
-                                                        <p>Recent Activity</p>
-                                                        @foreach ($el->students as $index => $student)
-                                                            <div class="user-block">
-                                                                <img class="img-circle img-bordered-sm" src="{{asset('storage/file/profile/'. $student->profil)}}" alt="user image">
-                                                                <span class="username">
-                                                                <a class="text-muted">{{$student->name}}</a>
-                                                                </span>
-                                                                <div class="row">
-                                                                    <div class="col-12 col-md-10">
-                                                                            Answer : 
-                                                                            @php
-                                                                                if ($el->type == "mc") {
-                                                                                    $point = \App\Models\StudentAnswer::with(['answer'])
-                                                                                        ->where('exam_id', $exam->id)
-                                                                                        ->where('question_id', $el->id)
-                                                                                        ->where('student_id', $student->id)
-                                                                                        ->first();
-                                                                                    $answer = $point?->answer?->answer_text ?? '';
-                                                                                }
-                                                                                elseif ($el->type == "essay") {
-                                                                                    $point = \App\Models\StudentAnswer::with(['answer'])
-                                                                                        ->where('exam_id', $exam->id)
-                                                                                        ->where('question_id', $el->id)
-                                                                                        ->where('student_id', $student->id)
-                                                                                        ->first();
-                                                                                    $answer = $point?->essay_answer ?? '';
-                                                                                }
-                                                                            @endphp 
-                                                                            {{ $answer }}
-                                                                    </div>
-                                                                    <div class="col-12 col-md-2">
-                                                                        @if ($el->type == "mc")
-                                                                            @php
-                                                                                $point = \App\Models\StudentAnswer::with(['answer'])
-                                                                                    ->where('exam_id', $exam->id)
-                                                                                    ->where('question_id', $el->id)
-                                                                                    ->where('student_id', $student->id)
-                                                                                    ->value('point');
-                                                                            @endphp
-                                                                            Point : {{$point}}
-            
-                                                                        @elseif ($el->type == "essay")
-                                                                            @php
-                                                                                $point = \App\Models\StudentAnswer::with(['answer'])
-                                                                                    ->where('exam_id', $exam->id)
-                                                                                    ->where('question_id', $el->id)
-                                                                                    ->where('student_id', $student->id)
-                                                                                    ->value('point');
-                                                                            @endphp
-                                                                            Point :
-                                                                            <input class="score-input" value="{{$point ?? 0}}" name="student[{{$student->id}}][{{$el->id}}][point]" type="number" autocomplete="off" min="0" max="{{$pointEssay}}">
-                                                                        @endif
-                                                                    </div>
-                                                                </div>
+                                        <textarea id="froala-editor"> {{ $el->text }} {{$el->answer[0]['answer_text']}}</textarea>
+                                        <div class="post">
+                                            <p>Recent Activity</p>
+                                            <div class="row">
+                                                @foreach ($el->students as $index => $student)
+                                                    <div class="user-block col-4 col-md-2">
+                                                        <img class="img-circle img-bordered-sm" src="{{asset('storage/file/profile/'. $student->profil)}}" alt="user image">
+                                                        <span class="username">
+                                                        <a class="text-muted">{{$student->name}}</a>
+                                                        </span>
+                                                        <div class="grid text-dark">
+                                                            <div class="col-12">
+                                                                    Answer : 
+                                                                    @php
+                                                                        if ($el->type == "mc") {
+                                                                            $point = \App\Models\StudentAnswer::with(['answer'])
+                                                                                ->where('exam_id', $exam->id)
+                                                                                ->where('question_id', $el->id)
+                                                                                ->where('student_id', $student->id)
+                                                                                ->first();
+                                                                            $answer = $point?->answer?->answer_text ?? '';
+                                                                        }
+                                                                        elseif ($el->type == "essay") {
+                                                                            $point = \App\Models\StudentAnswer::with(['answer'])
+                                                                                ->where('exam_id', $exam->id)
+                                                                                ->where('question_id', $el->id)
+                                                                                ->where('student_id', $student->id)
+                                                                                ->first();
+                                                                            $answer = $point?->essay_answer ?? '';
+                                                                        }
+                                                                    @endphp 
+                                                                    {{ $answer }}
                                                             </div>
-                                                        @endforeach
+                                                            <div class="col-12">
+                                                                @if ($el->type == "mc")
+                                                                    @php
+                                                                        $point = \App\Models\StudentAnswer::with(['answer'])
+                                                                            ->where('exam_id', $exam->id)
+                                                                            ->where('question_id', $el->id)
+                                                                            ->where('student_id', $student->id)
+                                                                            ->value('point');
+                                                                    @endphp
+                                                                    Point : {{$point}}
+    
+                                                                @elseif ($el->type == "essay")
+                                                                    @php
+                                                                        $point = \App\Models\StudentAnswer::with(['answer'])
+                                                                            ->where('exam_id', $exam->id)
+                                                                            ->where('question_id', $el->id)
+                                                                            ->where('student_id', $student->id)
+                                                                            ->value('point');
+                                                                    @endphp
+                                                                    Point :
+                                                                    <input class="score-input" value="{{$point ?? 0}}" name="student[{{$student->id}}][{{$el->id}}][point]" type="number" autocomplete="off" min="0" max="{{$pointEssay}}">
+                                                                @endif
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                @endforeach
                                             </div>
                                         </div>
-    
+                                                
+                                        
                                     </div>
                                 </td>
                             </tr>

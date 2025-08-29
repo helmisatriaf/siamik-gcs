@@ -29,6 +29,7 @@ use App\Models\Chinese_lower;
 use App\Models\Teacher_grade;
 use App\Models\Kindergarten;
 use App\Models\Enroll;
+use App\Models\Draft_cbt_answer;
 
 
 use Exception;
@@ -1862,6 +1863,10 @@ class ScoreController extends Controller
             $studentId = Student::where('user_id', session('id_user'))->value('id');
             $model     = Exam::where('id', session('exam_id'))->value('model');
 
+            Draft_cbt_answer::where('student_id', $studentId)
+                ->where('exam_id', session('exam_id'))
+                ->delete();
+
             switch ($model) {
                 // MENYIMPAN JAWABAN QUESTION COMBINE
                 case "mce" :
@@ -1967,8 +1972,6 @@ class ScoreController extends Controller
 
     public function scoreMCE(Request $request){
         try{
-
-            // dd($request);
             foreach($request->student as $studentId => $student){
                 foreach($student as $questionId => $point){ 
                     // UPDATE SCORE ESSAY
@@ -2969,6 +2972,35 @@ class ScoreController extends Controller
 
         catch(Exception $err){
             dd($err);
+        }
+    }
+
+    public function draftAnswer(Request $request){
+        try{
+            $studentId = Student::where('user_id', session('id_user'))->value('id');
+            Draft_cbt_answer::updateOrCreate(
+                [
+                    'student_id' => $studentId,
+                    'exam_id' => session('exam_id'),
+                    'question_id' => $request->question_id,
+                ],
+                [
+                    'answer_id' => $request->answer_id,
+                    'essay_answer' => $request->essay_answer,
+                ]
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Draft saved successfully',
+            ]);
+        }
+        catch(Exception $err){
+           Log::error("error :", [$err]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to save draft',
+            ], 500);
         }
     }
 }

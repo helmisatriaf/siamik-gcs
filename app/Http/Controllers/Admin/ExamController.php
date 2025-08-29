@@ -20,6 +20,7 @@ use App\Models\Chinese_lower;
 use App\Models\Question;
 use App\Models\Answer;
 use App\Models\QuestionStatus;
+use App\Models\Draft_cbt_answer;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
@@ -1067,7 +1068,7 @@ class ExamController extends Controller
             ->join('type_exams', 'exams.type_exam', '=', 'type_exams.id')
             ->whereIn('subject_exams.subject_id', $teacherSubject)
             ->whereIn('grade_exams.grade_id', $teacherGrade)
-            ->where('exams.teacher_id', $getIdTeacher)
+            // ->where('exams.teacher_id', $getIdTeacher)
             ->where('exams.semester', session('semester'))
             ->where('exams.academic_year', session('academic_year'))
             ->orderBy('exams.created_at', 'desc')
@@ -1668,10 +1669,16 @@ class ExamController extends Controller
             ->first();
 
          $questions = Question::with(['answer'])->where('exam_id', session('exam_id'))->get();
+         
+         $studentId = Student::where('user_id', session('id_user'))->value('id');
+         $draftAnswer = Draft_cbt_answer::where('exam_id', session('exam_id'))
+            ->where('student_id', $studentId)
+            ->get();
 
          return view('components.exam.working-exam', [
             'questions' => $questions,
             'assessment' => $assessment,
+            'draftAnswer' => $draftAnswer,
          ]);
       } catch (Exception $err) {
          dd($err);
