@@ -482,7 +482,7 @@
                                             value="{{ $ebook->id }}" hidden>
                                              <label for="title" class="form-label fw-semibold">Book Title <span
                                                 class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="title-change" name="title"
+                                            <input type="text" class="form-control" id="title-change-{{$ebook->id}}" name="title"
                                                 placeholder="Enter a descriptive title for this resource" required value="{{$ebook->title}}">
 
 
