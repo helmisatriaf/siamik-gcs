@@ -488,7 +488,7 @@
 
                                             <div class="row grid md:flex col-12">
                                                 <div class="col-lg-6 mb-4">
-                                                    <div class="file-upload-container mb-4">
+                                                    {{-- <div class="file-upload-container mb-4">
                                                         <label for="upload_file" class="form-label fw-medium">Select PDF File</label>
                                                         <div class="file-upload-wrapper">
                                                             <div class="file-upload-area text-center p-4" id="upload-area">
@@ -496,7 +496,7 @@
                                                                 <i class="fas fa-cloud-upload-alt fa-2x mb-3 text-primary"></i>
                                                                 <h6 class="mb-2">Drag and drop your file here</h6>
                                                                 <p class="text-muted small mb-3">or</p>
-                                                                <button type="button" class="btn btn-outline-primary btn-sm">Browse Files</button>
+                                                                <button type="button" class="btn btn-outline-primary btn-sm" id="browse-{{$ebook->id}}">Browse Files</button>
                                                                 <p class="text-muted small mt-2">Maximum file size: 10MB</p>
                                                             </div>
                                                             <div class="selected-file-change mt-3 d-none">
@@ -513,7 +513,7 @@
                                                         <div class="form-text small text-muted mt-2">Only PDF format is supported for
                                                             consistency and compatibility
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
@@ -1216,7 +1216,7 @@
                                                     <i class="fas fa-cloud-upload-alt fa-2x mb-3 text-primary"></i>
                                                     <h6 class="mb-2">Drag and drop your PDF file here</h6>
                                                     <p class="text-muted small mb-2">or</p>
-                                                    <button type="button" class="btn btn-outline-primary btn-sm">Browse Files</button>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm" id="add-ebooks">Browse Files</button>
                                                     <p class="text-muted small mt-2">Maximum file size: 10MB</p>
                                                 </div>
                                                     <div class="selected-file mt-3 d-none">
