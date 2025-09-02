@@ -1068,7 +1068,7 @@ class ExamController extends Controller
             ->join('type_exams', 'exams.type_exam', '=', 'type_exams.id')
             ->whereIn('subject_exams.subject_id', $teacherSubject)
             ->whereIn('grade_exams.grade_id', $teacherGrade)
-            // ->where('exams.teacher_id', $getIdTeacher)
+            ->where('exams.teacher_id', $getIdTeacher)
             ->where('exams.semester', session('semester'))
             ->where('exams.academic_year', session('academic_year'))
             ->orderBy('exams.created_at', 'desc')
