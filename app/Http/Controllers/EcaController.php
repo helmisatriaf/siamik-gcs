@@ -6,12 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\Eca;
 use App\Models\Student;
 use App\Models\Student_eca;
-
+use App\Models\Master_academic;
+use App\Models\Schedule;
+use App\Models\Eca_activity;
+use App\Models\Student_eca_activity;
 use Illuminate\Support\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class EcaController extends Controller
 {
@@ -33,6 +38,200 @@ class EcaController extends Controller
 
         } catch (Exception $err) {
             return dd($err);
+        }
+    }
+
+    public function section()
+    {
+        try {
+            session()->flash('page',  $page = (object)[
+            'page' => 'eca',
+            'child' => 'Ekstracuricular Academic',
+            ]);
+
+            if(session('role') == 'student'){
+                $studentId = Student::where('user_id', session('id_user'))->value('id');
+                $ecaId = Student_eca::where('student_id', $studentId)->pluck('eca_id')->toArray();
+
+                $data = Eca::whereIn('id', $ecaId)->get();
+                
+                return view('components.eca.list-eca', [
+                    'data' => $data,
+                ]);
+            }
+            elseif(session('role') == 'parent'){
+                $studentId = Student::where('id', session('studentId'))->value('id');
+                $ecaId = Student_eca::where('student_id', $studentId)->pluck('eca_id')->toArray();
+    
+                $data = Eca::whereIn('id', $ecaId)->get();
+                
+                return view('components.eca.list-eca', [
+                    'data' => $data,
+                ]);
+            }
+            elseif(session('role') == 'teacher'){
+                $data = Eca::get();
+
+                return view('components.eca.list-eca', [
+                    'data' => $data,
+                ]);
+            }
+            elseif(session('role') == 'parent'){
+
+            }
+            
+
+        } catch (Exception $err) {
+            return dd($err);
+        }
+    }
+
+    public function sectionActivity($id)
+    {
+        try {
+            session()->flash('page', (object)[
+                'page' => 'eca',
+                'child' => 'detail course',
+            ]);
+            $masterAcademic = Master_academic::where('is_use', true)->first(); 
+
+            if(session('semester') == 1){
+                $startSemester = Carbon::createFromFormat('Y-m-d', $masterAcademic->semester1);
+                $endSemester = Carbon::createFromFormat('Y-m-d', $masterAcademic->end_semester1);
+            }
+            elseif(session('semester') == 2){
+                $startSemester = Carbon::createFromFormat('Y-m-d', $masterAcademic->semester2);
+                $endSemester = Carbon::createFromFormat('Y-m-d', $masterAcademic->end_semester2);
+            }
+            
+            // Ambil hari dari database
+            $schedule = Schedule::where('subject_id', $id)
+                ->value('day');
+            
+            // Mapping angka ke nama hari dalam format Carbon
+            $daysOfWeek = [
+                1 => "Monday",
+                2 => "Tuesday",
+                3 => "Wednesday",
+                4 => "Thursday",
+                5 => "Friday"
+            ];
+            
+            $day = $daysOfWeek[$schedule] ?? "Monday"; // Default ke Monday jika tidak ditemukan
+            
+            $course = [];
+            $currentDate = $startSemester->copy();
+            
+            // Cari tanggal pertama yang sesuai dengan hari dari database
+            while ($currentDate->format('l') !== $day) {
+                $currentDate->addDay();
+            }
+            
+            while ($currentDate <= $endSemester) {
+                $month = $currentDate->format('F Y'); // Nama Bulan dan Tahun
+                if (!isset($course[$month])) {
+                    $course[$month] = []; // Inisialisasi bulan baru
+                    $weekNumber = 1; // Reset nomor minggu saat bulan berganti
+                }
+            
+                // Simpan data dengan format yang sesuai
+                // $course[$month][] = "Week$weekNumber{$currentDate->format('jFY')}";
+                $index = $currentDate->format('dmY');
+                $course[$month][$index] = "Week $weekNumber ({$currentDate->format('j F Y')})";
+                // Tambah 7 hari ke depan (langsung ke minggu berikutnya)
+                $currentDate->addWeek();
+            
+                $weekNumber++;
+            }
+
+            $subject = Eca::where('id', $id)->first();
+            $material = Eca_activity::where('eca_id', $id)
+                ->where('semester', session('semester'))
+                ->where('academic_year', session('academic_year'))
+                ->count();
+            $student = Student_eca::with('student.grade')->where('eca_id', $id)->get();     
+
+            // dd($student);
+
+            return view('components.eca.eca-activity', 
+            compact('subject', 'id', 'course', 'material', 'student'));
+        } catch (Exception $err) {
+            dd($err);
+        }
+    }
+
+    public function sectionActivityStudent()
+    {
+        try {
+            session()->flash('page', (object)[
+                'page' => 'eca',
+                'child' => 'detail course',
+            ]);
+            $masterAcademic = Master_academic::where('is_use', true)->first(); 
+
+            if(session('semester') == 1){
+                $startSemester = Carbon::createFromFormat('Y-m-d', $masterAcademic->semester1);
+                $endSemester = Carbon::createFromFormat('Y-m-d', $masterAcademic->end_semester1);
+            }
+            elseif(session('semester') == 2){
+                $startSemester = Carbon::createFromFormat('Y-m-d', $masterAcademic->semester2);
+                $endSemester = Carbon::createFromFormat('Y-m-d', $masterAcademic->end_semester2);
+            }
+            
+            // Ambil hari dari database
+            $schedule = Schedule::where('subject_id', session('id_course'))
+                ->value('day');
+            
+            // Mapping angka ke nama hari dalam format Carbon
+            $daysOfWeek = [
+                1 => "Monday",
+                2 => "Tuesday",
+                3 => "Wednesday",
+                4 => "Thursday",
+                5 => "Friday"
+            ];
+            
+            $day = $daysOfWeek[$schedule] ?? "Monday"; // Default ke Monday jika tidak ditemukan
+            
+            $course = [];
+            $currentDate = $startSemester->copy();
+            
+            // Cari tanggal pertama yang sesuai dengan hari dari database
+            while ($currentDate->format('l') !== $day) {
+                $currentDate->addDay();
+            }
+            
+            while ($currentDate <= $endSemester) {
+                $month = $currentDate->format('F Y'); // Nama Bulan dan Tahun
+                if (!isset($course[$month])) {
+                    $course[$month] = []; // Inisialisasi bulan baru
+                    $weekNumber = 1; // Reset nomor minggu saat bulan berganti
+                }
+            
+                // Simpan data dengan format yang sesuai
+                // $course[$month][] = "Week$weekNumber{$currentDate->format('jFY')}";
+                $index = $currentDate->format('dmY');
+                $course[$month][$index] = "Week $weekNumber ({$currentDate->format('j F Y')})";
+                // Tambah 7 hari ke depan (langsung ke minggu berikutnya)
+                $currentDate->addWeek();
+            
+                $weekNumber++;
+            }
+
+            $subject = Eca::where('id', session('id_course'))->first();
+            $material = Eca_activity::where('eca_id', session('id_course'))
+                ->where('semester', session('semester'))
+                ->where('academic_year', session('academic_year'))
+                ->count();
+            $student = Student_eca::with('student.grade')->where('eca_id', session('id_course'))->get();     
+
+            // dd($student);
+            $id = session('id_course');
+
+            return view('components.eca.eca-activity', 
+            compact('subject', 'id', 'course', 'material', 'student'));
+        } catch (Exception $err) {
+            dd($err);
         }
     }
 
@@ -153,7 +352,7 @@ class EcaController extends Controller
 
             DB::commit();
             
-            return redirect('/'.  $role .'/eca');
+            return redirect('/eca');
 
         } catch (Exception $err) {
             DB::rollBack();
@@ -196,7 +395,7 @@ class EcaController extends Controller
             
             session()->flash('after_add_student_eca');
             
-            return redirect('/'. session('role') . '/eca/view' . '/' . $request->eca);
+            return redirect('/eca/view' . '/' . $request->eca);
 
         } catch (Exception $err) {
             DB::rollBack();
@@ -282,7 +481,7 @@ class EcaController extends Controller
 
             Eca::where('id', $id)->delete();
 
-            return redirect('/'.session('role').'/eca');
+            return redirect('/eca');
         } 
         catch (Exception $err) {
             dd($err);
@@ -306,4 +505,126 @@ class EcaController extends Controller
             return redirect('/'.session('role').'/eca/view' . '/' . $ecaId)->with('error', 'Terjadi kesalahan saat menghapus data student eca.');
         }
     }
+
+    public function changeIcon(Request $request){
+        try{
+            $subject = Eca::where('id', $request->id)->first();
+
+            $file = $request->file;
+            $fileName = $subject->name . '.' . $file->getClientOriginalExtension();
+            $filePath = $file->store('icons', 'public');
+
+            $checkFile = Eca::where('id', $request->id)
+                ->value('icon');
+
+            if($checkFile !== null){
+                if (Storage::exists($checkFile)) {
+                Storage::delete('public/' . $checkFile);
+                }
+            }
+
+            $save =  Eca::where('id', $request->id)->update([
+                'icon' => $filePath,
+            ]);
+
+            if($save){
+                return response()->json(['success' => true, 'message' => 'Successfully change icon']);
+            }
+        }
+        catch(Exception $err){
+            Log::error('error : ' . $err);
+            return dd($err);
+        }
+    }
+
+    public function storeActivity(Request $request, $id){
+        // File PDF
+        if ($request->hasFile('file')) {
+            $filePath = $request->file('file')->store('eca_activities', 'public');
+            $embed = false;
+        }
+
+        $activity = [
+            'section_id' => $request->section_id,
+            'title' => $request->title,
+            'description' => $request->description,
+            'eca_id' => $request->eca_id,
+            'file_path' => $filePath,
+            'semester' => session('semester'),
+            'academic_year' => session('academic_year'),
+        ];
+
+        Eca_activity::create($activity);
+
+        session()->flash('success_add_activity');
+        return redirect()->back();
+    }   
+
+    public function deleteActivity(Request $request)
+    {
+        try {
+
+            $checkFile = Eca_activity::where('id', $request->id)->value('file_path');
+            $delete = Eca_activity::Where('id', $request->id)->delete();
+
+            if($delete == true){
+                if($checkFile !== null){
+                    if (Storage::exists($checkFile)) {
+                        Storage::delete('public/' . $checkFile);
+                    }
+                }
+
+                session()->flash('success_delete_activity');
+                return redirect()->back();
+            }
+        } catch (Exception $err) {
+            dd($err);
+        }
+    }
+
+    public function storeActivityStudent(Request $request){
+        // File PDF
+        if ($request->hasFile('file')) {
+            $filePath = $request->file('file')->store('eca_activities', 'public');
+        }
+
+        $activity = [
+            'section_id' => $request->section_id,
+            'eca_id' => $request->eca_id,
+            'student_id' => Student::where('user_id', session('id_user'))->value('id'),
+            'description' => $request->description,
+            'eca_id' => $request->eca_id,
+            'file_path' => $filePath,
+            'semester' => session('semester'),
+            'academic_year' => session('academic_year'),
+        ];
+
+        Student_eca_activity::create($activity);
+
+        session()->flash('success_add_activity');
+        return redirect()->back();
+    }   
+
+    public function deleteActivityStudent(Request $request, $id)
+    {
+        try {
+            $checkFile = Student_eca_activity::where('id', $request->id)->value('file_path');
+            $delete = Student_eca_activity::Where('id', $request->id)->delete();
+
+            if($delete == true){
+                if($checkFile !== null){
+                    if (Storage::exists($checkFile)) {
+                        Storage::delete('public/' . $checkFile);
+                    }
+                }
+
+                session()->flash('success_delete_activity');
+                return redirect()->back();
+            }
+        } catch (Exception $err) {
+            dd($err);
+        }
+    }
+
+
 }

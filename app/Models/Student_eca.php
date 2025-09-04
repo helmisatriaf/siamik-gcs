@@ -16,4 +16,14 @@ class Student_eca extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'student_id', 'id');
+    }
+
+    public function eca()
+    {
+        return $this->belongsTo(Eca::class, 'eca_id', 'id');
+    }
 }

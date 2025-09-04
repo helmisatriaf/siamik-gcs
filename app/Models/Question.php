@@ -38,6 +38,5 @@ class Question extends Model
     {
         return $this->hasMany(StudentAnswer::class);
     }
-
     
 }

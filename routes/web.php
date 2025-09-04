@@ -1436,6 +1436,9 @@ Route::middleware(['auth.login', 'role:teacher'])->prefix('/teacher')->group(fun
 
    Route::prefix('/eca')->group(function () {
       Route::get('/section', [EcaController::class, 'section']);
+      Route::get('/section/activity/{id}', [EcaController::class, 'sectionActivity'])->name('eca.section.activity.teacher');
+      Route::post('/{id}/sections/eca/store', [EcaController::class, 'storeActivity'])->name('store-eca-activity.teacher');  // Changed route name
+      Route::delete('/activity/eca/delete/{id}', [EcaController::class, 'deleteActivity'])->name('delete-activity-eca.teacher');
    });
    
 
@@ -1470,6 +1473,13 @@ Route::middleware(['auth.login', 'role:student'])->prefix('/student')->group(fun
       Route::post('/set-course-id-student', [CourseController::class, 'setCourseId'])->name('set.course.id.student');
    });
 
+   Route::prefix('/eca')->group(function () {
+      Route::get('/section', [EcaController::class, 'section']);
+      Route::get('/section/activity', [EcaController::class, 'sectionActivityStudent']);
+      Route::post('/section/activity/store', [EcaController::class, 'storeActivityStudent'])->name('store-eca-activity.student');  // Changed route name
+      Route::delete('/activity/eca/delete/{id}', [EcaController::class, 'deleteActivityStudent'])->name('delete-activity-eca.student');
+   });
+
    Route::post('/post-answer', [ScoreController::class, 'actionAnswerQuestionStudent'])->name('action.answer.student');
    Route::post('/post-desc-late', [ScoreController::class, 'actionPostLateAnswer'])->name('action.desc.late.answer.student');
 });
@@ -1499,6 +1509,11 @@ Route::middleware(['auth.login', 'role:parent'])->prefix('/parent')->group(funct
       Route::get('/', [CourseController::class, 'index'])->name('course.index.parent');
       Route::get('/detail', [CourseController::class, 'course'])->name('course.sections.parent');
       Route::post('/set-course-id-parent', [CourseController::class, 'setCourseId'])->name('set.course.id.parent');
+   });
+
+    Route::prefix('/eca')->group(function () {
+      Route::get('/section', [EcaController::class, 'section']);
+      Route::get('/section/activity', [EcaController::class, 'sectionActivityStudent']);
    });
 });
 
@@ -1539,6 +1554,7 @@ Route::middleware(['auth.login', 'role:superadmin,admin'])->group(function () {
       Route::post('/addStudent', [EcaController::class, 'actionAddStudent'])->name('actionAdminAddStudent');
       Route::post('/', [EcaController::class, 'actionPost'])->name('actionAdminCreateEca');
       Route::put('/{id}', [EcaController::class, 'actionPut'])->name('actionAdminUpdateEca');
+      Route::post('/changeIcon', [EcaController::class, 'changeIcon'])->name('change.icon.eca');
       // Route::put('/delete/{id}', [EcaController::class, 'delete'])->name('delete-eca');
       // Route::get('/delete/student/{ecaId}/{studentId}', [EcaController::class, 'deleteStudent'])->name('delete-eca-student');
    });

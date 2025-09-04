@@ -8,7 +8,7 @@
       <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 ">
             <ol class="breadcrumb mb-0">
                <li class="breadcrumb-item">Home</li>
-               <li class="breadcrumb-item"><a href="{{url('/' .session('role'). '/eca')}}">ECA</a></li>
+               <li class="breadcrumb-item"><a href="{{url('/eca')}}">ECA</a></li>
                <li class="breadcrumb-item active" aria-current="page">{{ $data['eca'][0]['name'] }}</li>
             </ol>
       </nav>

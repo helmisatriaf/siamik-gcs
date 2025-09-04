@@ -140,7 +140,12 @@ class UserController extends Controller
             return redirect('admin/dashboard/');
          } 
          if($checkRole == 'teacher') {
-            return redirect('teacher/dashboard/');
+            if(strtolower(session('name_user')) == 'codero'){
+               return redirect('teacher/eca/section');
+            }
+            else{
+               return redirect('teacher/dashboard/');
+            }
          }
          if($checkRole == 'library') {
             return redirect('/dashboard');
