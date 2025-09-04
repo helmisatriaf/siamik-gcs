@@ -441,7 +441,7 @@
                                         ->get();
                                 }
 
-                                dd($studentActivities->count());
+                                // dd($studentActivities->count());
                                 // dd(count($studentActivity));
                             @endphp
 
