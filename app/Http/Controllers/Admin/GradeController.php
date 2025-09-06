@@ -516,6 +516,17 @@ class GradeController extends Controller
             )
             ->first();
 
+         // Ubah Exam sesuai teacher baru
+         $getExam = Grade_exam::where('grade_id', $id)
+            ->leftJoin('exams', 'grade_exams.exam_id', '=', 'exams.id')
+            ->leftJoin('subject_exams', 'subject_exams.exam_id', '=', 'exams.id')
+            ->where('subject_exams.subject_id', $subjectId)
+            ->where('exams.academic_year', session('academic_year'))
+            ->where('exams.semester', session('semester'))
+            ->select('exams.id as exam_id')
+            ->get();
+         
+
          $teacher = Teacher::orderBy('name', 'asc')->get();
          $subject = Subject::orderBy('name_subject', 'asc')->get();
          
@@ -709,12 +720,19 @@ class GradeController extends Controller
          
          Teacher_subject::where('id', $id)->update($rules);
 
-         $getIdExam = Exam::leftJoin('subject_exams', 'subject_exams.exam_id', 'exams.id')
-            ->leftJoin('grade_exams', 'grade_exams.exam_id', 'exams.id')
-            ->where('exams.teacher_id', $getLatestIdSubjectTeacher)
-            ->where('subject_exams.subject_id', $request->subject)
-            ->where('grade_exams.grade_id', $request->grade_id)
-            ->pluck('exams.id');
+         $getIdExam = Exam::whereIn('id', function($q) use ($request) {
+            $q->select('exam_id')
+                  ->from('grade_exams')
+                  ->where('grade_id', $request->grade_id);
+            })
+            ->whereIn('id', function($q) use ($request) {
+               $q->select('exam_id')
+                  ->from('subject_exams')
+                  ->where('subject_id', $request->subject);
+            })
+            ->where('exams.semester', session('semester'))
+            ->where('exams.academic_year', session('academic_year'))
+            ->pluck('id');
 
          Exam::whereIn('id', $getIdExam)->update(['teacher_id' => $request->teacher, 'updated_at' => now()]);
          
