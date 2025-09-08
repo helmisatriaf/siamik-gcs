@@ -10,6 +10,8 @@ use App\Models\Master_academic;
 use App\Models\Schedule;
 use App\Models\Eca_activity;
 use App\Models\Student_eca_activity;
+use App\Models\AttendanceEca;
+
 use Illuminate\Support\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -626,5 +628,38 @@ class EcaController extends Controller
         }
     }
 
+    public function postAttendance(Request $request)
+    {
+        try {
+            foreach($request->status as $studentId => $status) {
 
+                // Skip if no status is selected
+                if(empty($status)) continue;
+    
+                // Initialize attendance array
+                $attend = [
+                    'section_id'  => $request->section_id,
+                    'eca_id'      => $request->eca_id,
+                    'student_id'  => $studentId,
+                    'present'     => $status === 'present' ? 1 : 0,
+                    'alpha'       => $status === 'alpha' ? 1 : 0,
+                    'permission'  => $status === 'permission' ? 1 : 0,
+                    'information' => $request->comment[$studentId] ?? '',
+                    'semester'    => session('semester'),
+                    'academic_year' => session('academic_year'),
+                ];
+    
+                // Save the attendance to the database
+                AttendanceEca::create($attend);
+            }
+            
+            session()->flash('success_post_attendance');
+
+            return redirect()->back();
+
+        } catch (Exception $err) {
+            DB::rollBack();
+            return dd($err);
+        }
+    }
 }

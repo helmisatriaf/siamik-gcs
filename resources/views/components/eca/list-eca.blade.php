@@ -27,7 +27,7 @@
                                 <!-- Ribbon -->
                                 <div class="ribbon-wrapper ribbon-lg">
                                     <div class="ribbon bg-dark text-sm">
-                                        {{ session('role') !== 'teacher' ? 'Course' : $subject->name }}
+                                        {{ session('role') !== 'teacher' ? 'ECA' : $subject->name }}
                                     </div>
                                 </div>
                             

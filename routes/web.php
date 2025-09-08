@@ -1439,6 +1439,7 @@ Route::middleware(['auth.login', 'role:teacher'])->prefix('/teacher')->group(fun
       Route::get('/section/activity/{id}', [EcaController::class, 'sectionActivity'])->name('eca.section.activity.teacher');
       Route::post('/{id}/sections/eca/store', [EcaController::class, 'storeActivity'])->name('store-eca-activity.teacher');  // Changed route name
       Route::delete('/activity/eca/delete/{id}', [EcaController::class, 'deleteActivity'])->name('delete-activity-eca.teacher');
+      Route::post('/post/attendance/eca', [EcaController::class, 'postAttendance'])->name('attendanceEcaStudent');
    });
    
 
