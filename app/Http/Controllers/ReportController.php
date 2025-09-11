@@ -4939,6 +4939,12 @@ class ReportController extends Controller
             $semester = session('semester');
             $academic_year = session('academic_year');
 
+            if ($semester == 1) {
+                $cutOffMidSemester = Master_academic::where('is_use', true)->value('mid_report_card1');
+            } elseif ($semester == 2) {
+                $cutOffMidSemester = Master_academic::where('is_use', true)->value('mid_report_card2');
+            }
+
             $learningSkills = Report_card::where('student_id', $id)
                 ->where('semester', $semester)
                 ->where('academic_year', session('academic_year'))
@@ -5020,8 +5026,6 @@ class ReportController extends Controller
                 else {
                     $chinese = "Chinese";
                 }
-
-
                 
                 $checkReligion = Student::where('id', $id)->value('religion');
 
@@ -5072,7 +5076,6 @@ class ReportController extends Controller
                     ];
                 }
 
-
                 $results = Grade::join('students', 'students.grade_id', '=', 'grades.id')
                     ->join('grade_exams', 'grade_exams.grade_id', '=', 'grades.id')
                     ->join('exams', 'exams.id', '=', 'grade_exams.exam_id')
@@ -5100,6 +5103,7 @@ class ReportController extends Controller
                     ->where('students.id', $id)
                     ->where('students.is_active', true)
                     ->whereIn('exams.type_exam', [$homework, $exercise, $quiz, $project, $practical])
+                    ->where('exams.created_at', '<=', $cutOffMidSemester)
                     ->orderBy('students.name', 'asc')
                     ->get();
 
