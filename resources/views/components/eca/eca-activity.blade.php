@@ -420,10 +420,8 @@
                                     ->orderBy('created_at', 'desc')
                                     ->get();
 
-                                $studentActivities = \App\Models\Student_eca_activity::with(['student'])
-                                    ->where('section_id', $index)
-                                    ->where('eca_id', $subject->id)
-                                    ->get();
+                                
+                                
 
                                 if (session('role') == 'student') {
                                     $studentId = \App\Models\Student::where('user_id', session('id_user'))->value('id');
@@ -442,6 +440,11 @@
 
                                 if (session('role') == 'teacher') {
                                     $attendanceEca = \App\Models\AttendanceEca::with(['student'])->where('section_id', $index)
+                                        ->where('eca_id', $subject->id)
+                                        ->get();
+
+                                    $studentActivities = \App\Models\Student_eca_activity::with(['student'])
+                                        ->where('section_id', $index)
                                         ->where('eca_id', $subject->id)
                                         ->get();
                                 }
@@ -556,7 +559,7 @@
                                     </div>
 
                                     @if (session('role') == 'student')
-                                        @if($studentActivities->count() > 0)
+                                        @if($studentActivity->count() > 0)
                                             <div class="modal fade" id="delete-your-activity-{{ $studentActivity[0]->id }}"
                                                 tabindex="-1"aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered">
@@ -876,7 +879,7 @@
                                                             class="text-danger">*</span></label>
                                                             <div class="file-upload-wrapper">
                                                                 <div class="file-upload-area text-center p-4">
-                                                                    <input type="file" class="file-input" name="file">
+                                                                    <input type="file" class="file-input" name="file" required>
                                                                     <i class="fas fa-cloud-upload-alt fa-2x mb-3 text-primary"></i>
                                                                     <h6 class="mb-2">Drag and drop your file here</h6>
                                                                     <p class="text-muted small mb-2">or</p>
