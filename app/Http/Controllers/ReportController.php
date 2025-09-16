@@ -5103,9 +5103,11 @@ class ReportController extends Controller
                     ->where('students.id', $id)
                     ->where('students.is_active', true)
                     ->whereIn('exams.type_exam', [$homework, $exercise, $quiz, $project, $practical])
-                    ->where('exams.created_at', '<=', $cutOffMidSemester)
+                    ->where('exams.date_exam', '<=', $cutOffMidSemester)
                     ->orderBy('students.name', 'asc')
                     ->get();
+
+                // dd($results);
 
                 $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) use ($order, $homework, $exercise, $quiz, $project, $practical) {
                     $student = $scores->first();
