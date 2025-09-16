@@ -1340,7 +1340,47 @@ class ScoringController extends Controller
 
     public function actionPostMidReportCardKindergarten(Request $request)
     {
-        $monthlyActivity = MonthlyActivity::where('grades', '=', 'lower')->get();
+        if (session('semester') == 1) {
+            $getRangeDateSemester = Master_academic::where('is_use', true)->first();
+            $startSemester = Carbon::parse($getRangeDateSemester->semester1);
+            $endSemester = Carbon::parse($getRangeDateSemester->end_semester1);
+
+            // Ambil semua nama bulan di antara dua tanggal
+            $monthsInRange = [];
+            $current = $startSemester->copy();
+            while ($current <= $endSemester) {
+                $monthsInRange[] = $current->format('F'); // 'F' = nama bulan full, contoh: 'July'
+                $current->addMonth();
+            }
+
+            // Query monthly_activities
+            $monthlyActivity = MonthlyActivity::where('grades', '=', 'lower')
+                ->whereIn('month', $monthsInRange)
+                ->where('semester', 1)
+                ->where('academic_year', session('academic_year'))
+                ->get();
+        }
+        elseif (session('semester') == 2) {
+            $getRangeDateSemester = Master_academic::where('is_use', true)->first();
+            $startSemester = Carbon::parse($getRangeDateSemester->semester2);
+            $endSemester = Carbon::parse($getRangeDateSemester->end_semester2);
+
+            // Ambil semua nama bulan di antara dua tanggal
+            $monthsInRange = [];
+            $current = $startSemester->copy();
+            while ($current <= $endSemester) {
+                $monthsInRange[] = $current->format('F'); // 'F' = nama bulan full, contoh: 'July'
+                $current->addMonth();
+            }
+
+            // Query monthly_activities
+            $monthlyActivity = MonthlyActivity::where('grades', '=', 'lower')
+                ->whereIn('month', $monthsInRange)
+                ->where('semester', 2)
+                ->where('academic_year', session('academic_year'))
+                ->get();
+        }
+
         try {
             for($i=0; $i < count($request->student_id); $i++){
                 

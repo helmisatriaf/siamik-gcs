@@ -6821,17 +6821,65 @@ class ReportController extends Controller
                 ['name' => 'Willingness to sing', 'field' => 'willingness_to_sing'],
             ];
 
-            $monthlyActivity = MonthlyActivity::where('grades', '=', 'lower')->get();
+            if (session('semester') == 1) {
+                $getRangeDateSemester = Master_academic::where('is_use', true)->first();
+                $startSemester = Carbon::parse($getRangeDateSemester->semester1);
+                $endSemester = Carbon::parse($getRangeDateSemester->end_semester1);
 
-            $studentMonthlyActivity = Student_Monthly_Activity::join('students', 'students.id', '=', 'student_monthly_activities.student_id')
-                ->join('monthly_activities', 'monthly_activities.id', '=', 'student_monthly_activities.monthly_activity_id')
-                ->where('student_monthly_activities.student_id', $id)
-                ->where('student_monthly_activities.semester', $semester)
-                ->where('student_monthly_activities.academic_year', $academic_year)
-                ->select('student_monthly_activities.*', 'monthly_activities.name as name_activity')
-                ->get();
+                // Ambil semua nama bulan di antara dua tanggal
+                $monthsInRange = [];
+                $current = $startSemester->copy();
+                while ($current <= $endSemester) {
+                    $monthsInRange[] = $current->format('F'); // 'F' = nama bulan full, contoh: 'July'
+                    $current->addMonth();
+                }
 
-            // dd($studentMonthlyActivity);
+                // Query monthly_activities
+                $monthlyActivity = MonthlyActivity::where('grades', '=', 'lower')
+                    ->whereIn('month', $monthsInRange)
+                    ->where('semester', 1)
+                    ->where('academic_year', session('academic_year'))
+                    ->get();
+
+                $studentMonthlyActivity = Student_Monthly_Activity::join('students', 'students.id', '=', 'student_monthly_activities.student_id')
+                    ->join('monthly_activities', 'monthly_activities.id', '=', 'student_monthly_activities.monthly_activity_id')
+                    ->where('student_monthly_activities.student_id', $id)
+                    ->where('student_monthly_activities.semester', '=', '0.5')
+                    ->where('student_monthly_activities.academic_year', $academic_year)
+                    ->select('student_monthly_activities.*', 'monthly_activities.name as name_activity')
+                    ->get();
+            }
+            elseif (session('semester') == 2) {
+                $getRangeDateSemester = Master_academic::where('is_use', true)->first();
+                $startSemester = Carbon::parse($getRangeDateSemester->semester2);
+                $endSemester = Carbon::parse($getRangeDateSemester->end_semester2);
+
+                // Ambil semua nama bulan di antara dua tanggal
+                $monthsInRange = [];
+                $current = $startSemester->copy();
+                while ($current <= $endSemester) {
+                    $monthsInRange[] = $current->format('F'); // 'F' = nama bulan full, contoh: 'July'
+                    $current->addMonth();
+                }
+
+                // Query monthly_activities
+                $monthlyActivity = MonthlyActivity::where('grades', '=', 'lower')
+                    ->whereIn('month', $monthsInRange)
+                    ->where('semester', 2)
+                    ->where('academic_year', session('academic_year'))
+                    ->get();
+                
+                $studentMonthlyActivity = Student_Monthly_Activity::join('students', 'students.id', '=', 'student_monthly_activities.student_id')
+                    ->join('monthly_activities', 'monthly_activities.id', '=', 'student_monthly_activities.monthly_activity_id')
+                    ->where('student_monthly_activities.student_id', $id)
+                    ->where('student_monthly_activities.semester', '=', '0.5')
+                    ->where('student_monthly_activities.academic_year', $academic_year)
+                    ->select('student_monthly_activities.*', 'monthly_activities.name as name_activity')
+                    ->get();
+            }
+
+
+            dd($studentMonthlyActivity);
 
             if ($semester == 1) {
                 $data = [
