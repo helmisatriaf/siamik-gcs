@@ -1083,11 +1083,10 @@ class ScheduleController extends Controller
             'page' => 'schedules',
             'child' => 'academic schedule',
          ]);
-        
 
-      
          $data = [
             'teacher_id'        => $request->teacher_id,
+            'subject_id'        => $request->subject_id,
             'teacher_companion' => $request->teacher_companion,
             'start_time'        => $request->start_time,
             'end_time'          => $request->end_time,
