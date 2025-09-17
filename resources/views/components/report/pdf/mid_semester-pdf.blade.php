@@ -64,9 +64,14 @@ $grade_name = $student->grade_name;
         }
         
 
-        .header h1, .header h2, .header h5, .header h4, .header h5 {
+        .header h1, .header h2, .header h4, .header h5 {
             font-size: 10px;
             margin: 0;
+        }
+        
+        .header h5 {
+            font-size: 14px;
+            margin: 0;    
         }
 
         .footer {
@@ -91,6 +96,10 @@ $grade_name = $student->grade_name;
 
         .tablesubject {
             width: 100%;
+            border-collapse: collapse;
+        }
+        .tablesubjectName {
+            width: 50%;
             border-collapse: collapse;
         }
 
@@ -232,6 +241,12 @@ $grade_name = $student->grade_name;
             .content {
                 flex: 1;
             }
+
+            .noto-serif-sc-simbol {
+                font-family: "Noto Serif SC", serif;
+                font-optical-sizing: auto;
+                font-style: normal;
+            }
         }
     </style>
 </head>
@@ -241,33 +256,34 @@ $grade_name = $student->grade_name;
             <!-- PAGE 1 -->
                 @if (session('role') == 'student' || session('role') == 'parent')
                     <p class="watermark-school">Great Crystal School</p> 
-                    <p class="watermark-internal">For Internal Purpose Only</p> 
+                    <p class="watermark-internal">For Internal Purposes Only</p> 
                 @endif
                 <div class="header">
                     <div style="padding-left:50px;padding-right:50px;">
                         <img src="<?= $logo ?>" style="width:100%;height:10%;" alt="Sample image">
                     </div>
                     <h5>MID-SEMESTER REPORT</h5>
+                    <span class="noto-serif-sc-simbol" style="font-size: 12px;">期中成绩报告</span>
                 </div>
     
                 <div style="margin-top:10px;">
-                    <table class="" style="border:none">
+                    <table class="tablesubjectName" style="border:none">
                         <!-- STUDENT STATUS -->
                         <tr>
-                            <td style="text-align:left;font-size:10px;">Name</td>
-                            <td style="text-align:left;font-size:10px;"> : {{ ucwords(strtolower($student['student_name'])) }}</td>
+                            <td style="text-align:left;font-size:10px;border: 1px solid black;padding: 2px;"><b>Name</b> <span class="noto-serif-sc-simbol">姓名</span></td>
+                            <td style="text-align:left;font-size:10px;border: 1px solid black;padding: 2px;">{{ ucwords(strtolower($student['student_name'])) }}</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;font-size:10px;">Grade</td>
-                            <td style="text-align:left;font-size:10px;"> : {{ $student->grade_name }} - {{ $student->grade_class }}</td>
+                            <td style="text-align:left;font-size:10px;border: 1px solid black;padding: 2px;"><b>Grade</b> <span class="noto-serif-sc-simbol">年级</span></td>
+                            <td style="text-align:left;font-size:10px;border: 1px solid black;padding: 2px;">{{ $student->grade_name }} - {{ $student->grade_class }}</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;font-size:10px;">Semester</td>
-                            <td style="text-align:left;font-size:10px;"> : {{ $semester }}</td>
+                            <td style="text-align:left;font-size:10px;border: 1px solid black;padding: 2px;"><b>Semester</b> <span class="noto-serif-sc-simbol">学期</span></td>
+                            <td style="text-align:left;font-size:10px;border: 1px solid black;padding: 2px;">{{ $semester }}</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;font-size:10px;">School Year</td>
-                            <td style="text-align:left;font-size:10px;"> : {{ $academicYear }}</td>
+                            <td style="text-align:left;font-size:10px;border: 1px solid black;padding: 2px;"><b>School Year</b> <span class="noto-serif-sc-simbol">学年</span></td>
+                            <td style="text-align:left;font-size:10px;border: 1px solid black;padding: 2px;">{{ $academicYear }}</td>
                         </tr>
                         <!-- END STUDENT STATUS -->
                     </table>
@@ -276,12 +292,12 @@ $grade_name = $student->grade_name;
                 <div>
                     <table class="tablesubject" style="margin-top:10px;">
                         <tr>
-                            <th style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="1" rowspan="2">No</td>
-                            <th style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;width:20%;" colspan="4" rowspan="2">Subject</td>
-                            <th style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3">Homework</td>
-                            <th style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3">Exercise</td>
-                            <th style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3">Quiz</td>
-                            <th style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3">Project</td>
+                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;width:6%;" colspan="1" rowspan="2"><b>No</b></td>
+                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;width:40%;" colspan="4" rowspan="2"><b>Subject</b> <br> <span class="noto-serif-sc-simbol">科目</span></td>
+                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Homework</b> <br> <span class="noto-serif-sc-simbol">家庭作业 </span></td>
+                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Exercise</b> <br> <span class="noto-serif-sc-simbol">课堂练习</span></td>
+                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Quiz</b> <br> <span class="noto-serif-sc-simbol">小测验</span></td>
+                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Project    </b> <br> <span class="noto-serif-sc-simbol">项目作业</span></td>
                             {{-- <th style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3">Practical</td> --}}
                         </tr>
 
@@ -313,7 +329,56 @@ $grade_name = $student->grade_name;
                             @foreach ($subjectReports[0]['subjects'] as $rs)
                             <tr>
                                 <td style="text-align: center; vertical-align: middle; font-size: 10px; border: 1px solid black;" colspan="1">{{ $loop->index + 1 }}.</td>
-                                <td style="text-align: left;vertical-align : middle;font-size:10px;padding-left: 5px;border: 1px solid black;" colspan="4">{{ $rs['subject_name'] }}</td>
+                                <td style="text-align: left;vertical-align : middle;font-size:10px;padding-left: 5px;border: 1px solid black;" colspan="4">
+                                    {{ $rs['subject_name'] }} @switch($rs['subject_name'])
+                                        @case($rs['subject_name'] == 'English')
+                                            <span class="noto-serif-sc-simbol">英语</span>
+                                            @break
+                                        @case($rs['subject_name'] == 'Chinese')
+                                            <span class="noto-serif-sc-simbol">汉语</span>
+                                            @break
+                                        @case($rs['subject_name'] == 'Mathematics')
+                                            <span class="noto-serif-sc-simbol">数学</span>
+                                            @break
+                                        @case($rs['subject_name'] == 'Science')
+                                            <span class="noto-serif-sc-simbol">科学</span>
+                                            @break
+                                        @case($rs['subject_name'] == 'Religion')
+                                            <span class="noto-serif-sc-simbol">科学</span>
+                                            @break
+                                        @case($rs['subject_name'] == 'Bahasa Indonesia')
+                                            <span class="noto-serif-sc-simbol">印度尼西亚语</span>
+                                            @break
+                                        @case($rs['subject_name'] == 'Character Building')
+                                            <span class="noto-serif-sc-simbol">品格培养</span>
+                                            @break
+                                        @case($rs['subject_name'] == 'PE')
+                                            <span class="noto-serif-sc-simbol">体育</span>
+                                            @break
+                                        @case($rs['subject_name'] == 'IT')
+                                            <span class="noto-serif-sc-simbol">信息技术</span>
+                                            @break
+                                        @case($rs['subject_name'] == 'Financial Literacy')
+                                            <span class="noto-serif-sc-simbol">金融素养</span>
+                                            @break
+                                        @case($rs['subject_name'] == 'General Knowledge')
+                                            <span class="noto-serif-sc-simbol">常识</span>
+                                            @break
+                                        @case($rs['subject_name'] == 'PPKn')
+                                            <span class="noto-serif-sc-simbol">国家与公民教育</span>
+                                            @break
+                                        @case($rs['subject_name'] == 'Art and Craft')
+                                            <span class="noto-serif-sc-simbol">美术与手工</span>
+                                            @break
+                                        @case($rs['subject_name'] == 'Health Education')
+                                            <span class="noto-serif-sc-simbol">健康教育</span>
+                                            @break
+                                        @default
+                                            
+                                    @endswitch
+
+                                
+                                </td>
                                 @php
                                     $homeworkScores = array_fill(0, 3, '&nbsp;');
                                     $exerciseScores = array_fill(0, 3, '&nbsp;');
@@ -393,60 +458,27 @@ $grade_name = $student->grade_name;
                 <div>
                     <table class="tableMonthly" style="margin-top: 10px;">
                         <tr>
-                            <td colspan="{{count($monthlyAct) + 1}}"style="text-align:center;"><b>Monthly Activities</b></td>
+                            <td colspan="{{count($monthlyAct) + 1}}"style="text-align:center;"><b>Monthly Activities</b> <span class="noto-serif-sc-simbol">每月活动</span></td>
                         </tr>
                         <tr>
-                            <td style="width:15%;text-align:center;"><b>Participation</b></td>
+                            <td style="width:25%;text-align:left;"><b>Participation</b> <span class="noto-serif-sc-simbol">参与情况</span></td>
                             @foreach ($monthlyAct as $ma)
-                                <td style="text-align:center;"><b>{{$ma->name}}</b></td>
+                                <td style="text-align:center;">{{$ma->name}}</td>
                             @endforeach
                         </tr>
                         <tr>
-                            <td style="width:15%;"><b>Grade</b></td>
+                            <td style="width:25%;"><b>Grade</b> <span class="noto-serif-sc-simbol">分数</span></td>
                             @foreach ($scoreMonthly as $sm)
                             <td style="text-align:center;">{{$sm->grades}}</td>
                             @endforeach
                         </tr>
                         <tr>
-                            <td style="width:15%;"><b>Score</b></td>
+                            <td style="width:25%;"><b>Score</b> <span class="noto-serif-sc-simbol">分数</span></td>
                             @foreach ($scoreMonthly as $ssm)
                             <td style="text-align:center;">{{$ssm->score}}</td>
                             @endforeach
                         </tr>
                         
-                    </table>
-                </div>
-
-                <div>
-                    <table class="tableScore">
-                        <tr>
-                            <th style="text-align:center;vertical-align : middle;font-size:10px;padding-right:16px;padding-left:16px;">Scores</td>
-                            <th style="text-align:center;vertical-align : middle;font-size:10px;padding-right:16px;padding-left:16px;">Grade</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align:center;vertical-align : middle;font-size:10px;">95-100</td>
-                            <td style="text-align:center;vertical-align : middle;font-size:10px;">A+</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align:center;vertical-align : middle;font-size:10px;">85-94</td>
-                            <td style="text-align:center;vertical-align : middle;font-size:10px;">A</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align:center;vertical-align : middle;font-size:10px;">75-84</td>
-                            <td style="text-align:center;vertical-align : middle;font-size:10px;">B</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align:center;vertical-align : middle;font-size:10px;">65-74</td>
-                            <td style="text-align:center;vertical-align : middle;font-size:10px;">C</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align:center;vertical-align : middle;font-size:10px;">45-64</td>
-                            <td style="text-align:center;vertical-align : middle;font-size:10px;">D</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align:center;vertical-align : middle;font-size:10px;">&lt; 44</td>
-                            <td style="text-align:center;vertical-align : middle;font-size:10px;">R</td>
-                        </tr>
                     </table>
                 </div>
     
@@ -510,18 +542,57 @@ $grade_name = $student->grade_name;
 
             <div class="page-break"></div>
 
+            <div class="header">
+                <div style="padding-left:50px;padding-right:50px;">
+                    <img src="<?= $logo ?>" style="width:100%;height:10%;" alt="Sample image">
+                </div>
+            </div>
+
+            <div>
+                <table class="tableScore">
+                    <tr>
+                        <td style="text-align:center;vertical-align : middle;font-size:10px;padding-right:16px;padding-left:16px;"><b>Scores</b> <br><span class="noto-serif-sc-simbol">分数</span></td>
+                        <td style="text-align:center;vertical-align : middle;font-size:10px;padding-right:16px;padding-left:16px;"><b>Grade</b> <br><span class="noto-serif-sc-simbol">等级</span></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;vertical-align : middle;font-size:10px;">95-100</td>
+                        <td style="text-align:center;vertical-align : middle;font-size:10px;">A+</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;vertical-align : middle;font-size:10px;">85-94</td>
+                        <td style="text-align:center;vertical-align : middle;font-size:10px;">A</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;vertical-align : middle;font-size:10px;">75-84</td>
+                        <td style="text-align:center;vertical-align : middle;font-size:10px;">B</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;vertical-align : middle;font-size:10px;">65-74</td>
+                        <td style="text-align:center;vertical-align : middle;font-size:10px;">C</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;vertical-align : middle;font-size:10px;">45-64</td>
+                        <td style="text-align:center;vertical-align : middle;font-size:10px;">D</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;vertical-align : middle;font-size:10px;">&lt; 44</td>
+                        <td style="text-align:center;vertical-align : middle;font-size:10px;">R</td>
+                    </tr>
+                </table>
+            </div>
+
             {{-- PAGE 2 --}}
             @if (session('role') == 'student' || session('role') == 'parent')
-                <p class="watermark-school">Great Crystal School</p> 
-                <p class="watermark-internal">For Internal Purpose Only</p> 
+                {{-- <p class="watermark-school">Great Crystal School</p>  --}}
+                <p class="watermark-internal">For Internal Purposes Only</p> 
             @endif
-            <div style="margin-top:50px;">
-                <table class="tableScore" style="width:200px;">
+            <div style="margin-top:0px;">
+                <table class="tableScore" style="width:250px;">
                     <tr>
                         <th style="text-align:center;vertical-align : middle;font-size:10px;padding-right:16px;padding-left:16px;" colspan="2">Student's Attendance</td>
                     </tr>
                     <tr>
-                        <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">Days Attended</td>
+                        <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">Days Attended <span class="noto-serif-sc-simbol">出勤天数</span></td>
                         <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">
                             @if ($attendance[0]['present'] > 0)
                             {{ $attendance[0]['present'] }} days
@@ -531,7 +602,7 @@ $grade_name = $student->grade_name;
                         </td>
                     </tr>
                     <tr>
-                        <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">Days Absent</td>
+                        <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">Days Absent <span class="noto-serif-sc-simbol">勤天数 </span></td>
                         <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">
                             @if ($attendance[0]['days_absent'] > 0)
                             {{ $attendance[0]['days_absent'] }} day
@@ -541,7 +612,7 @@ $grade_name = $student->grade_name;
                         </td>
                     </tr>
                     <tr>
-                        <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">Days Permission</td>
+                        <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">Days Permission <span class="noto-serif-sc-simbol">请假天数</span></td>
                         <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">
                             @if ($attendance[0]['permission'] > 0)
                             {{ $attendance[0]['permission'] }} day
@@ -551,7 +622,7 @@ $grade_name = $student->grade_name;
                         </td>
                     </tr>
                     <tr>
-                        <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">Days Sick</td>
+                        <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">Days Sick <span class="noto-serif-sc-simbol">病假天数</span></td>
                         <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">
                             @if ($attendance[0]['sick'] > 0)
                             {{ $attendance[0]['sick'] }} day
@@ -561,7 +632,7 @@ $grade_name = $student->grade_name;
                         </td>
                     </tr>
                     <tr>
-                        <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">Late</td>
+                        <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">Late <span class="noto-serif-sc-simbol">迟到</span></td>
                         <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">
                             @if ($attendance[0]['total_late'] > 0)
                             {{ $attendance[0]['total_late'] }} time
@@ -575,37 +646,37 @@ $grade_name = $student->grade_name;
 
             {{-- ADDITIONAL EVALUATION --}}
             <div>
-                <table class="tableAdditional" style="margin-top:20px;">
+                <table class="tableAdditional" style="margin-top:0px;">
                     <tr>
                         <td colspan="3" style="border-bottom: 5px double black"></td>
                     </tr>
                 </table>
                 <table class="tableAdditional" style="margin-top: -2px;">
                     <tr>
-                        <td colspan="3"style="text-align:center;border-left:1px solid black;border-right:1px solid black;"><b>Additional Evaluation</b></td>
+                        <td colspan="3"style="text-align:center;border-left:1px solid black;border-right:1px solid black;"><b>Additional Evaluation</b> <br><span class="noto-serif-sc-simbol">额外评估</span></td>
                     </tr>
                     <tr>
-                        <td class="col-left" style="font-style: bold;border-left:1px solid black;">Critical Thinking</td>
+                        <td class="col-left" style="font-style: bold;border-left:1px solid black;">Critical Thinking <span class="noto-serif-sc-simbol">批判性思维</span></td>
                         <td class="col-mid">:</td>
                         <td class="col-right" style="border-right:1px solid black;">{{$ct}}</td>
                     </tr>
                     <tr>
-                        <td class="col-left" style="font-style: bold;border-left:1px solid black;">Cognitive Skills</td>
+                        <td class="col-left" style="font-style: bold;border-left:1px solid black;">Cognitive Skills <span class="noto-serif-sc-simbol">生活技能</span></td>
                         <td class="col-mid">:</td>
                         <td class="col-right" style="border-right:1px solid black;">{{$cs}}</td>
                     </tr>
                     <tr>
-                        <td class="col-left" style="font-style: bold;border-left:1px solid black;">Life Skills</td>
+                        <td class="col-left" style="font-style: bold;border-left:1px solid black;">Life Skills <span class="noto-serif-sc-simbol">额外评估</span></td>
                         <td class="col-mid">:</td>
                         <td class="col-right" style="border-right:1px solid black;">{{$ls}}</td>
                     </tr>
                     <tr>
-                        <td class="col-left" style="font-style: bold;border-left:1px solid black;">Learning Skills</td>
+                        <td class="col-left" style="font-style: bold;border-left:1px solid black;">Learning Skills <span class="noto-serif-sc-simbol">学习技能</span></td>
                         <td class="col-mid">:</td>
                         <td class="col-right" style="border-right:1px solid black;">{{$les}}</td>
                     </tr>
                     <tr style="border-bottom:1px solid black;">
-                        <td class="col-left" style="font-style: bold;border-left:1px solid black;">Social and Emotional Development</td>
+                        <td class="col-left" style="font-style: bold;border-left:1px solid black;">Social and Emotional Development <span class="noto-serif-sc-simbol">社会与情感发展</span></td>
                         <td class="col-mid">:</td>
                         <td class="col-right" style="border-right:1px solid black;">{{$saed}}</td>
                     </tr>
@@ -613,7 +684,7 @@ $grade_name = $student->grade_name;
             </div>
 
             <div>
-                <table class="table" style="margin-top:60px;">
+                <table class="table" style="margin-top:50px;">
                     @if(strtolower($student->grade_name) == "primary")
                         <tr>
                             <td style="text-align:center;text-decoration:underline;">Yuliana Harijanto, B.Eng (Hons)</td>
