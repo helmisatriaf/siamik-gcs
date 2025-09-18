@@ -4988,6 +4988,7 @@ class ReportController extends Controller
                 ->where('grades.id', $student->grade_id)
                 ->where('students.id', $id)
                 ->where('attendances.semester', $semester)
+                ->where('attendances.academic_year', session('academic_year'))
                 ->get();
 
             $attendancesByStudent = $resultsAttendance->groupBy('student_id')->map(function ($attendances) {
