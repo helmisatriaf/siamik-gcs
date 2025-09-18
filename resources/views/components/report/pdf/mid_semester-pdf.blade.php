@@ -373,6 +373,9 @@ $grade_name = $student->grade_name;
                                         @case($rs['subject_name'] == 'Health Education')
                                             <span class="noto-serif-sc-simbol">健康教育</span>
                                             @break
+                                        @case($rs['subject_name'] == 'IPS')
+                                            <span class="noto-serif-sc-simbol">社会科学</span>
+                                            @break
                                         @default
                                             
                                     @endswitch
