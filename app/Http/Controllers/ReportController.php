@@ -5031,17 +5031,17 @@ class ReportController extends Controller
                 $checkReligion = Student::where('id', $id)->value('religion');
 
                 if ($checkReligion == "Islam") {
-                    $religion = "Religion Islamic";
+                    $religion = "Religion";
                 } elseif ($checkReligion == "Catholic Christianity") {
-                    $religion = "Religion Catholic";
+                    $religion = "Religion";
                 } elseif ($checkReligion == "Protestant Christianity") {
-                    $religion = "Religion Christian";
+                    $religion = "Religion";
                 } elseif ($checkReligion == "Buddhism") {
-                    $religion = "Religion Buddhism";
+                    $religion = "Religion";
                 } elseif ($checkReligion == "Hinduism") {
-                    $religion = "Religion Hinduism";
+                    $religion = "Religion";
                 } elseif ($checkReligion == "Confucianism") {
-                    $religion = "Religion Confucianism";
+                    $religion = "Religion";
                 }
 
                 if ($gradeId == 5 || $gradeId == 6 || $gradeId == 7) {
@@ -5161,17 +5161,17 @@ class ReportController extends Controller
                 $checkReligion = Student::where('id', $id)->value('religion');
 
                 if ($checkReligion == "Islam") {
-                    $religion = "Religion Islamic";
+                    $religion = "Religion";
                 } elseif ($checkReligion == "Catholic Christianity") {
-                    $religion = "Religion Catholic";
+                    $religion = "Religion";
                 } elseif ($checkReligion == "Protestant Christianity") {
-                    $religion = "Religion Christian";
+                    $religion = "Religion";
                 } elseif ($checkReligion == "Buddhism") {
-                    $religion = "Religion Buddhism";
+                    $religion = "Religion";
                 } elseif ($checkReligion == "Hinduism") {
-                    $religion = "Religion Hinduism";
+                    $religion = "Religion";
                 } elseif ($checkReligion == "Confucianism") {
-                    $religion = "Religion Confucianism";
+                    $religion = "Religion";
                 }
                 // dd($chineseHigher);
 
@@ -5186,7 +5186,7 @@ class ReportController extends Controller
                     $chinese,
                     'Mathematics',
                     'Science',
-                    $religion,
+                    'Religion',
                     'Bahasa Indonesia',
                     'Character Building',
                     'PE',

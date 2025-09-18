@@ -293,11 +293,11 @@ $grade_name = $student->grade_name;
                     <table class="tablesubject" style="margin-top:10px;">
                         <tr>
                             <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;width:6%;" colspan="1" rowspan="2"><b>No</b></td>
-                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;width:40%;" colspan="4" rowspan="2"><b>Subject</b> <br> <span class="noto-serif-sc-simbol">科目</span></td>
-                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Homework</b> <br> <span class="noto-serif-sc-simbol">家庭作业 </span></td>
-                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Exercise</b> <br> <span class="noto-serif-sc-simbol">课堂练习</span></td>
-                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Quiz</b> <br> <span class="noto-serif-sc-simbol">小测验</span></td>
-                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Project    </b> <br> <span class="noto-serif-sc-simbol">项目作业</span></td>
+                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;width:40%;" colspan="4" rowspan="2"><b>Subject</b> <br> <span class="noto-serif-sc-simbol" style="font-size: 8px;">科目</span></td>
+                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Homework</b> <br> <span class="noto-serif-sc-simbol" style="font-size: 8px;">家庭作业 </span></td>
+                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Exercise</b> <br> <span class="noto-serif-sc-simbol" style="font-size: 8px;">课堂练习</span></td>
+                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Quiz</b> <br> <span class="noto-serif-sc-simbol" style="font-size: 8px;">小测验</span></td>
+                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Project    </b> <br> <span class="noto-serif-sc-simbol" style="font-size: 8px;">项目作业</span></td>
                             {{-- <th style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3">Practical</td> --}}
                         </tr>
 
