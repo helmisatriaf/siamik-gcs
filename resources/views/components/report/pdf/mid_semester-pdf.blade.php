@@ -260,7 +260,7 @@ $grade_name = $student->grade_name;
                 @endif
                 <div class="header">
                     <div style="padding-left:50px;padding-right:50px;">
-                        <img src="<?= $logo ?>" style="width:100%;height:10%;" alt="Sample image">
+                        <img src="<?= $logo ?>" style="width:100%;height:9%;" alt="Sample image">
                     </div>
                     <h5>MID-SEMESTER REPORT</h5>
                     <span class="noto-serif-sc-simbol" style="font-size: 12px;">期中成绩报告</span>
