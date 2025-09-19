@@ -334,6 +334,12 @@ $grade_name = $student->grade_name;
                                         @case($rs['subject_name'] == 'English')
                                             <span class="noto-serif-sc-simbol">英语</span>
                                             @break
+                                        @case($rs['subject_name'] == 'Chinese Higher')
+                                            <span class="noto-serif-sc-simbol">中文（高级）</span>
+                                            @break
+                                        @case($rs['subject_name'] == 'Chinese Lower')
+                                            <span class="noto-serif-sc-simbol">中文（初级）</span>
+                                            @break
                                         @case($rs['subject_name'] == 'Chinese')
                                             <span class="noto-serif-sc-simbol">汉语</span>
                                             @break
@@ -349,7 +355,7 @@ $grade_name = $student->grade_name;
                                         @case($rs['subject_name'] == 'Bahasa Indonesia')
                                             <span class="noto-serif-sc-simbol">印度尼西亚语</span>
                                             @break
-                                        @case($rs['subject_name'] == 'Character Building')
+                                        @case($rs['subject_name'] == 'CB & Manner')
                                             <span class="noto-serif-sc-simbol">品格培养</span>
                                             @break
                                         @case($rs['subject_name'] == 'PE')
