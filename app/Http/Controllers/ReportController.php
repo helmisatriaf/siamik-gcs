@@ -5188,18 +5188,18 @@ class ReportController extends Controller
 
                 $checkReligion = Student::where('id', $id)->value('religion');
 
-                if ($checkReligion == "Islam") {
+                 if ($checkReligion == "Islam") {
                     $religion = "Religion Islamic";
                 } elseif ($checkReligion == "Catholic Christianity") {
                     $religion = "Religion Catholic";
                 } elseif ($checkReligion == "Protestant Christianity") {
-                    $religion = "Religion Chistianity";
+                    $religion = "Religion Christianity";
                 } elseif ($checkReligion == "Buddhism") {
                     $religion = "Religion Buddhism";
                 } elseif ($checkReligion == "Hinduism") {
-                    $religion = "Religion Hindusim";
+                    $religion = "Religion Hinduism";
                 } elseif ($checkReligion == "Confucianism") {
-                    $religion = "Religion COnfucianism";
+                    $religion = "Religion Confucianism";
                 }
                 // dd($chineseHigher);
 
@@ -5214,7 +5214,7 @@ class ReportController extends Controller
                     $chinese,
                     'Mathematics',
                     'Science',
-                    'Religion',
+                    $religion,
                     'Bahasa Indonesia',
                     'Character Building',
                     'PE',
