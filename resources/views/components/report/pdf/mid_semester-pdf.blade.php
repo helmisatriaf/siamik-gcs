@@ -31,18 +31,10 @@ $grade_name = $student->grade_name;
             width: 100%;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
         }
 
         .container {
-            display: flex;
-            flex-direction: column;
             min-height: 100vh;
-        }
-
-        .content {
-            flex: 1;
         }
 
         .noto-serif-sc-chinese {
@@ -84,10 +76,10 @@ $grade_name = $student->grade_name;
             width: 100%;
         }
 
-        .mid {
+        /* .mid {
             display: flex;
             justify-content: center;
-        }
+        } */
 
         .table {
             width: 100%;
@@ -233,14 +225,14 @@ $grade_name = $student->grade_name;
 
             .container {
                 min-height: 100vh;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
+                /* display: flex; */
+                /* flex-direction: column;
+                justify-content: space-between; */
             }
 
-            .content {
+            /* .content {
                 flex: 1;
-            }
+            } */
 
             .noto-serif-sc-simbol {
                 font-family: "Noto Serif SC", serif;
@@ -270,19 +262,19 @@ $grade_name = $student->grade_name;
                     <table class="tablesubjectName" style="border:none">
                         <!-- STUDENT STATUS -->
                         <tr>
-                            <td style="text-align:left;font-size:10px;border: 1px solid black;padding: 2px;"><b>Name</b> <span class="noto-serif-sc-simbol">姓名</span></td>
+                            <td style="text-align:left;font-size:10px;border: 1px solid black;padding: 2px;width:40%;"><b>Name</b> <span class="noto-serif-sc-simbol">姓名</span></td>
                             <td style="text-align:left;font-size:10px;border: 1px solid black;padding: 2px;">{{ ucwords(strtolower($student['student_name'])) }}</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;font-size:10px;border: 1px solid black;padding: 2px;"><b>Grade</b> <span class="noto-serif-sc-simbol">年级</span></td>
+                            <td style="text-align:left;font-size:10px;border: 1px solid black;padding: 2px;width:40%;"><b>Grade</b> <span class="noto-serif-sc-simbol">年级</span></td>
                             <td style="text-align:left;font-size:10px;border: 1px solid black;padding: 2px;">{{ $student->grade_name }} - {{ $student->grade_class }}</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;font-size:10px;border: 1px solid black;padding: 2px;"><b>Semester</b> <span class="noto-serif-sc-simbol">学期</span></td>
+                            <td style="text-align:left;font-size:10px;border: 1px solid black;padding: 2px;width:40%;"><b>Semester</b> <span class="noto-serif-sc-simbol">学期</span></td>
                             <td style="text-align:left;font-size:10px;border: 1px solid black;padding: 2px;">{{ $semester }}</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;font-size:10px;border: 1px solid black;padding: 2px;"><b>School Year</b> <span class="noto-serif-sc-simbol">学年</span></td>
+                            <td style="text-align:left;font-size:10px;border: 1px solid black;padding: 2px;width:40%;"><b>School Year</b> <span class="noto-serif-sc-simbol">学年</span></td>
                             <td style="text-align:left;font-size:10px;border: 1px solid black;padding: 2px;">{{ $academicYear }}</td>
                         </tr>
                         <!-- END STUDENT STATUS -->
@@ -292,8 +284,8 @@ $grade_name = $student->grade_name;
                 <div>
                     <table class="tablesubject" style="margin-top:10px;">
                         <tr>
-                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;width:6%;" colspan="1" rowspan="2"><b>No</b></td>
-                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;width:40%;" colspan="4" rowspan="2"><b>Subject</b> <br> <span class="noto-serif-sc-simbol" style="font-size: 8px;">科目</span></td>
+                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;width:5%;" colspan="1" rowspan="2"><b>No</b></td>
+                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="4" rowspan="2"><b>Subject</b> <br> <span class="noto-serif-sc-simbol" style="font-size: 8px;">科目</span></td>
                             <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Homework</b> <br> <span class="noto-serif-sc-simbol" style="font-size: 8px;">家庭作业 </span></td>
                             <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Exercise</b> <br> <span class="noto-serif-sc-simbol" style="font-size: 8px;">课堂练习</span></td>
                             <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Quiz</b> <br> <span class="noto-serif-sc-simbol" style="font-size: 8px;">小测验</span></td>
@@ -356,6 +348,9 @@ $grade_name = $student->grade_name;
                                             <span class="noto-serif-sc-simbol">印度尼西亚语</span>
                                             @break
                                         @case($rs['subject_name'] == 'CB & Manner')
+                                            <span class="noto-serif-sc-simbol">品格培养</span>
+                                            @break
+                                        @case($rs['subject_name'] == 'Character Building')
                                             <span class="noto-serif-sc-simbol">品格培养</span>
                                             @break
                                         @case($rs['subject_name'] == 'PE')
@@ -464,32 +459,7 @@ $grade_name = $student->grade_name;
                     </table>
                 </div>
 
-                <div>
-                    <table class="tableMonthly" style="margin-top: 10px;">
-                        <tr>
-                            <td colspan="{{count($monthlyAct) + 1}}"style="text-align:center;"><b>Monthly Activities</b> <span class="noto-serif-sc-simbol">每月活动</span></td>
-                        </tr>
-                        <tr>
-                            <td style="width:25%;text-align:left;"><b>Participation</b> <span class="noto-serif-sc-simbol">参与情况</span></td>
-                            @foreach ($monthlyAct as $ma)
-                                <td style="text-align:center;">{{$ma->name}}</td>
-                            @endforeach
-                        </tr>
-                        <tr>
-                            <td style="width:25%;"><b>Grade</b> <span class="noto-serif-sc-simbol">分数</span></td>
-                            @foreach ($scoreMonthly as $sm)
-                            <td style="text-align:center;">{{$sm->grades}}</td>
-                            @endforeach
-                        </tr>
-                        <tr>
-                            <td style="width:25%;"><b>Score</b> <span class="noto-serif-sc-simbol">分数</span></td>
-                            @foreach ($scoreMonthly as $ssm)
-                            <td style="text-align:center;">{{$ssm->score}}</td>
-                            @endforeach
-                        </tr>
-                        
-                    </table>
-                </div>
+               
     
                 {{-- <div style="margin-top:10px;padding-left:15px;">
                     <table class="" style="border:none">
@@ -551,6 +521,12 @@ $grade_name = $student->grade_name;
 
             <div class="page-break"></div>
 
+            {{-- PAGE 2 --}}
+            @if (session('role') == 'student' || session('role') == 'parent')
+                {{-- <p class="watermark-school">Great Crystal School</p>  --}}
+                <p class="watermark-internal">For Internal Purposes Only</p> 
+            @endif
+
             <div class="header">
                 <div style="padding-left:50px;padding-right:50px;">
                     <img src="<?= $logo ?>" style="width:96%;height:8%;" alt="Sample image">
@@ -558,101 +534,160 @@ $grade_name = $student->grade_name;
             </div>
 
             <div>
-                <table class="tableScore">
+                <table class="tableMonthly" style="margin-top: 10px;">
                     <tr>
-                        <td style="text-align:center;vertical-align : middle;font-size:10px;padding-right:16px;padding-left:16px;"><b>Scores</b> <br><span class="noto-serif-sc-simbol">分数</span></td>
-                        <td style="text-align:center;vertical-align : middle;font-size:10px;padding-right:16px;padding-left:16px;"><b>Grade</b> <br><span class="noto-serif-sc-simbol">等级</span></td>
+                        <td colspan="{{count($monthlyAct) + 1}}"style="text-align:center;"><b>Monthly Activities</b> <span class="noto-serif-sc-simbol">每月活动</span></td>
                     </tr>
                     <tr>
-                        <td style="text-align:center;vertical-align : middle;font-size:10px;">95-100</td>
-                        <td style="text-align:center;vertical-align : middle;font-size:10px;">A+</td>
+                        <td style="width:25%;text-align:left;"><b>Participation</b> <span class="noto-serif-sc-simbol">参与情况</span></td>
+                        @foreach ($monthlyAct as $ma)
+                            <td style="text-align:center;">{{$ma->name}}</td>
+                        @endforeach
                     </tr>
                     <tr>
-                        <td style="text-align:center;vertical-align : middle;font-size:10px;">85-94</td>
-                        <td style="text-align:center;vertical-align : middle;font-size:10px;">A</td>
+                        <td style="width:25%;"><b>Grade</b> <span class="noto-serif-sc-simbol">分数</span></td>
+                        @foreach ($scoreMonthly as $sm)
+                        <td style="text-align:center;">{{$sm->grades}}</td>
+                        @endforeach
                     </tr>
                     <tr>
-                        <td style="text-align:center;vertical-align : middle;font-size:10px;">75-84</td>
-                        <td style="text-align:center;vertical-align : middle;font-size:10px;">B</td>
-                    </tr>
-                    <tr>
-                        <td style="text-align:center;vertical-align : middle;font-size:10px;">65-74</td>
-                        <td style="text-align:center;vertical-align : middle;font-size:10px;">C</td>
-                    </tr>
-                    <tr>
-                        <td style="text-align:center;vertical-align : middle;font-size:10px;">45-64</td>
-                        <td style="text-align:center;vertical-align : middle;font-size:10px;">D</td>
-                    </tr>
-                    <tr>
-                        <td style="text-align:center;vertical-align : middle;font-size:10px;">&lt; 44</td>
-                        <td style="text-align:center;vertical-align : middle;font-size:10px;">R</td>
+                        <td style="width:25%;"><b>Score</b> <span class="noto-serif-sc-simbol">分数</span></td>
+                        @foreach ($scoreMonthly as $ssm)
+                        <td style="text-align:center;">{{$ssm->score}}</td>
+                        @endforeach
                     </tr>
                 </table>
             </div>
 
-            {{-- PAGE 2 --}}
-            @if (session('role') == 'student' || session('role') == 'parent')
-                {{-- <p class="watermark-school">Great Crystal School</p>  --}}
-                <p class="watermark-internal">For Internal Purposes Only</p> 
-            @endif
-            <div style="margin-top:0px;">
-                <table class="tableScore" style="width:250px;">
-                    <tr>
-                        <th style="text-align:center;vertical-align : middle;font-size:10px;padding-right:16px;padding-left:16px;" colspan="2">Student's Attendance</td>
-                    </tr>
-                    <tr>
-                        <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">Days Attended <span class="noto-serif-sc-simbol">出勤天数</span></td>
-                        <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">
-                            @if ($attendance[0]['present'] > 0)
-                            {{ $attendance[0]['present'] }} days
-                            @else
-                            0 days
-                            @endif
+            <!-- Container pakai flex -->
+            {{-- <div style="display:flex; justify-content:flex-start; gap:30px; margin-top:10px;">
+
+                <!-- Kolom 1: Scores -->
+                <div>
+                    <table class="tableScore">
+                        <tr>
+                            <td style="text-align:center;font-size:10px;padding:0 16px;">
+                                <b>Scores</b><br><span class="noto-serif-sc-simbol">分数</span>
+                            </td>
+                            <td style="text-align:center;font-size:10px;padding:0 16px;">
+                                <b>Grade</b><br><span class="noto-serif-sc-simbol">等级</span>
+                            </td>
+                        </tr>
+                        <tr><td style="text-align:center;font-size:10px;">95-100</td><td style="text-align:center;font-size:10px;">A+</td></tr>
+                        <tr><td style="text-align:center;font-size:10px;">85-94</td><td style="text-align:center;font-size:10px;">A</td></tr>
+                        <tr><td style="text-align:center;font-size:10px;">75-84</td><td style="text-align:center;font-size:10px;">B</td></tr>
+                        <tr><td style="text-align:center;font-size:10px;">65-74</td><td style="text-align:center;font-size:10px;">C</td></tr>
+                        <tr><td style="text-align:center;font-size:10px;">45-64</td><td style="text-align:center;font-size:10px;">D</td></tr>
+                        <tr><td style="text-align:center;font-size:10px;">&lt; 44</td><td style="text-align:center;font-size:10px;">R</td></tr>
+                    </table>
+                </div>
+
+                <!-- Kolom 2: Attendance -->
+                <div>
+                    <table class="tableScore" style="width:250px;">
+                        <tr>
+                            <th colspan="2" style="text-align:center;font-size:10px;padding:0 16px;">Student's Attendance</th>
+                        </tr>
+                        <tr>
+                            <td style="font-size:10px;padding-left:3px;">Days Attended <span class="noto-serif-sc-simbol">出勤天数</span></td>
+                            <td style="font-size:10px;padding-left:3px;">
+                                @if ($attendance[0]['present'] > 0) {{ $attendance[0]['present'] }} days @else 0 days @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:10px;padding-left:3px;">Days Absent <span class="noto-serif-sc-simbol">勤天数</span></td>
+                            <td style="font-size:10px;padding-left:3px;">
+                                @if ($attendance[0]['days_absent'] > 0) {{ $attendance[0]['days_absent'] }} day @else 0 day @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:10px;padding-left:3px;">Days Permission <span class="noto-serif-sc-simbol">请假天数</span></td>
+                            <td style="font-size:10px;padding-left:3px;">
+                                @if ($attendance[0]['permission'] > 0) {{ $attendance[0]['permission'] }} day @else 0 day @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:10px;padding-left:3px;">Days Sick <span class="noto-serif-sc-simbol">病假天数</span></td>
+                            <td style="font-size:10px;padding-left:3px;">
+                                @if ($attendance[0]['sick'] > 0) {{ $attendance[0]['sick'] }} day @else 0 day @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size:10px;padding-left:3px;">Late <span class="noto-serif-sc-simbol">迟到</span></td>
+                            <td style="font-size:10px;padding-left:3px;">
+                                @if ($attendance[0]['total_late'] > 0) {{ $attendance[0]['total_late'] }} time @else 0 time @endif
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div> --}}
+
+            <!-- Tabel pembungkus 2 kolom -->
+            <div>
+                <table style="width:95%; border:none;">
+                    <tr style="padding:0px;">
+                        <!-- Kolom kiri: Scores -->
+                        <td style="vertical-align:top; width:50%; border:none;padding:0px;">
+                            <table class="tableScore" style="width:auto;">
+                                <tr>
+                                    <td style="text-align:center;font-size:10px;padding:0 16px;">
+                                        <b>Scores</b><br><span class="noto-serif-sc-simbol">分数</span>
+                                    </td>
+                                    <td style="text-align:center;font-size:10px;padding:0 16px;">
+                                        <b>Grade</b><br><span class="noto-serif-sc-simbol">等级</span>
+                                    </td>
+                                </tr>
+                                <tr><td style="text-align:center;font-size:10px;">95-100</td><td style="text-align:center;font-size:10px;">A+</td></tr>
+                                <tr><td style="text-align:center;font-size:10px;">85-94</td><td style="text-align:center;font-size:10px;">A</td></tr>
+                                <tr><td style="text-align:center;font-size:10px;">75-84</td><td style="text-align:center;font-size:10px;">B</td></tr>
+                                <tr><td style="text-align:center;font-size:10px;">65-74</td><td style="text-align:center;font-size:10px;">C</td></tr>
+                                <tr><td style="text-align:center;font-size:10px;">45-64</td><td style="text-align:center;font-size:10px;">D</td></tr>
+                                <tr><td style="text-align:center;font-size:10px;">&lt; 44</td><td style="text-align:center;font-size:10px;">R</td></tr>
+                            </table>
                         </td>
-                    </tr>
-                    <tr>
-                        <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">Days Absent <span class="noto-serif-sc-simbol">勤天数 </span></td>
-                        <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">
-                            @if ($attendance[0]['days_absent'] > 0)
-                            {{ $attendance[0]['days_absent'] }} day
-                            @else
-                            0 day
-                            @endif
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">Days Permission <span class="noto-serif-sc-simbol">请假天数</span></td>
-                        <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">
-                            @if ($attendance[0]['permission'] > 0)
-                            {{ $attendance[0]['permission'] }} day
-                            @else
-                            0 day
-                            @endif
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">Days Sick <span class="noto-serif-sc-simbol">病假天数</span></td>
-                        <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">
-                            @if ($attendance[0]['sick'] > 0)
-                            {{ $attendance[0]['sick'] }} day
-                            @else
-                            0 day
-                            @endif
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">Late <span class="noto-serif-sc-simbol">迟到</span></td>
-                        <td style="text-align:left;vertical-align : middle;font-size:10px;padding-left:3px;">
-                            @if ($attendance[0]['total_late'] > 0)
-                            {{ $attendance[0]['total_late'] }} time
-                            @else
-                            0 time
-                            @endif
+    
+                        <!-- Kolom kanan: Attendance -->
+                        <td style="vertical-align:top; width:50%; border:none;">
+                            <table class="tableScore" style="width:250px;">
+                                <tr>
+                                    <th colspan="2" style="text-align:center;font-size:10px;padding:0 16px;">Student's Attendance</th>
+                                </tr>
+                                <tr>
+                                    <td style="font-size:10px;padding-left:3px;">Days Attended <span class="noto-serif-sc-simbol">出勤天数</span></td>
+                                    <td style="font-size:10px;padding-left:3px;">
+                                        @if ($attendance[0]['present'] > 0) {{ $attendance[0]['present'] }} days @else 0 days @endif
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size:10px;padding-left:3px;">Days Absent <span class="noto-serif-sc-simbol">勤天数</span></td>
+                                    <td style="font-size:10px;padding-left:3px;">
+                                        @if ($attendance[0]['days_absent'] > 0) {{ $attendance[0]['days_absent'] }} day @else 0 day @endif
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size:10px;padding-left:3px;">Days Permission <span class="noto-serif-sc-simbol">请假天数</span></td>
+                                    <td style="font-size:10px;padding-left:3px;">
+                                        @if ($attendance[0]['permission'] > 0) {{ $attendance[0]['permission'] }} day @else 0 day @endif
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size:10px;padding-left:3px;">Days Sick <span class="noto-serif-sc-simbol">病假天数</span></td>
+                                    <td style="font-size:10px;padding-left:3px;">
+                                        @if ($attendance[0]['sick'] > 0) {{ $attendance[0]['sick'] }} day @else 0 day @endif
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size:10px;padding-left:3px;">Late <span class="noto-serif-sc-simbol">迟到</span></td>
+                                    <td style="font-size:10px;padding-left:3px;">
+                                        @if ($attendance[0]['total_late'] > 0) {{ $attendance[0]['total_late'] }} time @else 0 time @endif
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                 </table>
             </div>
-
+           
             {{-- ADDITIONAL EVALUATION --}}
             <div>
                 <table class="tableAdditional" style="margin-top:0px;">

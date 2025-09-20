@@ -988,15 +988,15 @@ class ExamController extends Controller
 
          if ($validator->fails()) {
             DB::rollBack();
-            return redirect('/teacher/dashboard/exams/edit/' . $id)->withErrors($validator->messages())->withInput($rules);
+            return redirect('/teacher/dashboard/exam/edit/' . $id)->withErrors($validator->messages())->withInput($rules);
          }
 
-         $check = Exam::where('name_exam', $request->name)->where('teacher_id', $request->teacher_id)->first();
+         // $check = Exam::where('name_exam', $request->name)->where('teacher_id', $request->teacher_id)->first();
 
-         if ($check && $check->id != $id) {
-            DB::rollBack();
-            return redirect('/teacher/dashboard/exams/edit/' . $id)->withErrors(['name' => ["The exam name " . $request->name . " with grade " . $request->grade_name . " subject " . $request->Grade_subject . " teacher " . $request->teacher_name . " is already created !!!"]])->withInput($rules);
-         }
+         // if ($check && $check->id != $id) {
+         //    DB::rollBack();
+         //    return redirect('/teacher/dashboard/exam/edit/' . $id)->withErrors(['name' => ["The exam name " . $request->name . " with grade " . $request->grade_name . " subject " . $request->Grade_subject . " teacher " . $request->teacher_name . " is already created !!!"]])->withInput($rules);
+         // }
 
          // dd($rules);
 

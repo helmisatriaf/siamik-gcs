@@ -5060,6 +5060,7 @@ class ReportController extends Controller
                         'PPKn',
                         'Art and Craft',
                         'Health Education',
+                        'General Knowledge',
                     ];
                 } else {
                     $order = [
@@ -5075,6 +5076,7 @@ class ReportController extends Controller
                         'Financial Literacy',
                         'PPKn',
                         'Art and Craft',
+                        'General Knowledge',
                     ];
                 }
 
@@ -5189,7 +5191,7 @@ class ReportController extends Controller
                     'Science',
                     'Religion',
                     'Bahasa Indonesia',
-                    'CB & Manner',
+                    'Character Building',
                     'PE',
                     'IT',
                     'Financial Literacy',
