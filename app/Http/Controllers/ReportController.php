@@ -5032,17 +5032,17 @@ class ReportController extends Controller
                 $checkReligion = Student::where('id', $id)->value('religion');
 
                 if ($checkReligion == "Islam") {
-                    $religion = "Religion";
+                    $religion = "Religion Islamic";
                 } elseif ($checkReligion == "Catholic Christianity") {
-                    $religion = "Religion";
+                    $religion = "Religion Catholic";
                 } elseif ($checkReligion == "Protestant Christianity") {
-                    $religion = "Religion";
+                    $religion = "Religion Christianity";
                 } elseif ($checkReligion == "Buddhism") {
-                    $religion = "Religion";
+                    $religion = "Religion Buddhism";
                 } elseif ($checkReligion == "Hinduism") {
-                    $religion = "Religion";
+                    $religion = "Religion Hinduism";
                 } elseif ($checkReligion == "Confucianism") {
-                    $religion = "Religion";
+                    $religion = "Religion Confucianism";
                 }
 
                 if ($gradeId == 5 || $gradeId == 6 || $gradeId == 7) {
@@ -5116,7 +5116,6 @@ class ReportController extends Controller
                 $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) use ($order, $homework, $exercise, $quiz, $project, $practical) {
                     $student = $scores->first();
                     $scoresBySubject = $scores->groupBy('subject_name')->map(function ($subjectScores) use ($homework, $exercise, $quiz, $project, $practical) {
-
                         $homeworkScores = $subjectScores->where('type_exam', $homework)->pluck('score');
                         $exerciseScores = $subjectScores->where('type_exam', $exercise)->pluck('score');
                         $quizScores = $subjectScores->where('type_exam', $quiz)->pluck('score');
@@ -5145,8 +5144,35 @@ class ReportController extends Controller
 
                     // Urutkan subjek berdasarkan urutan dalam $order
                     $orderedSubjects = collect($order)->mapWithKeys(function ($subject) use ($scoresBySubject) {
-                        return [$subject => $scoresBySubject->get($subject, ['subject_name' => $subject, 'scores' => []])];
+                        // Normalisasi nama subject
+                        if (in_array($subject, [
+                            "Religion Islamic",
+                            "Religion Catholic",
+                            "Religion Christianity",
+                            "Religion Buddhism",
+                            "Religion Hinduism",
+                            "Religion Confucianism"
+                        ])) {
+                            $subjectKey = "Religion";
+                        } else {
+                            $subjectKey = $subject;
+                        }
+
+                        // Ambil data subject
+                        $subjectData = $scoresBySubject->get($subject, [
+                            'subject_name' => $subjectKey,
+                            'scores' => []
+                        ]);
+
+                        // Pastikan subject_name juga ikut dinormalisasi
+                        $subjectData['subject_name'] = $subjectKey;
+
+                        return [$subjectKey => $subjectData];
                     });
+
+
+                    // dd($orderedSubjects);
+
 
                     return [
                         'student_id' => $student->student_id,
@@ -5156,7 +5182,6 @@ class ReportController extends Controller
                     ];
                 })->values()->all();
 
-                // dd($scoresByStudent);
             } elseif (strtolower($student->grade_name) === "secondary") {
                 $chineseLower  = Chinese_lower::where('student_id', $id)->exists();
                 $chineseHigher = Chinese_higher::where('student_id', $id)->exists();
@@ -5164,17 +5189,17 @@ class ReportController extends Controller
                 $checkReligion = Student::where('id', $id)->value('religion');
 
                 if ($checkReligion == "Islam") {
-                    $religion = "Religion";
+                    $religion = "Religion Islamic";
                 } elseif ($checkReligion == "Catholic Christianity") {
-                    $religion = "Religion";
+                    $religion = "Religion Catholic";
                 } elseif ($checkReligion == "Protestant Christianity") {
-                    $religion = "Religion";
+                    $religion = "Religion Chistianity";
                 } elseif ($checkReligion == "Buddhism") {
-                    $religion = "Religion";
+                    $religion = "Religion Buddhism";
                 } elseif ($checkReligion == "Hinduism") {
-                    $religion = "Religion";
+                    $religion = "Religion Hindusim";
                 } elseif ($checkReligion == "Confucianism") {
-                    $religion = "Religion";
+                    $religion = "Religion COnfucianism";
                 }
                 // dd($chineseHigher);
 
@@ -5323,7 +5348,7 @@ class ReportController extends Controller
                 ->orderBy('students.name', 'asc')
                 ->get();
 
-            // dd($monthlyActivity);
+            // dd($scoresByStudent);
             $data = [
                 'semester'      => $semester,
                 'student'       => $student,
