@@ -5287,7 +5287,30 @@ class ReportController extends Controller
 
                     // Urutkan subjek berdasarkan urutan dalam $order
                     $orderedSubjects = collect($order)->mapWithKeys(function ($subject) use ($scoresBySubject) {
-                        return [$subject => $scoresBySubject->get($subject, ['subject_name' => $subject, 'scores' => []])];
+                        // Normalisasi nama subject
+                        if (in_array($subject, [
+                            "Religion Islamic",
+                            "Religion Catholic",
+                            "Religion Christianity",
+                            "Religion Buddhism",
+                            "Religion Hinduism",
+                            "Religion Confucianism"
+                        ])) {
+                            $subjectKey = "Religion";
+                        } else {
+                            $subjectKey = $subject;
+                        }
+
+                        // Ambil data subject
+                        $subjectData = $scoresBySubject->get($subject, [
+                            'subject_name' => $subjectKey,
+                            'scores' => []
+                        ]);
+
+                        // Pastikan subject_name juga ikut dinormalisasi
+                        $subjectData['subject_name'] = $subjectKey;
+
+                        return [$subjectKey => $subjectData];
                     });
 
                     return [
