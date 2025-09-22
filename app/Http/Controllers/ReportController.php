@@ -5036,7 +5036,7 @@ class ReportController extends Controller
                 } elseif ($checkReligion == "Catholic Christianity") {
                     $religion = "Religion Catholic";
                 } elseif ($checkReligion == "Protestant Christianity") {
-                    $religion = "Religion Christianity";
+                    $religion = "Religion Christian";
                 } elseif ($checkReligion == "Buddhism") {
                     $religion = "Religion Buddhism";
                 } elseif ($checkReligion == "Hinduism") {
@@ -5210,7 +5210,7 @@ class ReportController extends Controller
                 } elseif ($checkReligion == "Catholic Christianity") {
                     $religion = "Religion Catholic";
                 } elseif ($checkReligion == "Protestant Christianity") {
-                    $religion = "Religion Christianity";
+                    $religion = "Religion Christian";
                 } elseif ($checkReligion == "Buddhism") {
                     $religion = "Religion Buddhism";
                 } elseif ($checkReligion == "Hinduism") {
