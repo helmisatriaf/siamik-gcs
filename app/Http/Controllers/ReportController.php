@@ -5045,7 +5045,7 @@ class ReportController extends Controller
                     $religion = "Religion Confucianism";
                 }
 
-                if ($gradeId == 5 || $gradeId == 6 || $gradeId == 7) {
+                if ($gradeId == 5) {
                     $order = [
                         'English',
                         'Chinese',
