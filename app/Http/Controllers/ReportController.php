@@ -5060,7 +5060,6 @@ class ReportController extends Controller
                         'PPKn',
                         'Art and Craft',
                         'Health Education',
-                        'General Knowledge',
                     ];
                 } else {
                     $order = [
