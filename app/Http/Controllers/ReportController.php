@@ -5165,7 +5165,7 @@ class ReportController extends Controller
                         if (in_array($subject, [
                             "Religion Islamic",
                             "Religion Catholic",
-                            "Religion Christianity",
+                            "Religion Christian",
                             "Religion Buddhism",
                             "Religion Hinduism",
                             "Religion Confucianism"
@@ -5308,7 +5308,7 @@ class ReportController extends Controller
                         if (in_array($subject, [
                             "Religion Islamic",
                             "Religion Catholic",
-                            "Religion Christianity",
+                            "Religion Christian",
                             "Religion Buddhism",
                             "Religion Hinduism",
                             "Religion Confucianism"
