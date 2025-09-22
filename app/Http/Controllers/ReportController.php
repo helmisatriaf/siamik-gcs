@@ -5061,6 +5061,24 @@ class ReportController extends Controller
                         'Art and Craft',
                         'Health Education',
                     ];
+                }
+                if ($gradeId == 6 || $gradeId == 7) {
+                    $order = [
+                        'English',
+                        'Chinese',
+                        'Mathematics',
+                        'Science',
+                        $religion,
+                        'Bahasa Indonesia',
+                        'CB & Manner',
+                        'PE',
+                        'IT',
+                        'Financial Literacy',
+                        'PPKn',
+                        'Art and Craft',
+                        'General Knowledge',
+                        'Health Education',
+                    ];
                 } else {
                     $order = [
                         'English',
