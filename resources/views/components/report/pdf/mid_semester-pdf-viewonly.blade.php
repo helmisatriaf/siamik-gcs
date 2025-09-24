@@ -186,7 +186,7 @@ $grade_name = $student->grade_name;
         .watermark-internal {
             position: absolute;
             top: 45%; /* Posisi vertikal tengah */
-            left: 20%; /* Posisi horizontal tengah */
+            left: 40%; /* Posisi horizontal tengah */
             transform: translate(-50%, -50%) rotate(-45deg); /* Pusatkan dan rotasi */
             font-size: 40px; /* Ukuran font */
            color: rgba(254,147,6, 0.5); /* Warna abu-abu dengan transparansi */
@@ -200,7 +200,7 @@ $grade_name = $student->grade_name;
         .watermark-internal-2 {
             position: absolute;
             top: 100%; /* Posisi vertikal tengah */
-            left: 20%; /* Posisi horizontal tengah */
+            left: 40%; /* Posisi horizontal tengah */
             transform: translate(-50%, -50%) rotate(-45deg); /* Pusatkan dan rotasi */
             font-size: 40px; /* Ukuran font */
            color: rgba(254,147,6, 0.5); /* Warna abu-abu dengan transparansi */
