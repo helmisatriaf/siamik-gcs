@@ -1144,56 +1144,74 @@
                 checkUrl = originalUrl.replace('/report', '/check-report-access');
             }
 
-            Swal.fire({
-            title: 'Checking Access...',
-            text: 'Please wait a moment.',
-            mageUrl: '/images/happy.png', // pastikan path ini bisa diakses dari browser
-            imageWidth: 100,
-            imageHeight: 100,
-            imageAlt: 'Custom image',
-            customClass: {
-                popup: 'custom-swal-style'
-            },
-            allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
+            // Swal.fire({
+            // title: 'Checking Access...',
+            // text: 'Please wait a moment.',
+            // mageUrl: '/images/happy.png', // pastikan path ini bisa diakses dari browser
+            // imageWidth: 100,
+            // imageHeight: 100,
+            // imageAlt: 'Custom image',
+            // customClass: {
+            //     popup: 'custom-swal-style'
+            // },
+            // allowOutsideClick: false,
+            //     didOpen: () => {
+            //         Swal.showLoading();
+            //     }
+            // });
 
-            // Make an AJAX request to check access
-            $.ajax({
-                url: checkUrl,
-                type: 'GET',
-                dataType: 'json',
-                success: function(response) {
-                    if (response.status === 'error') {
-                        Swal.close(); 
-                        Swal.fire({
+            const now = new Date();
+            const releaseDate = new Date("2025-09-24T13:00:00"); // 24 Sept 2025, jam 13:00
 
-                            title: 'Access Denied',
-                            text: response.message,
-                            icon: 'error',
-                            confirmButtonText: 'OK',
-                            customClass: {
-                                popup: 'custom-swal-style'
-                            },
-                        });
-                    } else {
-                        Swal.close();
-                        window.location.href = originalUrl;
+            if (now < releaseDate) {
+                Swal.fire({
+                    title: 'Access Denied',
+                    text: 'You can access in 24/09/2025 13:00',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        popup: 'custom-swal-style'
                     }
-                },
-                error: function(xhr, status, error) {
-                    Swal.close(); // Close loading
-                    console.error('Error checking report access:', error);
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'An error occurred while checking report access. Please try again.',
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
-                }
-            });
+                });
+                return; // stop eksekusi
+            }
+            else {
+                // Make an AJAX request to check access
+                $.ajax({
+                    url: checkUrl,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status === 'error') {
+                            Swal.close(); 
+                            Swal.fire({
+    
+                                title: 'Access Denied',
+                                text: response.message,
+                                icon: 'error',
+                                confirmButtonText: 'OK',
+                                customClass: {
+                                    popup: 'custom-swal-style'
+                                },
+                            });
+                        } else {
+                            Swal.close();
+                            window.location.href = originalUrl;
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.close(); // Close loading
+                        console.error('Error checking report access:', error);
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'An error occurred while checking report access. Please try again.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            }
+
         }
 
         // Attach event handlers to report links
