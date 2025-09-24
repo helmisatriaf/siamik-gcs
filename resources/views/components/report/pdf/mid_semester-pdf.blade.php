@@ -246,13 +246,13 @@ $grade_name = $student->grade_name;
     <div class="container"> 
         <div class="content">
             <!-- PAGE 1 -->
-                @if (session('role') == 'student' || session('role') == 'parent')
-                    <p class="watermark-school">Great Crystal School</p> 
+                @if (session('role') == 'student' || session('role') == 'parent' || session('role') == 'teacher')
+                    {{-- <p class="watermark-school">Great Crystal School</p>  --}}
                     <p class="watermark-internal">For Internal Purposes Only</p> 
                 @endif
                 <div class="header">
                     <div style="padding-left:50px;padding-right:50px;">
-                        <img src="<?= $logo ?>" style="width:96%;height:8%;" alt="Sample image">
+                        <img src="<?= $logo ?>" style="width:100%;height:10%;" alt="Sample image">
                     </div>
                     <h5>MID-SEMESTER REPORT</h5>
                     <span class="noto-serif-sc-simbol" style="font-size: 12px;">期中成绩报告</span>
@@ -522,14 +522,14 @@ $grade_name = $student->grade_name;
             <div class="page-break"></div>
 
             {{-- PAGE 2 --}}
-            @if (session('role') == 'student' || session('role') == 'parent')
+            @if (session('role') == 'student' || session('role') == 'parent' || session('role') == 'teacher')
                 {{-- <p class="watermark-school">Great Crystal School</p>  --}}
                 <p class="watermark-internal">For Internal Purposes Only</p> 
             @endif
 
             <div class="header">
                 <div style="padding-left:50px;padding-right:50px;">
-                    <img src="<?= $logo ?>" style="width:96%;height:8%;" alt="Sample image">
+                    <img src="<?= $logo ?>" style="width:100%;height:10%;" alt="Sample image">
                 </div>
             </div>
 

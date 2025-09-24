@@ -5415,7 +5415,13 @@ class ReportController extends Controller
             $pdf->set_option('isRemoteEnabled', true);
             $pdf->set_option('isHtml5ParserEnabled', true);
             $pdf->loadView('components.report.pdf.mid_semester-pdf', $data)->setPaper('a5', 'portrait');
-            return $pdf->stream($student->student_name . '_semester' . $semester . '.pdf');
+
+            if(session('role') == 'admin' || session('role') == 'superadmin'){
+                return $pdf->stream($student->student_name . '_semester' . $semester . '.pdf');
+            }
+            else{
+                return view('components.report.pdf.mid_semester-pdf-viewonly', $data);
+            }
             // return view('components.report.pdf.mid_semester-pdf', $data);
 
         } catch (Exception $err) {
@@ -7620,7 +7626,9 @@ class ReportController extends Controller
             $pdf = app('dompdf.wrapper');
             $pdf->set_option('isRemoteEnabled', true);
             $pdf->set_option('isHtml5ParserEnabled', true);
-            $pdf->loadView('components.report.pdf.mid_semester-pdf', $data)->setPaper('a5', 'portrait');
+            // $pdf->loadView('components.report.pdf.mid_semester-pdf', $data)->setPaper('a5', 'portrait');
+            
+            return view('components.report.pdf.mid_semester-pdf-viewonly', $data);
 
             return $pdf->stream($data['student']->student_name . '_midsemester' . $semester . '.pdf');
         } catch (Exception $err) {
