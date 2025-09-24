@@ -246,7 +246,7 @@ $grade_name = $student->grade_name;
     <div class="container"> 
         <div class="content">
             <!-- PAGE 1 -->
-                @if (session('role') == 'student' || session('role') == 'parent' || session('role') == 'teacher')
+                @if (session('role') == 'student' || session('role') == 'parent' || session('role') == 'teacher' || session('role') == 'admin' )
                     {{-- <p class="watermark-school">Great Crystal School</p>  --}}
                     <p class="watermark-internal">For Internal Purposes Only</p> 
                 @endif
@@ -522,7 +522,7 @@ $grade_name = $student->grade_name;
             <div class="page-break"></div>
 
             {{-- PAGE 2 --}}
-            @if (session('role') == 'student' || session('role') == 'parent' || session('role') == 'teacher')
+            @if (session('role') == 'student' || session('role') == 'parent' || session('role') == 'teacher' || session('role') == 'admin')
                 {{-- <p class="watermark-school">Great Crystal School</p>  --}}
                 <p class="watermark-internal">For Internal Purposes Only</p> 
             @endif

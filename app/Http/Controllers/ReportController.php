@@ -5416,12 +5416,12 @@ class ReportController extends Controller
             $pdf->set_option('isHtml5ParserEnabled', true);
             $pdf->loadView('components.report.pdf.mid_semester-pdf', $data)->setPaper('a5', 'portrait');
 
-            if(session('role') == 'admin' || session('role') == 'superadmin'){
-                return $pdf->stream($student->student_name . '_semester' . $semester . '.pdf');
-            }
-            else{
-                return view('components.report.pdf.mid_semester-pdf-viewonly', $data);
-            }
+            // if(session('role') == 'admin' || session('role') == 'superadmin'){
+            return $pdf->stream($student->student_name . '_semester' . $semester . '.pdf');
+            // }
+            // else{
+            //     return view('components.report.pdf.mid_semester-pdf-viewonly', $data);
+            // }
             // return view('components.report.pdf.mid_semester-pdf', $data);
 
         } catch (Exception $err) {
