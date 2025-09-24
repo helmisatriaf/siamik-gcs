@@ -8500,6 +8500,17 @@ class ReportController extends Controller
             $semester = session('semester');
             $academic_year = session('academic_year');
 
+            if ($semester == 1) {
+                $cutOffMidSemester = Master_academic::where('is_use', true)->value('mid_report_card1');
+            } elseif ($semester == 2) {
+                $cutOffMidSemester = Master_academic::where('is_use', true)->value('mid_report_card2');
+            }
+
+            $learningSkills = Report_card::where('student_id', $id)
+                ->where('semester', $semester)
+                ->where('academic_year', session('academic_year'))
+                ->first();
+
             $gradeId = Student::where('id', $id)->value('grade_id');
 
             $student = Student::where('students.id', $id)
@@ -8517,7 +8528,7 @@ class ReportController extends Controller
                 ->join('teachers', 'teachers.id', 'teacher_grades.teacher_id')
                 ->select('teachers.name as teacher_name')
                 ->first();
-
+ 
             $ct = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->value('critical_thinking');
             $cs = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->value('cognitive_skills');
             $ls = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->value('life_skills');
@@ -8537,6 +8548,7 @@ class ReportController extends Controller
                 ->where('grades.id', $student->grade_id)
                 ->where('students.id', $id)
                 ->where('attendances.semester', $semester)
+                ->where('attendances.academic_year', session('academic_year'))
                 ->get();
 
             $attendancesByStudent = $resultsAttendance->groupBy('student_id')->map(function ($attendances) {
@@ -8565,6 +8577,18 @@ class ReportController extends Controller
             $practical = Type_exam::where('name', 'practical')->value('id');
 
             if (strtolower($student->grade_name) === "primary") {
+                $chineseHigher = Chinese_higher::where('student_id', $id)->exists();
+
+                
+                // dd($chineseHigher);
+
+                if ($chineseHigher) {
+                    $chinese = "Chinese Higher";
+                }
+                else {
+                    $chinese = "Chinese";
+                }
+                
                 $checkReligion = Student::where('id', $id)->value('religion');
 
                 if ($checkReligion == "Islam") {
@@ -8581,21 +8605,57 @@ class ReportController extends Controller
                     $religion = "Religion Confucianism";
                 }
 
-                $order = [
-                    'English',
-                    'Chinese',
-                    'Mathematics',
-                    'Science',
-                    $religion,
-                    'Bahasa Indonesia',
-                    'CB & Manner',
-                    'PE',
-                    'IT',
-                    'General Knowledge',
-                    'PPKn',
-                    'Art and Craft',
-                    'Health Education'
-                ];
+                if ($gradeId == 5) {
+                    $order = [
+                        'English',
+                        'Chinese',
+                        'Mathematics',
+                        'Science',
+                        $religion,
+                        'Bahasa Indonesia',
+                        'CB & Manner',
+                        'PE',
+                        'IT',
+                        'Financial Literacy',
+                        'PPKn',
+                        'Art and Craft',
+                        'Health Education',
+                    ];
+                }
+                if ($gradeId == 6 || $gradeId == 7) {
+                    $order = [
+                        'English',
+                        'Chinese',
+                        'Mathematics',
+                        'Science',
+                        $religion,
+                        'Bahasa Indonesia',
+                        'CB & Manner',
+                        'PE',
+                        'IT',
+                        'Financial Literacy',
+                        'PPKn',
+                        'Art and Craft',
+                        'General Knowledge',
+                        'Health Education',
+                    ];
+                } else {
+                    $order = [
+                        'English',
+                        $chinese,
+                        'Mathematics',
+                        'Science',
+                        $religion,
+                        'Bahasa Indonesia',
+                        'CB & Manner',
+                        'PE',
+                        'IT',
+                        'Financial Literacy',
+                        'PPKn',
+                        'Art and Craft',
+                        'General Knowledge',
+                    ];
+                }
 
                 $results = Grade::join('students', 'students.grade_id', '=', 'grades.id')
                     ->join('grade_exams', 'grade_exams.grade_id', '=', 'grades.id')
@@ -8622,17 +8682,21 @@ class ReportController extends Controller
                     ->where('exams.semester', $semester)
                     ->where('exams.academic_year', $academic_year)
                     ->where('students.id', $id)
+                    ->where('students.is_active', true)
                     ->whereIn('exams.type_exam', [$homework, $exercise, $quiz, $project, $practical])
+                    ->where('exams.date_exam', '<=', $cutOffMidSemester)
+                    ->orderBy('students.name', 'asc')
                     ->get();
+
+                // dd($results);
 
                 $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) use ($order, $homework, $exercise, $quiz, $project, $practical) {
                     $student = $scores->first();
                     $scoresBySubject = $scores->groupBy('subject_name')->map(function ($subjectScores) use ($homework, $exercise, $quiz, $project, $practical) {
-
                         $homeworkScores = $subjectScores->where('type_exam', $homework)->pluck('score');
                         $exerciseScores = $subjectScores->where('type_exam', $exercise)->pluck('score');
                         $quizScores = $subjectScores->where('type_exam', $quiz)->pluck('score');
-                        $projectScores = $subjectScores->where('type_exam', $project)->pluck('score');
+                        $projectScores = $subjectScores->whereIn('type_exam', [$practical, $project])->pluck('score');
                         $practicalScores = $subjectScores->where('type_exam', $practical)->pluck('score');
 
                         return [
@@ -8657,8 +8721,35 @@ class ReportController extends Controller
 
                     // Urutkan subjek berdasarkan urutan dalam $order
                     $orderedSubjects = collect($order)->mapWithKeys(function ($subject) use ($scoresBySubject) {
-                        return [$subject => $scoresBySubject->get($subject, ['subject_name' => $subject, 'scores' => []])];
+                        // Normalisasi nama subject
+                        if (in_array($subject, [
+                            "Religion Islamic",
+                            "Religion Catholic",
+                            "Religion Christian",
+                            "Religion Buddhism",
+                            "Religion Hinduism",
+                            "Religion Confucianism"
+                        ])) {
+                            $subjectKey = "Religion";
+                        } else {
+                            $subjectKey = $subject;
+                        }
+
+                        // Ambil data subject
+                        $subjectData = $scoresBySubject->get($subject, [
+                            'subject_name' => $subjectKey,
+                            'scores' => []
+                        ]);
+
+                        // Pastikan subject_name juga ikut dinormalisasi
+                        $subjectData['subject_name'] = $subjectKey;
+
+                        return [$subjectKey => $subjectData];
                     });
+
+
+                    // dd($orderedSubjects);
+
 
                     return [
                         'student_id' => $student->student_id,
@@ -8667,13 +8758,14 @@ class ReportController extends Controller
                         'isRestricted' => $isRestricted,
                     ];
                 })->values()->all();
+
             } elseif (strtolower($student->grade_name) === "secondary") {
                 $chineseLower  = Chinese_lower::where('student_id', $id)->exists();
                 $chineseHigher = Chinese_higher::where('student_id', $id)->exists();
 
                 $checkReligion = Student::where('id', $id)->value('religion');
 
-                if ($checkReligion == "Islam") {
+                 if ($checkReligion == "Islam") {
                     $religion = "Religion Islamic";
                 } elseif ($checkReligion == "Catholic Christianity") {
                     $religion = "Religion Catholic";
@@ -8701,9 +8793,10 @@ class ReportController extends Controller
                     'Science',
                     $religion,
                     'Bahasa Indonesia',
-                    'CB & Manner',
+                    'Character Building',
                     'PE',
                     'IT',
+                    'Financial Literacy',
                     'Art and Design',
                     'PPKn',
                     'IPS',
@@ -8735,6 +8828,8 @@ class ReportController extends Controller
                     ->where('exams.academic_year', $academic_year)
                     ->where('students.id', $id)
                     ->whereIn('exams.type_exam', [$homework, $exercise, $quiz, $project, $practical])
+                    ->where('students.is_active', true)
+                    ->orderBy('students.name', 'asc')
                     ->get();
 
                 $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) use ($order, $homework, $exercise, $quiz, $project, $practical) {
@@ -8744,7 +8839,7 @@ class ReportController extends Controller
                         $homeworkScores = $subjectScores->where('type_exam', $homework)->pluck('score');
                         $exerciseScores = $subjectScores->where('type_exam', $exercise)->pluck('score');
                         $quizScores = $subjectScores->where('type_exam', $quiz)->pluck('score');
-                        $projectScores = $subjectScores->where('type_exam', $project)->pluck('score');
+                        $projectScores = $subjectScores->whereIn('type_exam', [$practical, $project])->pluck('score');
                         $practicalScores = $subjectScores->where('type_exam', $practical)->pluck('score');
 
                         return [
@@ -8769,7 +8864,30 @@ class ReportController extends Controller
 
                     // Urutkan subjek berdasarkan urutan dalam $order
                     $orderedSubjects = collect($order)->mapWithKeys(function ($subject) use ($scoresBySubject) {
-                        return [$subject => $scoresBySubject->get($subject, ['subject_name' => $subject, 'scores' => []])];
+                        // Normalisasi nama subject
+                        if (in_array($subject, [
+                            "Religion Islamic",
+                            "Religion Catholic",
+                            "Religion Christian",
+                            "Religion Buddhism",
+                            "Religion Hinduism",
+                            "Religion Confucianism"
+                        ])) {
+                            $subjectKey = "Religion";
+                        } else {
+                            $subjectKey = $subject;
+                        }
+
+                        // Ambil data subject
+                        $subjectData = $scoresBySubject->get($subject, [
+                            'subject_name' => $subjectKey,
+                            'scores' => []
+                        ]);
+
+                        // Pastikan subject_name juga ikut dinormalisasi
+                        $subjectData['subject_name'] = $subjectKey;
+
+                        return [$subjectKey => $subjectData];
                     });
 
                     return [
@@ -8781,12 +8899,44 @@ class ReportController extends Controller
                 })->values()->all();
             }
 
-            $monthlyActivity = MonthlyActivity::get();
+            $semester = intval(session('semester'));
+            if ($semester == 1) {
+                $getRangeDateSemester = Master_academic::where('is_use', true)->first();
+                $startSemester = Carbon::parse($getRangeDateSemester->semester1);
+                $endSemester = Carbon::parse($getRangeDateSemester->end_semester1);
 
-            if ($gradeId <= 7) {
-                $grades = 'lower';
-            } elseif ($gradeId > 7) {
-                $grades = 'upper';
+                // Ambil semua nama bulan di antara dua tanggal
+                $monthsInRange = [];
+                $current = $startSemester->copy();
+                while ($current <= $endSemester) {
+                    $monthsInRange[] = $current->format('F'); // 'F' = nama bulan full, contoh: 'July'
+                    $current->addMonth();
+                }
+
+                // Query monthly_activities
+                $monthlyActivity = MonthlyActivity::where('grades', 'upper')
+                    ->whereIn('month', $monthsInRange)
+                    ->where('academic_year', session('academic_year'))
+                    ->get();
+                
+            } elseif ($semester == 2) {
+                $getRangeDateSemester = Master_academic::where('is_use', true)->first();
+                $startSemester = Carbon::parse($getRangeDateSemester->semester2);
+                $endSemester = Carbon::parse($getRangeDateSemester->end_semester2);
+
+                // Ambil semua nama bulan di antara dua tanggal
+                $monthsInRange = [];
+                $current = $startSemester->copy();
+                while ($current <= $endSemester) {
+                    $monthsInRange[] = $current->format('F'); // 'F' = nama bulan full, contoh: 'July'
+                    $current->addMonth();
+                }
+
+                // Query monthly_activities
+                $monthlyActivity = MonthlyActivity::where('grades', 'upper')
+                    ->whereIn('month', $monthsInRange)
+                    ->where('academic_year', session('academic_year'))
+                    ->get();
             }
 
             $studentMonthlyActivity = Student_Monthly_Activity::join('students', 'students.id', '=', 'student_monthly_activities.student_id')
@@ -8798,10 +8948,7 @@ class ReportController extends Controller
                 ->orderBy('students.name', 'asc')
                 ->get();
 
-            // dd($studentMonthlyActivity);
-
-            $countMA = MonthlyActivity::count();
-
+            // dd($scoresByStudent);
             $data = [
                 'semester'      => $semester,
                 'student'       => $student,
@@ -8819,9 +8966,9 @@ class ReportController extends Controller
                 'ls'            => $ls,
                 'les'           => $les,
                 'saed'          => $saed,
-                'monthlyAct'    => $studentMonthlyActivity,
+                'monthlyAct'    => $monthlyActivity,
+                'countMA'       => count($monthlyActivity),
                 'scoreMonthly'  => $studentMonthlyActivity,
-                'countMA'       => $countMA,
             ];
 
             // dd($studentMonthlyActivity);
