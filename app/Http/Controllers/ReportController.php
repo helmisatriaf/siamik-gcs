@@ -8830,6 +8830,7 @@ class ReportController extends Controller
                     ->where('students.id', $id)
                     ->whereIn('exams.type_exam', [$homework, $exercise, $quiz, $project, $practical])
                     ->where('students.is_active', true)
+                    ->where('exams.date_exam', '<=', $cutOffMidSemester)
                     ->orderBy('students.name', 'asc')
                     ->get();
 
