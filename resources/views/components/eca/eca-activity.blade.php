@@ -660,7 +660,7 @@
                                                                 </td>
                                                                 <td>
                                                                     <a>
-                                                                        {{ ucwords(strtolower($st->name)) }} <br>
+                                                                        {{ ucwords(strtolower($st->student->name)) }} <br>
                                                                         {{-- {{ ucwords(strtolower($st->grade->name)) }} -
                                                                         {{ ucwords(strtolower($st->grade->class)) }} --}}
                                                                     </a>
