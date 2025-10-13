@@ -596,138 +596,159 @@
                                 @endforeach
                                 
                                 
-                                @if (session('role') == 'teacher')
-                                    <br>
-                                    <strong>Student Attendance :</strong>
-                                    <br>
-                                    @if ($attendanceEca->count() > 0)
-                                        <div class="row">
-                                            @foreach ($attendanceEca as $attendance)
-                                                <div class="user-block shadow-soft p-3 mx-2" style="background-color: #fff3c0;">
-                                                    <div class="col-12">
-                                                        <img class="img-circle img-bordered-sm" src="{{asset('storage/file/profile/'. $attendance->student->profil)}}" alt="user image">
-                                                        <span class="username">
-                                                            <a class="text-dark text-sm" href="">{{ucwords(strtolower($attendance->student->name))}}</a>
-                                                            <br>
-                                                            @if ($attendance->present == true)
-                                                                <span class="badge badge-success text-xs">Present</span>
-                                                            @elseif ($attendance->alpha == true)
-                                                                <span class="badge badge-warning text-xs">Alpha</span>
-                                                            @elseif ($attendance->permission == true)
-                                                                <span class="badge badge-info text-xs">Permission ({{$attendance->information}})</span>
-                                                            @endif
-                                                        </span>
-                                                        <span class="description text-dark text-sm">Checked at - {{ \Carbon\Carbon::parse($attendance->created_at)->format('d M Y H:i') }}</span>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    @else
-                                        <form method="POST" action="{{ route('attendanceEcaStudent') }}">
-                                            @csrf
-                                            @method('POST')
-                                            
-                                            <table class="table table-striped projects">
-                                                <thead>
-                                                    <tr>
-                                                        <th style="width: 5%">#</th>
-                                                        <th style="width: 20%">Student</th>
-                                                        <th >Attendance</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($student as $st)
-                                                        @php
-                                                            $student[$st['student']->id] = [
-                                                                'name' => $st->name,
-                                                                'present' => false,
-                                                                'alpha' => false,
-                                                                'permission' => false,
-                                                                'comment' => '',
-                                                            ];
-                                                        @endphp
+                                <div class="container">
+                                    @if (session('role') == 'teacher')
+                                        <br>
+                                        <strong>Student Attendance :</strong>
+                                        <br>
 
-                                                        <tr id="{{ 'index_grade_' . $st['student']->id }}">
-                                                            <td>
-                                                                <img class="img-circle img-bordered-sm" 
-                                                                    src="{{asset('storage/file/profile/'. $st['student']->profil)}}" 
-                                                                    alt="" loading="lazy" style="width:100%;"></td>
-                                                            <td><a>{{ucwords(strtolower($st['student']->name))}} <br> {{ucwords(strtolower($st['student']['grade']->name))}} - 
-                                                                    {{ucwords(strtolower($st['student']['grade']->class))}}</a></td>
-                                                            <td colspan="2">
-                                                                <div class="input-group">
-                                                                <input name="section_id" type="number" class="form-control d-none" value="{{$index}}">
-                                                                <input name="eca_id" type="number" class="form-control d-none" value="{{ $subject->id }}">
-                                                                </div>
-                                                                <div class="d-flex align-items-center">
-                                                                <div class="form-check me-2">
-                                                                    <input id="present{{ $loop->index + 1 }}" name="status[{{ $st['student']->id }}]" class="form-check-input absence-type" type="checkbox" value="present" id="present">
-                                                                    <label class="form-check-label" for="present">
-                                                                            Present
-                                                                    </label>
-                                                                </div>
-                                                                <div class="form-check me-2 mx-2">
-                                                                    <input id="alpha{{ $loop->index + 1 }}" name="status[{{ $st['student']->id }}]" class="form-check-input absence-type" type="checkbox" value="alpha" id="absent">
-                                                                    <label class="form-check-label" for="absent">
-                                                                            Alpha
-                                                                    </label>
-                                                                </div>
-                                                                <div class="form-check me-2 mx-2">
-                                                                    <input id="permission{{ $loop->index + 1 }}" name="status[{{ $st['student']->id }}]" class="form-check-input absence-type" type="checkbox" value="permission" id="permission">
-                                                                    <label class="form-check-label" for="permission">
-                                                                            Permission
-                                                                    </label>
-                                                                </div>
-                                                                <div class="flex-grow-1 comment-container">
-                                                                    <input id="comment{{ $loop->index + 1 }}" name="comment[{{ $st['student']->id }}]" type="text" class="form-control comment-type" placeholder="Information">
-                                                                </div>
-                                                                </div>
-                                                            </td>
+                                        {{-- Jika sudah ada data attendance --}}
+                                        @if ($attendanceEca->count() > 0)
+                                            <div class="row">
+                                                @foreach ($attendanceEca as $attendance)
+                                                    <div class="col-3">
+                                                        <div class="user-block shadow-soft" style="background-color: #fff3c0;">
+                                                            <div class="col-12 text-center">
+                                                                <img class="img-circle img-bordered-sm"
+                                                                    src="{{ asset('storage/file/profile/' . $attendance->student->profil) }}"
+                                                                    alt="user image">
+                                                                <span class="username d-block mt-2">
+                                                                   <a class="text-dark text-sm" href="#">
+                                                                        {{ ucwords(strtolower(implode(' ', array_slice(explode(' ', $attendance->student->name), 0, 2)))) }}
+                                                                    </a>
+                                                                </span>
+
+                                                                @if ($attendance->present)
+                                                                    <span class="badge badge-success text-xs">Present</span>
+                                                                @elseif ($attendance->alpha)
+                                                                    <span class="badge badge-warning text-xs">Alpha</span>
+                                                                @elseif ($attendance->permission)
+                                                                    <span class="badge badge-info text-xs">
+                                                                        Permission ({{ $attendance->information }})
+                                                                    </span>
+                                                                @endif
+
+                                                                <span class="description text-dark text-sm d-block mt-2">
+                                                                    Checked at - {{ \Carbon\Carbon::parse($attendance->created_at)->format('d M Y H:i') }}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+
+                                        {{-- Jika belum ada data attendance --}}
+                                        @else
+                                            <form method="POST" action="{{ route('attendanceEcaStudent') }}">
+                                                @csrf
+
+                                                <table class="table table-striped projects">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="width: 5%">#</th>
+                                                            <th style="width: 20%">Student</th>
+                                                            <th>Attendance</th>
                                                         </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                            <div class="card-footer">
-                                                <div class="d-flex align-items-center float-right">
-                                                    <button type="button" class="btn btn-info mr-2" id="present_all_btn"> <i class="fas fa-check"></i> All Present</button>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($student as $st)
+                                                            <tr id="index_grade_{{ $st->id }}">
+                                                                <td>
+                                                                    <img class="img-circle img-bordered-sm"
+                                                                        src="{{ asset('storage/file/profile/' . $st->profil) }}"
+                                                                        alt="" loading="lazy" style="width:100%;">
+                                                                </td>
+                                                                <td>
+                                                                    <a>
+                                                                        {{ ucwords(strtolower($st->name)) }} <br>
+                                                                        {{ ucwords(strtolower($st->grade->name)) }} -
+                                                                        {{ ucwords(strtolower($st->grade->class)) }}
+                                                                    </a>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="hidden" name="section_id" value="{{ $index }}">
+                                                                    <input type="hidden" name="eca_id" value="{{ $subject->id }}">
+
+                                                                    <div class="d-flex align-items-center flex-wrap">
+                                                                        {{-- Present --}}
+                                                                        <div class="form-check me-2">
+                                                                            <input id="present{{ $loop->index }}" name="status[{{ $st->id }}]"
+                                                                                class="form-check-input absence-type" type="checkbox" value="present">
+                                                                            <label class="form-check-label" for="present{{ $loop->index }}">Present</label>
+                                                                        </div>
+
+                                                                        {{-- Alpha --}}
+                                                                        <div class="form-check me-2">
+                                                                            <input id="alpha{{ $loop->index }}" name="status[{{ $st->id }}]"
+                                                                                class="form-check-input absence-type" type="checkbox" value="alpha">
+                                                                            <label class="form-check-label" for="alpha{{ $loop->index }}">Alpha</label>
+                                                                        </div>
+
+                                                                        {{-- Permission --}}
+                                                                        <div class="form-check me-2">
+                                                                            <input id="permission{{ $loop->index }}" name="status[{{ $st->id }}]"
+                                                                                class="form-check-input absence-type" type="checkbox" value="permission">
+                                                                            <label class="form-check-label" for="permission{{ $loop->index }}">Permission</label>
+                                                                        </div>
+
+                                                                        {{-- Comment --}}
+                                                                        <div class="flex-grow-1 comment-container mt-2 mt-sm-0">
+                                                                            <input id="comment{{ $loop->index }}" name="comment[{{ $st->id }}]"
+                                                                                type="text" class="form-control comment-type" placeholder="Information">
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+
+                                                <div class="card-footer d-flex justify-content-end">
+                                                    <button type="button" class="btn btn-info me-2" id="present_all_btn">
+                                                        <i class="fas fa-check"></i> All Present
+                                                    </button>
                                                     <button type="submit" class="btn btn-success" name="present_attend">Submit</button>
                                                 </div>
-                                            </div>
-                                        </form>
-                                    @endif
-                                    
-                                    @if ($studentActivities->count() > 0)
-                                        <br>
-                                        <strong>Student Activities : </strong>
-                                        <br>
-                                        <div class="row">
-                                            @foreach ($studentActivities as $activities)
-                                                <div class="col-md-4 mb-3">
-                                                    <div class="user-block shadow-soft p-3" style="background-color: #fff3c0;">
-                                                        <div class="row">
-                                                            <div class="col-9">
-                                                                <img class="img-circle img-bordered-sm" src="{{asset('storage/file/profile/'. $activities->student->profil)}}" alt="user image">
-                                                                <span class="username">
-                                                                    <a class="text-dark text-sm" href="#">{{ucwords(strtolower($activities->student->name))}}</a>
-                                                                </span>
-                                                                <span class="description text-dark text-sm">Upload at - {{ \Carbon\Carbon::parse($activities->created_at)->format('d M Y H:i') }}</span>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <a class="btn btn-danger" href="{{ Storage::url($activities->file_path) }}">
-                                                                    <i class="fas fa-eye"></i>
-                                                                    See
+                                            </form>
+                                        @endif
+
+                                        {{-- Student Activities --}}
+                                        @if ($studentActivities->count() > 0)
+                                            <br>
+                                            <strong>Student Activities:</strong>
+                                            <div class="row mt-3">
+                                                @foreach ($studentActivities as $activities)
+                                                    <div class="col-md-4 mb-3">
+                                                        <div class="user-block shadow-soft p-3" style="background-color: #fff3c0;">
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <div>
+                                                                    <img class="img-circle img-bordered-sm"
+                                                                        src="{{ asset('storage/file/profile/' . $activities->student->profil) }}"
+                                                                        alt="user image">
+                                                                    <span class="username d-block mt-2">
+                                                                        <a class="text-dark text-sm" href="#">
+                                                                            {{ ucwords(strtolower($activities->student->name)) }}
+                                                                        </a>
+                                                                    </span>
+                                                                    <span class="description text-dark text-sm">
+                                                                        Upload at - {{ \Carbon\Carbon::parse($activities->created_at)->format('d M Y H:i') }}
+                                                                    </span>
+                                                                </div>
+                                                                <a class="btn btn-danger btn-sm"
+                                                                href="{{ Storage::url($activities->file_path) }}" target="_blank">
+                                                                    <i class="fas fa-eye"></i> See
                                                                 </a>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            @endforeach
+                                                @endforeach
                                             </div>
-                                        </div>
-                                    @else
-                                        <p class="text-center text-muted mt-5">Students doesnt send their activity.</p>
+                                        @else
+                                            <p class="text-center text-muted mt-5">Students haven't submitted their activity yet.</p>
+                                        @endif
                                     @endif
-                                @endif
+                                </div>
+
 
                                 @if (session('role') == 'student' || session('role') == 'parent')
                                     @if (count($studentActivity) > 0)
