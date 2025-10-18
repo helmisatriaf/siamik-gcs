@@ -672,28 +672,28 @@
                                                                     <div class="d-flex align-items-center flex-wrap">
                                                                         {{-- Present --}}
                                                                         <div class="form-check me-2">
-                                                                            <input id="present{{ $loop->index }}" name="status[{{ $st->id }}]"
+                                                                            <input id="present{{ $loop->index }}" name="status[{{ $st->student_id }}]"
                                                                                 class="form-check-input absence-type" type="checkbox" value="present">
                                                                             <label class="form-check-label" for="present{{ $loop->index }}">Present</label>
                                                                         </div>
 
                                                                         {{-- Alpha --}}
                                                                         <div class="form-check me-2">
-                                                                            <input id="alpha{{ $loop->index }}" name="status[{{ $st->id }}]"
+                                                                            <input id="alpha{{ $loop->index }}" name="status[{{ $st->student_id }}]"
                                                                                 class="form-check-input absence-type" type="checkbox" value="alpha">
                                                                             <label class="form-check-label" for="alpha{{ $loop->index }}">Alpha</label>
                                                                         </div>
 
                                                                         {{-- Permission --}}
                                                                         <div class="form-check me-2">
-                                                                            <input id="permission{{ $loop->index }}" name="status[{{ $st->id }}]"
+                                                                            <input id="permission{{ $loop->index }}" name="status[{{ $st->student_id }}]"
                                                                                 class="form-check-input absence-type" type="checkbox" value="permission">
                                                                             <label class="form-check-label" for="permission{{ $loop->index }}">Permission</label>
                                                                         </div>
 
                                                                         {{-- Comment --}}
                                                                         <div class="flex-grow-1 comment-container mt-2 mt-sm-0">
-                                                                            <input id="comment{{ $loop->index }}" name="comment[{{ $st->id }}]"
+                                                                            <input id="comment{{ $loop->index }}" name="comment[{{ $st->student_id }}]"
                                                                                 type="text" class="form-control comment-type" placeholder="Information">
                                                                         </div>
                                                                     </div>
