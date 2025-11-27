@@ -38,7 +38,7 @@
                                  <div class="mt-2">
                                     <label>Options:</label>
                                     @foreach ($question->answer as $answer)
-                                       <input type="text" class="form-control mb-2" name="question_mc[{{$index}}][answer][{{$answer->id}}]" value="{{$answer->answer_text}}" placeholder="Option" required>
+                                       <textarea class="summernote" name="question_mc[{{$index}}][answer][{{$answer->id}}]">{{$answer->answer_text}}</textarea>
                                     @endforeach
                                  </div>
 

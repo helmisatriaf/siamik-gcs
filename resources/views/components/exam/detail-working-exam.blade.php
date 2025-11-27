@@ -166,7 +166,7 @@
                             <h5>Answer :</h5>
                             <div class="row pt-2">
                                 @foreach ($question->answer as $optionKey => $option)
-                                <div class="col-6 col-md-3">
+                                <div class="col-6 col-md-6 d-flex">
                                     <div class="answer-box small-box 
                                     
                                     @if (session('role') == 'parent' || session('role') == 'student')
@@ -178,7 +178,7 @@
                                     
                                     ">
                                         
-                                    {{ $option->answer_text }}
+                                    {!! $option->answer_text !!}
                                     </div>
                                 </div>
                                 @endforeach

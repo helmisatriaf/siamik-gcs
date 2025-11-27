@@ -675,10 +675,10 @@
                      <textarea id="ckeditor" class="summernote" name="question_mc[${i}][question]"></textarea>
                      <div class="mt-2">
                         <label>Options:</label>
-                        <input type="text" name="question_mc[${i}][answer][a]" class="form-control" placeholder="Option A" required>
-                        <input type="text" name="question_mc[${i}][answer][b]" class="form-control mt-1" placeholder="Option B" required>
-                        <input type="text" name="question_mc[${i}][answer][c]" class="form-control mt-1" placeholder="Option C" required>
-                        <input type="text" name="question_mc[${i}][answer][d]" class="form-control mt-1" placeholder="Option D" required>
+                        <textarea id="ckeditor" class="summernote" name="question_mc[${i}][answer][a]" required></textarea>
+                        <textarea id="ckeditor" class="summernote" name="question_mc[${i}][answer][b]" required></textarea>
+                        <textarea id="ckeditor" class="summernote" name="question_mc[${i}][answer][c]" required></textarea>
+                        <textarea id="ckeditor" class="summernote" name="question_mc[${i}][answer][d]" required></textarea>
                      </div>
                      <label class="mt-2">Correct Answer:</label>
                      <select name="question_mc[${i}][question_key]" class="form-control" required>
@@ -724,10 +724,10 @@
                      <textarea id="ckeditor" class="summernote" name="question_mc[${i}][question]"></textarea>
                      <div class="mt-2">
                         <label>Options:</label>
-                        <input type="text" name="question_mc[${i}][answer][a]" class="form-control" placeholder="Option A" required>
-                        <input type="text" name="question_mc[${i}][answer][b]" class="form-control mt-1" placeholder="Option B" required>
-                        <input type="text" name="question_mc[${i}][answer][c]" class="form-control mt-1" placeholder="Option C" required>
-                        <input type="text" name="question_mc[${i}][answer][d]" class="form-control mt-1" placeholder="Option D" required>
+                        <textarea id="ckeditor" class="summernote" name="question_mc[${i}][answer][a]" required></textarea>
+                        <textarea id="ckeditor" class="summernote" name="question_mc[${i}][answer][b]" required></textarea>
+                        <textarea id="ckeditor" class="summernote" name="question_mc[${i}][answer][c]" required></textarea>
+                        <textarea id="ckeditor" class="summernote" name="question_mc[${i}][answer][d]" required></textarea>
                      </div>
                      <label class="mt-2">Correct Answer:</label>
                      <select name="question_mc[${i}][question_key]" class="form-control" required>

@@ -22,6 +22,7 @@
             font-weight: 400;
             font-style: normal;
         }
+        
         .question-number {
             width: 35px;
             height: 35px;
@@ -45,11 +46,24 @@
         }
 
         .answer-box {
-            padding: 10px;
+            width: 100%;
+            height: 100%;
+            min-height: 80px; /* Atur tinggi standar */
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
+            padding: 10px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            border: 1px solid #ccc;
+            border-radius: 8px;
         }
+
+        .small-box {
+            height: 100%;
+        }
+
 
         .answer-box.selected {
             background-color: red;
@@ -86,7 +100,7 @@
         <div class="row">
             <div class="col-md-6 col-lg-1">
                 <div
-                    class="info-box small-box bg-danger px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="border-radius: 12px;">
+                    class="info-box bg-danger px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="border-radius: 12px;">
                     <a href="#" data-bs-toggle="modal" data-bs-target="#backTo"
                         class="stretched-link d-flex flex-column p-2 text-center justify-content-center align-items-center">
                         <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
@@ -162,41 +176,44 @@
 
             <!-- Konten soal di sebelah kanan -->
             <div class="col-md-9">
-                <div class="card p-4" style="background-color: #fff3c0; border-radius: 12px;">
+                
                     @foreach ($questions as $question)
                         <div class="question-content" id="question-{{ $question->id }}" style="display: none;">
-                            <h5 id="qn-{{ $question->id }}"></h5>
-                            {!! $question->text !!}
+                            <div class="card p-4" style="background-color: #fff3c0; border-radius: 12px;">
+                                <h5 id="qn-{{ $question->id }}"></h5>
+                                {!! $question->text !!}
+                            </div>
 
-                            @if ($question->type == 'mc')
-                                <h5>Answer :</h5>
-                                <div class="row pt-2">
-                                    @foreach ($question->answer as $optionKey => $option)
-                                        <div class="col-6 col-md-3">
-                                            @if (session('role') !== 'parent')
-                                                <div class="answer-box small-box"
-                                                    onclick="selectAnswer({{ $question->id }}, '{{ $option->id }}')"
-                                                    id="answer-{{ $question->id }}-{{ $option->id }}">
-                                                    {{ $option->answer_text }}
-                                                </div>
-                                            @else
-                                                <div class="answer-box small-box">
-                                                    {{ $option->answer_text }}
-                                                </div>
-                                            @endif
-                                        </div>
-                                    @endforeach
-                                </div>
-                            @elseif($question->type == 'essay')
-                                <h5>Answer :</h5>
-                                @if (session('role') !== 'parent')
-                                    <textarea class="form-control w-100" name="answer_essay[{{ $question->id }}]" id="essay-answer-{{ $question->id }}"
-                                        rows="5" oninput="saveEssayAnswer({{ $question->id }})"></textarea>
+                            <div class="card p-4" style="background-color: #fff3c0; border-radius: 12px;">
+                                @if ($question->type == 'mc')
+                                    <h5>Answer :</h5>
+                                    <div class="row pt-2">
+                                        @foreach ($question->answer as $optionKey => $option)
+                                            <div class="col-6 col-md-6 d-flex p-2">
+                                                @if (session('role') !== 'parent')
+                                                    <div class="answer-box small-box"
+                                                        onclick="selectAnswer({{ $question->id }}, '{{ $option->id }}')"
+                                                        id="answer-{{ $question->id }}-{{ $option->id }}">
+                                                        {!! $option->answer_text !!}
+                                                    </div>
+                                                @else
+                                                    <div class="answer-box small-box">
+                                                        {!! $option->answer_text !!}
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @elseif($question->type == 'essay')
+                                    <h5>Answer :</h5>
+                                    @if (session('role') !== 'parent')
+                                        <textarea class="form-control w-100" name="answer_essay[{{ $question->id }}]" id="essay-answer-{{ $question->id }}"
+                                            rows="5" oninput="saveEssayAnswer({{ $question->id }})"></textarea>
+                                    @endif
                                 @endif
-                            @endif
+                            </div>
                         </div>
                     @endforeach
-                </div>
             </div>
 
         </div>
