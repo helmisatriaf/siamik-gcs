@@ -25,7 +25,7 @@
 
             <div class="form-group">
                 <label for="file">File <span class="text-danger">*</span></label>
-                <input type="file" class="form-control-file" id="file" name="file" accept=".pdf">
+                <input type="file" class="form-control-file" id="file" name="file" accept=".pdf, .xls, .xlsx">
                 <div class="text-danger mt-2" id="fileError" style="display: none;"></div>
             </div>
 
