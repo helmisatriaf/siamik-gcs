@@ -5,6 +5,7 @@
   $name = session('name_user');
   $currentDate = now(); // Tanggal saat ini
   $dateExam = $data->date_exam; // Tanggal ujian dari data
+  $typeExam = $data->type_exam;
 
   // Buat objek DateTime dari tanggal saat ini dan tanggal ujian
   $currentDateTime = new DateTime($currentDate);
@@ -26,6 +27,7 @@
 @endphp
 
 <div class="container-fluid">
+  @if ($typeExam !== 'Final Exam')
   <div class="row">
     <div class="col">
       <nav aria-label="breadcrumb" class="p-3 mb-4" style="background-color: #ffde9e;border-radius: 12px;">
@@ -37,6 +39,7 @@
       </nav>
     </div>
   </div>
+  @endif
 
   <section class="content">
     <div class="card" style="background-color: #ffde9e;border-radius: 12px;">
@@ -87,6 +90,7 @@
                       $openDate = \Carbon\Carbon::parse($data->open_date)->translatedFormat('d-m-Y');
                       $dateNow = now()->format('d-m-Y');
                     @endphp
+
 
                     @if ($data->time_open !== null)
                       @if($dateNow > $openDate)
@@ -233,10 +237,13 @@
                    </div>
                 </div>  
               @else
-              
-                {{-- ASSESSMENT MULTIPLE CHOICE DAN ESSAY --}}
+
+
+                {{-- ASSESSMENT CBT --}}
                 @if($data->model !== null)
                   <div class="row flex-column">
+
+                  {{-- CBT SUDAH DIKERJAKAN --}}
                   @if ($statusQuestion !== null)
                     @if ($data->model !== null)
                       <p class="text-bold">Question :</p> 
@@ -244,7 +251,9 @@
                         <div class="info-box bg-danger small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="border-radius: 12px;">
                             <a 
                                 href="#"
+                                @if ($typeExam !== 'Final Exam')
                                 id="detail-workplace"
+                                @endif
                                 class="stretched-link d-flex flex-column text-center justify-content-center align-items-center">
                             
                                 <!-- Ribbon -->
@@ -316,49 +325,23 @@
                           <span class="description">Collection time - {{ \Carbon\Carbon::parse($statusQuestion->created_at)->format('d M Y H:i') }}</span>
                         </div>
                       </div>
+                  
+                  {{-- CBT BELUM DIKERJAKAN --}}
                   @else 
                     @php
                       $todayOpenTime = \Carbon\Carbon::parse($data->time_open)->translatedFormat('H:i');
                       $openDate = \Carbon\Carbon::parse($data->open_date)->translatedFormat('d-m-Y');
                       $dateNow = now()->format('d-m-Y');
+                      $endTime = \Carbon\Carbon::parse($data->end_time)->translatedFormat('H:i');
                     @endphp
                     
-                    @if ($data->time_open !== null)
-                      @if ($dateNow > $openDate)
-                        <div class="col-12 col-md-4">
-                          <div class="info-box small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="border-radius: 12px;background-color: #ffcc00;">
-                              <a 
-                                  href="#"
-                                  id="workplace"
-                                  class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
-                              
-                                  <!-- Ribbon -->
-                                  <div class="ribbon-wrapper ribbon-lg">
-                                      <div class="ribbon bg-dark">
-                                        CBT
-                                      </div>
-                                  </div>
-                              
-                                  <!-- Bagian Utama -->
-                                  <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
-                                      <!-- Ikon -->
-                                      <div>
-                                          <img loading="lazy" src="{{ asset('images/greta-greti-baju-olga.png') }}" 
-                                            alt="avatar" class="profileImage img-fluid" 
-                                            style="width:85px; height: 60px; cursor: pointer;">
-                                      </div>
-                                      <!-- Nama Subject -->
-                                      <div class="inner mt-2">
-                                          <p class="info-box-text text-center text-lg text-dark text-bold">Click Me !</p>
-                                      </div>
-                                  </div>
-                              </a>
-                          </div>       
-                        </div>
-                      @else
-                        @if (\Carbon\Carbon::parse(now())->translatedFormat('H:i') >= $todayOpenTime)
+                    {{-- JIKA ADA BATAS WAKTU PENGERJAAN --}}
+                    @if ($endTime !== null)
+                      @if($openDate == $dateNow)
+                        {{-- JIKA DIJAMNYA --}}
+                        @if (\Carbon\Carbon::parse(now())->translatedFormat('H:i') >= $todayOpenTime && \Carbon\Carbon::parse(now())->translatedFormat('H:i') <= $endTime)
                           <div class="col-12">
-                            <p class="text-bold">Question :</p> 
+                              <p class="text-bold">Question :</p> 
                             <div class="col-12 col-md-4">
                               <div class="info-box small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="border-radius: 12px;background-color: #ffcc00;">
                                   <a 
@@ -368,38 +351,155 @@
                                   
                                       <!-- Ribbon -->
                                       <div class="ribbon-wrapper ribbon-sm">
-                                          <div class="ribbon bg-dark">
-                                            CBT
-                                          </div>
+                                        <div class="ribbon bg-dark">
+                                          CBT
+                                        </div>
                                       </div>
                                   
                                       <!-- Bagian Utama -->
                                       <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
                                           <!-- Ikon -->
                                           <div>
-                                              <img loading="lazy" src="{{ asset('images/greta-greti-baju-olga.png') }}" 
-                                                alt="avatar" class="profileImage img-fluid" 
-                                                style="width:85px; height: 60px; cursor: pointer;">
+                                            <img loading="lazy" src="{{ asset('images/greta-greti-baju-olga.png') }}" 
+                                              alt="avatar" class="profileImage img-fluid" 
+                                              style="width:85px; height: 60px; cursor: pointer;">
                                           </div>
                                           <!-- Nama Subject -->
                                           <div class="inner">
-                                              <p class="info-box-text text-center text-lg text-dark text-bold">Click Me !</p>
+                                            <p class="info-box-text text-center text-lg text-dark text-bold">Click Me !</p>
                                           </div>
                                       </div>
                                   </a>
                               </div>       
                             </div>
                           </div>
+                        {{-- JIKA BUKAN DIJAMNYA --}}
                         @else
                           <span>
-                            Questions can be accessed at {{ \Carbon\Carbon::parse($data->open_date)->translatedFormat('d F Y') }} {{ \Carbon\Carbon::parse($data->time_open)->translatedFormat('H:i') }} 
+                            Questions can be accessed at {{ \Carbon\Carbon::parse($data->open_date)->translatedFormat('d F Y') }} {{ \Carbon\Carbon::parse($data->time_open)->translatedFormat('H:i') }} - {{ \Carbon\Carbon::parse($data->end_time)->translatedFormat('H:i') }} 
                           </span>
                         @endif
+                      {{-- JIKA BUKAN DI HARI TERSEBUT --}}
+                      @else
+                        <span>
+                          Questions can be accessed at {{ \Carbon\Carbon::parse($data->open_date)->translatedFormat('d F Y') }} {{ \Carbon\Carbon::parse($data->time_open)->translatedFormat('H:i') }} - {{ \Carbon\Carbon::parse($data->end_time)->translatedFormat('H:i') }} 
+                        </span>
                       @endif
+                      
+                    {{-- TIDAK ADA BATAS WAKTU PENGERJAAN --}}
                     @else
-
-                      @if ($data->open_date !== null)
-                        @if ($dateNow >= $openDate)
+                      @if ($data->time_open !== null)
+                        @if ($dateNow > $openDate)
+                          <div class="col-12 col-md-4">
+                            <div class="info-box small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="border-radius: 12px;background-color: #ffcc00;">
+                                <a 
+                                    href="#"
+                                    id="workplace"
+                                    class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
+                                
+                                    <!-- Ribbon -->
+                                    <div class="ribbon-wrapper ribbon-lg">
+                                        <div class="ribbon bg-dark">
+                                          CBT
+                                        </div>
+                                    </div>
+                                
+                                    <!-- Bagian Utama -->
+                                    <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
+                                        <!-- Ikon -->
+                                        <div>
+                                            <img loading="lazy" src="{{ asset('images/greta-greti-baju-olga.png') }}" 
+                                              alt="avatar" class="profileImage img-fluid" 
+                                              style="width:85px; height: 60px; cursor: pointer;">
+                                        </div>
+                                        <!-- Nama Subject -->
+                                        <div class="inner mt-2">
+                                            <p class="info-box-text text-center text-lg text-dark text-bold">Click Me !</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>       
+                          </div>
+                        @else
+                          @if (\Carbon\Carbon::parse(now())->translatedFormat('H:i') >= $todayOpenTime)
+                            <div class="col-12">
+                              <p class="text-bold">Question :</p> 
+                              <div class="col-12 col-md-4">
+                                <div class="info-box small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="border-radius: 12px;background-color: #ffcc00;">
+                                    <a 
+                                        href="#"
+                                        id="workplace"
+                                        class="stretched-link d-flex flex-column justify-content-center align-items-center">
+                                    
+                                        <!-- Ribbon -->
+                                        <div class="ribbon-wrapper ribbon-sm">
+                                            <div class="ribbon bg-dark">
+                                              CBT
+                                            </div>
+                                        </div>
+                                    
+                                        <!-- Bagian Utama -->
+                                        <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
+                                            <!-- Ikon -->
+                                            <div>
+                                                <img loading="lazy" src="{{ asset('images/greta-greti-baju-olga.png') }}" 
+                                                  alt="avatar" class="profileImage img-fluid" 
+                                                  style="width:85px; height: 60px; cursor: pointer;">
+                                            </div>
+                                            <!-- Nama Subject -->
+                                            <div class="inner">
+                                                <p class="info-box-text text-center text-lg text-dark text-bold">Click Me !</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>       
+                              </div>
+                            </div>
+                          @else
+                            <span>
+                              Questions can be accessed at {{ \Carbon\Carbon::parse($data->open_date)->translatedFormat('d F Y') }} {{ \Carbon\Carbon::parse($data->time_open)->translatedFormat('H:i') }} 
+                            </span>
+                          @endif
+                        @endif
+                      @else
+                        @if ($data->open_date !== null)
+                          @if ($dateNow >= $openDate)
+                            <div class="col-12 col-md-4">
+                              <div class="info-box small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="border-radius: 12px;background-color: #ffcc00;">
+                                  <a 
+                                    href="#"
+                                    id="workplace"
+                                    class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
+                                
+                                    <!-- Ribbon -->
+                                    <div class="ribbon-wrapper ribbon-lg">
+                                        <div class="ribbon bg-dark">
+                                          CBT
+                                        </div>
+                                    </div>
+                                
+                                    <!-- Bagian Utama -->
+                                    <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
+                                        <!-- Ikon -->
+                                        <div>
+                                            <img loading="lazy" src="{{ asset('images/greta-greti-baju-olga.png') }}" 
+                                              alt="avatar" class="profileImage img-fluid" 
+                                              style="width:85px; height: 60px; cursor: pointer;">
+                                        </div>
+                                        <!-- Nama Subject -->
+                                        <div class="inner mt-2">
+                                            <p class="info-box-text text-center text-lg text-dark text-bold">Click Me !</p>
+                                        </div>
+                                    </div>
+                                  </a>
+                              </div>       
+                            </div>
+                          @else
+                          <span>
+                              Questions can be accessed at {{ \Carbon\Carbon::parse($data->open_date)->translatedFormat('d F Y') }} {{ \Carbon\Carbon::parse($data->time_open)->translatedFormat('H:i') }} 
+                            </span>
+                          @endif
+                        @else
                           <div class="col-12 col-md-4">
                             <div class="info-box small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="border-radius: 12px;background-color: #ffcc00;">
                                 <a 
@@ -430,42 +530,7 @@
                                 </a>
                             </div>       
                           </div>
-                        @else
-                         <span>
-                            Questions can be accessed at {{ \Carbon\Carbon::parse($data->open_date)->translatedFormat('d F Y') }} {{ \Carbon\Carbon::parse($data->time_open)->translatedFormat('H:i') }} 
-                          </span>
                         @endif
-                      @else
-                        <div class="col-12 col-md-4">
-                          <div class="info-box small-box px-2 d-flex flex-column zoom-hover position-relative justify-content-center align-items-center" style="border-radius: 12px;background-color: #ffcc00;">
-                              <a 
-                                href="#"
-                                id="workplace"
-                                class="stretched-link d-flex flex-column p-2 text-center h-100 justify-content-center align-items-center">
-                            
-                                <!-- Ribbon -->
-                                <div class="ribbon-wrapper ribbon-lg">
-                                    <div class="ribbon bg-dark">
-                                      CBT
-                                    </div>
-                                </div>
-                            
-                                <!-- Bagian Utama -->
-                                <div class="d-flex flex-column justify-content-center align-items-center flex-grow-1">
-                                    <!-- Ikon -->
-                                    <div>
-                                        <img loading="lazy" src="{{ asset('images/greta-greti-baju-olga.png') }}" 
-                                          alt="avatar" class="profileImage img-fluid" 
-                                          style="width:85px; height: 60px; cursor: pointer;">
-                                    </div>
-                                    <!-- Nama Subject -->
-                                    <div class="inner mt-2">
-                                        <p class="info-box-text text-center text-lg text-dark text-bold">Click Me !</p>
-                                    </div>
-                                </div>
-                              </a>
-                          </div>       
-                        </div>
                       @endif
                     @endif
                   @endif
@@ -591,11 +656,13 @@
              
 
               @if ($getStatus !== null)
-                <p class="text-muted">Score  
-                  <span class="text-bold text-danger">
-                    {{ $getStatus->score }}
-                  </span>
-                </p>
+                @if ($typeExam !== 'Final Exam')
+                  <p class="text-muted">Score  
+                    <span class="text-bold text-danger">
+                      {{ $getStatus->score }}
+                    </span>
+                  </p>
+                @endif
                 @if ($getStatus->justification !== NULL)
                 <p class="text-muted">Feedback from subject teacher :</p>
                 <span class="text-bold text-danger">

@@ -158,8 +158,41 @@ class UserController extends Controller
                'studentId' => $getIdStudent,
             ]); 
 
-            return redirect('student/dashboard/');
+            // CEK FINAL EXAM ONGOING
+            $masterAcademic = Master_academic::where('is_use', TRUE)->first();
+            $today = date('Y-m-d');
+
+            if($masterAcademic->now_semester == 1){
+               if($masterAcademic->start_fe_1 <= $today && $today <= $masterAcademic->end_fe_1){
+                  session()->put([
+                     'is_final_exam' => true,
+                  ]);      
+                  return redirect('student/dashboard/finalExam/');
+               }
+               else{
+                  session()->put([
+                     'is_final_exam' => false,
+                  ]);   
+                  return redirect('student/dashboard/');
+               }
+            }
+            else if($masterAcademic->now_semester == 2){
+               if($masterAcademic->start_fe_2 <= $today && $today <= $masterAcademic->end_fe_2){
+                  session()->put([
+                     'is_final_exam' => true,
+                  ]);   
+                  return redirect('student/dashboard/finalExam/');
+               }
+               else{
+                  session()->put([
+                     'is_final_exam' => false,
+                  ]);   
+                  return redirect('student/dashboard/');
+               }
+            }
+
          }
+
          if($checkRole == 'parent') {  
             $id           = Relationship::where('user_id', session('id_user'))->value('id');
             $getIdStudent = Student_relationship::where('relation_id', $id)->pluck('student_id')->toArray();

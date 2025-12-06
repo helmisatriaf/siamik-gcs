@@ -1449,6 +1449,7 @@ Route::middleware(['auth.login', 'role:teacher'])->prefix('/teacher')->group(fun
 Route::middleware(['auth.login', 'role:student'])->prefix('/student')->group(function () {
    Route::prefix('/dashboard')->group(function () {
       Route::get('/', [DashboardController::class, 'index']);
+      Route::get('/finalExam', [DashboardController::class, 'finalExamStudent']);
       Route::get('/detail/{id}', [TeacherController::class, 'getById']);
       Route::get('/grade/{id}', [GradeController::class, 'studentGrade']);
 

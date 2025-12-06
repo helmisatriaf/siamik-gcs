@@ -730,20 +730,80 @@ class ExamController extends Controller
 
          if (session('role') == 'superadmin' || session('role') == 'admin') {
             // return view('components.exam.detail-exam')->with('data', $data);
-            $status = Score::join('students', 'students.id', 'scores.student_id')
-               ->where('exam_id', $id)
-               ->where('hasFile', '=', 1)
-               ->select('scores.*', 'students.name as student_name', 'students.profil as student_profile')
-               ->get();
+             if($data->model !== null){
 
-            $notYet = Score::join('students', 'students.id', '=', 'scores.student_id')
-               ->where('scores.exam_id', $id)
-               ->where(function ($query) {
-                  $query->where('scores.hasFile', 0)
-                     ->orWhereNull('scores.hasFile'); // Cek juga jika NULL
-               })
-               ->select('scores.*', 'students.name as student_name', 'students.profil as student_profile')
-               ->get();
+               switch($data->model){
+                  case 'mce' :
+                     $status = QuestionStatus::join('students', 'students.id', 'question_statuses.student_id')
+                        ->join('scores', 'scores.student_id', 'question_statuses.student_id')
+                        ->where('question_statuses.exam_id', $id)
+                        ->where('scores.exam_id', $id)
+                        ->select('scores.*','students.name as student_name',  'students.profil as student_profile')
+                        ->get();
+
+                     $notYet = Score::join('students', 'students.id', '=', 'scores.student_id')
+                        ->where('exam_id', $id)
+                        ->where('score', '=', 0)
+                        ->select('scores.*', 'students.name as student_name',  'students.profil as student_profile')
+                        ->get();
+                     break;
+
+                  case 'mc' :
+                     $status = Score::join('students', 'students.id', 'scores.student_id')
+                        ->where('exam_id', $id)
+                        ->where('score', '!=', 0)
+                        ->select('scores.*', 'students.name as student_name',  'students.profil as student_profile')
+                        ->get();
+                     $notYet = Score::join('students', 'students.id', '=', 'scores.student_id')
+                        ->where('exam_id', $id)
+                        ->where('score', '=', 0)
+                        ->select('scores.*', 'students.name as student_name',  'students.profil as student_profile')
+                        ->get();
+                     break;
+
+                  case 'essay' :
+                     $status = QuestionStatus::join('students', 'students.id', 'question_statuses.student_id')
+                        ->join('scores', 'scores.student_id', 'question_statuses.student_id')
+                        ->where('question_statuses.exam_id', $id)
+                        ->where('scores.exam_id', $id)
+                        ->select('scores.*','students.name as student_name',  'students.profil as student_profile')
+                        ->get();
+         
+                     $notYet = Score::join('students', 'students.id', '=', 'scores.student_id')
+                        ->where('exam_id', $id)
+                        ->where('score', '=', 0)
+                        // ->where('scores.student_id', '!=', function($query) use ($id){
+                        //    $query->select('student_id')
+                        //       ->from('question_statuses')
+                        //       ->where('exam_id', $id);
+                        // })
+                        ->select('scores.*', 'students.name as student_name',  'students.profil as student_profile')
+                        ->get();
+                        break;
+               }
+            }
+            else {
+               if($data->type_exam == "Participation"){
+                  $status = Score::join('students', 'students.id', 'scores.student_id')
+                     ->where('exam_id', $id)
+                     ->select('scores.*', 'students.name as student_name',  'students.profil as student_profile')
+                     ->get();
+                  $notYet = null;
+               }
+               else{
+                  $status = Score::join('students', 'students.id', 'scores.student_id')
+                     ->where('exam_id', $id)
+                     ->where('hasFile', '=', 1)
+                     ->select('scores.*', 'students.name as student_name',  'students.profil as student_profile')
+                     ->get();
+      
+                  $notYet = Score::join('students', 'students.id', '=', 'scores.student_id')
+                     ->where('exam_id', $id)
+                     ->where('hasFile', '=', null)
+                     ->select('scores.*', 'students.name as student_name',  'students.profil as student_profile')
+                     ->get();
+               }
+            }
 
             return view('components.teacher.detail-exam-teacher', [
                'data' => $data,
@@ -1281,6 +1341,7 @@ class ExamController extends Controller
                ->when($type !== 'all', function ($query) use ($type) {
                return $query->where('type_exams.id', $type);
                })
+               ->where('type_exams.id', '!=', 4) // ⬅️ exclude Final Exam
                ->select('exams.*', 'grades.name as grade_name', 'grades.class as grade_class',
                   'subjects.name_subject as subject_name', 'teachers.name as teacher_name',
                   'type_exams.name as type_exam' , 'scores.score as score', 'students.name as student_name',
@@ -1313,6 +1374,7 @@ class ExamController extends Controller
                ->when($type !== 'all', function ($query) use ($type) {
                   return $query->where('type_exams.id', $type);
                })
+               ->where('type_exams.id', '!=', 4) // ⬅️ exclude Final Exam
                ->select('exams.*', 'grades.name as grade_name', 'grades.class as grade_class',
                   'subjects.name_subject as subject_name', 'teachers.name as teacher_name',
                   'type_exams.name as type_exam' , 'scores.score as score', 'students.name as student_name',

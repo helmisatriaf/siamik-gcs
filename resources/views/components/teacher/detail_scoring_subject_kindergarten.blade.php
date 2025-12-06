@@ -85,7 +85,7 @@
                             <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">S/N</th>
                             <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Name</th>
                             <th colspan="{{ $data['grade']->total_exercise }}" class="text-center" style="vertical-align : middle;text-align:center;"> Exercise</th>
-                            <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Avg (40%)</th>
+                            <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Avg (30%)</th>
                             <th colspan="{{ $data['grade']->total_quiz }}" class="text-center" style="vertical-align : middle;text-align:center;">Quiz</th>
                             <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Avg (40%)</th>
                             <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Participation <br>Daily Performance</th>

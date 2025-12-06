@@ -75,6 +75,10 @@ class MasterAcademicsController extends Controller
                     'report_card1' => $request->report_card1,
                     'mid_report_card2' => $request->mid_report_card2,
                     'report_card2' => $request->report_card2,
+                    'start_fe_1' => $request->start_fe_1,
+                    'end_fe_1' => $request->end_fe_1,
+                    'start_fe_2' => $request->start_fe_1,
+                    'end_fe_2' => $request->end_fe_1,
                     'is_use' => TRUE,
                     'created_at' => now(),
                 ];
@@ -96,6 +100,10 @@ class MasterAcademicsController extends Controller
                     'report_card1' => $request->report_card1,
                     'mid_report_card2' => $request->mid_report_card2,
                     'report_card2' => $request->report_card2,
+                    'start_fe_1' => $request->start_fe_1,
+                    'end_fe_1' => $request->end_fe_1,
+                    'start_fe_2' => $request->start_fe_2,
+                    'end_fe_2' => $request->end_fe_2,
                     'is_use' => TRUE,
                     'created_at' => now(),
                 ];
@@ -149,6 +157,7 @@ class MasterAcademicsController extends Controller
     {
         DB::beginTransaction();
 
+        // dd($request);
         try {
             session()->flash('page',  $page = (object)[
                 'page' => 'master academic',
@@ -165,7 +174,11 @@ class MasterAcademicsController extends Controller
                 'mid_report_card1' => $request->mid_report_card1,
                 'report_card1' => $request->report_card1,
                 'mid_report_card2' => $request->mid_report_card2,
-                'report_card2' => $request->report_card2,    
+                'report_card2' => $request->report_card2,
+                'start_fe_1' => $request->start_fe_1,
+                'end_fe_1' => $request->end_fe_1,
+                'start_fe_2' => $request->start_fe_2,
+                'end_fe_2' => $request->end_fe_2,
                 'updated_at' => now(),
             ];
 
@@ -201,13 +214,6 @@ class MasterAcademicsController extends Controller
         Master_academic::where('id', $id)->delete();
 
         return redirect('/superadmin/masterAcademics');
-    }
-
-    public function excel()
-    {
-        // $grades = ['1', '2', '3','4', '5', '6', '7', '8', '9', '10', '11', '12', '13']; 
-
-        // return Excel::download(new GradeExport($grades), 'grades.xlsx');
     }
 
     public function changeMasterAcademic($id)

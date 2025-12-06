@@ -127,6 +127,14 @@
                             <td><a>: {{ $data['report_card2'] !== null ? \Carbon\Carbon::parse($data['report_card2'])->format('d F Y') : "-" }}</a></td>
                         </tr>
                         <tr>
+                            <td>Date Final Exam Semester 1</td>
+                            <td><a>: {{ $data['start_fe_1'] ? \Carbon\Carbon::parse($data['start_fe_1'])->format('d F Y') . ' - ' . \Carbon\Carbon::parse($data['end_fe_1'])->format('d F Y') : '-' }}</a></td>
+                        </tr>
+                        <tr>
+                            <td>Date Final Exam Semester 2</td>
+                            <td><a>: {{ $data['start_fe_2'] ? \Carbon\Carbon::parse($data['start_fe_2'])->format('d F Y') . ' - ' . \Carbon\Carbon::parse($data['end_fe_2'])->format('d F Y') : '-' }}</a></td>
+                        </tr>
+                        <tr>
                             <td>Periode</td>
                             <td><a>: Semester {{ $data['now_semester'] }}</a></td>
                         </tr>

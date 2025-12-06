@@ -378,17 +378,17 @@
                       <span class="text text-sm" class="hover:cursor-pointer">( {{$el->type_exam_name}} ) ({{ $el->subject }}) {{$el->name_exam}} </span>
                       <span class="badge">
                           @if ($el->model == 'mce' || $el->model == 'mc' || $el->model ==  'essay')
-                              @if ($el['exam'][0]['score'][0]->student_status)
-                                  ✔
-                              @else
+                              @if ($el['exam'][0]['score'] == '')
                                   ❌
+                              @else
+                                  ✔
                               @endif
                           @else
                             @if ($el->model == 'uf')
-                              @if ($el['exam'][0]['score'][0]->student_upload)
-                                  ✔
+                              @if ($el['exam'][0]['score'] == '')
+                                ❌
                               @else
-                                  ❌
+                                ✔
                               @endif
                             @else
                             @endif

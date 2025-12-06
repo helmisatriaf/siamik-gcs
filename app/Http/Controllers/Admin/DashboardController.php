@@ -313,6 +313,7 @@ class DashboardController extends Controller
                      $query->whereNotIn('subject_exams.subject_id', [38, 39])
                      ->orWhere('subject_exams.subject_id', $chinese);
                   })
+                  ->where('type_exams.id', '!=', 4) // ⬅️ exclude Final Exam
                   ->orderByRaw('is_active = 1 ASC, date_exam DESC')
                   ->get();
 
@@ -381,6 +382,7 @@ class DashboardController extends Controller
                         $query->whereNotIn('subject_exams.subject_id', [1])
                         ->orWhere('subject_exams.subject_id', $chinese);
                      })
+                     ->where('type_exams.id', '!=', 4) // ⬅️ exclude Final Exam
                      ->orderByRaw('is_active = 1 ASC, date_exam ASC')
                      ->get();
                   
@@ -415,6 +417,7 @@ class DashboardController extends Controller
                         $query->whereNotIn('subject_exams.subject_id', [38, 39])
                         ->orWhere('subject_exams.subject_id', 1);
                      })
+                     ->where('type_exams.id', '!=', 4) // ⬅️ exclude Final Exam
                      ->orderByRaw('is_active = 1 ASC, date_exam ASC')
                      ->get();
                   
@@ -436,9 +439,6 @@ class DashboardController extends Controller
                ->select('schedules.*', 'type_schedules.name as type_schedule', 'type_schedules.color as color')
                ->orderBy('date', 'ASC')
                ->first();
-
-            
-
 
             $data = [
                'eca'          => $eca,
@@ -615,6 +615,7 @@ class DashboardController extends Controller
                      $query->whereNotIn('subject_exams.subject_id', [38, 39])
                      ->orWhere('subject_exams.subject_id', $chinese);
                   })
+                  ->where('type_exams.id', '!=', 4) // ⬅️ exclude Final Exam
                   ->orderByRaw('is_active = 1 ASC, date_exam DESC')
                   ->get();
 
@@ -682,6 +683,7 @@ class DashboardController extends Controller
                         $query->whereNotIn('subject_exams.subject_id', [1])
                         ->orWhere('subject_exams.subject_id', $chinese);
                      })
+                     ->where('type_exams.id', '!=', 4) // ⬅️ exclude Final Exam
                      ->orderByRaw('is_active = 1 ASC, date_exam ASC')
                      ->get();
                   
@@ -696,28 +698,35 @@ class DashboardController extends Controller
                         $query->where('student_id', $id);
                      }])
                      ->where(function($query){
-                     $query->where('exams.open_date', '<=', now())
-                        ->orWhereNull('exams.open_date');
+                         $query->where('exams.open_date', '<=', now())
+                               ->orWhereNull('exams.open_date');
                      })
                      ->join('grades', 'grades.id', '=', 'grade_exams.grade_id')
                      ->join('exams', 'exams.id', '=', 'grade_exams.exam_id')
                      ->join('type_exams', 'type_exams.id', '=', 'exams.type_exam')
                      ->join('subject_exams', 'subject_exams.exam_id', '=', 'exams.id')
-                     ->select('exams.*', 'type_exams.name as type_exam_name', 'grades.name as grade_name', 'grades.class as grade_class')
+                     ->select(
+                        'exams.*',
+                        'type_exams.name as type_exam_name',
+                        'grades.name as grade_name',
+                        'grades.class as grade_class'
+                     )
                      ->where('grades.id', $gradeIdStudent)
                      ->where('exams.semester', session('semester'))
                      ->where('exams.academic_year', session('academic_year'))
                      ->where('exams.is_active', true)
                      ->where(function ($query) use ($cek) {
-                        $query->whereNotIn('subject_exams.subject_id', [34, 35, 36, 37]) // Eksklusi semua pelajaran agama
-                        ->orWhere('subject_exams.subject_id', $cek); // Masukkan hanya pelajaran agama sesuai agama siswa
-                     })  
-                     ->where(function ($query) {
-                        $query->whereNotIn('subject_exams.subject_id', [38, 39])
-                        ->orWhere('subject_exams.subject_id', 1);
+                         $query->whereNotIn('subject_exams.subject_id', [34, 35, 36, 37]) // exclude all religion subjects
+                               ->orWhere('subject_exams.subject_id', $cek); // include religion based on student
                      })
+                     ->where(function ($query) {
+                         $query->whereNotIn('subject_exams.subject_id', [38, 39])
+                               ->orWhere('subject_exams.subject_id', 1);
+                     })
+                     ->where('type_exams.id', '!=', 4) // ⬅️ exclude Final Exam
                      ->orderByRaw('is_active = 1 ASC, date_exam ASC')
                      ->get();
+
                   
                   foreach ($dataExam as $ed ) {
                      $ed->subject = Subject_exam::join('subjects', 'subjects.id', '=', 'subject_exams.subject_id')
@@ -770,6 +779,39 @@ class DashboardController extends Controller
             return view('components.dashboard-parent')->with('data', $data);
          }
       } catch (Exception $err) {
+         return dd($err);
+      }
+   }
+
+   public function finalExamStudent(){
+      try{
+          session()->flash('page',  $page = (object)[
+            'page' => 'assessment',
+            'child' => 'final exam',
+         ]);
+
+         $getIdUser     = session('id_user');
+         $id            = Student::where('user_id', $getIdUser)->value('grade_id');
+         $getGradeId    = Grade::where('id', $id)->value('id');
+
+         $data = Grade_exam::join('exams', 'exams.id','=', 'grade_exams.exam_id')
+            ->join('type_exams', 'type_exams.id', '=', 'exams.type_exam')
+            ->join('subject_exams', 'subject_exams.exam_id', '=', 'exams.id')
+            ->join('subjects', 'subjects.id', '=', 'subject_exams.subject_id')
+            ->select('exams.*', 'exams.id as id_exam', 'type_exams.name as type_exam_name', 'subjects.*')
+            ->where('grade_exams.grade_id', $getGradeId)
+            ->where('exams.semester', session('semester'))
+            ->where('exams.academic_year', session('academic_year'))
+            ->where('exams.type_exam', '=', 4) // Final Exam
+            ->where('exams.semester', session('semester'))
+            ->where('exams.academic_year', session('academic_year'))
+            ->where('exams.is_active', true)
+            ->get();
+
+         // dd($data);
+         return view('components.finalexam')->with('data', $data);
+      }
+      catch(Exception $err){
          return dd($err);
       }
    }

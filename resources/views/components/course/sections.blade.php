@@ -632,6 +632,7 @@
                                                         ->where('subjects.id', $subject->id)
                                                         ->where('grades.id', $grade_id)
                                                         ->where('section_id', $index)
+                                                        ->where('type_exams.id', '!=', 4) // ⬅️ exclude Final Exam
                                                         ->orderByRaw('exams.is_active = 0 ASC')
                                                         ->select(
                                                             'exams.id',
@@ -691,6 +692,7 @@
                                                         ->where('subjects.id', $subject->id)
                                                         ->where('grades.id', $grade_id)
                                                         ->where('section_id', $index)
+                                                        ->where('type_exams.id', '!=', 4) // ⬅️ exclude Final Exam
                                                         ->orderByRaw('exams.is_active = 0 ASC')
                                                         ->select(
                                                             'exams.id',
