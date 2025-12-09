@@ -5,8 +5,8 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col">
-            <nav aria-label="breadcrumb" class="bg-white p-3 rounded-3 mb-4">
-                <ol class="breadcrumb mb-0">
+            <nav aria-label="breadcrumb" class="p-3 mb-4" style="background-color: #ffde9e;border-radius: 12px;">
+                <ol class="breadcrumb mb-0" style="background-color: #fff3c0;">
                     <li class="breadcrumb-item">Home</li>
                     @if (session('role') == 'superadmin')
                         <li class="breadcrumb-item"><a href="{{url('/superadmin/reports')}}">Report</a></li>
@@ -117,7 +117,7 @@
                             <td class="text-center" colspan="2">PE</td>
                             <td class="text-center" colspan="2">IT</td>
                             <td class="text-center" colspan="2">A/D</td>
-                            <td class="text-center" colspan="2">CB</td>
+                            <td class="text-center" colspan="2">CB & Manner</td>
                             <td class="text-center" colspan="2">FL</td>
                             <td style="background-color:beige;" class="text-center">Avg</td>
                             <!-- END SUPPLEMENTARY SUBJECTS -->

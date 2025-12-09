@@ -123,7 +123,7 @@
                                 <td class="text-center" colspan="2">IT</td>
                                 <td class="text-center" colspan="2">FL</td>
                                 <td class="text-center" colspan="2">A/C</td>
-                                <td class="text-center" colspan="2">CB</td>
+                                <td class="text-center" colspan="2">CB & Manner</td>
                                 @if ($data['healthEducation'] !== null)
                                 <td class="text-center" colspan="2">HE</td>
                                 @else
@@ -200,7 +200,7 @@
                                                 6 => ['mks' => null, 'grs' => null], // IT
                                                 62 => ['mks' => null, 'grs' => null], // GK
                                                 15 => ['mks' => null, 'grs' => null], // A/C
-                                                16 => ['mks' => null, 'grs' => null], // CB
+                                                133 => ['mks' => null, 'grs' => null], // CB
                                                 19 => ['mks' => null, 'grs' => null], // HE
                                             ];
                                         @endphp
@@ -229,7 +229,7 @@
                                         <td style="background-color:beige;" class="text-center">{{ $dt['percent_minorSubjects'] }}</td>
             
                                         @if ($data['healthEducation'] !== null)
-                                        @foreach ([18, 6, 62, 15, 16, 19] as $subject_id)
+                                        @foreach ([18, 6, 62, 15, 133, 19] as $subject_id)
                                             <td class="text-center {{ $subjects[$subject_id]['mks'] < 70 ? 'text-danger text-bold' : '' }}">{{ $subjects[$subject_id]['mks'] }}</td>
                                             <td class="text-center">{{ $subjects[$subject_id]['grs'] }}</td>
                                         @endforeach
