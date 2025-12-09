@@ -1285,6 +1285,7 @@ class ReportController extends Controller
             $classTeacher = Teacher_grade::where('grade_id', $gradeId)
                 ->join('teachers', 'teachers.id', '=', 'teacher_grades.teacher_id')
                 ->select('teachers.id as teacher_id', 'teachers.name as teacher_name')
+                ->where('academic_year', session('academic_year'))
                 ->first();
 
             $results = Acar::join('students', 'students.id', '=', 'acars.student_id')
@@ -1414,6 +1415,7 @@ class ReportController extends Controller
             $classTeacher = Teacher_grade::where('grade_id', $gradeId)
                 ->join('teachers', 'teachers.id', '=', 'teacher_grades.teacher_id')
                 ->select('teachers.id as teacher_id', 'teachers.name as teacher_name')
+                ->where('academic_year', session('academic_year'))
                 ->first();
 
             $results = Sooa_primary::leftJoin('students', 'students.id', '=', 'sooa_primaries.student_id')
@@ -1510,6 +1512,7 @@ class ReportController extends Controller
             $classTeacher = Teacher_grade::where('grade_id', $gradeId)
                 ->join('teachers', 'teachers.id', '=', 'teacher_grades.teacher_id')
                 ->select('teachers.id as teacher_id', 'teachers.name as teacher_name')
+                ->where('academic_year', session('academic_year'))
                 ->first();
 
             $results = Sooa_secondary::join('students', 'students.id', '=', 'sooa_secondaries.student_id')
@@ -1658,6 +1661,7 @@ class ReportController extends Controller
             $classTeacher = Teacher_grade::where('grade_id', $gradeId)
                 ->join('teachers', 'teachers.id', '=', 'teacher_grades.teacher_id')
                 ->select('teachers.id as teacher_id', 'teachers.name as teacher_name')
+                ->where('academic_year', session('academic_year'))
                 ->first();
 
             $results = Sooa_primary::join('students', 'students.id', '=', 'sooa_primaries.student_id')
@@ -1736,6 +1740,7 @@ class ReportController extends Controller
             $classTeacher = Teacher_grade::where('grade_id', $gradeId)
                 ->join('teachers', 'teachers.id', '=', 'teacher_grades.teacher_id')
                 ->select('teachers.id as teacher_id', 'teachers.name as teacher_name')
+                ->where('academic_year', session('academic_year'))
                 ->first();
 
             $results = Sooa_secondary::join('students', 'students.id', '=', 'sooa_secondaries.student_id')
@@ -3357,7 +3362,7 @@ class ReportController extends Controller
             $classTeacher = Teacher_grade::where('teacher_id', $getIdTeacher)
                 ->join('grades', 'grades.id', '=', 'teacher_grades.grade_id')
                 ->select('grades.*',)
-                ->orderBy('grades.id', 'asc')
+                ->orderBy('grades.id', 'asc')   
                 ->where('academic_year', session('academic_year'))
                 ->get();
 
@@ -3640,6 +3645,7 @@ class ReportController extends Controller
             $classTeacher = Teacher_grade::where('grade_id', $gradeId)
                 ->join('teachers', 'teachers.id', '=', 'teacher_grades.teacher_id')
                 ->select('teachers.id as teacher_id', 'teachers.name as teacher_name')
+                ->where('academic_year', session('academic_year'))
                 ->first();
 
             $results = Grade::join('students', 'students.grade_id', '=', 'grades.id')
@@ -3743,6 +3749,7 @@ class ReportController extends Controller
             $classTeacher = Teacher_grade::where('grade_id', $gradeId)
                 ->join('teachers', 'teachers.id', '=', 'teacher_grades.teacher_id')
                 ->select('teachers.id as teacher_id', 'teachers.name as teacher_name')
+                ->where('academic_year', session('academic_year'))
                 ->first();
 
             $results = Grade::join('students', 'students.grade_id', '=', 'grades.id')
@@ -3851,6 +3858,7 @@ class ReportController extends Controller
             $classTeacher = Teacher_grade::where('grade_id', $gradeId)
                 ->join('teachers', 'teachers.id', '=', 'teacher_grades.teacher_id')
                 ->select('teachers.id as teacher_id', 'teachers.name as teacher_name')
+                ->where('academic_year', session('academic_year'))
                 ->first();
 
             $results = Grade::join('students', 'students.grade_id', '=', 'grades.id')
@@ -3958,6 +3966,7 @@ class ReportController extends Controller
             $classTeacher = Teacher_grade::where('grade_id', $gradeId)
                 ->join('teachers', 'teachers.id', '=', 'teacher_grades.teacher_id')
                 ->select('teachers.id as teacher_id', 'teachers.name as teacher_name')
+                ->where('academic_year', session('academic_year'))
                 ->first();
 
             $results = Grade::join('students', 'students.grade_id', '=', 'grades.id')
@@ -4636,12 +4645,13 @@ class ReportController extends Controller
                 ->where('students.is_active', true)
                 ->orderBy('students.name', 'asc')
                 ->get();
-                
+
             $student = Grade::join('students', 'students.grade_id', '=', 'grades.id')
                 ->where('grades.id', $gradeId)
                 ->where('students.is_active', true)
                 ->orderBy('students.name', 'asc')
                 ->get();
+
 
             $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) {
                 $student = $scores->first();
@@ -4667,6 +4677,7 @@ class ReportController extends Controller
                 ];
             })->values()->all();
 
+            // dd($scoresByStudent);
             $status = Report_card_status::where('grade_id', $grade->grade_id)
                 ->where('semester', $semester)
                 ->where('academic_year', $academic_year)
