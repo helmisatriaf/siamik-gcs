@@ -162,46 +162,24 @@ class UserController extends Controller
             $masterAcademic = Master_academic::where('is_use', TRUE)->first();
             $today = date('Y-m-d');
 
-            $nowTime = date('H:i'); // Format 24 jam, misalnya "10:04"
+           $nowTime = date('H:i'); // contoh output: 09:32
 
+            $allowStart = "07:00";
+            $allowEnd   = "10:05";
+
+            $isWithinTime = ($nowTime >= $allowStart && $nowTime <= $allowEnd);
+
+
+            // SEMESTER 1
             if ($masterAcademic->now_semester == 1) {
 
                if ($masterAcademic->start_fe_1 <= $today && $today <= $masterAcademic->end_fe_1) {
 
-                  // CEK BATAS WAKTU 10:05
-                  if ($nowTime <= "10:05") {
-
+                  if ($isWithinTime) {
                         session()->put([
                            'is_final_exam' => true,
                         ]);
                         return redirect('student/dashboard/finalExam/');
-
-                  } else {
-                        session()->put([
-                           'is_final_exam' => false,
-                        ]);
-                        return redirect('student/dashboard/');
-                  }
-
-               } else {
-                  session()->put([
-                        'is_final_exam' => false,
-                  ]);
-                  return redirect('student/dashboard/');
-               }
-
-            } else if ($masterAcademic->now_semester == 2) {
-
-               if ($masterAcademic->start_fe_2 <= $today && $today <= $masterAcademic->end_fe_2) {
-
-                  // CEK BATAS WAKTU 10:05 JUGA UNTUK SEMESTER 2 (opsional)
-                  if ($nowTime <= "10:05") {
-
-                        session()->put([
-                           'is_final_exam' => true,
-                        ]);
-                        return redirect('student/dashboard/finalExam/');
-
                   } else {
                         session()->put([
                            'is_final_exam' => false,
@@ -216,6 +194,33 @@ class UserController extends Controller
                   return redirect('student/dashboard/');
                }
             }
+
+
+            // SEMESTER 2
+            else if ($masterAcademic->now_semester == 2) {
+
+               if ($masterAcademic->start_fe_2 <= $today && $today <= $masterAcademic->end_fe_2) {
+
+                  if ($isWithinTime) {
+                        session()->put([
+                           'is_final_exam' => true,
+                        ]);
+                        return redirect('student/dashboard/finalExam/');
+                  } else {
+                        session()->put([
+                           'is_final_exam' => false,
+                        ]);
+                        return redirect('student/dashboard/');
+                  }
+
+               } else {
+                  session()->put([
+                        'is_final_exam' => false,
+                  ]);
+                  return redirect('student/dashboard/');
+               }
+            }
+
 
 
          }
