@@ -5,8 +5,8 @@
 <div class="container-fluid">
     <div class="row">
       <div class="col">
-        <nav aria-label="breadcrumb" class="bg-white rounded-3 p-3 mb-4">
-          <ol class="breadcrumb mb-0">
+        <nav aria-label="breadcrumb" class="p-3 mb-4" style="background-color: #ffde9e;border-radius: 12px;">
+          <ol class="breadcrumb mb-0" style="background-color: #fff3c0;">
             <li class="breadcrumb-item">Home</li>
             @if (session('role') == 'superadmin')
               <li class="breadcrumb-item"><a href="{{url('/superadmin/reports')}}">Report</a></li>
@@ -78,7 +78,8 @@
             @if (session('role') == 'superadmin')
                 <form id="confirmForm"  method="POST">
             @elseif (session('role') == 'admin')
-                <form id="confirmForm" method="POST" action={{route('actionAdminPostReportCard2')}}>
+                {{-- <form id="confirmForm" method="POST" action={{route('actionAdminPostReportCard2')}}> --}}
+                <form id="confirmForm" method="POST">
             @elseif (session('role') == 'teacher')
                 <form id="confirmForm" method="POST" action={{route('actionTeacherPostReportCard2')}}>
             @endif
