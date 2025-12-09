@@ -3003,4 +3003,33 @@ class ScoreController extends Controller
             ], 500);
         }
     }
+
+    public function finalExamScore($id){
+        $data = Exam::join('grade_exams', 'exams.id', '=', 'grade_exams.exam_id')
+        ->join('grades', 'grade_exams.grade_id', '=', 'grades.id')
+        ->join('subject_exams', 'exams.id', '=', 'subject_exams.exam_id')
+        ->join('subjects', 'subject_exams.subject_id', '=', 'subjects.id')
+        ->join('teachers', 'exams.teacher_id', '=', 'teachers.id')
+        ->join('type_exams', 'exams.type_exam', '=', 'type_exams.id')
+        ->join('student_exams', 'exams.id', '=', 'student_exams.exam_id')
+        ->join('students', 'grades.id', '=', 'students.grade_id')
+        ->join('scores', function($join) {
+                $join->on('students.id', '=', 'scores.student_id')
+                    ->on('exams.id', '=', 'scores.exam_id');
+            })
+        ->where('exams.id', $id, 'exams.is_active')
+        ->where('students.is_active', true)
+        ->select('exams.id as exam_id', 'exams.name_exam as exam_name', 'exams.date_exam as date_exam',
+        'grades.id as grade_id','grades.name as grade_name', 'grades.class as grade_class',
+        'subjects.name_subject as subject_name', 'subjects.id as subject_id',
+        'teachers.name as teacher_name', 'teachers.id as teacher_id', 
+        'type_exams.name as type_exam', 'type_exams.id as type_exam_id',
+        'students.id as student_id', 'students.name as student_name',
+        'scores.score as score', 'scores.file_name as file_name', 'scores.justification as justification', 'scores.desc_late as late', 'scores.justification_file as justification_file')
+        ->orderBy('student_name', 'asc')
+        ->distinct()
+        ->get();
+
+        return view('components.exam.data-exam-score')->with('data', $data);
+    }
 }

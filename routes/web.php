@@ -1337,6 +1337,7 @@ Route::middleware(['auth.login', 'role:teacher'])->prefix('/teacher')->group(fun
       Route::post('/check-assessment-name', [ExamController::class, 'cekNameExam'])->name('check.assessment.name');
 
       Route::get('exam/score/{id}', [ScoreController::class, 'score']);
+      Route::get('exam/score/fe/{id}', [ScoreController::class, 'finalExamScore']);
       Route::put('/', [ScoreController::class, 'actionUpdateScore'])->name('actionUpdateScoreExamTeacher');
 
       Route::get('report/{id}', [ReportController::class, 'teacherReport']);

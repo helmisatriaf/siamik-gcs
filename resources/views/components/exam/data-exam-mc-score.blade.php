@@ -20,6 +20,13 @@
             </div>
         </div>
 
+        <nav class="col-12 mt-1">
+            <div class="nav nav-tabs mb-4" id="nav-tab" role="tablist">
+                <a id="btnSingleTeacher" class="nav-item nav-link active text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]">Cek Score</a>
+                <a id="btnMultipleTeacher" class="nav-item nav-link text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" href="{{url('/' .session('role'). '/dashboard/exam/score/fe/' . $examId)}}">Scoring</a>
+            </div>
+        </nav>
+
         <div class="card" style="background-color: #ffde9e;">
             <div class="card-header">
                 <h3 class="card-title">Scorings</h3>
