@@ -7055,6 +7055,7 @@ class ReportController extends Controller
             $classTeacher = Teacher_grade::where('teacher_grades.grade_id', $student->grade_id)
                 ->join('teachers', 'teachers.id', 'teacher_grades.teacher_id')
                 ->select('teachers.name as teacher_name')
+                ->where('teacher_grades.academic_year', session('academic_year'))
                 ->first();
 
             $relation = Student_relationship::where('student_relations.student_id', $id)
