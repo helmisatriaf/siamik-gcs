@@ -31,12 +31,12 @@ class UserController extends Controller
          Auth::logout();
          return view('layouts.login')->with('data', $data);
       } catch (Exception $err) {
-         
+
          return dd($err);
       }
    }
-   
-   
+
+
    public function actionLogin(Request $request)
    {
       try {
@@ -49,120 +49,110 @@ class UserController extends Controller
 
          $credentials = $request->only('username', 'password');
 
-         $validator = Validator::make($credentials, [
-            'username' => 'required',
-            'password' => 'required',
-         ],
-         [
-            'username.required' => 'input username !!!',
-            'password.required' => 'input password !!!'
-         ]);
+         $validator = Validator::make(
+            $credentials,
+            [
+               'username' => 'required',
+               'password' => 'required',
+            ],
+            [
+               'username.required' => 'input username !!!',
+               'password.required' => 'input password !!!'
+            ]
+         );
 
-         if($validator->fails())
-         {
+         if ($validator->fails()) {
             // return dd($validator->messages());
             return redirect('/')->withErrors($validator->messages())->withInput($credentials);
          }
 
          $check = Auth::attempt($credentials);
-         
+
          // dd($check);
 
-         if(!$check)
-         {
+         if (!$check) {
             return redirect()->back()->withErrors(['invalid' => 'invalid username/password'])->withInput($credentials);
          }
 
          // SET ROLE & ID USE
          $user = Auth::user();
-         $nameRoles = Roles::where('id',$user->role_id)->first();
-         
-         if ($user->role_id == 1) 
-         {
+         $nameRoles = Roles::where('id', $user->role_id)->first();
+
+         if ($user->role_id == 1) {
             $nameUser = "superadmin";
-         }
-         elseif ($user->role_id == 2) 
-         {
-            if($request->username == 'ebooks'){
+         } elseif ($user->role_id == 2) {
+            if ($request->username == 'ebooks') {
                $nameUser = "ebooks";
-            }
-            else{
+            } else {
                $nameUser = "admin";
             }
-         }
-         elseif ($user->role_id == 3) 
-         {
-            $nameUser = Teacher::where('user_id',$user->id)->value('name');
-         }
-         elseif ($user->role_id == 4) 
-         {
-            $nameUser = Student::where('user_id',$user->id)->value('name');
-         }
-         elseif ($user->role_id == 5) 
-         {
-            $nameUser = Relationship::where('user_id',$user->id)->value('name');
-         }
-         elseif ($user->role_id == 6) 
-         {
+         } elseif ($user->role_id == 3) {
+            $nameUser = Teacher::where('user_id', $user->id)->value('name');
+         } elseif ($user->role_id == 4) {
+            $nameUser = Student::where('user_id', $user->id)->value('name');
+         } elseif ($user->role_id == 5) {
+            $nameUser = Relationship::where('user_id', $user->id)->value('name');
+         } elseif ($user->role_id == 6) {
             $nameUser = "library";
          }
 
 
          // dd(empty(Master_academic::first()));
 
-         if(empty(Master_academic::first())){
+         if (empty(Master_academic::first())) {
             session()->put([
                'role' => $nameRoles->name,
                'id_user' => $user['id'],
                'name_user' => $nameUser,
-            ]);        
+            ]);
          } else {
-            $semester = Master_academic::where('is_use',TRUE)->value('now_semester');
-            $academic_year = Master_academic::where('is_use',TRUE)->value('academic_year');
-   
+            $semester = Master_academic::where('is_use', TRUE)->value('now_semester');
+            $academic_year = Master_academic::where('is_use', TRUE)->value('academic_year');
+
             session()->put([
                'role' => $nameRoles->name,
                'id_user' => $user['id'],
                'name_user' => $nameUser,
                'semester' => $semester,
                'academic_year' => $academic_year,
-            ]);        
+            ]);
          }
 
          $checkRole = session('role');
          // dd($checkRole);
 
 
-         if($checkRole == 'superadmin'){
+         if ($checkRole == 'superadmin') {
             return redirect('superadmin/dashboard/');
-         } 
-         if($checkRole == 'admin'){
+         }
+         if ($checkRole == 'admin') {
             return redirect('admin/dashboard/');
-         } 
-         if($checkRole == 'teacher') {
-            if(strtolower(session('name_user')) == 'codero'){
+         }
+         if ($checkRole == 'teacher') {
+            if (strtolower(session('name_user')) == 'codero') {
                return redirect('teacher/eca/section');
-            }
-            else{
+            } else {
                return redirect('teacher/dashboard/');
             }
          }
-         if($checkRole == 'library') {
+         if ($checkRole == 'library') {
             return redirect('/dashboard');
          }
-         if($checkRole == 'student') {
+         if ($checkRole == 'student') {
             $id           = Student::where('user_id', session('id_user'))->value('id');
             $getIdStudent = Student::where('id', $id)->value('id');
 
             session()->put([
                'studentId' => $getIdStudent,
-            ]); 
+            ]);
 
             // CEK FINAL EXAM ONGOING
             $masterAcademic = Master_academic::where('is_use', TRUE)->first();
             $today = date('Y-m-d');
 
-           $nowTime = date('H:i'); // contoh output: 09:32
+            $nowTime = date('H:i'); // contoh output: 09:32
+
+            $nowTime = date('H:i'); // contoh output: 09:32
 
             $allowStart = "07:00";
             $allowEnd   = "10:05";
@@ -221,11 +211,9 @@ class UserController extends Controller
                }
             }
 
-
-
          }
 
-         if($checkRole == 'parent') {  
+         if ($checkRole == 'parent') {
             $id           = Relationship::where('user_id', session('id_user'))->value('id');
             $getIdStudent = Student_relationship::where('relation_id', $id)->pluck('student_id')->toArray();
             $getDataStudent = Student::whereIn('students.id', $getIdStudent)
@@ -245,12 +233,10 @@ class UserController extends Controller
             $getIdStudent = $getDataStudent->value('student_id');
             session()->put([
                'studentId' => $getIdStudent,
-            ]); 
+            ]);
 
             return redirect('parent/dashboard/');
          }
-
-
       } catch (Exception $err) {
          return dd($err);
       }
@@ -268,71 +254,70 @@ class UserController extends Controller
 
          $credentials = $request->only('username', 'password');
 
-         $validator = Validator::make($credentials, [
-            'username' => 'required',
-            'password' => 'required',
-         ],
-         [
-            'username.required' => 'input username !!!',
-            'password.required' => 'input password !!!'
-         ]);
+         $validator = Validator::make(
+            $credentials,
+            [
+               'username' => 'required',
+               'password' => 'required',
+            ],
+            [
+               'username.required' => 'input username !!!',
+               'password.required' => 'input password !!!'
+            ]
+         );
 
-         if($validator->fails())
-         {
+         if ($validator->fails()) {
             return redirect('/explore-library')->withErrors($validator->messages())->withInput($credentials);
          }
 
          $check = Auth::attempt($credentials);
-         
+
          // dd($check);
 
-         if(!$check)
-         {
+         if (!$check) {
             return redirect()->back()->withErrors(['invalid' => 'invalid username/password'])->withInput($credentials);
          }
 
          // SET ROLE & ID USE
          $user = Auth::user();
-         $nameRoles = Roles::where('id',$user->role_id)->first();
-         
-         if ($user->role_id == 4) 
-         {
-            $nameUser = Student::where('user_id',$user->id)->value('name');
-         }
-         else{
+         $nameRoles = Roles::where('id', $user->role_id)->first();
+
+         if ($user->role_id == 4) {
+            $nameUser = Student::where('user_id', $user->id)->value('name');
+         } else {
             $nameUser = "user";
             // session()->flash('invalid');
             // return redirect()->back();
          }
 
-         if(empty(Master_academic::first())){
+         if (empty(Master_academic::first())) {
             session()->put([
                'role' => $nameRoles->name,
                'id_user' => $user['id'],
                'name_user' => $nameUser,
-            ]);        
+            ]);
          } else {
-            $semester = Master_academic::where('is_use',TRUE)->value('now_semester');
-            $academic_year = Master_academic::where('is_use',TRUE)->value('academic_year');
-   
+            $semester = Master_academic::where('is_use', TRUE)->value('now_semester');
+            $academic_year = Master_academic::where('is_use', TRUE)->value('academic_year');
+
             session()->put([
                'role' => $nameRoles->name,
                'id_user' => $user['id'],
                'name_user' => $nameUser,
                'semester' => $semester,
                'academic_year' => $academic_year,
-            ]);        
+            ]);
          }
 
          $checkRole = session('role');
 
-         if($checkRole == 'student') {
+         if ($checkRole == 'student') {
             $id           = Student::where('user_id', session('id_user'))->value('id');
             $getIdStudent = Student::where('id', $id)->value('id');
 
             session()->put([
                'studentId' => $getIdStudent,
-            ]); 
+            ]);
 
             return redirect('/explore-library');
          }
@@ -365,7 +350,7 @@ class UserController extends Controller
       $semester = $request->input('semester');
       session()->put('semester', $semester);
 
-      return response()->json(['success' => true, 'message' => `Mengganti ke semester`+$semester]);
+      return response()->json(['success' => true, 'message' => `Mengganti ke semester` + $semester]);
    }
 
    public function saveAcademicYearToSession(Request $request)
@@ -392,52 +377,47 @@ class UserController extends Controller
             'child' => 'database user',
          ]);
          $rules = $request->only('password', 'reinputPassword');
-         
+
          $validator = Validator::make($rules, [
-            'password' => 'required|min:5', 
+            'password' => 'required|min:5',
             'reinputPassword' => 'required|min:5',
          ]);
 
-         if($request->password !== $request->reinputPassword)
-         {
+         if ($request->password !== $request->reinputPassword) {
             session()->flash('password.success', false);
             session()->flash('error.type.password', 'Make sure your input password is the same !!!');
             session()->flash('error.password', false);
-            
+
             if (session('role') == 'teacher') {
                return redirect('/teacher/dashboard/detail/teacher');
-            }
-            else {
+            } else {
                return redirect()->back();
             }
          }
-         
-         if($validator->fails())
-         {
+
+         if ($validator->fails()) {
             session()->flash('password.success', false);
             session()->flash('error.type.password', false);
             session()->flash('error.password', $validator->messages());
-            
+
             if (session('role') == 'teacher') {
                return redirect('/teacher/dashboard/detail/teacher');
-            }
-            else {
+            } else {
                return redirect()->back();
             }
          }
-         
-         
+
+
          User::where('id', $id)->update([
             'password' => Hash::make($request->password),
          ]);
-         
+
          session()->flash('password.success');
          session('error.type.password', false);
          session('error.password', false);
          if (session('role') == 'teacher') {
             return redirect('/teacher/dashboard/detail/teacher');
-         }
-         else {
+         } else {
             return redirect()->back();
          }
       } catch (Exception $th) {
@@ -446,9 +426,10 @@ class UserController extends Controller
       }
    }
 
-   public function changeProfile(Request $request){
-      try{
-         if($request->role == 'teacher'){
+   public function changeProfile(Request $request)
+   {
+      try {
+         if ($request->role == 'teacher') {
             $teacher = Teacher::where('id', $request->id)->first();
 
             $file = $request->file;
@@ -458,7 +439,7 @@ class UserController extends Controller
             $checkFile = Teacher::where('id', $request->id)
                ->value('profil');
 
-            if($checkFile !== null){
+            if ($checkFile !== null) {
                if (Storage::exists($checkFile)) {
                   Storage::delete('public/file/profile/' . $checkFile);
                }
@@ -468,11 +449,11 @@ class UserController extends Controller
                'profil' => $fileName,
             ]);
 
-            if($save){
+            if ($save) {
                return response()->json(['success' => true, 'message' => 'Successfully change profile']);
             }
          }
-         if($request->role == 'student'){
+         if ($request->role == 'student') {
             $student = Student::where('id', $request->id)->first();
 
             $file = $request->file;
@@ -482,7 +463,7 @@ class UserController extends Controller
             $checkFile = Student::where('id', $request->id)
                ->value('profil');
 
-            if($checkFile !== null){
+            if ($checkFile !== null) {
                if (Storage::exists($checkFile)) {
                   Storage::delete('public/file/profile/' . $checkFile);
                }
@@ -492,15 +473,12 @@ class UserController extends Controller
                'profil' => $fileName,
             ]);
 
-            if($save){
+            if ($save) {
                return response()->json(['success' => true, 'message' => 'Successfully change profile']);
             }
          }
-      }
-      catch(Exception $err){
+      } catch (Exception $err) {
          return dd($err);
       }
    }
-
-
 }
