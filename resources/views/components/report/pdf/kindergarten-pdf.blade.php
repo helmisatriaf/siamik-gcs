@@ -140,8 +140,8 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
 
         <table class="table" style="margin-top:5px;">
             <tr>
-                <td style="width:50%;text-align:center;border: 1px solid black;" colspan="2"><b>Subject</b> <br> <span class="noto-serif-sc-chinese">主题</span></td>
-                <td style="width:50%;text-align:center;border: 1px solid black;"><b>Grade</b> <br> <span class="noto-serif-sc-chinese">年级</span></td>
+                <td style="width:50%;text-align:center;border: 1px solid black;" colspan="2"><b>Subject</b> <br> <span class="noto-serif-sc-chinese">科目</span></td>
+                <td style="width:50%;text-align:center;border: 1px solid black;"><b>Grade</b> <br> <span class="noto-serif-sc-chinese">成绩</span></td>
             </tr>
             <tr>
                 <td style="width:50%;text-align:left;border: 1px solid black;padding-left:5px;" colspan="2"><b>English</b> <span class="noto-serif-sc-chinese">英语</span></td>
@@ -160,7 +160,7 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
                 <td style="width:50%;text-align:center;border: 1px solid black;"><b>{{ $science }}</b></td>
             </tr>
             <tr>
-                <td style="width:50%;text-align:left;border: 1px solid black;padding-left:5px;" colspan="2"><b>Character Building</b> <span class="noto-serif-sc-chinese">性格塑造</span></td>
+                <td style="width:50%;text-align:left;border: 1px solid black;padding-left:5px;" colspan="2"><b>Character Building</b> <span class="noto-serif-sc-chinese">品格培养</span></td>
                 <td style="width:50%;text-align:center;border: 1px solid black;"><b>{{ $character_building }}</b></td>
             </tr>
             <tr>
@@ -179,17 +179,17 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
             @else
             @endif
             <tr>
-                <td style="width:50%;text-align:left;border: 1px solid black;padding-left:5px;" colspan="2"><b>Conduct</b> <span class="noto-serif-sc-chinese">进行</span></td>
+                <td style="width:50%;text-align:left;border: 1px solid black;padding-left:5px;" colspan="2"><b>Conduct</b> <span class="noto-serif-sc-chinese">行为表现</span></td>
                 <td style="width:50%;text-align:center;border: 1px solid black;"><b>{{ $conduct }}</b></td>
             </tr>
             <tr>
                 <td class="normal" style="text-align:justify;border: 1px solid black;padding-left:5px;padding-right:5px;" colspan="3">
-                    <b>Remarks :</b> 
+                    <b>Remarks <span class="noto-serif-sc-chinese">评语</span> :</b> 
                         {{$score['remarks']}}
                 </td>
             </tr>
             <tr>
-                <td style="padding:0px;text-align:left;padding-left:5px;" colspan="3"><small class="normal" style="font-size: 10px;"><b>*Grades </b><span class="noto-serif-sc-chinese">成绩</span> : A+ >95-99; A >85-94; B >75-84; C >65-74; D >45-64</small></td>
+                <td style="padding:0px;text-align:left;padding-left:5px;" colspan="3"><small class="normal" style="font-size: 10px;"><b>*Grades </b><span class="noto-serif-sc-chinese">成绩说明</span> : A+ >95-99; A >85-94; B >75-84; C >65-74; D >45-64</small></td>
             </tr>
         </table>
 

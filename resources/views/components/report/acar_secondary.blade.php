@@ -117,7 +117,7 @@
                             <td class="text-center" colspan="2">PE</td>
                             <td class="text-center" colspan="2">IT</td>
                             <td class="text-center" colspan="2">A/D</td>
-                            <td class="text-center" colspan="2">CB & Manner</td>
+                            <td class="text-center" colspan="2">CB</td>
                             <td class="text-center" colspan="2">FL</td>
                             <td style="background-color:beige;" class="text-center">Avg</td>
                             <!-- END SUPPLEMENTARY SUBJECTS -->

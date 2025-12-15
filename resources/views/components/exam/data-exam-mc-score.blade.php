@@ -85,7 +85,7 @@
                                                                                 $answer = $point?->essay_answer ?? '';
                                                                             }
                                                                         @endphp 
-                                                                        {{ $answer }}
+                                                                        {!! $answer !!}
                                                                 </div>
                                                                 <div class="col-12">
                                                                     @if ($el->type == "mc")
