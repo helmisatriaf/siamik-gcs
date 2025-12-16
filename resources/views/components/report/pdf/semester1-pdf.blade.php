@@ -328,9 +328,9 @@ $grade_name = $student->grade_name;
                     <!-- SUBJECT REPORT -->
                     <tr>
                         <td style="text-align:left;border: 1px solid black;padding-left:3px;padding-right:3px;border-left: solid 1px black;">
-                            @if ($student->student_id === 356)
+                            @if ($student->student_id === 302 || $student->student_id === 207 || $student->student_id === 206 || $student->student_id === 310)
                                 @if ($scores['subject_name'] === "Chinese")
-                                    Chinese-basic
+                                    Chinese-Basic
                                 @else   
                                     {{ $scores['subject_name'] }}
                                 @endif
@@ -468,9 +468,9 @@ $grade_name = $student->grade_name;
 
                 <!-- SIGNATURE -->
                     <tr style="border-right: 1px solid black;border-left: 1px solid black;">
-                        <td style="height:50px;" colspan="3"></td>
-                        <td style="height:50px;" colspan="2"></td>
-                        <td style="height:50px;" colspan="3"></td>
+                        <td style="height:30px;" colspan="3"></td>
+                        <td style="height:30px;" colspan="2"></td>
+                        <td style="height:30px;" colspan="3"></td>
                     </tr>
                     <tr style="border-right: 1px solid black;border-left: 1px solid black;">
                         <td style="text-align:center;text-decoration:underline;" colspan="3">
