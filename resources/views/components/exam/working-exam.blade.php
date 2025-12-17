@@ -168,9 +168,9 @@
                     </div>
                 </div>
                 @if (session('role') !== 'parent')
-                    @if ($assessment->is_active == true)
+                    {{-- @if ($assessment->is_active == true) --}}
                         <button class="btn btn-danger w-100 mb-3" data-bs-toggle="modal" data-bs-target="#completed" style="border-radius: 12px;">Completed</button>
-                    @endif
+                    {{-- @endif --}}
                 @endif
             </div>
 
