@@ -668,11 +668,11 @@ class ScoringController extends Controller
                 // if ($request->eca_1[$i] == 0 || $request->eca_1[$i] == 0 && $request->eca_2[$i] ==  0) {
                     $eca_aver = ($request->eca_1[$i] + $request->eca_2[$i])/2;
 
-                    $final_score = ($academic * 0.6)  
+                    $final_score = round(($academic * 0.6)  
                     + ($eca_aver * 0.1)
                     + ($request->behavior[$i] * 0.1) 
                     + ($attendance * 0.1) 
-                    + ($request->participation[$i] * 0.1);
+                    + ($request->participation[$i] * 0.1));
                 
                     // dd($final_score);
                     $scoring = [
