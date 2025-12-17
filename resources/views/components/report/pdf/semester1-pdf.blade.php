@@ -474,9 +474,9 @@ $grade_name = $student->grade_name;
 
                 <!-- SIGNATURE -->
                     <tr style="border-right: 1px solid black;border-left: 1px solid black;">
-                        <td style="height:30px;" colspan="3"></td>
-                        <td style="height:30px;" colspan="2"></td>
-                        <td style="height:30px;" colspan="3"></td>
+                        <td style="height:50px;" colspan="3"></td>
+                        <td style="height:50px;" colspan="2"></td>
+                        <td style="height:50px;" colspan="3"></td>
                     </tr>
                     <tr style="border-right: 1px solid black;border-left: 1px solid black;">
                         <td style="text-align:center;text-decoration:underline;" colspan="3">
