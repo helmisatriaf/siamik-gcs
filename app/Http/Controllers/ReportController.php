@@ -3204,6 +3204,13 @@ class ReportController extends Controller
                     $tasks              = $scores->whereIn('type_exam', $tasks)->pluck('score');
                     $mid                = $scores->whereIn('type_exam', $mid)->pluck('score');
                     $finalExamScores    = $scores->whereIn('type_exam', $finalExam)->pluck('score');
+                    
+                    $scoreTask = round($tasks->avg() * 0.25);
+                    $percentMid = round($mid->avg() * 0.35);
+                    $percentFE =  round($finalExamScores->avg() * 0.4);
+
+                    $totalScore = $scoreTask + $percentMid + $percentFE;
+
                     if (strtolower($subject->subject_name) == "chinese higher" || strtolower($subject->subject_name) == "chinese lower") {
                         $getChineseId = Subject::where('name_subject', '=', 'chinese')->value('id');
                         $subjectId = $getChineseId;
@@ -3224,10 +3231,15 @@ class ReportController extends Controller
                         'avg_mid'   => round($mid->avg()),
                         'avg_fe'    => round($finalExamScores->avg()),
 
-                        'percent_tasks' => round($tasks->avg() * 0.25),
-                        'percent_mid'  => round($mid->avg() * 0.35),
-                        'percent_fe'    => round($finalExamScores->avg() * 0.4),
-                        'total_score'   => (round(($tasks->avg() * 0.25)) +  round(($mid->avg() * 0.35)) + round(($finalExamScores->avg() * 0.4))),
+                        // 'percent_tasks' => round($tasks->avg() * 0.25),
+                        // 'percent_mid'  => round($mid->avg() * 0.35),
+                        // 'percent_fe'    => round($finalExamScores->avg() * 0.4),
+                        // 'total_score'   => (round(($tasks->avg() * 0.25)) + round(($mid->avg() * 0.35)) + round(($finalExamScores->avg() * 0.4))),
+
+                        'percent_tasks' => $scoreTask,
+                        'percent_mid'  => $percentMid,
+                        'percent_fe'    => $percentFE,
+                        'total_score'   => $totalScore,
 
                         'comment' => $comments->get($student->student_id)?->comment ?? '',
                         'acar'      => ACAR::where('student_id', $student->student_id)
@@ -5699,6 +5711,8 @@ class ReportController extends Controller
                     'isRestricted' => $isRestricted, // Include the restricted flag in the output
                 ];
             })->values()->all();
+            
+                // dd($scoresByStudent);e
 
             if (strtolower($student->grade_name) === "primary") {
                 $resultsSooa = Sooa_primary::join('students', 'students.id', '=', 'sooa_primaries.student_id')

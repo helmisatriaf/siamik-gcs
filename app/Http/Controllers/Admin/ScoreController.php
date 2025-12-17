@@ -1422,10 +1422,10 @@ class ScoreController extends Controller
                     }
                     // Perhitungan ACAR Secondary Major Subject
                     else{
-                        $tasks = Type_exam::whereIn('name', ['homework', 'small project', 'presentation', 'exercice', 'Exercise'])
+                        $tasks = Type_exam::whereIn('name', ['homework', 'exercice', 'Exercise'])
                             ->pluck('id')
                             ->toArray();
-                        $mid = Type_exam::whereIn('name', ['quiz', 'practical exam', 'project', 'exam'])
+                        $mid = Type_exam::whereIn('name', ['quiz', 'practical', 'project'])
                             ->pluck('id')
                             ->toArray();
                         $finalExam = Type_exam::whereIn('name', ['written tes', 'big project', 'final assessment', 'final exam'])
@@ -1495,6 +1495,12 @@ class ScoreController extends Controller
                             $tasks              = $scores->whereIn('type_exam', $tasks)->pluck('score');
                             $mid                = $scores->whereIn('type_exam', $mid)->pluck('score');
                             $finalExamScores    = $scores->whereIn('type_exam', $finalExam)->pluck('score');
+
+                            $scoreTask = round($tasks->avg() * 0.25);
+                            $percentMid = round($mid->avg() * 0.35);
+                            $percentFE =  round($finalExamScores->avg() * 0.4);
+
+                            $totalScore = round($scoreTask + $percentMid + $percentFE);
                             
                             return [
                                 'student_id' => $student->student_id,
@@ -1510,10 +1516,15 @@ class ScoreController extends Controller
                                 'avg_mid'   => round($mid->avg()),
                                 'avg_fe'    => round($finalExamScores->avg()),
             
-                                'percent_tasks' => round($tasks->avg() * 0.25),
-                                'percent_mid'  => round($mid->avg() * 0.35),
-                                'percent_fe'    => round($finalExamScores->avg() * 0.4),
-                                'total_score'   => (round(($tasks->avg() * 0.25)) +  round(($mid->avg() * 0.35)) + round(($finalExamScores->avg() * 0.4))),
+                                // 'percent_tasks' => round($tasks->avg() * 0.25),
+                                // 'percent_mid'  => round($mid->avg() * 0.35),
+                                // 'percent_fe'    => round($finalExamScores->avg() * 0.4),
+                                // 'total_score'   => (round(($tasks->avg() * 0.25)) +  round(($mid->avg() * 0.35)) + round(($finalExamScores->avg() * 0.4))),
+                                
+                                'percent_tasks' => $scoreTask,
+                                'percent_mid'  => $percentMid,
+                                'percent_fe'    => $percentFE,
+                                'total_score'   => $totalScore,
                                 'comment' => '',
                             ];
                         })->values()->all();
@@ -1530,6 +1541,7 @@ class ScoreController extends Controller
                             }
                         }
     
+                        // dd($scoresByStudent);
                         foreach($scoresByStudent as $student){
                             // dd($student['total_score']);
                             $matchingScoring = [
