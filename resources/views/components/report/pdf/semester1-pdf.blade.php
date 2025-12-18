@@ -152,9 +152,9 @@ $grade_name = $student->grade_name;
                 </tr>
                 <tr>
                     <td style="text-align:right;border: 1px solid black;padding-right:4px;border-left: solid 1px black;" colspan="2">Days Absent:</td>
-                    <td style="border: 1px solid black;padding-left:4px;" colspan="2">{{ $attendance[0]['days_absent'] }} day(s)</td>
+                    <td style="border: 1px solid black;padding-left:4px;" colspan="2">{{ $attendance[0]['days_absent'] }} {{ $attendance[0]['days_absent'] == 1 ? 'day' : 'day(s)' }}</td>
                     <td style="text-align:right;border: 1px solid black;padding-right:4px;" colspan="2">Total Days Absent:</td>
-                    <td style="border: 1px solid black;padding-left:4px;border-right: solid 1px black;" colspan="2">{{ $attendance[0]['days_absent'] }}  day(s)</td>
+                    <td style="border: 1px solid black;padding-left:4px;border-right: solid 1px black;" colspan="2">{{ $attendance[0]['days_absent'] == 1 ? 'day' : 'day(s)' }}</td>
                 </tr>
                 <tr>
                     <td style="text-align:right;border: 1px solid black;padding-right:4px;border-left: solid 1px black;" colspan="2">Times Late:</td>
