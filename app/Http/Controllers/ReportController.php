@@ -5711,8 +5711,7 @@ class ReportController extends Controller
                     'isRestricted' => $isRestricted, // Include the restricted flag in the output
                 ];
             })->values()->all();
-            
-                // dd($scoresByStudent);e
+        
 
             if (strtolower($student->grade_name) === "primary") {
                 $resultsSooa = Sooa_primary::join('students', 'students.id', '=', 'sooa_primaries.student_id')
@@ -5798,23 +5797,54 @@ class ReportController extends Controller
 
             $remarks = Acar_comment::where('student_id', $id)->where('academic_year', session('academic_year'))->value('comment');
 
-            $data = [
-                'student' => $student,
-                'classTeacher' => $classTeacher,
-                'learningSkills' => $learningSkills,
-                'subjectReports' => $scoresByStudent,
-                'sooa' => $scoresByStudentSooa,
-                'attendance' => $attendancesByStudent,
-                'relation' => $relation,
-                'serial' => $getSerial,
-                'academicYear' => $academicYear,
-                'eca' => $groupedEcaData,
-                'remarks' => $remarks,
-                'date' => $date,
-                'date_of_registration' => $date_of_registration,
-            ];
 
-            // dd($data);
+            // chinese lower/higher
+            if(strtolower($student->grade_name) === "secondary"){
+                $chineseLower = Chinese_lower::where('student_id', $student->student_id)->exists();
+                $chineseHigher = Chinese_higher::where('student_id', $student->student_id)->exists();
+
+                if($chineseLower){
+                    $chineseGrade = "Lower";
+                }
+                elseif($chineseHigher){
+                    $chineseGrade = "Higher";
+                }
+            }
+            
+            if(strtolower($student->grade_name) === "secondary"){
+                $data = [
+                    'student' => $student,
+                    'classTeacher' => $classTeacher,
+                    'learningSkills' => $learningSkills,
+                    'subjectReports' => $scoresByStudent,
+                    'sooa' => $scoresByStudentSooa,
+                    'attendance' => $attendancesByStudent,
+                    'relation' => $relation,
+                    'serial' => $getSerial,
+                    'academicYear' => $academicYear,
+                    'eca' => $groupedEcaData,
+                    'remarks' => $remarks,
+                    'date' => $date,
+                    'date_of_registration' => $date_of_registration,
+                    'chineseGrade' => $chineseGrade,
+                ];
+            }else{
+                $data = [
+                    'student' => $student,
+                    'classTeacher' => $classTeacher,
+                    'learningSkills' => $learningSkills,
+                    'subjectReports' => $scoresByStudent,
+                    'sooa' => $scoresByStudentSooa,
+                    'attendance' => $attendancesByStudent,
+                    'relation' => $relation,
+                    'serial' => $getSerial,
+                    'academicYear' => $academicYear,
+                    'eca' => $groupedEcaData,
+                    'remarks' => $remarks,
+                    'date' => $date,
+                    'date_of_registration' => $date_of_registration,
+                ];
+            }
 
             $pdf = app('dompdf.wrapper');
             $pdf->set_option('isRemoteEnabled', true);
@@ -6017,7 +6047,7 @@ class ReportController extends Controller
                     $order = [
                         'Religion',
                         'PPKn',
-                        'CB & Manner',
+                        'Character Building',
                         'Bahasa Indonesia',
                         'Mathematics',
                         'Science',

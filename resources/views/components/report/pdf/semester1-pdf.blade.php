@@ -328,20 +328,32 @@ $grade_name = $student->grade_name;
                     <!-- SUBJECT REPORT -->
                     <tr>
                         <td style="text-align:left;border: 1px solid black;padding-left:3px;padding-right:3px;border-left: solid 1px black;">
-                            @if ($student->student_id === 302 || $student->student_id === 310)
+                            @if ($student->grade_name == "Secondary")
                                 @if ($scores['subject_name'] === "Chinese")
-                                    Chinese-Basic
-                                @else   
-                                    {{ $scores['subject_name'] }}
-                                @endif
-                            @elseif ( $student->student_id === 207 || $student->student_id === 206)
-                                @if ($scores['subject_name'] === "Chinese")
-                                    Chinese-Lower
+                                    @if($chineseGrade == "Lower")
+                                        Chinese-Lower
+                                    @elseif($chineseGrade == "Higher")
+                                        Chinese-Higher
+                                    @endif
                                 @else   
                                     {{ $scores['subject_name'] }}
                                 @endif
                             @else
-                                {{ $scores['subject_name'] }}
+                                @if ($student->student_id === 310)
+                                    @if ($scores['subject_name'] === "Chinese")
+                                        Chinese-Basic
+                                    @else   
+                                        {{ $scores['subject_name'] }}
+                                    @endif
+                                @elseif ( $student->student_id === 207 || $student->student_id === 206 || $student->student_id === 302)
+                                    @if ($scores['subject_name'] === "Chinese")
+                                        Chinese-Lower
+                                    @else   
+                                        {{ $scores['subject_name'] }}
+                                    @endif
+                                @else
+                                    {{ $scores['subject_name'] }}
+                                @endif
                             @endif
                         </td>
                             
