@@ -4855,7 +4855,7 @@ class ReportController extends Controller
             }
             unset($title); // Hapus referensi untuk menghindari bug
 
-            dd($scoresByStudent);
+            // dd($scoresByStudent);
 
             $data = [
                 'grade' => $grade,
@@ -4868,6 +4868,8 @@ class ReportController extends Controller
                 'monthly' => $monthly,
                 'title' => $monthlyTitle,
             ];
+
+            dd($data);
             return view('components.report.mid_kindergarten')->with('data', $data);
         } catch (Exception $err) {
             dd($err);
