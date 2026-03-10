@@ -4769,7 +4769,7 @@ class ReportController extends Controller
                 ->select('student_monthly_activities.*', 'monthly_activities.name as name_activity')
                 ->get();
 
-            // dd($studentMonthlyActivity);
+            dd($studentMonthlyActivity);
 
             // dd($semester);
             $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) use ($studentMonthlyActivity) {
