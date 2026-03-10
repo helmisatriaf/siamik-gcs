@@ -4769,7 +4769,8 @@ class ReportController extends Controller
                 ->select('student_monthly_activities.*', 'monthly_activities.name as name_activity')
                 ->get();
 
-            dd($studentMonthlyActivity);
+            // dd($studentMonthlyActivity);
+            //dd($student)
 
             // dd($semester);
             $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) use ($studentMonthlyActivity) {
@@ -4854,7 +4855,7 @@ class ReportController extends Controller
             }
             unset($title); // Hapus referensi untuk menghindari bug
 
-            // dd($scoresByStudent);
+            dd($scoresByStudent);
 
             $data = [
                 'grade' => $grade,
