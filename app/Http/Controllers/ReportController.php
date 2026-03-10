@@ -4769,7 +4769,7 @@ class ReportController extends Controller
                 ->select('student_monthly_activities.*', 'monthly_activities.name as name_activity')
                 ->get();
 
-            // dd($studentMonthlyActivity);
+            //dd($studentMonthlyActivity);
             //dd($student)
 
             // dd($semester);
@@ -4869,7 +4869,7 @@ class ReportController extends Controller
                 'title' => $monthlyTitle,
             ];
 
-            dd($data);
+            // dd($data);
             return view('components.report.mid_kindergarten')->with('data', $data);
         } catch (Exception $err) {
             dd($err);
