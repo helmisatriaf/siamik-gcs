@@ -4869,7 +4869,7 @@ class ReportController extends Controller
                 'title' => $monthlyTitle,
             ];
 
-            dd($data);
+            //dd($data);
             return view('components.report.mid_kindergarten')->with('data', $data);
         } catch (Exception $err) {
             dd($err);
