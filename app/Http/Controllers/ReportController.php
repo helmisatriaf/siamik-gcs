@@ -3556,7 +3556,7 @@ class ReportController extends Controller
                 ->get();
 
 
-            dd($studentMonthlyActivity);
+            //dd($studentMonthlyActivity);
 
             // $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) {
             //     $student = $scores->first();
