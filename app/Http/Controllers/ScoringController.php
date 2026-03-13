@@ -1407,6 +1407,7 @@ class ScoringController extends Controller
                     'created_at' => now(),
                 ];
 
+                dd($monthlyActivity);
                 foreach($monthlyActivity as $ma){
                     $name = str_replace(' ', '_', trim($ma->name));
                     $monthly = [
