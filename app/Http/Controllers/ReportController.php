@@ -5127,6 +5127,8 @@ class ReportController extends Controller
                     ];
                 }
 
+                dd($order);
+
                 $results = Grade::join('students', 'students.grade_id', '=', 'grades.id')
                     ->join('grade_exams', 'grade_exams.grade_id', '=', 'grades.id')
                     ->join('exams', 'exams.id', '=', 'grade_exams.exam_id')
