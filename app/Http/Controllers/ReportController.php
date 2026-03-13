@@ -7021,7 +7021,7 @@ class ReportController extends Controller
             }
 
 
-            //dd($studentMonthlyActivity);
+            dd($studentMonthlyActivity);
 
             if ($semester == 1) {
                 $data = [
