@@ -5092,7 +5092,7 @@ class ReportController extends Controller
                         'Health Education',
                     ];
                 }
-                if ($gradeId == 6 || $gradeId == 7) {
+                else if ($gradeId == 6 || $gradeId == 7) {
                     $order = [
                         'English',
                         'Chinese',
