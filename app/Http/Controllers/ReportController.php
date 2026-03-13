@@ -3611,6 +3611,8 @@ class ReportController extends Controller
                 'countMA' => $countMA,
             ];
 
+            dd($data);
+
             return view('components.report.mid_semester')->with('data', $data);
         } catch (Exception $err) {
             dd($err);
