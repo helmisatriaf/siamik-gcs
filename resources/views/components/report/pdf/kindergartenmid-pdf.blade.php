@@ -211,13 +211,23 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
 
             <div>
                 <table class="table" style="margin-top:10px;">
-                    <tr>
-                        <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">Subjects</th>
-                        <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">Exercise 1</th>
-                        <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">Quiz 1</th>
-                        <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">Exercise 2</th>
-                        <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">Quiz 2</th>
-                    </tr>
+                     @if ($semester == 1)
+                        <tr>
+                            <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">Subjects</th>
+                            <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">Exercise 1</th>
+                            <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">Quiz 1</th>
+                            <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">Exercise 2</th>
+                            <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">Quiz 2</th>
+                        </tr>
+                    @elseif ($semester == 2)
+                        <tr>
+                            <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">Subjects</th>
+                            <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">Exercise 3</th>
+                            <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">Quiz 3</th>
+                            <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">Exercise 4</th>
+                            <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">Quiz 4</th>
+                        </tr>
+                    @endif
                     @if (count($result) > 0)
                         @foreach ($result[0]['subjects'] as $rs)
                         <tr>
