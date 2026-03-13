@@ -4999,11 +4999,11 @@ class ReportController extends Controller
                 ->select('teachers.name as teacher_name')
                 ->first();
  
-            $ct = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->value('critical_thinking');
-            $cs = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->value('cognitive_skills');
-            $ls = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->value('life_skills');
-            $les = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->value('learning_skills');
-            $saed = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->value('social_and_emotional_development');
+            $ct = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->where('semester', '=', $semester)->value('critical_thinking');
+            $cs = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->where('semester', '=', $semester)->value('cognitive_skills');
+            $ls = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->where('semester', '=', $semester)->value('life_skills');
+            $les = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->where('semester', '=', $semester)->value('learning_skills');
+            $saed = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->where('semester', '=', $semester)->value('social_and_emotional_development');
             $academicYear = Master_academic::where('is_use', true)->value('academic_year');
 
             $resultsAttendance = Grade::join('students', 'students.grade_id', '=', 'grades.id')
