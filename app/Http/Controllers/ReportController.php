@@ -7014,14 +7014,14 @@ class ReportController extends Controller
                 $studentMonthlyActivity = Student_Monthly_Activity::join('students', 'students.id', '=', 'student_monthly_activities.student_id')
                     ->join('monthly_activities', 'monthly_activities.id', '=', 'student_monthly_activities.monthly_activity_id')
                     ->where('student_monthly_activities.student_id', $id)
-                    ->where('student_monthly_activities.semester', '=', '0.5')
+                    ->where('student_monthly_activities.semester', '=', '1.5')
                     ->where('student_monthly_activities.academic_year', $academic_year)
                     ->select('student_monthly_activities.*', 'monthly_activities.name as name_activity')
                     ->get();
             }
 
 
-            dd($studentMonthlyActivity);
+            //dd($studentMonthlyActivity);
 
             if ($semester == 1) {
                 $data = [
