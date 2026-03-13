@@ -4848,7 +4848,7 @@ class ReportController extends Controller
                 $monthActivity[] = ucfirst($date->translatedFormat('F'));
             }
 
-            $monthly = MonthlyActivity::where('grades', '=', 'lower')->where('semester', '=', '$semester')->('academic_year', '=', '$academic_year')->whereIn('month', $monthActivity)->take(3)->get();
+            $monthly = MonthlyActivity::where('grades', '=', 'lower')->where('semester', '=', $semester)->('academic_year', '=', $academic_year)->whereIn('month', $monthActivity)->take(3)->get();
             $monthlyTitle = MonthlyActivity::where('grades', '=', 'lower')->whereIn('month', $monthActivity)->take(3)->pluck('name')->toArray();
 
             // dd($monthlyTitle);
