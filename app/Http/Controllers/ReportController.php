@@ -5421,7 +5421,7 @@ class ReportController extends Controller
                 ->orderBy('students.name', 'asc')
                 ->get();
 
-            dd($scoresByStudent);
+            // dd($scoresByStudent);
             $data = [
                 'semester'      => $semester,
                 'student'       => $student,
