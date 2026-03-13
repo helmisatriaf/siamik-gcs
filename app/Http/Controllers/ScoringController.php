@@ -1340,7 +1340,7 @@ class ScoringController extends Controller
 
     public function actionPostMidReportCardKindergarten(Request $request)
     {
-        dd($request);
+        //dd($request);
         if (session('semester') == 1) {
             $getRangeDateSemester = Master_academic::where('is_use', true)->first();
             $startSemester = Carbon::parse($getRangeDateSemester->semester1);
