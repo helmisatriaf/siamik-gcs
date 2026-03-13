@@ -4851,7 +4851,7 @@ class ReportController extends Controller
             $monthly = MonthlyActivity::where('grades', '=', 'lower')->whereIn('month', $monthActivity)->take(3)->get();
             $monthlyTitle = MonthlyActivity::where('grades', '=', 'lower')->whereIn('month', $monthActivity)->take(3)->pluck('name')->toArray();
 
-            // dd($monthlyTitle);
+            dd($monthlyTitle);
             foreach ($monthlyTitle as &$title) {
                 $title = str_replace(' ', '_', trim($title));
             }
