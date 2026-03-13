@@ -1415,8 +1415,6 @@ class ScoringController extends Controller
                         'monthly_activity_id' => $ma->id,
                         'grades' => $this->gradeKindergarten($request->$name[$student_id]),
                     ];
-
-                    dd($monthly);
                     
                     Student_Monthly_Activity::updateOrCreate(
                         ['student_id' => $request->student_id[$i], 'grade_id' => $request->grade_id, 'semester' => $request->semester,
