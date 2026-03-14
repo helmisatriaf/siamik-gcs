@@ -170,40 +170,44 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
                     <tr>
                         <td style="font-size:10px;padding:0px;"><b>Attendance</b></td>
                         <td style="font-size:10px;padding:0px;">
-                            @if ($attendance[0]['attendance'] > 0)
+                            <!-- @if ($attendance[0]['attendance'] > 0)
                             <b> : {{ $attendance[0]['attendance'] }} days</b>
                             @else
                             <b> : -</b>
-                            @endif
+                            @endif -->
+                            <b> : {{ $attendance[0]['attendance'] > 0 ? $attendance[0]['attendance'].' '.($attendance[0]['attendance']==1?'day':'days') : '-' }}</b>
                         </td>
                     </tr>
                     <tr>
                         <td style="font-size:10px;padding:0px;"><b>Absent</b></td>
                         <td style="font-size:10px;padding:0px;">
-                            @if ($attendance[0]['days_absent'] > 0)
+                            <!-- @if ($attendance[0]['days_absent'] > 0)
                             <b> : {{ $attendance[0]['days_absent'] }} days</b>
                             @else
                             <b> : - </b>
-                            @endif
+                            @endif -->
+                            <b> : {{ $attendance[0]['days_absent'] > 0 ? $attendance[0]['days_absent'].' '.($attendance[0]['days_absent']==1?'day':'days') : '-' }}</b>
                         </td>
                     </tr>
                     <tr>
                         <td style="font-size:10px;padding:0px;"><b>Sick</b></td>
                         <td style="font-size:10px;padding:0px;">
-                            @if ($attendance[0]['sick'] > 0)
+                            <!-- @if ($attendance[0]['sick'] > 0)
                             <b> : {{ $attendance[0]['sick'] }} days</b>
                             @else
                             <b> : - </b>
-                            @endif
+                            @endif -->
+                            <b> : {{ $attendance[0]['sick'] > 0 ? $attendance[0]['sick'].' '.($attendance[0]['sick']==1?'day':'days') : '-' }}</b>
                         </td>
                     </tr>
                     <td style="font-size:10px;padding:0px;"><b>Permission</b></td>
                     <td style="font-size:10px;padding:0px;">
-                        @if ($attendance[0]['permission'] > 0)
+                        <!-- @if ($attendance[0]['permission'] > 0)
                         <b> : {{ $attendance[0]['permission'] }} days</b>
                         @else
                         <b> : - </b>
-                        @endif
+                        @endif -->
+                        {{ $attendance[0]['permission'] > 0 ? $attendance[0]['permission'].' '.($attendance[0]['permission']==1?'day':'days') : '-' }}
                     </td>
                     <!-- END STUDENT STATUS -->
                 </table>
