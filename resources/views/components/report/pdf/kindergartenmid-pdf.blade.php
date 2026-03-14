@@ -207,7 +207,7 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
                         @else
                         <b> : - </b>
                         @endif -->
-                        {{ $attendance[0]['permission'] > 0 ? $attendance[0]['permission'].' '.($attendance[0]['permission']==1?'day':'days') : '-' }}
+                        <b> : {{ $attendance[0]['permission'] > 0 ? $attendance[0]['permission'].' '.($attendance[0]['permission']==1?'day':'days') : '-' }}</b>
                     </td>
                     <!-- END STUDENT STATUS -->
                 </table>
