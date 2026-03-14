@@ -655,31 +655,31 @@ $grade_name = $student->grade_name;
                                 <tr>
                                     <td style="font-size:10px;padding-left:3px;">Days Attended <span class="noto-serif-sc-simbol">出勤天数</span></td>
                                     <td style="font-size:10px;padding-left:3px;">
-                                        @if ($attendance[0]['present'] > 0) {{ $attendance[0]['present'] }} days @else 0 days @endif
+                                        {{ $attendance[0]['present'] }} {{ $attendance[0]['present'] <= 1 ? 'day' : 'days' }}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="font-size:10px;padding-left:3px;">Days Absent <span class="noto-serif-sc-simbol">勤天数</span></td>
                                     <td style="font-size:10px;padding-left:3px;">
-                                        @if ($attendance[0]['days_absent'] > 0) {{ $attendance[0]['days_absent'] }} day @else 0 day @endif
+                                        {{ $attendance[0]['days_absent'] }} {{ $attendance[0]['days_absent'] <= 1 ? 'day' : 'days' }}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="font-size:10px;padding-left:3px;">Days Permission <span class="noto-serif-sc-simbol">请假天数</span></td>
                                     <td style="font-size:10px;padding-left:3px;">
-                                        @if ($attendance[0]['permission'] > 0) {{ $attendance[0]['permission'] }} day @else 0 day @endif
+                                         {{ $attendance[0]['permission'] }} {{ $attendance[0]['permission'] <= 1 ? 'day' : 'days' }}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="font-size:10px;padding-left:3px;">Days Sick <span class="noto-serif-sc-simbol">病假天数</span></td>
                                     <td style="font-size:10px;padding-left:3px;">
-                                        @if ($attendance[0]['sick'] > 0) {{ $attendance[0]['sick'] }} day @else 0 day @endif
+                                        {{ $attendance[0]['sick'] }} {{ $attendance[0]['sick'] <= 1 ? 'day' : 'days' }}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="font-size:10px;padding-left:3px;">Late <span class="noto-serif-sc-simbol">迟到</span></td>
                                     <td style="font-size:10px;padding-left:3px;">
-                                        @if ($attendance[0]['total_late'] > 0) {{ $attendance[0]['total_late'] }} time @else 0 time @endif
+                                        {{ $attendance[0]['total_late'] }} {{ $attendance[0]['total_late'] <= 1 ? 'day' : 'days' }}
                                     </td>
                                 </tr>
                             </table>
