@@ -1183,7 +1183,7 @@
             if (now < releaseDate) {
                 Swal.fire({
                     title: 'Access Denied',
-                    text: 'You can access on 16 March 2026 16:00 WIB',
+                    text: 'You can access on 16 March 2026 at 16:00 WIB',
                     icon: 'error',
                     confirmButtonText: 'OK',
                     customClass: {
