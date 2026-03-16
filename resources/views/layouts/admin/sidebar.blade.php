@@ -54,7 +54,7 @@
             </div>
             <div class="info">
                 <a class="d-block brand-text" style="font-size: 1.2em;">
-                    @if (session('role') == 'library')
+                    @if (session('role') == 'library')g
                         Admin Perpustakaan
                     @else
                         {{ ucwords(strtolower(Str::words(session('name_user'), 2, ''))) }}
@@ -1183,7 +1183,7 @@
             if (now < releaseDate) {
                 Swal.fire({
                     title: 'Access Denied',
-                    text: 'You can access after 16/03/2026 16:00 WIB',
+                    text: 'You can access on 16 March 2026 16:00 WIB',
                     icon: 'error',
                     confirmButtonText: 'OK',
                     customClass: {
