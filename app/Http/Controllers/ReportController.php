@@ -3558,7 +3558,7 @@ class ReportController extends Controller
                 ->get();
 
 
-            // dd($studentMonthlyActivity);
+            //dd($studentMonthlyActivity);
 
             // $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) {
             //     $student = $scores->first();
@@ -3612,6 +3612,8 @@ class ReportController extends Controller
                 'monthlyActivities' => $monthlyActivity,
                 'countMA' => $countMA,
             ];
+
+            //dd($data);
 
             return view('components.report.mid_semester')->with('data', $data);
         } catch (Exception $err) {
@@ -4771,7 +4773,8 @@ class ReportController extends Controller
                 ->select('student_monthly_activities.*', 'monthly_activities.name as name_activity')
                 ->get();
 
-            // dd($studentMonthlyActivity);
+            //dd($studentMonthlyActivity);
+            //dd($student)
 
             // dd($semester);
             $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) use ($studentMonthlyActivity) {
@@ -4847,10 +4850,10 @@ class ReportController extends Controller
                 $monthActivity[] = ucfirst($date->translatedFormat('F'));
             }
 
-            $monthly = MonthlyActivity::where('grades', '=', 'lower')->whereIn('month', $monthActivity)->take(3)->get();
-            $monthlyTitle = MonthlyActivity::where('grades', '=', 'lower')->whereIn('month', $monthActivity)->take(3)->pluck('name')->toArray();
+            $monthly = MonthlyActivity::where('grades', '=', 'lower')->where('semester', '=', $semester)->where('academic_year', '=', $academic_year)->whereIn('month', $monthActivity)->take(3)->get();
+            $monthlyTitle = MonthlyActivity::where('grades', '=', 'lower')->where('semester', '=', $semester)->where('academic_year', '=', $academic_year)->whereIn('month', $monthActivity)->take(3)->pluck('name')->toArray();
 
-            // dd($monthlyTitle);
+            //dd($monthlyTitle);
             foreach ($monthlyTitle as &$title) {
                 $title = str_replace(' ', '_', trim($title));
             }
@@ -4869,6 +4872,8 @@ class ReportController extends Controller
                 'monthly' => $monthly,
                 'title' => $monthlyTitle,
             ];
+
+            //dd($data);
             return view('components.report.mid_kindergarten')->with('data', $data);
         } catch (Exception $err) {
             dd($err);
@@ -4996,11 +5001,11 @@ class ReportController extends Controller
                 ->select('teachers.name as teacher_name')
                 ->first();
  
-            $ct = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->value('critical_thinking');
-            $cs = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->value('cognitive_skills');
-            $ls = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->value('life_skills');
-            $les = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->value('learning_skills');
-            $saed = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->value('social_and_emotional_development');
+            $ct = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->where('semester', '=', $semester)->value('critical_thinking');
+            $cs = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->where('semester', '=', $semester)->value('cognitive_skills');
+            $ls = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->where('semester', '=', $semester)->value('life_skills');
+            $les = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->where('semester', '=', $semester)->value('learning_skills');
+            $saed = Mid_report::where('academic_year', session('academic_year'))->where('mid_reports.student_id', '=', $id)->where('semester', '=', $semester)->value('social_and_emotional_development');
             $academicYear = Master_academic::where('is_use', true)->value('academic_year');
 
             $resultsAttendance = Grade::join('students', 'students.grade_id', '=', 'grades.id')
@@ -5089,7 +5094,7 @@ class ReportController extends Controller
                         'Health Education',
                     ];
                 }
-                if ($gradeId == 6 || $gradeId == 7) {
+                else if ($gradeId == 6 || $gradeId == 7) {
                     $order = [
                         'English',
                         'Chinese',
@@ -5123,6 +5128,8 @@ class ReportController extends Controller
                         'General Knowledge',
                     ];
                 }
+
+                //dd($order);
 
                 $results = Grade::join('students', 'students.grade_id', '=', 'grades.id')
                     ->join('grade_exams', 'grade_exams.grade_id', '=', 'grades.id')
@@ -7009,14 +7016,14 @@ class ReportController extends Controller
                 $studentMonthlyActivity = Student_Monthly_Activity::join('students', 'students.id', '=', 'student_monthly_activities.student_id')
                     ->join('monthly_activities', 'monthly_activities.id', '=', 'student_monthly_activities.monthly_activity_id')
                     ->where('student_monthly_activities.student_id', $id)
-                    ->where('student_monthly_activities.semester', '=', '0.5')
+                    ->where('student_monthly_activities.semester', '=', '1.5')
                     ->where('student_monthly_activities.academic_year', $academic_year)
                     ->select('student_monthly_activities.*', 'monthly_activities.name as name_activity')
                     ->get();
             }
 
 
-            // dd($studentMonthlyActivity);
+            //dd($studentMonthlyActivity);
 
             if ($semester == 1) {
                 $data = [

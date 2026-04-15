@@ -54,7 +54,7 @@
             </div>
             <div class="info">
                 <a class="d-block brand-text" style="font-size: 1.2em;">
-                    @if (session('role') == 'library')
+                    @if (session('role') == 'library')g
                         Admin Perpustakaan
                     @else
                         {{ ucwords(strtolower(Str::words(session('name_user'), 2, ''))) }}
@@ -1178,12 +1178,12 @@
             // });
 
             const now = new Date();
-            const releaseDate = new Date("2025-09-24T13:00:00"); // 24 Sept 2025, jam 13:00
-
+            const releaseDate = new Date("2026-03-16T16:00:00+07:00"); // 16 Maret 2026, 16:00 WIB
+            
             if (now < releaseDate) {
                 Swal.fire({
                     title: 'Access Denied',
-                    text: 'You can access in 24/09/2025 13:00',
+                    text: 'You can access on 16 March 2026 at 16:00 WIB',
                     icon: 'error',
                     confirmButtonText: 'OK',
                     customClass: {

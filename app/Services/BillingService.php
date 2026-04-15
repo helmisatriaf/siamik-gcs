@@ -43,7 +43,8 @@ class BillingService
             if ($response->successful()) {
                 $data = $response->json();
                 Log::info("Payment history response: " . json_encode($data));
-                return $data;
+                // return $data;
+                return array_slice($data, 0, 5);
             }
 
             Log::warning("Unsuccessful response from payment history API: {$response->status()}, Body: {$response->body()}");
