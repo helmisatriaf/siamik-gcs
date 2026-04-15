@@ -1209,6 +1209,8 @@ class ReportController extends Controller
                 ->get()
                 ->keyBy('student_id');
 
+            // dd($comments);
+
             $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) use ($comments) {
                 $student = $scores->first();
                 $majorSubject = Major_subject::pluck('subject_id')->toArray();

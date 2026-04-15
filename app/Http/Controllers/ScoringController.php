@@ -574,6 +574,13 @@ class ScoringController extends Controller
                     ->where('academic_year', session('academic_year'))
                     ->value('attendance');
 
+                    // dd($attendance);
+
+                    if($attendance == null){
+                        session()->flash('attendance_null');
+                        return redirect()->back()->with('role', session('role'));
+                    }
+
                     $eca_aver = ($request->choice[$i] + $request->language_and_art[$i])/2;
 
                     $final_score = ($academic * 0.6)  
