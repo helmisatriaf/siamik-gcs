@@ -997,4 +997,11 @@ class AttendanceController extends Controller
             dd($err);
         }
     }
+
+    public function declineAttendance($id){
+        Score_attendance_status::where('id', $id)->delete();
+
+        session()->flash('success_decline');
+        return redirect()->back();
+    }
 }

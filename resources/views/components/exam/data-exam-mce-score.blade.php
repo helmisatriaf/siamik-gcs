@@ -94,7 +94,7 @@
                                                                             ->value('point');
                                                                     @endphp
                                                                     Point :
-                                                                    <input class="score-input" value="{{$point ?? 0}}" name="student[{{$student->id}}][{{$el->id}}][point]" type="number" autocomplete="off" min="0" max="{{$pointEssay}}">
+                                                                    <input class="score-input" value="{{$point ?? 0}}" name="student[{{$student->id}}][{{$el->id}}][point]" type="float" autocomplete="off" min="0" max="{{$pointEssay}}">
                                                                 @endif
                                                             </div>
                                                         </div>

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\MailController;
 use App\Models\Grade;
 use App\Models\Student;
 use App\Models\Teacher;
@@ -13,16 +12,12 @@ use App\Models\Grade_subject;
 use App\Models\Grade_exam;
 use App\Models\Teacher_grade;
 use App\Models\Teacher_subject;
-use App\Models\Subject_exam;
-use App\Models\User;
+use App\Models\Acar;
 
-use Barryvdh\DomPDF\PDF;
-use Illuminate\Support\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use PHPUnit\Framework\Constraint\Constraint;
 use Illuminate\Support\Facades\Log;
 
 class GradeController extends Controller
@@ -736,6 +731,12 @@ class GradeController extends Controller
 
          Exam::whereIn('id', $getIdExam)->update(['teacher_id' => $request->teacher, 'updated_at' => now()]);
          
+         Acar::where('subject_id', $request->subject)
+            ->where('grade_id', $request->grade)
+            ->where('semester', session('semester'))
+            ->where('academic_year', session('academic_year'))
+            ->update(['teacher_id' => $request->teacher]);
+
          DB::commit();
          
          session()->flash('after_update_subject_teacher');

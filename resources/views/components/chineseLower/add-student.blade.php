@@ -50,7 +50,7 @@
                                 <div class="form-group row">
                                     <div class="col-md-12">
                                         <label for="student_id">Select Student</label>
-                                        <select name="student_id[]" id="student_id" class="js-select2 form-control" multiple="multiple>
+                                        <select name="student_id[]" id="student_id" class="js-select2 form-control" multiple="multiple">
                                             <option value="" >-- SELECTED STUDENT --</option>
                                             @foreach ($data as $dt)
                                                 <option value="{{ $dt->id }}">{{ $dt->name }} ({{ $dt->grade_name }} - {{ $dt->grade_class }})</option>

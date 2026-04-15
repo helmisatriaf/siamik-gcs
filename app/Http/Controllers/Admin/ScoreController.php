@@ -1134,7 +1134,7 @@ class ScoreController extends Controller
                                 'percent_fe'   => round($finalExamScores->avg() * 0.4),
                                 'total_score'  => round(($homeworkScores->avg() * 0.1) + ($exerciseScores->avg() * 0.15) + ($participationScore->avg() * 0.05) + ($quizScores->avg() * 0.3) + ($finalExamScores->avg() * 0.4)),
                                 
-                                'comment' => '',
+                                // 'comment' => '',
                             ];
                         })->values()->all();
 
@@ -1163,7 +1163,7 @@ class ScoreController extends Controller
                             $updateScoring = [
                                 'grades'      => $this->determineGrade($student['total_score']),
                                 'final_score' => $student['total_score'],
-                                'comment'     => "",
+                                // 'comment'     => "",
                             ];
                             
                             // Gunakan updateOrCreate untuk tabel Acar
@@ -1274,7 +1274,7 @@ class ScoreController extends Controller
                                 'total_score' => round(($homeworkScores->avg() * 0.2) + ($exerciseScores->avg() * 0.35) + ($participationScore->avg() * 0.10)) + round($finalExamScores->avg() * 0.35),
     
                                 'grades' => $grade,
-                                'comment' => '',
+                                // 'comment' => '',
                             ];
                         })->values()->all();
     
@@ -1309,7 +1309,7 @@ class ScoreController extends Controller
                             $updateScoring = [
                                 'grades'      => $this->determineGrade($student['total_score']),
                                 'final_score' => $student['total_score'],
-                                'comment'     => "",
+                                // 'comment'     => "",
                             ];
                         
                             // Gunakan updateOrCreate untuk tabel Acar
@@ -1394,7 +1394,7 @@ class ScoreController extends Controller
                                 'total_score' => round(($homeworkScores->avg() * 0.2) + ($exerciseScores->avg() * 0.35) + ($participationScore->avg() * 0.10)) + round($finalExamScores->avg() * 0.35),
     
                                 'grades' => $grade,
-                                'comment' => '',
+                                // 'comment' => '',
                             ];
                         })->values()->all();
     
@@ -1413,7 +1413,7 @@ class ScoreController extends Controller
                             $updateScoring = [
                                 'grades'      => $this->determineGrade($student['total_score']),
                                 'final_score' => $student['total_score'],
-                                'comment'     => "",
+                                // 'comment'     => "",
                             ];
                         
                             // Gunakan updateOrCreate untuk tabel Acar
@@ -1525,7 +1525,7 @@ class ScoreController extends Controller
                                 'percent_mid'  => $percentMid,
                                 'percent_fe'    => $percentFE,
                                 'total_score'   => $totalScore,
-                                'comment' => '',
+                                // 'comment' => '',
                             ];
                         })->values()->all();
     
@@ -1557,7 +1557,7 @@ class ScoreController extends Controller
                             $updateScoring = [
                                 'grades'      => $this->determineGrade($student['total_score']),
                                 'final_score' => $student['total_score'],
-                                'comment'     => "",
+                                // 'comment'     => "",
                             ];
                         
                             Acar::updateOrCreate($matchingScoring, $updateScoring);
@@ -1599,7 +1599,7 @@ class ScoreController extends Controller
                         'percent_minorSubjects' => round($minorSubjectsScores->avg() * 0.2),
                         'percent_supplementarySubjects' => round($supplementarySubjectsScores->avg() * 0.1),
                         'total_score' => round((($majorSubjectsScores->avg() * 0.7) + ($minorSubjectsScores->avg() * 0.2) + $supplementarySubjectsScores->avg() * 0.1)),
-                        'comment' => '',
+                        // 'comment' => '',
                     ];
                 })->values()->all();
                 

@@ -9,12 +9,7 @@
 </head>
 
 <style>
-    * {
-    font-size: 12px;
-     font-family: "DynaPuff", system-ui;
-    font-weight: 400;
-    font-style: normal;
-}
+   
 
 .divider:after,
 .divider:before {

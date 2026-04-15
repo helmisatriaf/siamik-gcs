@@ -438,4 +438,14 @@
     </script>
 @endif
 
+@if(session('attendance_null'))
+    <script>
+        Swal.fire({
+            icon: 'oops',
+            title: 'Check Attendance Score',
+            text: 'Make sure the students attendance values have been calculated correctly',
+        });
+    </script>
+@endif
+
 @endsection

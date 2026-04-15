@@ -1317,7 +1317,7 @@ Route::middleware(['auth.login', 'role:teacher'])->prefix('/teacher')->group(fun
       Route::get('attendance/class/teacher', [AttendanceController::class, 'gradeTeacher']);
       Route::get('attendance/teacher/grade/subject', [AttendanceController::class, 'detailAttendTeacher'])->name('attendance.detail.teacher');
       Route::get('attendance/{id}/{gradeId}/{date}', [AttendanceController::class, 'detail'])->name('attendanceStudent');
-      // Route::get('attendance/decline', [AttendanceController::class, 'detail'])->name('attendanceStudent');
+      Route::get('attendance/decline/{id}', [AttendanceController::class, 'declineAttendance'])->name('attendanceStudent');
 
       Route::post('/', [AttendanceController::class, 'postAttendance'])->name('actionUpdateAttendanceStudent');
       Route::post('/editAttendance', [AttendanceController::class, 'postEditAttendance'])->name('actionEditAttendanceStudent');

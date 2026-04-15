@@ -91,7 +91,7 @@ class DashboardController extends Controller
                ->where('type_schedule_id', '!=', $getIdLesson)  
                ->where('academic_year', session('academic_year')) 
                ->where('date', '>=', now())
-               ->whereNotNull('file_path')
+               // ->whereNotNull('file_path')
                ->select('schedules.*', 'type_schedules.name as type_schedule', 'type_schedules.color as color')
                ->orderBy('date', 'ASC')
                ->first();
@@ -191,7 +191,7 @@ class DashboardController extends Controller
                ->where('type_schedule_id', '!=', $getIdLesson)  
                ->where('academic_year', session('academic_year')) 
                ->where('date', '>=', now())
-               ->whereNotNull('file_path')
+               // ->whereNotNull('file_path')
                ->select('schedules.*', 'type_schedules.name as type_schedule', 'type_schedules.color as color')
                ->orderBy('date', 'ASC')
                ->first();
@@ -749,7 +749,7 @@ class DashboardController extends Controller
                ->where('type_schedule_id', '!=', $getIdLesson)  
                ->where('academic_year', $academic_year) 
                ->where('date', '>=', now())
-               ->whereNotNull('file_path')
+               // ->whereNotNull('file_path')
                ->select('schedules.*', 'type_schedules.name as type_schedule', 'type_schedules.color as color')
                ->orderBy('date', 'ASC')
                ->first();

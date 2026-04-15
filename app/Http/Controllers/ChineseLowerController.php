@@ -51,7 +51,7 @@ class ChineseLowerController extends Controller
             'child' => 'database chinese lower',
             ]);
 
-            $gradeSecondary = Grade::where('name', '=', 'secondary')->pluck('id')->toArray();
+            $gradeSecondary = Grade::all()->pluck('id')->toArray();
             $chineseHigherStudent = Chinese_higher::pluck('student_id')->toArray();
             $chineseLowerStudent = Chinese_lower::pluck('student_id')->toArray();
             
@@ -63,7 +63,8 @@ class ChineseLowerController extends Controller
                     ->whereNotIn('students.id', $chineseLowerStudent)
                     ->where('students.is_active', true)
                     ->select('students.*','grades.name as grade_name', 'grades.class as grade_class')
-                    ->orderByRaw('FIELD(grades.class, "1", "2", "3")')
+                    // ->orderByRaw('FIELD(grades.class, "1", "2", "3")')
+                    ->orderBy('grade_id', 'asc')
                     ->get();
             }else{
                 $data = Student::leftJoin('grades', 'grades.id', '=', 'students.grade_id')
@@ -72,6 +73,7 @@ class ChineseLowerController extends Controller
                     ->select('students.*','grades.name as grade_name', 'grades.class as grade_class')
                     ->orderByRaw('FIELD(grades.class, "1", "2", "3")')
                     ->get();
+
             }
 
             $subject = Subject::where('name_subject', '=', 'chinese lower')->get();

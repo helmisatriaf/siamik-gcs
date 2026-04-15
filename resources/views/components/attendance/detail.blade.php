@@ -1,6 +1,15 @@
 @extends('layouts.admin.master')
 @section('content')
 
+@php
+    if($data['status'] !== null){
+        $statusId = $data['status']['id'];
+    }
+    else{
+        $statusId = null;
+    }
+@endphp
+
 <!-- Content Wrapper. Contains page content -->
 <div class="container-fluid">
     <div class="row">
@@ -108,8 +117,8 @@
                                             <td>{{ $student['effective'] }}</td>
                                             <td>
                                                 {{ $student['score'] }}
-                                                <input name="student_id[]" type="number" class="form-control d-none" id="student_id" value="{{ $student['student_id'] }}">
-                                                <input name="final_score[]" type="number" class="form-control d-none" id="final_score" value="{{ $student['score'] }}">
+                                                <input name="student_id[]" type="number" class="form-control d-none" value="{{ $student['student_id'] }}">
+                                                <input name="final_score[]" type="number" class="form-control d-none" value="{{ $student['score'] }}">
                                             </td>
                 
                                         </tr>
@@ -243,12 +252,12 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Decline Score Attendance {{ $data['grade']->name }} - {{ $data['grade']->class }}</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Decline Score Attendance {{ $data['grade']->grade_name }} - {{ $data['grade']->grade_class }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">Are you sure want to decline scoring attendance {{ $data['grade']->name }} - {{ $data['grade']->class }} ?</div>
+            <div class="modal-body">Are you sure want to decline scoring attendance {{ $data['grade']->grade_name }} - {{ $data['grade']->grade_class }} ?</div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <a class="btn btn-danger btn" id="confirmDecline">Yes decline</a>
@@ -263,18 +272,21 @@
         document.getElementById('confirmForm').submit();
     });
 
-    // document.addEventListener('DOMContentLoaded', function() {
-    //     $('#modalDecline').on('show.bs.modal', function(event) {
-    //         var button = $(event.relatedTarget);
-    //         var gradeId = @json($data['grade']->id);
-    //         var teacherId = @json($data['classTeacher']->teacher_id);
-    //         var semester = @json($data['semester']);
+    document.addEventListener('DOMContentLoaded', function() {
+        $('#modalDecline').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var gradeId = @json($data['grade']->id);
+            var teacherId = @json($data['classTeacher']->teacher_id);
+            var semester = @json($data['semester']);
 
-    //         console.log("gradeId=", gradeId, "teacher=", teacherId, "semester=", semester, "subject=", subjectId, academicYear);
-    //         var confirmDecline = document.getElementById('confirmDecline');
-    //         confirmDecline.href = "{{ url('/' . session('role') . '/dashboard/scoring/decline') }}/" + gradeId + "/" + teacherId + "/" + subjectId + "/" + semester;
-    //     });
-    // });
+            if(@json($statusId) !== null){
+                var statusId = @json($statusId);
+                var confirmDecline = document.getElementById('confirmDecline');
+                confirmDecline.href = "{{ url('/' . session('role') . '/dashboard/attendance/decline') }}/" + statusId;
+            }
+
+        });
+    });
 </script>
 
 <link rel="stylesheet" href="{{asset('template')}}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
@@ -296,6 +308,16 @@
             icon: 'success',
             title: 'Successfully',
             text: 'Successfully attendance student',
+        });
+    </script>
+@endif
+
+@if(session('success_decline'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Successfully',
+            text: 'Successfully decline attendance score',
         });
     </script>
 @endif
