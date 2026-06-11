@@ -155,7 +155,7 @@ class UserController extends Controller
             $nowTime = date('H:i'); // contoh output: 09:32
 
             $allowStart = "07:00";
-            $allowEnd   = "10:05";
+            $allowEnd   = "13:05";
 
             $isWithinTime = ($nowTime >= $allowStart && $nowTime <= $allowEnd);
 
