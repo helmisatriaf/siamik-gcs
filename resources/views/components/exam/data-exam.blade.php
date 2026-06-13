@@ -4,9 +4,8 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="container-fluid">
-
-        <div class="card card-light">
-            <div class="card-header">
+        <div class="card" style="background-color: #ffde9e;border-radius: 12px;">
+            <div class="card-body">
                 @if (session('role') == 'superadmin')
                     <form class="row col-12" action="/superadmin/exams">
                     @elseif (session('role') == 'admin')
@@ -104,63 +103,128 @@
                 </div>
                 </form>
             </div>
-            <div class="card-body">
-                @if (sizeof($data) != 0)
-                    {{-- <a type="button" href="{{ url('/' . session('role') . '/exams/create') }}"
-                        class="btn btn-danger btn-sm mb-2">
-                        <i class="fa-solid fa-plus"></i>
-                        </i>
-                        New Scoring
-                    </a> --}}
+        </div>
 
+                @if (sizeof($data) != 0)
                     <div class="row">
                         @foreach ($data as $el)
-                            <div class="col-md-4 col-sm-6 mb-3">
-                                <div class="position-relative p-3 bg-light d-flex flex-column rounded-lg shadow-md border"
-                                    style="min-height: 180px;">
-                                    <div class="ribbon-wrapper ribbon-lgd">
+                            <div class="col-md-12 mb-3">
+                                <div class="position-relative p-3 d-flex flex-column" style="background-color: #ffde9e;border-radius: 12px;">
+                                    <div class="ribbon-wrapper ribbon-lg">
                                         @if ($el->is_active)
                                             <div class="ribbon bg-warning">Active</div>
                                         @else
                                             <div class="ribbon bg-light">Completed</div>
                                         @endif
                                     </div>
-                                    <p class="flex-grow-1">
-                                        {{ $el->type_exam }} | {{ $el->subject_name }} <br>
-                                        {{ $el->grade_name }} - {{ $el->grade_class }} <br>
-                                        {{ $el->name_exam }} <br>
-                                        <i class="fas fa-clock"></i>
-                                        <span class="text-danger text-bold text-sm">
-                                            {{ \Carbon\Carbon::parse($el->date_exam)->format('l, d F Y') }}
-                                        </span>
-                                    </p>
-                                    <div class="d-flex flex-wrap">
-                                        <div class="col-6 p-1">
-                                            <a class="btn btn-success btn-sm text-sm w-100 rounded"
+                                    <div class="d-flex gap-2">
+                                        <div>
+                                            <img src="{{ asset('storage/'.$el->icon) }}" 
+                                                alt="avatar" class="profileImage img-fluid" 
+                                                style="width: 32px; height: 32px; cursor: pointer;">
+                                        </div>
+                                        <div class="pl-2">
+                                            <p class="flex-grow-1">
+                                                {{$el->type_exam}} | {{$el->subject_name}}<br>
+                                                {{$el->grade_name}} - {{ $el->grade_class }} <br>
+                                                {{$el->name_exam}} <br>
+                                                @switch($el->model)
+                                                    @case("mc")
+                                                        <span class="text-sm">
+                                                            Model : Multiple Choice <br>
+                                                        </span>
+                                                        @break
+                                                    @case("essay")
+                                                        <span class="text-sm">
+                                                            Model : Essay <br>
+                                                        </span>
+                                                        @break
+                                                    @case("mce")
+                                                        <span class="text-sm">
+                                                            Model : Multiple Choice & Essay <br>
+                                                        </span>
+                                                        @break
+                                                    @default
+                                                        <span class="text-sm">
+                                                            Model : Scoring/Upload File <br>
+                                                        </span>
+                                                    @break
+                                                @endswitch
+                                                @switch($el->scoring_status)
+                                                    @case(1)
+                                                        <span class="text-sm badge badge-danger">
+                                                            Belum dinilai 
+                                                        </span><br>
+                                                        @break
+                                                    @case(2)
+                                                        <span class="text-sm badge badge-warning">
+                                                            Sebagian Sudah dinilai
+                                                        </span><br>
+                                                        @break
+                                                    @case(3)
+                                                        <span class="text-sm badge badge-success">
+                                                            Sudah dinilai
+                                                        </span><br>
+                                                        @break
+                                                    @default
+                                                        <span class="text-sm badge badge-danger">
+                                                            Belum dinilai 
+                                                        </span><br>
+                                                    @break
+                                                @endswitch
+
+                                                <i class="fas fa-book"></i> <span class="text-sm text-primary">{{ $el->open_date ? 'Acces By Student in ' .\Carbon\Carbon::parse($el->open_date)->translatedFormat('l, d F Y')  : '-' }}</span><br>
+                                                <i class="fas fa-clock"></i> 
+                                                @php
+                                                    $currentDate = \Carbon\Carbon::now()->startOfDay();
+                                                    $dateExam = \Carbon\Carbon::parse($el->date_exam)->startOfDay();
+                                                    $daysRemaining = $currentDate->diffInDays($dateExam, false);
+                                                @endphp
+                                                @if ($el->is_active)
+                                                    <span class="text-danger text-sm">
+                                                        {{ $dateExam->format('l, d F Y') }}
+                                                    </span>  <br>
+                                                    @if ($daysRemaining == 0)
+                                                        <span class="badge bg-warning">Today</span>
+                                                    @else
+                                                        <span class="badge bg-primary">{{ $daysRemaining }} days again</span>
+                                                    @endif
+                                                @else
+                                                    <span class="text-sm">
+                                                        {{ $dateExam->format('l, d F Y') }}
+                                                    </span> <br>
+                                                    <span class="badge bg-light"><i class="fas fa-check"></i> Completed</span>
+                                                @endif
+                                            </p>                         
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-wrap column-gap-1">
+                                        <div class="p-0">
+                                            <a class="btn btn-info btn-app text-sm"
                                                 href="{{ url('/exams') . '/score/' . $el->id }}">
                                                 <i class="fas fa-book"></i> Score
                                             </a>
                                         </div>
-                                        <div class="col-6 p-1">
-                                            <a class="btn btn-primary btn-sm text-sm w-100 rounded"
+                                        <div class="p-0">
+                                            <a class="btn btn-primary btn-app text-sm"
                                                 href="{{ url('/' . session('role') . '/exams') . '/' . $el->id }}">
                                                 <i class="fas fa-eye"></i> View
                                             </a>
                                         </div>
-                                        <div class="col-6 p-1">
-                                            <a class="btn btn-warning btn-sm text-sm w-100 rounded"
+                                        <div class="p-0">
+                                            <a class="btn btn-warning btn-app text-sm"
                                                 href="{{ url('/' . session('role') . '/exams') . '/edit/' . $el->id }}">
                                                 <i class="fas fa-pencil-alt"></i> Edit
                                             </a>
                                         </div>
-                                        <div class="col-6 p-1">
-                                            <a class="btn btn-danger btn-sm text-sm w-100 rounded" id="deleteExam"
+                                        <div class="p-0">
+                                            <a class="btn btn-danger btn-app text-sm id="deleteExam"
                                                 data-id="{{ $el->id }}">
                                                 <i class="fas fa-trash"></i> Delete
                                             </a>
                                         </div>
-                                        <div class="col-12 p-1">
-                                            <a class="btn btn-secondary btn-sm text-sm w-100 d-flex align-items-center justify-content-center rounded position-relative"
+                                        <div class="p-0">
+                                            <a class="btn btn-secondary btn-app text-sm"
                                                 href="{{ url(session('role') . '/course') . '/' . $el->subject_id . '/sections/' . $el->grade_id }}" style="z-index: 1;">
                                                 <i class="fas fa-book mr-1"></i> Course
                                             </a>
@@ -180,9 +244,7 @@
 
                                 @php
                                     $role = session('role');
-                                    $link =
-                                        '/{$role}/exams?grade=' .
-                                        $selectGrades .
+                                    $link = "/{$role}/exams?grade={$selectGrades}" .
                                         '&subject=' .
                                         $selectSubjects .
                                         '&type=' .
@@ -310,9 +372,6 @@
                         </div>
                     </div>
                 @endif
-            </div>
-        </div>
-
     </div>
 
     <link rel="stylesheet" href="{{ asset('template') }}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">

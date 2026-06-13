@@ -4,7 +4,6 @@ $(document).ready(() => {
 
         Swal.fire({
             title: "Are you sure want to exit?",
-            // icon: "warning",
             showCancelButton: true,
             cancelButtonColor: "#d33",
             confirmButtonColor: "#00b527",

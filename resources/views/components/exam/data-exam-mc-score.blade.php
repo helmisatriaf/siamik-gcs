@@ -3,6 +3,16 @@
 
 <!-- Content Wrapper. Contains page content -->
 <div class="container-fluid">
+    <<div class="floating-nav">
+        <button onclick="window.scrollTo({top:0,behavior:'smooth'})">
+            <i class="fas fa-chevron-up"></i>
+        </button>
+
+        <button onclick="scrollToBottom()">
+            <i class="fas fa-chevron-down"></i>
+        </button>
+    </div>
+
     @if(count($data) !== 0)
         <div class="row">
             <div class="col">
@@ -48,60 +58,93 @@
                                 <td>
                                     <div>
                                         <h1>Question {{ $loop->index + 1 }} :</h1>
-                                        <textarea id="froala-editor"> {{ $el->text }} {{$el->answer[0]['answer_text']}}</textarea>
+                                        {{-- <textarea id="froala-editor"> {{ $el->text }} {{$el->answer[0]['answer_text']}}</textarea> --}}
+                                        {!! $el->text !!} {!!$el->answer[0]['answer_text'] !!}
     
                                         <div class="post">
-                                            <p>Recent Activity</p>
+                                            <h5 class="mb-3">Recent Activity</h5>
+
                                             <div class="row">
-                                                @foreach ($el->students as $index => $student)
-                                                    <div class="user-block col-4 col-md-2">
-                                                        @if ($student->profil == null)
-                                                            <img loading="lazy" src="{{asset('images/admin.png') }}" class="img-circle img-bordered-sm">
-                                                        @else
-                                                            <img class="img-circle img-bordered-sm" src="{{asset('storage/file/profile/'. $student->profil)}}" alt="user image">
-                                                        @endif
-                                                        <span class="username">
-                                                            <span class="text-dark">
-                                                                {{$student->name}}
-                                                            </span>
-                                                            <div class="grid text-dark">
-                                                                <div class="col-12">
-                                                                        Answer : 
-                                                                        @php
-                                                                            if ($el->type == "mc") {
-                                                                                $point = \App\Models\StudentAnswer::with(['answer'])
-                                                                                    ->where('exam_id', $exam->id)
-                                                                                    ->where('question_id', $el->id)
-                                                                                    ->where('student_id', $student->id)
-                                                                                    ->first();
-                                                                                $answer = $point?->answer?->answer_text ?? '';
-                                                                            }
-                                                                            elseif ($el->type == "essay") {
-                                                                                $point = \App\Models\StudentAnswer::with(['answer'])
-                                                                                    ->where('exam_id', $exam->id)
-                                                                                    ->where('question_id', $el->id)
-                                                                                    ->where('student_id', $student->id)
-                                                                                    ->first();
-                                                                                $answer = $point?->essay_answer ?? '';
-                                                                            }
-                                                                        @endphp 
-                                                                        {!! $answer !!}
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    @if ($el->type == "mc")
-                                                                        @php
-                                                                            $point = \App\Models\StudentAnswer::with(['answer'])
-                                                                                ->where('exam_id', $exam->id)
-                                                                                ->where('question_id', $el->id)
-                                                                                ->where('student_id', $student->id)
-                                                                                ->value('point');
-                                                                        @endphp
-                                                                        Point : {{$point}}
-                                                                    @endif
+                                                @foreach ($el->students as $student)
+
+                                                    @php
+                                                        $studentAnswer = \App\Models\StudentAnswer::with(['answer'])
+                                                            ->where('exam_id', $exam->id)
+                                                            ->where('question_id', $el->id)
+                                                            ->where('student_id', $student->id)
+                                                            ->first();
+
+                                                        $answer = '';
+
+                                                        if ($el->type == 'mc') {
+                                                            $answer = $studentAnswer?->answer?->answer_text ?? '-';
+                                                        } else {
+                                                            $answer = $studentAnswer?->essay_answer ?? '-';
+                                                        }
+
+                                                        $point = $studentAnswer?->point ?? 0;
+                                                    @endphp
+
+                                                    <div class="col-md-3 mb-3" >
+                                                        <div class="card h-100" style="background-color: #fff3c0;">
+
+                                                            <div class="card-header p-2">
+                                                                <div class="d-flex align-items-center">
+
+                                                                    <img
+                                                                        src="{{ asset('storage/file/profile/'.$student->profil) }}"
+                                                                        class="img-circle mr-2"
+                                                                        width="40"
+                                                                        height="40"
+                                                                    >
+
+                                                                    <div>
+                                                                        <strong>
+                                                                            {{ collect(explode(' ', trim($student->name)))->first() }}
+                                                                        </strong>
+                                                                    </div>
+
                                                                 </div>
                                                             </div>
-                                                        </span>
+
+                                                            <div class="card-body p-3">
+
+                                                                <div class="mb-2">
+                                                                    <small class="text-muted">
+                                                                        Student Answer
+                                                                    </small>
+
+                                                                    <div class="border rounded p-2 bg-light mt-1 answer-box">
+                                                                        {!! $answer !!}
+                                                                    </div>
+                                                                </div>
+
+                                                                <div>
+                                                                    <small class="text-muted">
+                                                                        Score
+                                                                    </small>
+
+                                                                    @if ($el->type == 'mc')
+                                                                        <div class="font-weight-bold text-success">
+                                                                            {{ $point }} Point
+                                                                        </div>
+                                                                    @else
+                                                                        <input
+                                                                            class="form-control form-control-sm score-input mt-1"
+                                                                            value="{{ $point }}"
+                                                                            name="student[{{$student->id}}][{{$el->id}}][point]"
+                                                                            type="number"
+                                                                            min="0"
+                                                                            max="{{ $pointEssay }}"
+                                                                        >
+                                                                    @endif
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
                                                     </div>
+
                                                 @endforeach
                                             </div>
                                         </div>
@@ -124,7 +167,7 @@
     @else
         <p>Kosong</p>
     @endif
-
+    <div id="bottom-anchor"></div>
     <a href="{{ url('/teacher/enroll/' . $examId) }}" class="btn btn-danger">Enroll Score</a>
 </div>
 

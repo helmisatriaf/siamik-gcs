@@ -42,121 +42,239 @@
                         <tbody>
                             @foreach ($data as $el)
                             <tr id="{{'index_grade_' . $el->id}}">
-                                <td style="width: 65%">
-                                    @php
-                                        $ext = pathinfo($el->file_name, PATHINFO_EXTENSION);
-                                    @endphp
+                                @if($el->hasFile !== 1)
+                                    <td style="width: 65%">
+                                        @php
+                                            $ext = pathinfo($el->file_name, PATHINFO_EXTENSION);
+                                        @endphp
 
-                                    @if ($el->file_name !== null)
-                                        <a href="{{ asset('storage/file/answers/'.$el->file_name) }}" 
-                                            class="btn-link text-secondary d-block" 
-                                            title="download file"
-                                            download="{{ $el->file_name }}">
-                                            <i class="far fa-fw fa-file-pdf"></i>Download Answer
-                                        </a>
-                                        @if (in_array(strtolower($ext), ['jpg', 'jpeg', 'png', 'gif', 'webp', 'heic']))
-                                            <img src="{{ asset('storage/file/answers/'.$el->file_name) }}" class="img-fluid">
-                                        @elseif (strtolower($ext) === 'pdf')
-                                            {{-- <a href="{{ asset('storage/file/answers/'.$el->file_name) }}" target="_blank">Lihat PDF</a> --}}
-                                            <iframe src="{{ asset('storage/file/answers/'.$el->file_name) }}" width="100%" height="500px"></iframe>
+                                        @if ($el->file_name !== null)
+                                            <a href="{{ asset('storage/file/answers/'.$el->file_name) }}" 
+                                                class="btn-link text-secondary d-block" 
+                                                title="download file"
+                                                download="{{ $el->file_name }}">
+                                                <i class="far fa-fw fa-file-pdf"></i>Download Answer
+                                            </a>
+                                            @if (in_array(strtolower($ext), ['jpg', 'jpeg', 'png', 'gif', 'webp', 'heic']))
+                                                <img src="{{ asset('storage/file/answers/'.$el->file_name) }}" class="img-fluid">
+                                            @elseif (strtolower($ext) === 'pdf')
+                                                {{-- <a href="{{ asset('storage/file/answers/'.$el->file_name) }}" target="_blank">Lihat PDF</a> --}}
+                                                <iframe src="{{ asset('storage/file/answers/'.$el->file_name) }}" width="100%" height="500px"></iframe>
+                                            @endif
+                                            {{-- <img src="{{ asset('storage/file/answers/'.$el->file_name) }}" class="img-fluid" alt=""> --}}
+                                        @else
+                                            <p class="text-center text-danger">Student has not submitted the answer yet.</p>
                                         @endif
-                                        {{-- <img src="{{ asset('storage/file/answers/'.$el->file_name) }}" class="img-fluid" alt=""> --}}
-                                    @else
-                                        <p class="text-center text-danger">Student has not submitted the answer yet.</p>
-                                    @endif
-                                </td>
-                                <td class="">
-                                    @if ($el->late !== NULL)
-                                        <span class="badge badge-warning">Late : {{$el->late}}</span>
-                                    @endif
-                                    <p class="text-sm">
-                                        {{ $loop->index + 1 }}. {{ $el->student_name }}
-                                    </p>
-                                    <div class="input-group">
-                                        <input name="exam_id" type="text" class="form-control d-none" id="exam_id-{{$el->student_id}}" value="{{ $el->exam_id }}">
-                                        <input name="subject_id" type="text" class="form-control d-none" id="subject_id-{{$el->student_id}}" value="{{ $el->subject_id }}">
-                                        <input name="grade_id" type="text" class="form-control d-none" id="grade_id-{{$el->student_id}}" value="{{ $el->grade_id }}">
-                                        <input name="teacher_id" type="text" class="form-control d-none" id="teacher_id-{{$el->student_id}}" value="{{ $el->teacher_id }}">
-                                        <input name="type_exam_id" type="text" class="form-control d-none" id="type_exam_id-{{$el->student_id}}" value="{{ $el->type_exam_id }}">
-                                        <input name="student_id[]" type="text" class="form-control d-none" id="student_id-{{$el->student_id}}" value="{{ $el->student_id }}">
-                                        <input name="score[]" type="number" class="form-control score-input" id="score-{{$el->student_id}}" placeholder="Score" value="{{ old('score', $el->score) }}" autocomplete="off" min="0" max="100" required>
-                                    </div>
-                                    
-                                    <p class="mt-3 text-sm">
-                                        Comment <br> <span class="text-danger text-xs">**(Boleh diisi Apresiasi/Pembenaran jawaban)</span>
-                                    </p>
-                                    
-                                    <nav>
-                                        <div class="nav nav-tabs mb-4" id="nav-tab" role="tablist">
-                                            @if ($el->justification == NULL && $el->justification_file == NULL)
-                                                <a id="commentText" class="nav-item nav-link active text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('text', {{$el->student_id}})">Text</a>
-                                                <a id="commentUploadFile" class="nav-item nav-link text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('file', {{$el->student_id}})">Upload File</a>
-                                            @else
-                                                @if ($el->justification !== NULL)
-                                                    <a id="commentText" class="nav-item nav-link active text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('text', {{$el->student_id}})">Text</a>
-                                                    <a id="commentUploadFile" class="nav-item nav-link   text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('file', {{$el->student_id}})">Upload File</a>
-                                                    @elseif($el->justification_file !== NULL)
-                                                    <a id="commentText" class="nav-item nav-link text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('text', {{$el->student_id}})">Text</a>
-                                                    <a id="commentUploadFile" class="nav-item nav-link active text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('file', {{$el->student_id}})">Upload File</a>
-                                                @else
+                                    </td>
+                                    <td class="">
+                                        @if ($el->late !== NULL)
+                                            <span class="badge badge-warning">Late : {{$el->late}}</span>
+                                        @endif
+                                        <p class="text-sm">
+                                            {{ $loop->index + 1 }}. {{ $el->student_name }}
+                                        </p>
+                                        <div class="input-group">
+                                            <input name="exam_id" type="text" class="form-control d-none" id="exam_id-{{$el->student_id}}" value="{{ $el->exam_id }}">
+                                            <input name="subject_id" type="text" class="form-control d-none" id="subject_id-{{$el->student_id}}" value="{{ $el->subject_id }}">
+                                            <input name="grade_id" type="text" class="form-control d-none" id="grade_id-{{$el->student_id}}" value="{{ $el->grade_id }}">
+                                            <input name="teacher_id" type="text" class="form-control d-none" id="teacher_id-{{$el->student_id}}" value="{{ $el->teacher_id }}">
+                                            <input name="type_exam_id" type="text" class="form-control d-none" id="type_exam_id-{{$el->student_id}}" value="{{ $el->type_exam_id }}">
+                                            <input name="student_id[]" type="text" class="form-control d-none" id="student_id-{{$el->student_id}}" value="{{ $el->student_id }}">
+                                            <input name="score[]" type="number" class="form-control score-input" id="score-{{$el->student_id}}" placeholder="Score" value="{{ old('score', $el->score) }}" autocomplete="off" min="0" max="100" required>
+                                        </div>
+                                        
+                                        <p class="mt-3 text-sm">
+                                            Comment <br> <span class="text-danger text-xs">**(Boleh diisi Apresiasi/Pembenaran jawaban)</span>
+                                        </p>
+                                        
+                                        <nav>
+                                            <div class="nav nav-tabs mb-4" id="nav-tab" role="tablist">
+                                                @if ($el->justification == NULL && $el->justification_file == NULL)
                                                     <a id="commentText" class="nav-item nav-link active text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('text', {{$el->student_id}})">Text</a>
                                                     <a id="commentUploadFile" class="nav-item nav-link text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('file', {{$el->student_id}})">Upload File</a>
+                                                @else
+                                                    @if ($el->justification !== NULL)
+                                                        <a id="commentText" class="nav-item nav-link active text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('text', {{$el->student_id}})">Text</a>
+                                                        <a id="commentUploadFile" class="nav-item nav-link   text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('file', {{$el->student_id}})">Upload File</a>
+                                                        @elseif($el->justification_file !== NULL)
+                                                        <a id="commentText" class="nav-item nav-link text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('text', {{$el->student_id}})">Text</a>
+                                                        <a id="commentUploadFile" class="nav-item nav-link active text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('file', {{$el->student_id}})">Upload File</a>
+                                                    @else
+                                                        <a id="commentText" class="nav-item nav-link active text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('text', {{$el->student_id}})">Text</a>
+                                                        <a id="commentUploadFile" class="nav-item nav-link text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('file', {{$el->student_id}})">Upload File</a>
+                                                    @endif
                                                 @endif
-                                            @endif
-                                        </div>
-                                    </nav>
+                                            </div>
+                                        </nav>
 
 
-                                    @if ($el->justification == NULL && $el->justification_file == NULL)
-                                        <div id="text-input-{{$el->student_id}}">
-                                            <textarea name="justification[]" id="justification-{{$el->student_id}}" class="summernote">{{$el->justification}}</textarea>
-                                        </div>
-
-                                        <!-- Konten upload file -->
-                                        <div id="file-input-{{$el->student_id}}" style="display: none;">
-                                            <input type="file" name="upload_file_justification[{{$el->student_id}}]" accept=".pdf, .png, .jpg, .jpeg, .heic">
-                                        </div>
-                                    @else
-                                        @if ($el->justification !== NULL)
+                                        @if ($el->justification == NULL && $el->justification_file == NULL)
                                             <div id="text-input-{{$el->student_id}}">
                                                 <textarea name="justification[]" id="justification-{{$el->student_id}}" class="summernote">{{$el->justification}}</textarea>
                                             </div>
 
                                             <!-- Konten upload file -->
                                             <div id="file-input-{{$el->student_id}}" style="display: none;">
-                                                <input type="file" name="upload_file_justification[{{$el->student_id}}]" accept=".pdf, .png, .jpg, .jpeg, .heic">
-                                            </div>
-                                        @elseif($el->justification_file !== NULL)
-                                             <div id="text-input-{{$el->student_id}}" style="display: none;">
-                                                <textarea name="justification[]" id="justification-{{$el->student_id}}" class="summernote">{{$el->justification}}</textarea>
-                                            </div>
-
-                                            <!-- Konten upload file -->
-                                            <div id="file-input-{{$el->student_id}}">
-                                                <a href="{{ asset('storage/file/correction/'.$el->justification_file) }}" 
-                                                    class="btn-link text-secondary d-block" 
-                                                    target="_blank" 
-                                                    rel="noopener noreferrer">
-                                                    <i class="fas fa-link mr-1"></i> See Correction
-                                                </a>
                                                 <input type="file" name="upload_file_justification[{{$el->student_id}}]" accept=".pdf, .png, .jpg, .jpeg, .heic">
                                             </div>
                                         @else
-                                            <div id="text-input-{{$el->student_id}}">
-                                                <textarea name="justification[]" id="justification-{{$el->student_id}}" class="summernote">{{$el->justification}}</textarea>
-                                            </div>
+                                            @if ($el->justification !== NULL)
+                                                <div id="text-input-{{$el->student_id}}">
+                                                    <textarea name="justification[]" id="justification-{{$el->student_id}}" class="summernote">{{$el->justification}}</textarea>
+                                                </div>
 
-                                            <!-- Konten upload file -->
-                                            <div id="file-input-{{$el->student_id}}" style="display: none;">
-                                                <input type="file" name="upload_file_justification[{{$el->student_id}}]" accept=".pdf, .png, .jpg, .jpeg, .heic">
-                                            </div>
+                                                <!-- Konten upload file -->
+                                                <div id="file-input-{{$el->student_id}}" style="display: none;">
+                                                    <input type="file" name="upload_file_justification[{{$el->student_id}}]" accept=".pdf, .png, .jpg, .jpeg, .heic">
+                                                </div>
+                                            @elseif($el->justification_file !== NULL)
+                                                <div id="text-input-{{$el->student_id}}" style="display: none;">
+                                                    <textarea name="justification[]" id="justification-{{$el->student_id}}" class="summernote">{{$el->justification}}</textarea>
+                                                </div>
+
+                                                <!-- Konten upload file -->
+                                                <div id="file-input-{{$el->student_id}}">
+                                                    <a href="{{ asset('storage/file/correction/'.$el->justification_file) }}" 
+                                                        class="btn-link text-secondary d-block" 
+                                                        target="_blank" 
+                                                        rel="noopener noreferrer">
+                                                        <i class="fas fa-link mr-1"></i> See Correction
+                                                    </a>
+                                                    <input type="file" name="upload_file_justification[{{$el->student_id}}]" accept=".pdf, .png, .jpg, .jpeg, .heic">
+                                                </div>
+                                            @else
+                                                <div id="text-input-{{$el->student_id}}">
+                                                    <textarea name="justification[]" id="justification-{{$el->student_id}}" class="summernote">{{$el->justification}}</textarea>
+                                                </div>
+
+                                                <!-- Konten upload file -->
+                                                <div id="file-input-{{$el->student_id}}" style="display: none;">
+                                                    <input type="file" name="upload_file_justification[{{$el->student_id}}]" accept=".pdf, .png, .jpg, .jpeg, .heic">
+                                                </div>
+                                            @endif
                                         @endif
-                                    @endif
 
-                                    @if($errors->has('score'))
-                                    <p style="color: red">{{ $errors->first('score') }}</p>
-                                    @endif
-                                </td>
+                                        @if($errors->has('score'))
+                                        <p style="color: red">{{ $errors->first('score') }}</p>
+                                        @endif
+                                    </td>
+                                @else
+                                    <div class="card card-outline mb-4 shadow-sm" style="background-color: #fff3c0;">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">
+                                                {{ $loop->iteration }}.
+                                                {{ $el->student_name }}
+                                            </h5>
+                                        </div>
+
+                                        <div class="card-body" >
+                                            <div class="form-group">
+                                                <label class="font-weight-bold">
+                                                    Score
+                                                </label>
+
+                                                <div class="input-group">
+                                                    <input name="exam_id" type="text" class="form-control d-none" id="exam_id-{{$el->student_id}}" value="{{ $el->exam_id }}">
+                                                    <input name="subject_id" type="text" class="form-control d-none" id="subject_id-{{$el->student_id}}" value="{{ $el->subject_id }}">
+                                                    <input name="grade_id" type="text" class="form-control d-none" id="grade_id-{{$el->student_id}}" value="{{ $el->grade_id }}">
+                                                    <input name="teacher_id" type="text" class="form-control d-none" id="teacher_id-{{$el->student_id}}" value="{{ $el->teacher_id }}">
+                                                    <input name="type_exam_id" type="text" class="form-control d-none" id="type_exam_id-{{$el->student_id}}" value="{{ $el->type_exam_id }}">
+                                                    <input name="student_id[]" type="text" class="form-control d-none" id="student_id-{{$el->student_id}}" value="{{ $el->student_id }}"> 
+                                                    <input
+                                                        name="score[]"
+                                                        type="number"
+                                                        class="form-control form-control-lg score-input"
+                                                        id="score-{{$el->student_id}}"
+                                                        value="{{ old('score', $el->score) }}"
+                                                        min="0"
+                                                        max="100"
+                                                        required
+                                                    >
+
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">
+                                                            / 100
+                                                        </span>
+                                                    </div>
+
+                                                </div>
+
+                                                <p class="mt-3 text-sm">
+                                                    Comment <br> <span class="text-danger text-xs">**(Boleh diisi Apresiasi/Pembenaran jawaban)</span>
+                                                </p>
+                                                
+                                                <nav>
+                                                    <div class="nav nav-tabs mb-4" id="nav-tab" role="tablist">
+                                                        @if ($el->justification == NULL && $el->justification_file == NULL)
+                                                            <a id="commentText" class="nav-item nav-link active text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('text', {{$el->student_id}})">Text</a>
+                                                            <a id="commentUploadFile" class="nav-item nav-link text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('file', {{$el->student_id}})">Upload File</a>
+                                                        @else
+                                                            @if ($el->justification !== NULL)
+                                                                <a id="commentText" class="nav-item nav-link active text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('text', {{$el->student_id}})">Text</a>
+                                                                <a id="commentUploadFile" class="nav-item nav-link   text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('file', {{$el->student_id}})">Upload File</a>
+                                                                @elseif($el->justification_file !== NULL)
+                                                                <a id="commentText" class="nav-item nav-link text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('text', {{$el->student_id}})">Text</a>
+                                                                <a id="commentUploadFile" class="nav-item nav-link active text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('file', {{$el->student_id}})">Upload File</a>
+                                                            @else
+                                                                <a id="commentText" class="nav-item nav-link active text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('text', {{$el->student_id}})">Text</a>
+                                                                <a id="commentUploadFile" class="nav-item nav-link text-[8px] md:text-[12px] lg:text-[14px] xl:text-[16px]" onclick="toggleInput('file', {{$el->student_id}})">Upload File</a>
+                                                            @endif
+                                                        @endif
+                                                    </div>
+                                                </nav>
+
+
+                                                @if ($el->justification == NULL && $el->justification_file == NULL)
+                                                    <div id="text-input-{{$el->student_id}}">
+                                                        <textarea name="justification[]" id="justification-{{$el->student_id}}" class="summernote">{{$el->justification}}</textarea>
+                                                    </div>
+
+                                                    <!-- Konten upload file -->
+                                                    <div id="file-input-{{$el->student_id}}" style="display: none;">
+                                                        <input type="file" name="upload_file_justification[{{$el->student_id}}]" accept=".pdf, .png, .jpg, .jpeg, .heic">
+                                                    </div>
+                                                @else
+                                                    @if ($el->justification !== NULL)
+                                                        <div id="text-input-{{$el->student_id}}">
+                                                            <textarea name="justification[]" id="justification-{{$el->student_id}}" class="summernote">{{$el->justification}}</textarea>
+                                                        </div>
+
+                                                        <!-- Konten upload file -->
+                                                        <div id="file-input-{{$el->student_id}}" style="display: none;">
+                                                            <input type="file" name="upload_file_justification[{{$el->student_id}}]" accept=".pdf, .png, .jpg, .jpeg, .heic">
+                                                        </div>
+                                                    @elseif($el->justification_file !== NULL)
+                                                        <div id="text-input-{{$el->student_id}}" style="display: none;">
+                                                            <textarea name="justification[]" id="justification-{{$el->student_id}}" class="summernote">{{$el->justification}}</textarea>
+                                                        </div>
+
+                                                        <!-- Konten upload file -->
+                                                        <div id="file-input-{{$el->student_id}}">
+                                                            <a href="{{ asset('storage/file/correction/'.$el->justification_file) }}" 
+                                                                class="btn-link text-secondary d-block" 
+                                                                target="_blank" 
+                                                                rel="noopener noreferrer">
+                                                                <i class="fas fa-link mr-1"></i> See Correction
+                                                            </a>
+                                                            <input type="file" name="upload_file_justification[{{$el->student_id}}]" accept=".pdf, .png, .jpg, .jpeg, .heic">
+                                                        </div>
+                                                    @else
+                                                        <div id="text-input-{{$el->student_id}}">
+                                                            <textarea name="justification[]" id="justification-{{$el->student_id}}" class="summernote">{{$el->justification}}</textarea>
+                                                        </div>
+
+                                                        <!-- Konten upload file -->
+                                                        <div id="file-input-{{$el->student_id}}" style="display: none;">
+                                                            <input type="file" name="upload_file_justification[{{$el->student_id}}]" accept=".pdf, .png, .jpg, .jpeg, .heic">
+                                                        </div>
+                                                    @endif
+                                                @endif
+                                            </div>
+
+                                            
+                                        </div>
+                                    </div>
+                                @endif
                             </tr>
                             @endforeach
                         </tbody>

@@ -221,9 +221,17 @@
     @if($errors->first('invalid'))
       <script>
         Swal.fire({
-          icon: "error",
-          title: "Invalid username or password",
-          text: "Make sure your input is correctly !!!"
+          title: "Invalid username & password",
+          text: "Make sure your input is correctly !!!",
+          confirmButtonColor: "#00b527",
+          confirmButtonText: "Understand",
+          imageUrl: '/images/confuse.png', // pastikan path ini bisa diakses dari browser
+          imageWidth: 100,
+          imageHeight: 100,
+          imageAlt: 'Custom image',
+          customClass: {
+              popup: 'rounded-swal',
+          }
         });
       </script>
     @endif
@@ -231,9 +239,17 @@
     @if($errors->first('credentials'))
       <script>
         Swal.fire({
-          icon: "error",
           title: "Invalid credentials",
           text: "Make sure you login first !!!"
+          confirmButtonColor: "#00b527",
+          confirmButtonText: "Understand",
+          imageUrl: '/images/confuse.png', // pastikan path ini bisa diakses dari browser
+          imageWidth: 100,
+          imageHeight: 100,
+          imageAlt: 'Custom image',
+          customClass: {
+              popup: 'rounded-swal',
+          }
         });      
       </script>
     @endif
@@ -241,15 +257,31 @@
     @if ($errors->first('username'))
     <script>
         Swal.fire({
-          icon: "error",
           title: "Username is required !!!",
+          confirmButtonColor: "#00b527",
+          confirmButtonText: "Understand",
+          imageUrl: '/images/confuse.png', // pastikan path ini bisa diakses dari browser
+          imageWidth: 100,
+          imageHeight: 100,
+          imageAlt: 'Custom image',
+          customClass: {
+              popup: 'rounded-swal',
+          }
         });
     </script>
     @elseif ($errors->first('password'))
     <script>
       Swal.fire({
-        icon: "error",
         title: "Password is required !!!",
+        confirmButtonColor: "#00b527",
+          confirmButtonText: "Understand",
+          imageUrl: '/images/confuse.png', // pastikan path ini bisa diakses dari browser
+          imageWidth: 100,
+          imageHeight: 100,
+          imageAlt: 'Custom image',
+          customClass: {
+              popup: 'rounded-swal',
+          }
       });
   </script>
     @endif
@@ -261,6 +293,15 @@
         icon: 'success',
         title: 'Successfully',
         text: 'Success update password, please login again !!!',
+        confirmButtonColor: "#00b527",
+        confirmButtonText: "Understand",
+        imageUrl: '/images/login.png', // pastikan path ini bisa diakses dari browser
+        imageWidth: 100,
+        imageHeight: 100,
+        imageAlt: 'Custom image',
+        customClass: {
+            popup: 'rounded-swal',
+        }
       });
     </script>
    @endif

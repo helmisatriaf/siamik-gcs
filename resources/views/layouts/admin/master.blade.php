@@ -444,6 +444,14 @@ layout-fixed layout-navbar-fixed layout-footer-fixed">
             clickSound.play(); // Putar suara
         });
     </script> --}}
+    <script>
+        function scrollToBottom() {
+            document.getElementById('bottom-anchor')
+                .scrollIntoView({
+                    behavior: 'smooth'
+                });
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @livewireScripts
 </body>

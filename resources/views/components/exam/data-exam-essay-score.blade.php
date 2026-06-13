@@ -3,6 +3,15 @@
 
 <!-- Content Wrapper. Contains page content -->
 <div class="container-fluid">
+    <div class="floating-nav">
+        <button onclick="window.scrollTo({top:0,behavior:'smooth'})">
+            <i class="fas fa-chevron-up"></i>
+        </button>
+
+        <button onclick="scrollToBottom()">
+            <i class="fas fa-chevron-down"></i>
+        </button>
+    </div>
 
     @if(count($data) !== 0)
         <div class="row">
@@ -113,6 +122,7 @@
                     <input type="number" name="exam_id" value="{{$exam->id}}" hidden>
 
                     <div class="card-footer">
+                        <div id="bottom-anchor"></div>
                         <button type="submit" class="btn btn-success float-right">Update Scores</button>
                     </div>
                 </form>
