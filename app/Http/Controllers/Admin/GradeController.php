@@ -732,11 +732,11 @@ class GradeController extends Controller
          Exam::whereIn('id', $getIdExam)->update(['teacher_id' => $request->teacher, 'updated_at' => now()]);
          
          Acar::where('subject_id', $request->subject)
-            ->where('grade_id', $request->grade)
+            ->where('grade_id', $request->grade_id)
             ->where('semester', session('semester'))
             ->where('academic_year', session('academic_year'))
-            ->update(['subject_teacher_id' => $request->teacher]);
-
+            ->update(['subject_teacher_id' => $request->teacher, 'updated_at' => now()]);
+         
          DB::commit();
          
          session()->flash('after_update_subject_teacher');
