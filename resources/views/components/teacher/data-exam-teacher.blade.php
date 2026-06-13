@@ -121,12 +121,6 @@
     </div>
 
     @if (sizeof($data) != 0)
-        {{-- <a type="button" href="{{ url('/teacher/dashboard/exam/create') }}" class="btn btn-danger btn-sm mb-2">
-            <i class="fa-solid fa-plus"></i>
-            </i>   
-            New Assessment
-        </a> --}}
-        
         <div class="row">
             @foreach ($data as $el)
             <div class="col-md-12 mb-3">
@@ -260,7 +254,6 @@
         </div>  
         
         {{-- pagination --}}
-
         <div class="d-flex justify-content-end">
 
             <nav aria-label="...">

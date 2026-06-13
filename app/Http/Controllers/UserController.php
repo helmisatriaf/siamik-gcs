@@ -150,16 +150,18 @@ class UserController extends Controller
             $masterAcademic = Master_academic::where('is_use', TRUE)->first();
             $today = date('Y-m-d');
 
+            // dd($masterAcademic, $today);
+
             $nowTime = date('H:i'); // contoh output: 09:32
 
             $nowTime = date('H:i'); // contoh output: 09:32
 
             $allowStart = "07:00";
-            $allowEnd   = "13:05";
+            $allowEnd   = "15:05";
 
             $isWithinTime = ($nowTime >= $allowStart && $nowTime <= $allowEnd);
 
-
+            // dd($isWithinTime);
             // SEMESTER 1
             if ($masterAcademic->now_semester == 1) {
 

@@ -39,6 +39,7 @@ class TeacherController extends Controller
 
          $order = $request->sort ? $request->sort : 'asc';
          $status = $request->status? ($request->status == 'true' ? true : false) : true;
+
          
          if($request->type && $request->search && $request->order)
          {
@@ -66,7 +67,9 @@ class TeacherController extends Controller
          } 
          else 
          {
-            $data = Teacher::orderBy('name', 'asc')->paginate(15);
+            $data = Teacher::orderByDesc('is_active')
+               ->orderBy('name', 'asc')
+               ->paginate(15);
             $count = Teacher::with(['subject', 'grade', 'exam'])
                ->withCount(['subject as active_subject_count', 'grade as active_grade_count', 'exam as active_exam_count'])
                ->orderBy('name', 'asc')

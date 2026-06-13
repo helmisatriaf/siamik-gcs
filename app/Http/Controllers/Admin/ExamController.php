@@ -93,7 +93,8 @@ class ExamController extends Controller
                'grades.id as grade_id',
                'subjects.id as subject_id',
                'teachers.name as teacher_name',
-               'type_exams.name as type_exam'
+               'type_exams.name as type_exam',
+               'subjects.icon as icon',
             )
             ->paginate(15);
 

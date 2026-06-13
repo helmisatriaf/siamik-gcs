@@ -36,6 +36,7 @@ use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\LetterController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\LibraryController;
+use App\Http\Controllers\StreakController;
 
 use App\Http\Controllers\SuperAdmin\{
    SuperAdminController,
@@ -1317,7 +1318,7 @@ Route::middleware(['auth.login', 'role:teacher'])->prefix('/teacher')->group(fun
       Route::get('attendance/class/teacher', [AttendanceController::class, 'gradeTeacher']);
       Route::get('attendance/teacher/grade/subject', [AttendanceController::class, 'detailAttendTeacher'])->name('attendance.detail.teacher');
       Route::get('attendance/{id}/{gradeId}/{date}', [AttendanceController::class, 'detail'])->name('attendanceStudent');
-      Route::get('attendance/decline/{id}', [AttendanceController::class, 'declineAttendance'])->name('attendanceStudent');
+      Route::get('attendance/decline/{id}', [AttendanceController::class, 'declineAttendance']);
 
       Route::post('/', [AttendanceController::class, 'postAttendance'])->name('actionUpdateAttendanceStudent');
       Route::post('/editAttendance', [AttendanceController::class, 'postEditAttendance'])->name('actionEditAttendanceStudent');
@@ -1772,3 +1773,4 @@ Route::post('/plan-visit', [LibraryController::class, 'planVisit'])->name('actio
 Route::get('/others', [LibraryController::class, 'others'])->name('others');
 
 Route::post('/draft-answer', [ScoreController::class, 'draftAnswer'])->name('draft.answer');
+Route::post('/streak/check-in', [StreakController::class, 'checkIn'])->name('streak.checkin');

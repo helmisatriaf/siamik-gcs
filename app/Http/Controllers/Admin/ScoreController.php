@@ -113,6 +113,7 @@ class ScoreController extends Controller
                     'exam' => $exam,
                     'pointEssay' => $pointEssay,
                     'dataExam' => $dataExam,
+                    'examId' => $id,
                 ]);
             }
 

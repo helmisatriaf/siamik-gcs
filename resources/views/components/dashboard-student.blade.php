@@ -98,8 +98,47 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>    
 @endif
+
+<!-- 🔥 STREAK POPUP -->
+<div class="modal fade" id="streakModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center p-3" style="border-radius:20px;">
+
+        <!-- MASKOT -->
+        <div class="mt-3">
+            <img src="/images/greta.png" style="width:100px;">
+        </div>
+
+        <!-- TEXT -->
+        <div class="modal-body">
+            <h5 class="fw-bold">Eh jangan lupa 😢</h5>
+            <p class="text-muted">
+            Streak kamu hampir putus!<br>
+            Yuk isi aktivitas hari ini 🔥
+            </p>
+
+            <!-- BUTTON -->
+            <button 
+            class="btn btn-warning w-100"
+            onclick="scrollToCheckin()"
+            >
+            Check-in Sekarang 🚀
+            </button>
+
+            <button 
+            class="btn btn-link text-muted mt-2"
+            data-bs-dismiss="modal"
+            >
+            Nanti aja
+            </button>
+        </div>
+
+        </div>
+    </div>
+</div>
+<!-- 🔥 END STREAK POPUP -->
 
 <!-- Main content -->
 <section class="content">
@@ -412,108 +451,114 @@
         </div>
     </div>
 
-        {{-- bill & payment --}}
-        {{-- <div class="row">
-            <div class="col-md-12">
-                @if (isset($data['paymentStatus']) && $data['paymentStatus']['has_unpaid_bill'])
-                    <div class="card bg-gradient-warning animate__animated animate__fadeIn" style="border-radius: 12px;">
-                        <div class="card-header border-0">
-                            <h3 class="card-title">
-                                <i class="fas fa-bell fa-shake mr-2"></i>
-                                Payment Notification
-                            </h3>
-                        </div>
-                        <div class="card-body">
-                            <div
-                                class="d-flex flex-column flex-md-row justify-content-between align-items-center bg-white rounded-lg p-4 shadow-sm">
-                                <div class="d-flex align-items-center mb-3 mb-md-0">
-                                    <div class="flex-shrink-0">
-                                        <i class="fas fa-exclamation-circle text-warning fa-2x"></i>
-                                    </div>
-                                    <div class="ml-3">
-                                        <h5 class="font-weight-bold text-dark mb-1">
-                                            {{ $data['paymentStatus']['message'] }}
-                                        </h5>
-                                        <p class="text-muted mb-0">
-                                            Please make the payment as soon as possible to avoid late fees.
-                                        </p>
-                                    </div>
+    {{-- bill & payment --}}
+    {{-- <div class="row">
+        <div class="col-md-12">
+            @if (isset($data['paymentStatus']) && $data['paymentStatus']['has_unpaid_bill'])
+                <div class="card bg-gradient-warning animate__animated animate__fadeIn" style="border-radius: 12px;">
+                    <div class="card-header border-0">
+                        <h3 class="card-title">
+                            <i class="fas fa-bell fa-shake mr-2"></i>
+                            Payment Notification
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div
+                            class="d-flex flex-column flex-md-row justify-content-between align-items-center bg-white rounded-lg p-4 shadow-sm">
+                            <div class="d-flex align-items-center mb-3 mb-md-0">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-exclamation-circle text-warning fa-2x"></i>
                                 </div>
-                                <div class="text-center text-md-right">
-                                    <div class="mb-2">
-                                        <span class="text-muted">Total Bill:</span>
-                                        <h4 class="text-danger font-weight-bold mb-0">
-                                            Rp {{ number_format($data['paymentStatus']['amount'], 0, ',', '.') }}
-                                        </h4>
-                                    </div>
+                                <div class="ml-3">
+                                    <h5 class="font-weight-bold text-dark mb-1">
+                                        {{ $data['paymentStatus']['message'] }}
+                                    </h5>
+                                    <p class="text-muted mb-0">
+                                        Please make the payment as soon as possible to avoid late fees.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="text-center text-md-right">
+                                <div class="mb-2">
+                                    <span class="text-muted">Total Bill:</span>
+                                    <h4 class="text-danger font-weight-bold mb-0">
+                                        Rp {{ number_format($data['paymentStatus']['amount'], 0, ',', '.') }}
+                                    </h4>
                                 </div>
                             </div>
                         </div>
                     </div>
-                @endif
-            </div>
-        </div> --}}
+                </div>
+            @endif
+        </div>
+    </div> --}}
 
-        <!-- Payment History Card -->
-        {{-- <div class="row">
-            <div class="col-md-12">
-                <div class="card" style="border-radius: 12px;">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-history mr-2"></i>
-                            Payment History (Last 3 Months)
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead class="thead-light">
+    <!-- Payment History Card -->
+    {{-- <div class="row">
+        <div class="col-md-12">
+            <div class="card" style="border-radius: 12px;">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-history mr-2"></i>
+                        Payment History (Last 3 Months)
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Month</th>
+                                    <th>Year</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Payment Date</th>
+                                    <th>Due Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="payment-history-body">
+                                @foreach ($data['paymentHistory'] ?? [] as $payment)
                                     <tr>
-                                        <th>Month</th>
-                                        <th>Year</th>
-                                        <th>Amount</th>
-                                        <th>Status</th>
-                                        <th>Payment Date</th>
-                                        <th>Due Date</th>
+                                        <td>{{ $payment['month'] }}</td>
+                                        <td>{{ $payment['year'] }}</td>
+                                        <td>Rp {{ number_format($payment['amount'], 0, ',', '.') }}</td>
+                                        <td>
+                                            @if ($payment['status'] === 'Lunas')
+                                                <span class="badge badge-soft-success px-3 py-2">
+                                                    <i class="fas fa-check-circle mr-1"></i>
+                                                    Paid
+                                                </span>
+                                            @else
+                                                <span class="badge badge-soft-danger px-3 py-2">
+                                                    <i class="fas fa-times-circle mr-1"></i>
+                                                    Unpaid
+                                                </span>
+                                            @endif
+                                        </td>
+                                        <td>{{ $payment['payment_date'] ?? '-' }}</td>
+                                        <td>{{ $payment['due_date'] }}</td>
                                     </tr>
-                                </thead>
-                                <tbody id="payment-history-body">
-                                    @foreach ($data['paymentHistory'] ?? [] as $payment)
-                                        <tr>
-                                            <td>{{ $payment['month'] }}</td>
-                                            <td>{{ $payment['year'] }}</td>
-                                            <td>Rp {{ number_format($payment['amount'], 0, ',', '.') }}</td>
-                                            <td>
-                                                @if ($payment['status'] === 'Lunas')
-                                                    <span class="badge badge-soft-success px-3 py-2">
-                                                        <i class="fas fa-check-circle mr-1"></i>
-                                                        Paid
-                                                    </span>
-                                                @else
-                                                    <span class="badge badge-soft-danger px-3 py-2">
-                                                        <i class="fas fa-times-circle mr-1"></i>
-                                                        Unpaid
-                                                    </span>
-                                                @endif
-                                            </td>
-                                            <td>{{ $payment['payment_date'] ?? '-' }}</td>
-                                            <td>{{ $payment['due_date'] }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        </div> --}}
-    
-    </div>
+        </div>
+    </div> --}}
+</div>
+
 </section>
 <!-- /.content-wrapper -->
 
+{{-- STREAK --}}
+
+
+
+
 <link rel="stylesheet" href="{{ asset('template/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
 <script src="{{ asset('template/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+
 
 @if(session('password.success'))
     <script>
@@ -611,6 +656,38 @@
     </script>
 @endif
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    let today = new Date().toISOString().split('T')[0]; // format: YYYY-MM-DD
+    let lastShown = localStorage.getItem('streak_popup_date');
+
+    // kalau belum pernah muncul hari ini
+    if (lastShown !== today) {
+
+        setTimeout(() => {
+            let modal = new bootstrap.Modal(document.getElementById('streakModal'));
+            modal.show();
+
+            // simpan tanggal hari ini
+            localStorage.setItem('streak_popup_date', today);
+
+        }, 800);
+    }
+
+});
+
+function scrollToCheckin() {
+    let el = document.getElementById('checkin-form');
+    if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    let modalEl = document.getElementById('streakModal');
+    let modal = bootstrap.Modal.getInstance(modalEl);
+    modal.hide();
+}
+</script>
 
 
 @endsection
