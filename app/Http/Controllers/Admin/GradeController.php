@@ -735,7 +735,7 @@ class GradeController extends Controller
             ->where('grade_id', $request->grade)
             ->where('semester', session('semester'))
             ->where('academic_year', session('academic_year'))
-            ->update(['teacher_id' => $request->teacher]);
+            ->update(['subject_teacher_id' => $request->teacher]);
 
          DB::commit();
          
