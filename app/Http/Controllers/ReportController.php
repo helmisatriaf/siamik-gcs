@@ -6072,7 +6072,7 @@ class ReportController extends Controller
                 $order = [
                     'Religion',
                     'PPKn',
-                    'CB',
+                    'Character Building',
                     'Bahasa Indonesia',
                     'Mathematics',
                     'Science',
