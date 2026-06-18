@@ -166,9 +166,11 @@ $grade_name = $student->grade_name;
                 </tr>
                 <tr>
                     <td style="text-align:right;border: 1px solid black;padding-right:8px;border-left: solid 1px black;">Days Absent:</td>
-                    <td style="border: 1px solid black;padding-left:8px;" colspan="3">{{ $attendance[0]['days_absent'] }} day</td>
+                    {{-- <td style="border: 1px solid black;padding-left:8px;" colspan="3">{{ $attendance[0]['days_absent'] }} day</td> --}}
+                    <td style="border: 1px solid black;padding-left:8px;" colspan="3">{{ $attendance[0]['days_absent'] }} {{ $attendance[0]['days_absent'] <= 1 ? 'day' : 'days' }}</td>
                     <td style="text-align:right;border: 1px solid black;padding-right:8px;" colspan="2">Total Days Absent:</td>
-                    <td style="border: 1px solid black;padding-left:8px;border-right: solid 1px black;" colspan="2">{{ $attendance[0]['days_absent'] }}  days</td>
+                    {{-- <td style="border: 1px solid black;padding-left:8px;border-right: solid 1px black;" colspan="2">{{ $attendance[0]['days_absent'] }}  days</td> --}}
+                    <td style="border: 1px solid black;padding-left:8px;border-right: solid 1px black;" colspan="2">{{ $attendance[0]['days_absent'] }} {{ $attendance[0]['days_absent'] <= 1 ? 'day' : 'days' }}</td>
                 </tr>
                 <tr>
                     <td style="text-align:right;border: 1px solid black;padding-right:8px;border-left: solid 1px black;">Times Late:</td>
@@ -385,7 +387,7 @@ $grade_name = $student->grade_name;
                         <!-- SUBJECT REPORT -->
                         <tr>
                             <td style="text-align:left;border: 1px solid black;padding:3px;border-left: solid 1px black;style">
-                                @if ($student->student_id === 356)
+                                @if ($student->student_id === 310)
                                     @if ($scores['subject_name'] === "Chinese")
                                         Chinese-basic
                                     @else   
