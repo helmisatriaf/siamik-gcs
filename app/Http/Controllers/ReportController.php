@@ -6266,12 +6266,13 @@ class ReportController extends Controller
                 ->select('tcops.final_score as final_score', 'tcops.grades_final_score as grades_final_score')
                 ->get();
 
+            $student->date_of_registration = Carbon::parse($student->date_of_registration);
+
             $academicYear = Master_academic::where('is_use', true)->value('academic_year');
 
             $remarks = Acar_comment::where('student_id', $id)->where('academic_year', session('academic_year'))->value('comment');
 
 
-            // chinese lower/higher
             if(strtolower($student->grade_name) === "secondary"){
                 $chineseLower = Chinese_lower::where('student_id', $student->student_id)->exists();
                 $chineseHigher = Chinese_higher::where('student_id', $student->student_id)->exists();
@@ -6297,6 +6298,7 @@ class ReportController extends Controller
                     'promotionGrade' => $grade,
                     'academicYear' => $academicYear,
                     'eca' => $groupedEcaData,
+                    'remarks' => $remarks,
                     'tcop' => $tcop,
                     'date' => $date,
                     'date_of_registration' => $date_of_registration,
@@ -6312,16 +6314,32 @@ class ReportController extends Controller
                     'attendance' => $attendancesByStudent,
                     'relation' => $relation,
                     'serial' => $getSerial,
+                    'promotionGrade' => $grade,
                     'academicYear' => $academicYear,
                     'eca' => $groupedEcaData,
-                    'remarks' => $remarks,
+                    'tcop' => $tcop,
                     'date' => $date,
                     'date_of_registration' => $date_of_registration,
-                    'chineseGrade' => $chineseGrade,
+                    'remarks' => $remarks,
                 ];
             }
 
-            // dd($data);
+            // $data = [
+            //     'student' => $student,
+            //     'classTeacher' => $classTeacher,
+            //     'learningSkills' => $learningSkills,
+            //     'subjectReports' => $scoresByStudent,
+            //     'sooa' => $scoresByStudentSooa,
+            //     'attendance' => $attendancesByStudent,
+            //     'relation' => $relation,
+            //     'serial' => $getSerial,
+            //     'promotionGrade' => $grade,
+            //     'academicYear' => $academicYear,
+            //     'eca' => $groupedEcaData,
+            //     'tcop' => $tcop,
+            //     'date' => $date,
+            //     'date_of_registration' => $date_of_registration,
+            // ];
 
             $pdf = app('dompdf.wrapper');
             $pdf->set_option('isRemoteEnabled', true);

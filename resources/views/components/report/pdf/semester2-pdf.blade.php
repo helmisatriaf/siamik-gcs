@@ -395,10 +395,14 @@ $grade_name = $student->grade_name;
                                     @endif
                                 @else
                                     @if ($scores['subject_name'] === "Chinese")
-                                         @if($chineseGrade == "Lower")
-                                            Chinese-Lower
-                                        @elseif($chineseGrade == "Higher")
-                                            Chinese-Higher
+                                        @if ($student->grade_name == "Secondary")
+                                            @if($chineseGrade == "Lower")
+                                                Chinese-Lower
+                                            @elseif($chineseGrade == "Higher")
+                                                Chinese-Higher
+                                            @else
+                                                Chinese
+                                            @endif
                                         @else
                                             Chinese
                                         @endif
