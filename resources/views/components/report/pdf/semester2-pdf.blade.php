@@ -147,36 +147,36 @@ $grade_name = $student->grade_name;
                     <th colspan="8" style="text-align:center;border-top: 3px solid black;border-bottom: 3px solid black;border-right: 1px solid black;border-left: 1px solid black;"><b>Student Status</b></th>
                 </tr>
                 <tr>
-                    <td style="text-align:right;border: 1px solid black;padding-right:8px;border-left: solid 1px black;">Name:</td>
-                    <td style="border: 1px solid black;padding-left:8px;" colspan="3">{{ ucwords(strtolower($student->student_name)) }}</td>
-                    <td style="text-align:right;border: 1px solid black;padding-right:8px;"  colspan="2">Date:</td>
-                    <td style="border: 1px solid black;padding-left:8px;border-right: solid 1px black;" colspan="2">{{ \Carbon\Carbon::parse($date)->format('F d, Y') }}</td>
+                    <td style="text-align:right;border: 1px solid black;padding-right:4px;border-left: solid 1px black;">Name:</td>
+                    <td style="border: 1px solid black;padding-left:2px;" colspan="3">{{ ucwords(strtolower($student->student_name)) }}</td>
+                    <td style="text-align:right;border: 1px solid black;padding-right:4px;"  colspan="2">Date:</td>
+                    <td style="border: 1px solid black;padding-left:2px;border-right: solid 1px black;" colspan="2">{{ \Carbon\Carbon::parse($date)->format('F d, Y') }}</td>
                 </tr>
                 <tr>
-                    <td style="text-align:right;border: 1px solid black;padding-right:8px;border-left: solid 1px black;">Class:</td>
-                    <td style="border: 1px solid black;padding-left:8px;" colspan="3">{{ $student->grade_name}} - {{ $student->grade_class }}</td>
-                    <td style="text-align:right;border: 1px solid black;padding-right:8px;"  colspan="2">Class Teacher</td>
-                    <td style="border: 1px solid black;padding-left:8px;border-right: solid 1px black;" colspan="2">{{ $classTeacher->teacher_name }}</td>
+                    <td style="text-align:right;border: 1px solid black;padding-right:4px;border-left: solid 1px black;">Class:</td>
+                    <td style="border: 1px solid black;padding-left:2px;" colspan="3">{{ $student->grade_name}} - {{ $student->grade_class }}</td>
+                    <td style="text-align:right;border: 1px solid black;padding-right:4px;"  colspan="2">Class Teacher</td>
+                    <td style="border: 1px solid black;padding-left:2px;border-right: solid 1px black;" colspan="2">{{ $classTeacher->teacher_name }}</td>
                 </tr>
                 <tr>
-                    <td style="text-align:right;border: 1px solid black;padding-right:8px;border-left: solid 1px black;">Serial:</td>
-                    <td style="border: 1px solid black;padding-left:8px;" colspan="3">{{ $serial }}</td>
-                    <td style="text-align:right;border: 1px solid black;padding-right:8px;"  colspan="2">Date of Registration</td>
-                    <td style="border: 1px solid black;padding-left:8px;border-right: solid 1px black;" colspan="2">{{ $date_of_registration }}</td>
+                    <td style="text-align:right;border: 1px solid black;padding-right:4px;border-left: solid 1px black;">Serial:</td>
+                    <td style="border: 1px solid black;padding-left:2px;" colspan="3">{{ $serial }}</td>
+                    <td style="text-align:right;border: 1px solid black;padding-right:4px;"  colspan="2">Date of Registration</td>
+                    <td style="border: 1px solid black;padding-left:2px;border-right: solid 1px black;" colspan="2">{{ $date_of_registration }}</td>
                 </tr>
                 <tr>
-                    <td style="text-align:right;border: 1px solid black;padding-right:8px;border-left: solid 1px black;">Days Absent:</td>
-                    {{-- <td style="border: 1px solid black;padding-left:8px;" colspan="3">{{ $attendance[0]['days_absent'] }} day</td> --}}
-                    <td style="border: 1px solid black;padding-left:8px;" colspan="3">{{ $attendance[0]['days_absent'] }} {{ $attendance[0]['days_absent'] <= 1 ? 'day' : 'days' }}</td>
-                    <td style="text-align:right;border: 1px solid black;padding-right:8px;" colspan="2">Total Days Absent:</td>
-                    {{-- <td style="border: 1px solid black;padding-left:8px;border-right: solid 1px black;" colspan="2">{{ $attendance[0]['days_absent'] }}  days</td> --}}
-                    <td style="border: 1px solid black;padding-left:8px;border-right: solid 1px black;" colspan="2">{{ $attendance[0]['days_absent'] }} {{ $attendance[0]['days_absent'] <= 1 ? 'day' : 'days' }}</td>
+                    <td style="text-align:right;border: 1px solid black;padding-right:4px;border-left: solid 1px black;">Days Absent:</td>
+                    {{-- <td style="border: 1px solid black;padding-left:2px;" colspan="3">{{ $attendance[0]['days_absent'] }} day</td> --}}
+                    <td style="border: 1px solid black;padding-left:2px;" colspan="3">{{ $attendance[0]['days_absent'] }} {{ $attendance[0]['days_absent'] <= 1 ? 'day' : 'days' }}</td>
+                    <td style="text-align:right;border: 1px solid black;padding-right:4px;" colspan="2">Total Days Absent:</td>
+                    {{-- <td style="border: 1px solid black;padding-left:2px;border-right: solid 1px black;" colspan="2">{{ $attendance[0]['days_absent'] }}  days</td> --}}
+                    <td style="border: 1px solid black;padding-left:2px;border-right: solid 1px black;" colspan="2">{{ $attendance[0]['days_absent'] }} {{ $attendance[0]['days_absent'] <= 1 ? 'day' : 'days' }}</td>
                 </tr>
                 <tr>
-                    <td style="text-align:right;border: 1px solid black;padding-right:8px;border-left: solid 1px black;">Times Late:</td>
-                    <td style="border: 1px solid black;padding-left:8px;" colspan="3">{{ $attendance[0]['total_late'] }}</td>
-                    <td style="text-align:right;border: 1px solid black;padding-right:8px;"  colspan="2">Total Times Late:</td>
-                    <td style="border: 1px solid black;padding-left:8px;border-right: solid 1px black;" colspan="2">{{ $attendance[0]['total_late'] }}</td>
+                    <td style="text-align:right;border: 1px solid black;padding-right:4px;border-left: solid 1px black;">Times Late:</td>
+                    <td style="border: 1px solid black;padding-left:2px;" colspan="3">{{ $attendance[0]['total_late'] }}</td>
+                    <td style="text-align:right;border: 1px solid black;padding-right:4px;"  colspan="2">Total Times Late:</td>
+                    <td style="border: 1px solid black;padding-left:2px;border-right: solid 1px black;" colspan="2">{{ $attendance[0]['total_late'] }}</td>
                 </tr>
                 <!-- END STUDENT STATUS -->
 
@@ -185,8 +185,8 @@ $grade_name = $student->grade_name;
                     <th colspan="8" style="text-align:center;border-top: 3px solid black;border-bottom: 3px solid black;border-left: 1px solid black;border-right: 1px solid black"><strong>Promotion</strong></th>
                 </tr>
                 <tr>
-                    <td style="text-align:center;border: 1px solid black;padding-right:8px;border-left: none;border-left: 1px solid black;" rowspan="3" colspan="1"><strong>Promotion Status</strong></td>
-                    <td style="border: 1px solid black;padding-left:8px;border-right: 1px solid black;" colspan="7">
+                    <td style="text-align:center;border: 1px solid black;padding-right:4px;border-left: none;border-left: 1px solid black;" rowspan="3" colspan="1"><strong>Promotion Status</strong></td>
+                    <td style="border: 1px solid black;padding-left:2px;border-right: 1px solid black;" colspan="7">
                         @if ($learningSkills->promotion_status === 1)
                         <i class="fa-solid fa-circle"></i>
                         Progressing well towards promotion
@@ -197,7 +197,7 @@ $grade_name = $student->grade_name;
                     </td>
                 </tr>
                 <tr>
-                    <td style="border: 1px solid black;padding-left:8px;border-right: 1px solid black;" colspan="7">
+                    <td style="border: 1px solid black;padding-left:2px;border-right: 1px solid black;" colspan="7">
                         <div style="display: flex; align-items: center;">
                             @if ($learningSkills->promotion_status === 2)
                             <i class="fa-solid fa-circle"></i>
@@ -210,7 +210,7 @@ $grade_name = $student->grade_name;
                     </td>
                 </tr>
                 <tr>
-                    <td style="border: 1px solid black;padding-left:8px;border-right: 1px solid black;" colspan="7">
+                    <td style="border: 1px solid black;padding-left:2px;border-right: 1px solid black;" colspan="7">
                         <div style="display: flex; align-items: center;">
                             @if ($learningSkills->promotion_status === 3)
                             <i class="fa-solid fa-circle"></i>
@@ -223,8 +223,8 @@ $grade_name = $student->grade_name;
                     </td>
                 </tr>
                 <tr>
-                <td style="text-align:center;border: 1px solid black;padding-right:8px;border-left: 1px solid black;"colspan="1"><strong>Next Grade</strong></td>
-                    <td style="border: 1px solid black;padding-left:8px;border-right: 1px solid black;" colspan="7">{{ $promotionGrade }}</td>
+                <td style="text-align:center;border: 1px solid black;padding-right:4px;border-left: 1px solid black;"colspan="1"><strong>Next Grade</strong></td>
+                    <td style="border: 1px solid black;padding-left:2px;border-right: 1px solid black;" colspan="7">{{ $promotionGrade }}</td>
                 </tr>
                 <!-- END PROMOTION STATUS -->
 
@@ -278,27 +278,27 @@ $grade_name = $student->grade_name;
                     <td colspan="7" style="text-align:center;border: 1px solid black;border-right: solid 1px black;"><b>E – Excellent   G – Good   S – Satisfactory   N – Needs Improvement</b></td>
                 </tr>
                 <tr>
-                    <td style="text-align:right;border: 1px solid black;padding-right:8px;border-left: solid 1px black;" colspan="2">Independent Work</td>
+                    <td style="text-align:right;border: 1px solid black;padding-right:4px;border-left: solid 1px black;" colspan="2">Independent Work</td>
                     <td style="border: 1px solid black;text-align:center;"> {{ strtoUpper($learningSkills->independent_work) }} </td>
-                    <td style="text-align:right;border: 1px solid black;padding-right:8px;">Use of information</td>
+                    <td style="text-align:right;border: 1px solid black;padding-right:4px;">Use of information</td>
                     <td style="border: 1px solid black;text-align:center;"> {{ strtoUpper($learningSkills->use_of_information) }} </td>
-                    <td style="text-align:right;border: 1px solid black;padding-right:8px;" colspan="2">Class participation</td>
+                    <td style="text-align:right;border: 1px solid black;padding-right:4px;" colspan="2">Class participation</td>
                     <td style="border: 1px solid black;text-align:center;border-right: solid 1px black;"> {{ strtoUpper($learningSkills->class_participation) }} </td>
                 </tr>
                 <tr>
-                    <td style="text-align:right;border: 1px solid black;padding-right:8px;border-left: solid 1px black;" colspan="2">Initiative</td>
+                    <td style="text-align:right;border: 1px solid black;padding-right:4px;border-left: solid 1px black;" colspan="2">Initiative</td>
                     <td style="border: 1px solid black;text-align:center;"> {{ strtoUpper($learningSkills->initiative) }} </td>
-                    <td style="text-align:right;border: 1px solid black;padding-right:8px;" >Cooperation with others</td>
+                    <td style="text-align:right;border: 1px solid black;padding-right:4px;" >Cooperation with others</td>
                     <td style="border: 1px solid black;text-align:center;"> {{ strtoUpper($learningSkills->cooperation_with_other) }} </td>
-                    <td style="text-align:right;border: 1px solid black;padding-right:8px;" colspan="2">Problem solving</td>
+                    <td style="text-align:right;border: 1px solid black;padding-right:4px;" colspan="2">Problem solving</td>
                     <td style="border: 1px solid black;text-align:center;border-right: solid 1px black;"> {{ strtoUpper($learningSkills->problem_solving) }} </td>
                 </tr>
                 <tr>
-                    <td style="text-align:right;border: 1px solid black;border-bottom: 1.5px solid black;padding-right:8px;border-left: solid 1px black;" colspan="2">Homework completion</td>
+                    <td style="text-align:right;border: 1px solid black;border-bottom: 1.5px solid black;padding-right:4px;border-left: solid 1px black;" colspan="2">Homework completion</td>
                     <td style="border: 1px solid black;border-bottom: 1.5px solid black;text-align:center;"> {{ strtoUpper($learningSkills->homework_completion) }} </td>
-                    <td style="text-align:right;border: 1px solid black;border-bottom: 1.5px solid black;padding-right:8px;">Conflict resolution</td>
+                    <td style="text-align:right;border: 1px solid black;border-bottom: 1.5px solid black;padding-right:4px;">Conflict resolution</td>
                     <td style="border: 1px solid black;border-bottom: 1.5px solid black;text-align:center;"> {{ strtoUpper($learningSkills->conflict_resolution) }} </td>
-                    <td style="text-align:right;border: 1px solid black;border-bottom: 1.5px solid black;padding-right:8px;" colspan="2">Goal setting to improve work</td>
+                    <td style="text-align:right;border: 1px solid black;border-bottom: 1.5px solid black;padding-right:4px;" colspan="2">Goal setting to improve work</td>
                     <td style="border: 1px solid black;border-bottom: 1.5px solid black;text-align:center;border-right: solid 1px black;"> {{ strtoUpper($learningSkills->goal_setting_to_improve_work) }} </td>
                 </tr>
                 <!-- END LEARNING SKILLS -->
@@ -389,12 +389,22 @@ $grade_name = $student->grade_name;
                             <td style="text-align:left;border: 1px solid black;padding:3px;border-left: solid 1px black;style">
                                 @if ($student->student_id === 310)
                                     @if ($scores['subject_name'] === "Chinese")
-                                        Chinese-Basic
+                                            Chinese-Basic
                                     @else   
                                         {{ $scores['subject_name'] }}
                                     @endif
                                 @else
-                                    {{ $scores['subject_name'] }}
+                                    @if ($scores['subject_name'] === "Chinese")
+                                         @if($chineseGrade == "Lower")
+                                            Chinese-Lower
+                                        @elseif($chineseGrade == "Higher")
+                                            Chinese-Higher
+                                        @else
+                                            Chinese
+                                        @endif
+                                    @else   
+                                        {{ $scores['subject_name'] }}
+                                    @endif
                                 @endif
                             </td>
                             <td style="text-align:center;border: 1px solid black;padding:3px;">{{ $scores['final_score'] }}</td>
@@ -486,13 +496,13 @@ $grade_name = $student->grade_name;
                                 <td style="text-align:center;border: 1px solid black;border-bottom: 1px solid black;padding-right:4px;border-left: dottted 1px black;border-right: 1px solid black;" colspan="2">{{  $sooa[0]['scores'][0]['self_development'] }}</td>
                                 <td style="text-align:center;border: 1px solid black;border-bottom: 1px solid black;padding-right:4px;border-left: dottted 1px black;border-right: 1px solid black;">{{  $sooa[0]['scores'][0]['grades_self_development'] }}</td>
                             @else
-                            <td style="text-align:center;border: 1px solid black;border-bottom: 1px solid black;padding-right:8px;border-left: solid 1px black;" colspan="2">-</td>
-                            <td style="text-align:center;border: 1px solid black;border-bottom: 1px solid black;padding-right:8px;border-left: solid 1px black;">-</td>
-                            <td style="text-align:center;border: 1px solid black;border-bottom: 1px solid black;padding-right:8px;border-left: solid 1px black;">-</td>
-                            <td style="text-align:center;border: 1px solid black;border-bottom: 1px solid black;padding-right:8px;border-left: solid 1px black;">-</td>
-                            <td style="text-align:center;border: 1px solid black;border-bottom: 1px solid black;padding-right:8px;border-left: solid 1px black;">-</td>
-                            <td style="text-align:center;border: 1px solid black;border-bottom: 1px solid black;padding-right:8px;border-left: solid 1px black;" colspan="2">-</td>
-                            <td style="text-align:center;border: 1px solid black;border-bottom: 1px solid black;padding-right:8px;border-left: solid 1px black;border-right: 1px solid black;">-</td>
+                            <td style="text-align:center;border: 1px solid black;border-bottom: 1px solid black;padding-right:4px;border-left: solid 1px black;" colspan="2">-</td>
+                            <td style="text-align:center;border: 1px solid black;border-bottom: 1px solid black;padding-right:4px;border-left: solid 1px black;">-</td>
+                            <td style="text-align:center;border: 1px solid black;border-bottom: 1px solid black;padding-right:4px;border-left: solid 1px black;">-</td>
+                            <td style="text-align:center;border: 1px solid black;border-bottom: 1px solid black;padding-right:4px;border-left: solid 1px black;">-</td>
+                            <td style="text-align:center;border: 1px solid black;border-bottom: 1px solid black;padding-right:4px;border-left: solid 1px black;">-</td>
+                            <td style="text-align:center;border: 1px solid black;border-bottom: 1px solid black;padding-right:4px;border-left: solid 1px black;" colspan="2">-</td>
+                            <td style="text-align:center;border: 1px solid black;border-bottom: 1px solid black;padding-right:4px;border-left: solid 1px black;border-right: 1px solid black;">-</td>
                             @endif
                         @endif
                     </tr>
@@ -514,14 +524,14 @@ $grade_name = $student->grade_name;
                     </tr>
                     <tr>
                         @if (count($subjectReports) !== 0)
-                        <td style="text-align:center;border: 1px solid black;padding-right:8px;border-left: solid 1px black;">{{  $sooa[0]['scores'][0]['academic'] }}</td>
-                        <td style="text-align:center;border: 1px solid black;padding-left:8px;">{{ $sooa[0]['scores'][0]['eca_aver'] }}</td>
-                        <td style="text-align:center;border: 1px solid black;padding-right:8px;">{{  $sooa[0]['scores'][0]['behavior'] }}</td>
-                        <td style="text-align:center;border: 1px solid black;padding-left:8px;">{{  $sooa[0]['scores'][0]['attendance'] }}</td>
-                        <td style="text-align:center;border: 1px solid black;padding-right:8px;">{{  $sooa[0]['scores'][0]['participation'] }}</td>
-                        <td style="text-align:center;border: 1px solid black;padding-left:8px;">{{ $sooa[0]['scores'][0]['final_score'] }}</td>
-                        <td style="text-align:center;border: 1px solid black;padding-right:8px;">{{ $sooa[0]['scores'][0]['grades_final_score'] }}</td>
-                        <td style="text-align:center;border: 1px solid black;padding-left:8px;border-right: solid 1px black;">
+                        <td style="text-align:center;border: 1px solid black;padding-right:4px;border-left: solid 1px black;">{{  $sooa[0]['scores'][0]['academic'] }}</td>
+                        <td style="text-align:center;border: 1px solid black;padding-left:2px;">{{ $sooa[0]['scores'][0]['eca_aver'] }}</td>
+                        <td style="text-align:center;border: 1px solid black;padding-right:4px;">{{  $sooa[0]['scores'][0]['behavior'] }}</td>
+                        <td style="text-align:center;border: 1px solid black;padding-left:2px;">{{  $sooa[0]['scores'][0]['attendance'] }}</td>
+                        <td style="text-align:center;border: 1px solid black;padding-right:4px;">{{  $sooa[0]['scores'][0]['participation'] }}</td>
+                        <td style="text-align:center;border: 1px solid black;padding-left:2px;">{{ $sooa[0]['scores'][0]['final_score'] }}</td>
+                        <td style="text-align:center;border: 1px solid black;padding-right:4px;">{{ $sooa[0]['scores'][0]['grades_final_score'] }}</td>
+                        <td style="text-align:center;border: 1px solid black;padding-left:2px;border-right: solid 1px black;">
                             -
                             {{-- {{  $sooa[0]['ranking'] }} --}}
                         </td>

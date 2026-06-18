@@ -6268,22 +6268,60 @@ class ReportController extends Controller
 
             $academicYear = Master_academic::where('is_use', true)->value('academic_year');
 
-            $data = [
-                'student' => $student,
-                'classTeacher' => $classTeacher,
-                'learningSkills' => $learningSkills,
-                'subjectReports' => $scoresByStudent,
-                'sooa' => $scoresByStudentSooa,
-                'attendance' => $attendancesByStudent,
-                'relation' => $relation,
-                'serial' => $getSerial,
-                'promotionGrade' => $grade,
-                'academicYear' => $academicYear,
-                'eca' => $groupedEcaData,
-                'tcop' => $tcop,
-                'date' => $date,
-                'date_of_registration' => $date_of_registration,
-            ];
+            $remarks = Acar_comment::where('student_id', $id)->where('academic_year', session('academic_year'))->value('comment');
+
+
+            // chinese lower/higher
+            if(strtolower($student->grade_name) === "secondary"){
+                $chineseLower = Chinese_lower::where('student_id', $student->student_id)->exists();
+                $chineseHigher = Chinese_higher::where('student_id', $student->student_id)->exists();
+
+                if($chineseLower){
+                    $chineseGrade = "Lower";
+                }
+                elseif($chineseHigher){
+                    $chineseGrade = "Higher";
+                }
+            }
+            
+            if(strtolower($student->grade_name) === "secondary"){
+                $data = [
+                    'student' => $student,
+                    'classTeacher' => $classTeacher,
+                    'learningSkills' => $learningSkills,
+                    'subjectReports' => $scoresByStudent,
+                    'sooa' => $scoresByStudentSooa,
+                    'attendance' => $attendancesByStudent,
+                    'relation' => $relation,
+                    'serial' => $getSerial,
+                    'promotionGrade' => $grade,
+                    'academicYear' => $academicYear,
+                    'eca' => $groupedEcaData,
+                    'tcop' => $tcop,
+                    'date' => $date,
+                    'date_of_registration' => $date_of_registration,
+                    'chineseGrade' => $chineseGrade,
+                ];
+            }else{
+                $data = [
+                    'student' => $student,
+                    'classTeacher' => $classTeacher,
+                    'learningSkills' => $learningSkills,
+                    'subjectReports' => $scoresByStudent,
+                    'sooa' => $scoresByStudentSooa,
+                    'attendance' => $attendancesByStudent,
+                    'relation' => $relation,
+                    'serial' => $getSerial,
+                    'academicYear' => $academicYear,
+                    'eca' => $groupedEcaData,
+                    'remarks' => $remarks,
+                    'date' => $date,
+                    'date_of_registration' => $date_of_registration,
+                    'chineseGrade' => $chineseGrade,
+                ];
+            }
+
+            // dd($data);
 
             $pdf = app('dompdf.wrapper');
             $pdf->set_option('isRemoteEnabled', true);
