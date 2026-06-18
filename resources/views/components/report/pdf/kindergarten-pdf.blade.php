@@ -202,7 +202,7 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
                     @else
                     <b> : - day</b>    
                     @endif --}}
-                    <b> : {{ $attendance[0]['days_absent'] > 0 ? $attendance[0]['days_absent'].' '.($attendance[0]['days_absent']==1?'day':'days') : '-' }}</b>
+                    <b> : {{ $attendance[0]['days_absent'] > 0 ? $attendance[0]['days_absent'].' '.($attendance[0]['days_absent']==1?'day':'days') : '- days' }}</b>
                 </td>
             </tr>
             <tr>
@@ -213,7 +213,7 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
                     @else
                     <b> : - day</b>    
                     @endif --}}
-                    <b> : {{ $attendance[0]['sick'] > 0 ? $attendance[0]['sick'].' '.($attendance[0]['sick']==1?'day':'days') : '-' }}</b>
+                    <b> : {{ $attendance[0]['sick'] > 0 ? $attendance[0]['sick'].' '.($attendance[0]['sick']==1?'day':'days') : '- days' }}</b>
                 </td>
             </tr>
             <tr>
@@ -224,7 +224,7 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
                     @else
                     <b> : - days</b>    
                     @endif --}}
-                    <b> : {{ $attendance[0]['permission'] > 0 ? $attendance[0]['permission'].' '.($attendance[0]['permission']==1?'day':'days') : '-' }}</b>
+                    <b> : {{ $attendance[0]['permission'] > 0 ? $attendance[0]['permission'].' '.($attendance[0]['permission']==1?'day':'days') : '- days' }}</b>
                 </td>
             </tr>
         </table>
