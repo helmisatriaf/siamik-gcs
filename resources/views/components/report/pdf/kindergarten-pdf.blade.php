@@ -197,31 +197,34 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
             <tr>
                 <td style="font-size:10px;"><b>Absent</b></td>
                 <td style="font-size:10px;"><span class="noto-serif-sc-chinese" style="text-align:right">旷课</span>
-                    @if ($attendance[0]['days_absent'] > 0)
+                    {{-- @if ($attendance[0]['days_absent'] > 0)
                     <b> : {{ $attendance[0]['days_absent'] }} days</b>
                     @else
-                    <b> : - days</b>    
-                    @endif
+                    <b> : - day</b>    
+                    @endif --}}
+                    <b> : {{ $attendance[0]['days_absent'] > 0 ? $attendance[0]['days_absent'].' '.($attendance[0]['days_absent']==1?'day':'days') : '-' }}</b>
                 </td>
             </tr>
             <tr>
                 <td style="font-size:10px;"><b>Sick</b></td>
                 <td style="font-size:10px;"><span class="noto-serif-sc-chinese">病号</span>
-                    @if ($attendance[0]['sick'] > 0)
+                    {{-- @if ($attendance[0]['sick'] > 0)
                     <b> : {{ $attendance[0]['sick'] }} days</b>
                     @else
-                    <b> : - days</b>    
-                    @endif
+                    <b> : - day</b>    
+                    @endif --}}
+                    <b> : {{ $attendance[0]['sick'] > 0 ? $attendance[0]['sick'].' '.($attendance[0]['sick']==1?'day':'days') : '-' }}</b>
                 </td>
             </tr>
             <tr>
                 <td style="font-size:10px;"><b>Permission</b></td>
                 <td style="font-size:10px;"><span class="noto-serif-sc-chinese">允许</span>
-                    @if ($attendance[0]['permission'] > 0)
+                    {{-- @if ($attendance[0]['permission'] > 0)
                     <b> : {{ $attendance[0]['permission'] }} days</b>
                     @else
                     <b> : - days</b>    
-                    @endif
+                    @endif --}}
+                    <b> : {{ $attendance[0]['permission'] > 0 ? $attendance[0]['permission'].' '.($attendance[0]['permission']==1?'day':'days') : '-' }}</b>
                 </td>
             </tr>
         </table>
