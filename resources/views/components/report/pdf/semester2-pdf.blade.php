@@ -389,7 +389,7 @@ $grade_name = $student->grade_name;
                             <td style="text-align:left;border: 1px solid black;padding:3px;border-left: solid 1px black;style">
                                 @if ($student->student_id === 310)
                                     @if ($scores['subject_name'] === "Chinese")
-                                        Chinese-basic
+                                        Chinese-Basic
                                     @else   
                                         {{ $scores['subject_name'] }}
                                     @endif
