@@ -43,6 +43,7 @@
                                     
                                     <div class="col-md-12">
                                         <input type="text" value="{{ $data->grade_id }}" class="d-none" name="grade_id" id="grade_id">
+                                        <input type="text" value="{{ $latest_subject_teacher_id }}" class="d-none" name="latest_subject_teacher_id" id="latest_subject_teacher_id">
                                         <input type="text" value="{{ $data->subject_id }}" class="d-none" name="before_subject_id" id="before_subject_id">
                                         <label for="name">Subject<span style="color: red"> *</span></label>
                                         <select name="subject" id="subject" class="form-control">
@@ -90,9 +91,16 @@
 @if(session('after_update_subject_teacher')) 
     <script>
         Swal.fire({
-            icon: 'success',
-            title: 'Successfully',
             text: 'Successfully updated the subject teacher in the database.',
+            confirmButtonColor: "#00b527",
+            confirmButtonText: "Continue",
+            imageUrl: '/images/happy.png', // pastikan path ini bisa diakses dari browser
+            imageWidth: 100,
+            imageHeight: 100,
+            imageAlt: 'Custom image',
+            customClass: {
+                popup: 'rounded-swal',
+            }
         });
     </script>
 @endif

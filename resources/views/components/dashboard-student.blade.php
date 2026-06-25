@@ -102,7 +102,7 @@
 @endif
 
 <!-- 🔥 STREAK POPUP -->
-<div class="modal fade" id="streakModal" tabindex="-1">
+{{-- <div class="modal fade" id="streakModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content text-center p-3" style="border-radius:20px;">
 
@@ -137,7 +137,7 @@
 
         </div>
     </div>
-</div>
+</div> --}}
 <!-- 🔥 END STREAK POPUP -->
 
 <!-- Main content -->

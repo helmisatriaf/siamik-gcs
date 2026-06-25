@@ -354,6 +354,7 @@ class GradeController extends Controller
                'teachers.name as teacher_name', 'teachers.id as teacher_id'
             )
             ->where('academic_year', session('academic_year'))
+            ->orderBy('subjects.name_subject', 'ASC')
             ->get();
    
          $subjectTeacher = Teacher_subject::where('grade_id', $id)
@@ -522,11 +523,11 @@ class GradeController extends Controller
             ->get();
          
 
-         $teacher = Teacher::orderBy('name', 'asc')->get();
+         $teacher = Teacher::where('is_active', 1)->orderBy('name', 'asc')->get();
          $subject = Subject::orderBy('name_subject', 'asc')->get();
          
-         // dd($data);
-         return view('components.grade.page-edit-subject')->with('data', $data)->with('subject', $subject)->with('teacher', $teacher);
+         // dd($teacherId);
+         return view('components.grade.page-edit-subject')->with('data', $data)->with('subject', $subject)->with('teacher', $teacher)->with('latest_subject_teacher_id', $teacherId);
          
       } catch (Exception $err) {
          dd($err);
@@ -730,11 +731,34 @@ class GradeController extends Controller
             ->pluck('id');
 
          Exam::whereIn('id', $getIdExam)->update(['teacher_id' => $request->teacher, 'updated_at' => now()]);
+
+         #check religion 
+         if($request->subject == 34 || $request->subject == 35 || $request->subject == 36 || $request->subject == 37){
+            $subject = 20;
+         }
+         #chceck chinese high & low
+         elseif($request->subject == 38 || $request->subject == 39){
+            $subject = 11;
+         }else{
+            $subject = $request->subject;
+         }
          
-         Acar::where('subject_id', $request->subject)
+
+         // $isi = [
+         //    'subject_id' => $subject,
+         //    'grade_id' => $request->grade_id,
+         //    'semester' => session('semester'),
+         //    'academic_year' => session('academic_year'),
+         //    'subject_teacher_id' => $request->latest_subject_teacher_id,
+         // ];
+
+         // dd($isi);
+
+         Acar::where('subject_id', $subject)
             ->where('grade_id', $request->grade_id)
             ->where('semester', session('semester'))
             ->where('academic_year', session('academic_year'))
+            ->where('subject_teacher_id', $request->latest_subject_teacher_id)
             ->update(['subject_teacher_id' => $request->teacher, 'updated_at' => now()]);
          
          DB::commit();
@@ -756,10 +780,10 @@ class GradeController extends Controller
             )
             ->first();
 
-         $teacher = Teacher::get();
+         $teacher = Teacher::where('is_active', 1)->orderBy('name', 'asc')->get();
          $subject = Subject::get();
          
-         return view('components.grade.page-edit-subject')->with('data', $data)->with('subject', $subject)->with('teacher', $teacher);
+         return view('components.grade.page-edit-subject')->with('data', $data)->with('subject', $subject)->with('teacher', $teacher)->with('latest_subject_teacher_id', $request->teacher);
       } catch (Exception $err) {
          DB::rollBack();
          return dd($err);

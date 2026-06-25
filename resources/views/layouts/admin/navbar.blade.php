@@ -54,7 +54,7 @@
     animation: bounce 0.3s ease-in-out;
   }  */
 
-  .streak-nav {
+  /* .streak-nav {
     display: flex;
     align-items: center;
     gap: 6px;
@@ -66,38 +66,32 @@
     text-decoration: none;
     box-shadow: 0 4px 10px rgba(255, 80, 0, 0.4);
     transition: all 0.3s ease;
-}
+  } */
 
 /* hover */
-.streak-nav:hover {
+/* .streak-nav:hover {
     transform: translateY(-2px) scale(1.05);
     box-shadow: 0 6px 16px rgba(255, 80, 0, 0.6);
-}
+} */
   
 
   /* icon animasi */
-  .streak-icon {
+  /* .streak-icon {
       font-size: 18px;
       animation: flame 1.5s infinite;
-  }
+  } */
 
   /* angka */
-  .streak-count {
+  /* .streak-count {
       font-size: 14px;
-  }
+  } */
 
   /* animasi api */
-  @keyframes flame {
+  /* @keyframes flame {
       0% { transform: scale(1); }
       50% { transform: scale(1.3) rotate(5deg); }
       100% { transform: scale(1); }
-  }
-
-
-
-
-
-  
+  } */
 </style>
 
 <!-- Navbar -->
@@ -128,7 +122,7 @@
     </li>
     @endif
 
-    @if (session('role') == 'student')
+    {{-- @if (session('role') == 'student')
       <li class="nav-item">
         <a href="{{ url('student/streak') }}" class="streak-nav">
             <span class="streak-icon">🔥</span>
@@ -138,7 +132,7 @@
 
         </a>
       </li>
-    @endif
+    @endif --}}
 
     <li class="nav-item">
       <button href="javascript:void(0)" id="log-out" type="button" class="btn-menu-top">Exit</button>
