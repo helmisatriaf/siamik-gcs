@@ -252,7 +252,7 @@ $(document).ready(function () {
                     accepts: {
                         mycustomtype: "application/x-some-custom-type",
                     },
-                    url: `/admin/student/activate/${value}`,
+                    url: `/superadmin/student/activate/${value}`,
                     type: "PATCH",
                     cache: false,
                     data: {
