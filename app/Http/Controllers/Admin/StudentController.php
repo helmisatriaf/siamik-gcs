@@ -351,9 +351,14 @@ class StudentController extends Controller
 
          // CHANGE MOTHER AND FATHER NAME TO RELATIONSHIP
          $relationship = Student_relationship::where('student_id', $id)->get();
+
+         // dd($relationship);
    
          if($relationship->isEmpty()){
             Log::info('StudentController@handleRelationship: Request Data: tidak ada relationship, Student ID: ' . $id);
+            $student = Student::where('id', $id)->first();
+            $relationship = $this->handleRelationship($request, $student);
+         }elseif (count($relationship) == 1){
             $student = Student::where('id', $id)->first();
             $relationship = $this->handleRelationship($request, $student);
          }else{
@@ -373,10 +378,8 @@ class StudentController extends Controller
             }
          }
 
-
          Student::where('id', $id)->update($credentials);
          DB::commit();
-
 
          session()->flash('after_update_student');
 
@@ -391,7 +394,6 @@ class StudentController extends Controller
             'allGrade' => $allGrade,
          ];
          
-         // dd($data);
          return view('components.student.editStudent')->with('data', $data);
          
          // return redirect()->back();
