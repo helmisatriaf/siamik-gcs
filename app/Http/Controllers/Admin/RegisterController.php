@@ -88,6 +88,7 @@ class RegisterController extends Controller
             'date_exp' => $request->studentDate_exp ? $this->changeDateFormat($request->studentDate_exp) : null,
             'is_graduate' => false,
             'created_at' => $request->created_at ? date('Y-m-d H:i:s', strtotime($this->changeDateFormat($request->created_at))) : date('Y-m-d H:i:s'),
+            'date_of_registration' => $request->date_of_registration ? $this->changeDateFormat($request->date_of_registration) : null,
          ];
 
          // dd($credentials);
@@ -105,6 +106,7 @@ class RegisterController extends Controller
             'place_of_issue' => $request->studentPlace_of_issue,
             'date_exp' => $request->studentDate_exp !== '' ? $this->changeDateFormat($request->studentDate_exp) : null,
             'created_at' => $request->created_at ? date('Y-m-d H:i:s', strtotime($this->changeDateFormat($request->created_at))) : date('Y-m-d H:i:s'),
+            'date_of_registration' => $request->date_of_registration !== '' ? $this->changeDateFormat($request->date_of_registration) : null,
             // Father rules
             'father_relation' => 'father',
             'father_name' => $request->fatherName,
@@ -171,6 +173,7 @@ class RegisterController extends Controller
             'nationality' => 'string|required|min:3',
             'place_of_issue' => 'nullable|string',
             'date_exp' => 'nullable|date',
+            'date_of_registration' => 'nullable|date',
             // father validation 
             'father_name' => 'string|required|min:3',
             'father_religion' => 'string|required',
@@ -178,26 +181,25 @@ class RegisterController extends Controller
             'father_date_birth' => 'date|required',
             'father_id_or_passport' => 'string|required|min:12|max:16',
             'father_nationality' => 'string|required',
-            'father_phone' => 'nullable|string|max:15|min:6',
+            'father_phone' => 'nullable|string|max:15',
             'father_home_address' => 'required|string',
             'father_mobilephone' => 'required|string|max:15|min:6',
-            'father_telephone' => 'nullable|string|max:15|min:6',
+            'father_telephone' => 'nullable|string|max:15',
             'father_email' => 'required|string|email',
             //mother validation
             'mother_name' => 'string|required|min:3',
             'mother_religion' => 'string|required',
             'mother_place_birth' => 'string|required',
             'mother_date_birth' => 'date|required',
-            'mother_id_or_passport' => 'string|required|min:15|max:16',
+            'mother_id_or_passport' => 'string|required|min:12|max:16',
             'mother_nationality' => 'string|required',
             'mother_occupation' => 'nullable|string',
             'mother_company_name' => 'nullable|string',
             'mother_company_address' => 'nullable|string',
-            'mother_phone' => 'nullable|string|max:15|min:6',
+            'mother_phone' => 'nullable|string|max:15',
             'mother_home_address' => 'required|string',
-            'mother_telephone' => 'nullable|string|max:15|min:6',
+            'mother_telephone' => 'nullable|string|max:15',
             'mother_mobilephone' => 'required|string|max:15|min:6',
-            'mother_telephone' => 'nullable|string|max:15|min:6',
             'mother_email' => 'required|string|email',
 
             'brotherOrSisterName1' => 'nullable|string',
@@ -404,107 +406,107 @@ class RegisterController extends Controller
          
          // return $rules;
          
-         // $validator = Validator::make($rules, [
-         //    'name' => 'string|required|min:3',
-         //    'grade_id' => 'integer|required',
-         //    'gender' => 'string|required',
-         //    'religion' => 'string|required',
-         //    'nisn' => 'string|nullable|min:7|max:12|unique:students',
-         //    'place_birth' => 'string|required',
-         //    'date_birth' => 'date|required',
-         //    'id_or_passport' => 'nullable|string|min:9|max:16|unique:students',
-         //    'nationality' => 'string|required|min:3',
-         //    'place_of_issue' => 'nullable|string',
-         //    'date_exp' => 'nullable|date',
-         //    // father validation 
-         //    'father_name' => 'string|required|min:3',
-         //    'father_religion' => 'string|required',
-         //    'father_place_birth' => 'string|required',
-         //    'father_date_birth' => 'date|required',
-         //    'father_id_or_passport' => 'string|required|min:12|max:16',
-         //    'father_nationality' => 'string|required',
-         //    'father_phone' => 'nullable|string|max:15|min:6',
-         //    'father_home_address' => 'required|string',
-         //    'father_mobilephone' => 'required|string|max:15|min:6',
-         //    'father_telephone' => 'nullable|string|max:15|min:6',
-         //    'father_email' => 'required|string|email',
-         //    //mother validation
-         //    'mother_name' => 'string|required|min:3',
-         //    'mother_religion' => 'string|required',
-         //    'mother_place_birth' => 'string|required',
-         //    'mother_date_birth' => 'date|required',
-         //    'mother_id_or_passport' => 'string|required|min:15|max:16',
-         //    'mother_nationality' => 'string|required',
-         //    'mother_occupation' => 'nullable|string',
-         //    'mother_company_name' => 'nullable|string',
-         //    'mother_company_address' => 'nullable|string',
-         //    'mother_phone' => 'nullable|string|max:15|min:6',
-         //    'mother_home_address' => 'required|string',
-         //    'mother_telephone' => 'nullable|string|max:15|min:6',
-         //    'mother_mobilephone' => 'required|string|max:15|min:6',
-         //    'mother_telephone' => 'nullable|string|max:15|min:6',
-         //    'mother_email' => 'required|string|email',
+         $validator = Validator::make($rules, [
+            'name' => 'string|required|min:3',
+            'grade_id' => 'integer|required',
+            'gender' => 'string|required',
+            'religion' => 'string|required',
+            'nisn' => 'string|nullable|min:7|max:12|unique:students',
+            'place_birth' => 'string|required',
+            'date_birth' => 'date|required',
+            'id_or_passport' => 'nullable|string|min:9|max:16|unique:students',
+            'nationality' => 'string|required|min:3',
+            'place_of_issue' => 'nullable|string',
+            'date_exp' => 'nullable|date',
+            // father validation 
+            'father_name' => 'string|required|min:3',
+            'father_religion' => 'string|required',
+            'father_place_birth' => 'string|required',
+            'father_date_birth' => 'date|required',
+            'father_id_or_passport' => 'string|required|min:12|max:16',
+            'father_nationality' => 'string|required',
+            'father_phone' => 'nullable|string|max:15|min:6',
+            'father_home_address' => 'required|string',
+            'father_mobilephone' => 'required|string|max:15|min:6',
+            'father_telephone' => 'nullable|string|max:15|min:6',
+            'father_email' => 'required|string|email',
+            //mother validation
+            'mother_name' => 'string|required|min:3',
+            'mother_religion' => 'string|required',
+            'mother_place_birth' => 'string|required',
+            'mother_date_birth' => 'date|required',
+            'mother_id_or_passport' => 'string|required|min:15|max:16',
+            'mother_nationality' => 'string|required',
+            'mother_occupation' => 'nullable|string',
+            'mother_company_name' => 'nullable|string',
+            'mother_company_address' => 'nullable|string',
+            'mother_phone' => 'nullable|string|max:15|min:6',
+            'mother_home_address' => 'required|string',
+            'mother_telephone' => 'nullable|string|max:15|min:6',
+            'mother_mobilephone' => 'required|string|max:15|min:6',
+            'mother_telephone' => 'nullable|string|max:15|min:6',
+            'mother_email' => 'required|string|email',
 
-         //    'brotherOrSisterName1' => 'nullable|string',
-         //    'brotherOrSisterBirth_date1' => 'nullable|string',
-         //    'brotherOrSisterGrade1' => 'nullable|string',
-         //    'brotherOrSisterName2' =>  'nullable|string',
-         //    'brotherOrSisterBirth_date2'=>'nullable|string',
-         //    'brotherOrSisterGrade2' => 'nullable|string',
-         //    'brotherOrSisterName3' =>  'nullable|string',
-         //    'brotherOrSisterBirth_date3'=>'nullable|string',
-         //    'brotherOrSisterGrade3' => 'nullable|string',
-         //    'brotherOrSisterName4' =>  'nullable|string',
-         //    'brotherOrSisterBirth_date4'=>'nullable|string',
-         //    'brotherOrSisterGrade4' => 'nullable|string',
-         //    'brotherOrSisterName5' =>  'nullable|string',
-         //    'brotherOrSisterBirth_date5'=>'nullable|string',
-         //    'brotherOrSisterGrade5' => 'nullable|string',
-         // ]);
+            'brotherOrSisterName1' => 'nullable|string',
+            'brotherOrSisterBirth_date1' => 'nullable|string',
+            'brotherOrSisterGrade1' => 'nullable|string',
+            'brotherOrSisterName2' =>  'nullable|string',
+            'brotherOrSisterBirth_date2'=>'nullable|string',
+            'brotherOrSisterGrade2' => 'nullable|string',
+            'brotherOrSisterName3' =>  'nullable|string',
+            'brotherOrSisterBirth_date3'=>'nullable|string',
+            'brotherOrSisterGrade3' => 'nullable|string',
+            'brotherOrSisterName4' =>  'nullable|string',
+            'brotherOrSisterBirth_date4'=>'nullable|string',
+            'brotherOrSisterGrade4' => 'nullable|string',
+            'brotherOrSisterName5' =>  'nullable|string',
+            'brotherOrSisterBirth_date5'=>'nullable|string',
+            'brotherOrSisterGrade5' => 'nullable|string',
+         ]);
 
          
-         // if($validator->fails())
-         // {
-         //    // DB::rollBack();
+         if($validator->fails())
+         {
+            // DB::rollBack();
             
-         //    return redirect('/superadmin/register')->withErrors($validator->messages())->withInput($rules);
-         // }
+            return redirect('/superadmin/register')->withErrors($validator->messages())->withInput($rules);
+         }
 
-         // $fatherExist = Relationship::where('id_or_passport', $rules['father_id_or_passport'])->first(); 
+         $fatherExist = Relationship::where('id_or_passport', $rules['father_id_or_passport'])->first(); 
 
-         // if($fatherExist && $fatherExist->relation == 'mother')
-         // {
-         //    // DB::rollBack();
-         //    return redirect('/superadmin/register')->withErrors([
-         //       'father_id_or_passport' => ['This id or passport has been registered with mother relation.'],
-         //    ])->withInput($rules);
-         // }
+         if($fatherExist && $fatherExist->relation == 'mother')
+         {
+            // DB::rollBack();
+            return redirect('/superadmin/register')->withErrors([
+               'father_id_or_passport' => ['This id or passport has been registered with mother relation.'],
+            ])->withInput($rules);
+         }
 
-         // $motherExist = Relationship::where('id_or_passport', $rules['mother_id_or_passport'])->first(); 
+         $motherExist = Relationship::where('id_or_passport', $rules['mother_id_or_passport'])->first(); 
 
-         // if($motherExist && $motherExist->relation == 'father')
-         // {
-         //    // DB::rollBack();
-         //    return redirect('/superadmin/register')->withErrors([
-         //       'mother_id_or_passport' => ['This id or passport has been registered with father relation.'],
-         //    ])->withInput($rules);
-         // }
+         if($motherExist && $motherExist->relation == 'father')
+         {
+            // DB::rollBack();
+            return redirect('/superadmin/register')->withErrors([
+               'mother_id_or_passport' => ['This id or passport has been registered with father relation.'],
+            ])->withInput($rules);
+         }
 
          DB::beginTransaction();
-         Student::create($credentials);
+         $student = Student::create($credentials);
 
-         // $relationship = $this->handleRelationship($request, $student);
-         // $brotherOrSister = $this->handleBrotherOrSister($request, $student);
+         $relationship = $this->handleRelationship($request, $student);
+         $brotherOrSister = $this->handleBrotherOrSister($request, $student);
          
          // return $relationship;
-         // if(!$relationship->success){
-         //    DB::rollBack();
-         //    return dd($relationship->error);
-         // }
-         //  else if (!$brotherOrSister->success){
-         //    DB::rollBack();
-         //    return dd('error at brother or sisters');
-         // }
+         if(!$relationship->success){
+            DB::rollBack();
+            return dd($relationship->error);
+         }
+          else if (!$brotherOrSister->success){
+            DB::rollBack();
+            return dd('error at brother or sisters');
+         }
 
          // MEMBUAT EXAM STUDENT
          $lastStudent = Student::orderBy('id', 'desc')->first();

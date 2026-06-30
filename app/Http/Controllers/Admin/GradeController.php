@@ -917,13 +917,15 @@ class GradeController extends Controller
             ->get();
 
          foreach ($gradeTeacher as $gt) {
-            $gt->students = Student::where('grade_id', $gt->id)->where('is_active', true)->orderBy('name', 'asc')->get();
+            $gt->students = Student::with('relationship')
+            ->where('grade_id', $gt->id)->where('is_active', true)->orderBy('name', 'asc')->get();
          }
 
          $data = [
             'gradeTeacher' => $gradeTeacher,
          ];
 
+         dd($data);
          return view('components.teacher.data-grade-teacher', [
             'data' => $data,
             'subjects' => $subject,

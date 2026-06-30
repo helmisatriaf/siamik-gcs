@@ -23,6 +23,7 @@ class Student extends Model
       'date_birth',
       'id_or_passport',
       'nationality',
+      'date_of_registration',
       'place_of_issue',
       'date_exp',
       'is_graduate',

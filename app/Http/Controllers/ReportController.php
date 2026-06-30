@@ -195,6 +195,7 @@ class ReportController extends Controller
                 'subject' => $subject,
             ];
 
+            // dd($data);
             if (session('role') == 'superadmin' || session('role') == 'admin') {
                 return view('components.report.subject-teacher')->with('data', $data);
             } elseif (session('role') == 'teacher') {
@@ -2690,6 +2691,8 @@ class ReportController extends Controller
                 // ->where('teacher_id', $subjectTeacher->teacher_id)
                 ->first();
 
+            // dd($status);
+
             $homework = Type_exam::where('name', '=', 'homework')->value('id');
             $exercise = Type_exam::where('name', '=', 'exercise')->value('id');
             $participation = Type_exam::where('name', '=', 'participation')->value('id');
@@ -4989,7 +4992,7 @@ class ReportController extends Controller
                 ->join('grades', 'grades.id', '=', 'students.grade_id')
                 ->select(
                     'students.name as student_name',
-                    'students.created_at as date_of_registration',
+                    'students.date_of_registration as date_of_registration',
                     'grades.name as grade_name',
                     'grades.class as grade_class',
                     'grades.id as grade_id'
@@ -5487,38 +5490,38 @@ class ReportController extends Controller
                 $getSerial = '-'; // Default jika semester tidak valid
             }
 
-            switch ($gradeId) {
-                case "5":
-                case "11":
-                    $date_of_registration = "June 22, 2024";
-                    break;
+            // switch ($gradeId) {
+            //     case "5":
+            //     case "11":
+            //         $date_of_registration = "June 22, 2024";
+            //         break;
 
-                case "6":
-                case "12":
-                    $date_of_registration = "July 24, 2023";
-                    break;
+            //     case "6":
+            //     case "12":
+            //         $date_of_registration = "July 24, 2023";
+            //         break;
 
-                case "7":
-                case "13":
-                    $date_of_registration = "July 10, 2022";
-                    break;
+            //     case "7":
+            //     case "13":
+            //         $date_of_registration = "July 10, 2022";
+            //         break;
 
-                case "8":
-                    $date_of_registration = "July 12, 2021";
-                    break;
+            //     case "8":
+            //         $date_of_registration = "July 12, 2021";
+            //         break;
 
-                case "9":
-                    $date_of_registration = "July 10, 2020";
-                    break;
+            //     case "9":
+            //         $date_of_registration = "July 10, 2020";
+            //         break;
 
-                case "10":
-                    $date_of_registration = "July 18, 2019";
-                    break;
+            //     case "10":
+            //         $date_of_registration = "July 18, 2019";
+            //         break;
 
-                default:
-                    $date_of_registration = "Unknown date"; // Nilai default jika $gradeId tidak sesuai
-                    break;
-            }
+            //     default:
+            //         $date_of_registration = "Unknown date"; // Nilai default jika $gradeId tidak sesuai
+            //         break;
+            // }
 
             $date = Master_academic::where('is_use', TRUE)->value('report_card1');
 
@@ -5546,7 +5549,7 @@ class ReportController extends Controller
                 ->join('grades', 'grades.id', '=', 'students.grade_id')
                 ->select(
                     'students.name as student_name',
-                    'students.created_at as date_of_registration',
+                    'students.date_of_registration as date_of_registration',
                     'students.id as student_id',
                     'grades.name as grade_name',
                     'grades.class as grade_class',
@@ -5709,8 +5712,7 @@ class ReportController extends Controller
                 });
 
                 $isRestricted = $sortedScores->contains(function ($score) {
-                    return $score['final_score'] !== null && $score['final_score'] < 70;
-                    return $score['final_score'] !== null && $score['final_score'] < 70;
+                    return $score['final_score'] !== null && $score['final_score'] < 0;
                 });
 
                 return [
@@ -5801,6 +5803,7 @@ class ReportController extends Controller
             }
 
             $student->date_of_registration = Carbon::parse($student->date_of_registration);
+            $date_of_registration = $student->date_of_registration->format('F d, Y');
 
             $academicYear = Master_academic::where('is_use', true)->value('academic_year');
 
@@ -5903,38 +5906,38 @@ class ReportController extends Controller
                 $grade = $nextGrade->grade_name . ' - ' . $nextGrade->grade_class;
             }
 
-            switch ($gradeId) {
-                case "5":
-                case "11":
-                    $date_of_registration = "June 22, 2024";
-                    break;
+            // switch ($gradeId) {
+            //     case "5":
+            //     case "11":
+            //         $date_of_registration = "June 22, 2024";
+            //         break;
 
-                case "6":
-                case "12":
-                    $date_of_registration = "July 24, 2023";
-                    break;
+            //     case "6":
+            //     case "12":
+            //         $date_of_registration = "July 24, 2023";
+            //         break;
 
-                case "7":
-                case "13":
-                    $date_of_registration = "July 10, 2022";
-                    break;
+            //     case "7":
+            //     case "13":
+            //         $date_of_registration = "July 10, 2022";
+            //         break;
 
-                case "8":
-                    $date_of_registration = "July 12, 2021";
-                    break;
+            //     case "8":
+            //         $date_of_registration = "July 12, 2021";
+            //         break;
 
-                case "9":
-                    $date_of_registration = "July 10, 2020";
-                    break;
+            //     case "9":
+            //         $date_of_registration = "July 10, 2020";
+            //         break;
 
-                case "10":
-                    $date_of_registration = "July 18, 2019";
-                    break;
+            //     case "10":
+            //         $date_of_registration = "July 18, 2019";
+            //         break;
 
-                default:
-                    $date_of_registration = "Unknown date"; // Nilai default jika $gradeId tidak sesuai
-                    break;
-            }
+            //     default:
+            //         $date_of_registration = "Unknown date"; // Nilai default jika $gradeId tidak sesuai
+            //         break;
+            // }
 
 
             // $serial = Grade::join('students', 'students.grade_id', '=', 'grades.id')
@@ -5972,7 +5975,7 @@ class ReportController extends Controller
                 ->join('grades', 'grades.id', '=', 'students.grade_id')
                 ->select(
                     'students.name as student_name',
-                    'students.created_at as date_of_registration',
+                    'students.date_of_registration as date_of_registration',
                     'students.id as student_id',
                     'grades.name as grade_name',
                     'grades.class as grade_class',
@@ -6106,7 +6109,7 @@ class ReportController extends Controller
                 });
 
                 $isRestricted = $sortedScores->contains(function ($score) {
-                    return $score['final_score'] !== null && $score['final_score'] < 70;
+                    return $score['final_score'] !== null && $score['final_score'] < 0;
                 });
 
                 return [
@@ -6267,6 +6270,8 @@ class ReportController extends Controller
                 ->get();
 
             $student->date_of_registration = Carbon::parse($student->date_of_registration);
+            
+            $date_of_registration = $student->date_of_registration->format('F d, Y');
 
             $academicYear = Master_academic::where('is_use', true)->value('academic_year');
 
@@ -6382,7 +6387,7 @@ class ReportController extends Controller
                 ->join('grades', 'grades.id', '=', 'students.grade_id')
                 ->select(
                     'students.name as student_name',
-                    'students.created_at as date_of_registration',
+                    'students.date_of_registration as date_of_registration',
                     'grades.name as grade_name',
                     'grades.class as grade_class',
                     'grades.id as grade_id'
@@ -6510,7 +6515,7 @@ class ReportController extends Controller
                 ->join('grades', 'grades.id', '=', 'students.grade_id')
                 ->select(
                     'students.name as student_name',
-                    'students.created_at as date_of_registration',
+                    'students.date_of_registration as date_of_registration',
                     'grades.name as grade_name',
                     'grades.class as grade_class',
                     'grades.id as grade_id'
@@ -6632,7 +6637,7 @@ class ReportController extends Controller
                 ->join('grades', 'grades.id', '=', 'students.grade_id')
                 ->select(
                     'students.name as student_name',
-                    'students.created_at as date_of_registration',
+                    'students.date_of_registration as date_of_registration',
                     'grades.name as grade_name',
                     'grades.class as grade_class',
                     'grades.id as grade_id'
@@ -6768,7 +6773,7 @@ class ReportController extends Controller
                 ->join('grades', 'grades.id', '=', 'students.grade_id')
                 ->select(
                     'students.name as student_name',
-                    'students.created_at as date_of_registration',
+                    'students.date_of_registration as date_of_registration',
                     'grades.name as grade_name',
                     'grades.class as grade_class',
                     'grades.id as grade_id'
@@ -6890,7 +6895,7 @@ class ReportController extends Controller
                 ->join('grades', 'grades.id', '=', 'students.grade_id')
                 ->select(
                     'students.name as student_name',
-                    'students.created_at as date_of_registration',
+                    'students.date_of_registration as date_of_registration',
                     'grades.name as grade_name',
                     'grades.class as grade_class',
                     'grades.id as grade_id'
@@ -7156,7 +7161,7 @@ class ReportController extends Controller
                 ->join('grades', 'grades.id', '=', 'students.grade_id')
                 ->select(
                     'students.name as student_name',
-                    'students.created_at as date_of_registration',
+                    'students.date_of_registration as date_of_registration',
                     'grades.name as grade_name',
                     'grades.class as grade_class',
                     'grades.id as grade_id'
@@ -8011,7 +8016,7 @@ class ReportController extends Controller
                 ->join('grades', 'grades.id', '=', 'students.grade_id')
                 ->select(
                     'students.name as student_name',
-                    'students.created_at as date_of_registration',
+                    'students.date_of_registration as date_of_registration',
                     'grades.name as grade_name',
                     'grades.class as grade_class',
                     'grades.id as grade_id'
@@ -8378,7 +8383,7 @@ class ReportController extends Controller
                 ->join('grades', 'grades.id', '=', 'students.grade_id')
                 ->select(
                     'students.name as student_name',
-                    'students.created_at as date_of_registration',
+                    'students.date_of_registration as date_of_registration',
                     'grades.name as grade_name',
                     'grades.class as grade_class',
                     'grades.id as grade_id'
@@ -8643,7 +8648,7 @@ class ReportController extends Controller
                 ->join('grades', 'grades.id', '=', 'students.grade_id')
                 ->select(
                     'students.name as student_name',
-                    'students.created_at as date_of_registration',
+                    'students.date_of_registration as date_of_registration',
                     'grades.name as grade_name',
                     'grades.class as grade_class',
                     'grades.id as grade_id'

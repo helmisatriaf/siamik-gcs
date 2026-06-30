@@ -5,8 +5,8 @@
 <div class="container-fluid">
     <div class="row">
       <div class="col">
-        <nav aria-label="breadcrumb" class="bg-light rounded-3 mb-4">
-          <ol class="breadcrumb mb-0">
+        <nav aria-label="breadcrumb" class="p-3 mb-4" style="background-color: #ffde9e;border-radius:12px;">
+          <ol class="breadcrumb mb-0"  style="background-color: #fff3c0;">
             <li class="breadcrumb-item">Home</li>
             @if (session('role') == 'superadmin')
               <li class="breadcrumb-item"><a href="{{url('/superadmin/reports')}}">Reports</a></li>
@@ -22,7 +22,7 @@
     @if (sizeof($data) != 0)
          <!-- SUBJECT -->
         @foreach ($data['grade'] as $dg)
-            <div class="card card-dark mt-1">
+            <div class="card mt-1" style="background-color: #ffde9e;border-radius:12px;">
                 <div class="card-header">
                     <h3 class="card-title">{{ $dg->name }} - {{ $dg->class }}</h3>
                     <div class="card-tools">
@@ -70,9 +70,9 @@
                                     @endif
                                     <td>
                                         @if ($pr->status == 1)
-                                            Already Submitted
+                                           ✔️
                                         @else
-                                            {{ $pr->status }}
+                                            ❌
                                         @endif
                                     </td>
                                 </tr>

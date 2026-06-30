@@ -234,7 +234,7 @@
                 <p class="mb-0">Register at</p>
               </div>
               <div class="col-sm-8">
-                <p class="text-muted mb-0">{{date('d/m/Y', strtotime($data->student->created_at))}}</p>
+                <p class="text-muted mb-0">{{date('d/m/Y', strtotime($data->student->date_of_registration))}}</p>
               </div>
             </div>
             <hr>

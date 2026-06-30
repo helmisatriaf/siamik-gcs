@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 class StudentController extends Controller
 {
@@ -201,6 +202,10 @@ class StudentController extends Controller
 
       DB::beginTransaction();
 
+      Log::info('StudentController@actionEdit: Request Data: ' . json_encode($request->all()) . ', Student ID: ' . $id);
+
+      // dd($request);
+
       // session()->flash('preloader', true);
       session()->flash('page',  $page = (object)[
          'page' => 'students',
@@ -209,14 +214,15 @@ class StudentController extends Controller
 
 
       try {
-
          $date_format = new RegisterController();   
          $student_unique_id = Student::where('id', $id)->update([
             'nisn' => $request->nisn,
          ]);
+         $student_unique_id = Student::where('id', $id)->value('unique_id');
 
          // dd($student_unique_id);
          $credentials = [
+            'id' => $id,
             'name' => $request->studentName,
             'grade_id' => $request->gradeId,
             'gender' => $request->studentGender,
@@ -228,6 +234,7 @@ class StudentController extends Controller
             'nationality' => $request->studentNationality,
             'place_of_issue' => $request->studentPlace_of_issue,
             'date_exp' => $request->studentDate_exp ? $date_format->changeDateFormat($request->studentDate_exp) : null,
+            'date_of_registration' => $request->date_of_registration ? $date_format->changeDateFormat($request->date_of_registration) : null,
             // 'created_at' => $request->created_at ? date('Y-m-d H:i:s', strtotime($this->changeDateFormat($request->created_at))) : null,
          ];
          
@@ -243,6 +250,7 @@ class StudentController extends Controller
             'nationality' => $request->studentNationality,
             'place_of_issue' => $request->studentPlace_of_issue,
             'date_exp' => $request->studentDate_exp !== '' ? $date_format->changeDateFormat($request->studentDate_exp) : null,
+            'date_of_registration' => $request->date_of_registration ? $date_format->changeDateFormat($request->date_of_registration) : null,
             // 'created_at' => $request->created_at ? date('Y-m-d H:i:s', strtotime($this->changeDateFormat($request->created_at))) : null,
             // Father rules
             'father_relation' => 'father',
@@ -307,6 +315,7 @@ class StudentController extends Controller
             'nationality' => 'string|required|min:3',
             'place_of_issue' => 'nullable|string',
             'date_exp' => 'nullable|date',
+            'date_of_registration' => 'nullable|date',
             // father validation 
             'father_name' => 'string|required|min:3',
             'father_religion' => 'string|required',
@@ -314,10 +323,10 @@ class StudentController extends Controller
             'father_date_birth' => 'date|required',
             'father_id_or_passport' => 'string|required|min:15|max:16',
             'father_nationality' => 'string|required',
-            'father_phone' => 'nullable|string|max:13|min:9',
+            'father_phone' => 'nullable|string|max:13',
             'father_home_address' => 'required|string',
             'father_mobilephone' => 'required|string|max:13|min:9',
-            'father_telephone' => 'nullable|string|max:13|min:9',
+            'father_telephone' => 'nullable|string|max:13',
             'father_email' => 'required|string|email',
             //mother validation
             'mother_name' => 'string|required|min:3',
@@ -329,31 +338,41 @@ class StudentController extends Controller
             'mother_occupation' => 'nullable|string',
             'mother_company_name' => 'nullable|string',
             'mother_company_address' => 'nullable|string',
-            'mother_phone' => 'nullable|string|max:13|min:9',
+            'mother_phone' => 'nullable|string|max:13',
             'mother_home_address' => 'required|string',
-            'mother_telephone' => 'nullable|string|max:13|min:9',
+            'mother_telephone' => 'nullable|string|max:13',
             'mother_mobilephone' => 'required|string|max:13|min:9',
             'mother_email' => 'required|string|email',
-         ]);         
+         ]);       
+         
+         if($validator->fails()){
+            return redirect('/superadmin/update/' . $student_unique_id)->withErrors($validator->messages())->withInput($rules);
+         }
 
          // CHANGE MOTHER AND FATHER NAME TO RELATIONSHIP
          $relationship = Student_relationship::where('student_id', $id)->get();
-
-
-         foreach($relationship as $rel){
-            $relationship = Relationship::where('id', $rel->relation_id)->value('relation');
-            // dd($rel->relation_id);
-            if($relationship == 'father'){
-               Relationship::where('id', $rel->relation_id)->update([
-                  'name' => $request->fatherName,
-               ]);
-            }
-            elseif($relationship == 'mother'){
-               Relationship::where('id', $rel->relation_id)->update([
-                  'name' => $request->motherName,
-               ]);
+   
+         if($relationship->isEmpty()){
+            Log::info('StudentController@handleRelationship: Request Data: tidak ada relationship, Student ID: ' . $id);
+            $student = Student::where('id', $id)->first();
+            $relationship = $this->handleRelationship($request, $student);
+         }else{
+            Log::info('StudentController@handleRelationship: ada relationship');
+            foreach($relationship as $rel){
+               $relationship = Relationship::where('id', $rel->relation_id)->value('relation');
+               if($relationship == 'father'){
+                  Relationship::where('id', $rel->relation_id)->update([
+                     'name' => $request->fatherName,
+                  ]);
+               }
+               elseif($relationship == 'mother'){
+                  Relationship::where('id', $rel->relation_id)->update([
+                     'name' => $request->motherName,
+                  ]);
+               }
             }
          }
+
 
          Student::where('id', $id)->update($credentials);
          DB::commit();
@@ -371,6 +390,7 @@ class StudentController extends Controller
             // 'brother_or_sisters' => $brotherOrSister->brotherOrSister()->get(),
             'allGrade' => $allGrade,
          ];
+         
          // dd($data);
          return view('components.student.editStudent')->with('data', $data);
          
@@ -384,16 +404,16 @@ class StudentController extends Controller
       }
    }
 
-   private function handleRelationship($request, $id)
+   private function handleRelationship($request, $student)
    {
       try {
-         $date_format = new RegisterController();
-         $credentialFather = [
+         $credentialsFather = [
             'relation' => 'father',
+            'user_id' => null,
             'name' => $request->fatherName,
             'religion' => $request->fatherReligion,
             'place_birth' => $request->fatherPlace_birth,
-            'date_birth' => $request->fatherBirth_date ? $date_format->changeDateFormat($request->fatherBirth_date) : null,
+            'date_birth' => $request->fatherBirth_date ? $this->changeDateFormat($request->fatherBirth_date) : null,
             'id_or_passport' => $request->fatherId_or_passport,
             'nationality' => $request->fatherNationality,
             'occupation' => $request->fatherOccupation,
@@ -406,12 +426,13 @@ class StudentController extends Controller
             'email' => $request->fatherEmail,
          ];
 
-         $credentialMother = [
+         $credentialsMother = [
             'relation' => 'mother',
+            'user_id' => null,
             'name' => $request->motherName,
             'religion' => $request->motherReligion,
             'place_birth' => $request->motherPlace_birth,
-            'date_birth' => $request->motherBirth_date ? $date_format->changeDateFormat($request->motherBirth_date) : null,
+            'date_birth' => $request->motherBirth_date ? $this->changeDateFormat($request->motherBirth_date) : null,
             'id_or_passport' => $request->motherId_or_passport,
             'nationality' => $request->motherNationality,
             'occupation' => $request->motherOccupation,
@@ -423,35 +444,95 @@ class StudentController extends Controller
             'mobilephone' => $request->motherMobilephone,
             'email' => $request->motherEmail,
          ];
-         
-         $student = Student::with('relationship')->where('id', $id)->first();
 
-         foreach($student->relationship as $value)
-         {
-            if($value->relation == 'father')
-            {
-               Relationship::where('id', $value->id)->update($credentialFather);
-            } else {
-               Relationship::where('id', $value->id)->update($credentialMother);
-            }
-         }
-         
-         return (object)[
-            'status' => true,
-            'father' => $credentialFather,
-            'mother' => $credentialMother,
-         ];
+         $checkIdFather = Relationship::where('id_or_passport', $credentialsFather['id_or_passport'])->first();
+         $checkIdMother = Relationship::where('id_or_passport', $credentialsMother['id_or_passport'])->first();
 
-      } catch (Exception $err) {
-         
-         DB::rollBack();
-         
-         return (object)[
-            'status' => false,
-            'error' => $err,
-         ];
+         // dd($checkIdFather, $checkIdMother);
+
+         $father = $checkIdFather && $checkIdFather->relation == 'father'? $this->updateRelation($checkIdFather->id, $credentialsFather) : Relationship::create($credentialsFather);
+         $mother = $checkIdMother && $checkIdMother->relation == 'mother'? $this->updateRelation($checkIdMother->id, $credentialsMother) : Relationship::create($credentialsMother);
+
+         Student_relationship::create(['student_id' => $student->id,'relation_id' => $father->id]);
+         Student_relationship::create(['student_id' => $student->id,'relation_id' => $mother->id]);
+
+         Log::info('StudentController@handleRelationship: Student ID: ' . $student->id . ', Father ID: ' . $father->id . ', Mother ID: ' . $mother->id);
+
+         return (object)['success' => true, 'dataRelation' => (object)['father' => $father, 'mother' => $mother]];
+
+      } catch (\Exception $e) {
+        dd($e->getMessage());
       }
    }
+
+   // private function handleRelationship($request, $id)
+   // {
+   //    try {
+   //       $date_format = new RegisterController();
+   //       $credentialFather = [
+   //          'relation' => 'father',
+   //          'name' => $request->fatherName,
+   //          'religion' => $request->fatherReligion,
+   //          'place_birth' => $request->fatherPlace_birth,
+   //          'date_birth' => $request->fatherBirth_date ? $date_format->changeDateFormat($request->fatherBirth_date) : null,
+   //          'id_or_passport' => $request->fatherId_or_passport,
+   //          'nationality' => $request->fatherNationality,
+   //          'occupation' => $request->fatherOccupation,
+   //          'company_name' => $request->fatherCompany_name,
+   //          'company_address' => $request->fatherCompany_address,
+   //          'phone' => $request->fatherCompany_phone,
+   //          'home_address' => $request->fatherHome_address,
+   //          'telephone' => $request->fatherTelephhone,
+   //          'mobilephone' => $request->fatherMobilephone,
+   //          'email' => $request->fatherEmail,
+   //       ];
+
+   //       $credentialMother = [
+   //          'relation' => 'mother',
+   //          'name' => $request->motherName,
+   //          'religion' => $request->motherReligion,
+   //          'place_birth' => $request->motherPlace_birth,
+   //          'date_birth' => $request->motherBirth_date ? $date_format->changeDateFormat($request->motherBirth_date) : null,
+   //          'id_or_passport' => $request->motherId_or_passport,
+   //          'nationality' => $request->motherNationality,
+   //          'occupation' => $request->motherOccupation,
+   //          'company_name' => $request->motherCompany_name,
+   //          'company_address' => $request->motherCompany_address,
+   //          'phone' => $request->motherCompany_phone,
+   //          'home_address' => $request->motherHome_address,
+   //          'telephone' => $request->motherTelephhone,
+   //          'mobilephone' => $request->motherMobilephone,
+   //          'email' => $request->motherEmail,
+   //       ];
+         
+   //       $student = Student::with('relationship')->where('id', $id)->first();
+
+   //       foreach($student->relationship as $value)
+   //       {
+   //          if($value->relation == 'father')
+   //          {
+   //             Relationship::where('id', $value->id)->update($credentialFather);
+   //          } else {
+   //             Relationship::where('id', $value->id)->update($credentialMother);
+   //          }
+   //       }
+         
+   //       return (object)[
+   //          'status' => true,
+   //          'father' => $credentialFather,
+   //          'mother' => $credentialMother,
+   //       ];
+
+   //    } catch (Exception $err) {
+         
+   //       DB::rollBack();
+         
+   //       return (object)[
+   //          'status' => false,
+   //          'error' => $err,
+   //       ];
+   //    }
+   // }
 
    private function handleBrotherOrSister($credentials, $id)
    {
@@ -501,9 +582,26 @@ class StudentController extends Controller
       }
    }
 
-   public function changeDateFormat($date)
+   private function changeDateFormat($date)
    {
-      return \Carbon\Carbon::createFromFormat('Y-m-d', $date)->format('Y-m-d'); // Change the format according to your needs
+      // dd($date);
+      return \Carbon\Carbon::parse($date)->format('Y-m-d');
+      // return \Carbon\Carbon::createFromFormat('Y-m-d', $date)->format('Y-m-d'); // Change the format according to your needs
    }
-                                      
+                 
+   private function updateRelation($id, $credential)
+   {
+
+      
+      try {
+         //code...
+         
+         Relationship::where('id', $id)->update($credential);
+
+         return Relationship::where('id', $id)->first();
+
+      } catch (Exception $err) {
+         return dd($err);
+      }
+   }
 }

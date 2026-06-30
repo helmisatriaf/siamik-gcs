@@ -107,7 +107,7 @@
                                     </td>
                                     <td>
                                        <a>
-                                          {{ $el->unique_id }}
+                                          {{ $el->nisn }}
                                        </a>
                                     </td>
                                     <td>

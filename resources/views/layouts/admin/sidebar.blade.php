@@ -171,6 +171,27 @@
                                             <p class="text-bold ">Course</p>
                                         </a>
                                     </li>
+
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="nav-icon fa-solid fa-academic"></i>
+                                            <p class="">
+                                                Change Academic Year
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview">
+                                            @foreach ($academic_years as $year)
+                                                <li class="nav-item">
+                                                    <a class="nav-link {{ session('academic_year') ? ($year == session('academic_year') ? 'active' : '') : '' }}"
+                                                        onclick="setAcademicYear('{{ $year }}')">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>{{ $year }}</p>
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </li>
                                 @elseif (session('role') == 'teacher')
                                     <li class="nav-item">
                                         <a href="/{{ session('role') }}/course/"
