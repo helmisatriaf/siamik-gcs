@@ -102,14 +102,16 @@
                         <tr>
                             <th rowspan="2" class="text-center align-middle" style="vertical-align : middle;text-align:center;">S/N</th>
                             <th rowspan="2" class="text-center align-middle" style="vertical-align : middle;text-align:center;width: 10%;">First Name</th>
-                            <th colspan="{{ $data['grade']->total_homework + 2 }}" class="text-center align-middle" style="vertical-align : middle;text-align:center;">Homework</th>
+                            <th colspan="{{ $data['grade']->total_homework + 2 }}" class="text-center align-middle" style="vertical-align : middle;text-align:center;">Homework / Daily Assessment</th>
                             <th colspan="{{ $data['grade']->total_exercise + 2 }}" class="text-center align-middle" style="vertical-align : middle;text-align:center;">Exercise</th>
                             <th colspan="{{ $data['grade']->total_participation + 2 }}" class="text-center align-middle" style="vertical-align : middle;text-align:center;">Participation</th>
                             <th class="text-center align-middle" style="vertical-align : middle;text-align:center;">R (30%)</th>
                             <th colspan="{{ $data['grade']->total_quiz + 1 }}" class="text-center align-middle" style="vertical-align : middle;text-align:center;">Quiz</th>
-                            <th class="text-center align-middle" style="vertical-align : middle;text-align:center;">R (30%)</th>
+                            <th class="text-center align-middle" style="vertical-align : middle;text-align:center;">R (15%)</th>
+                            <th colspan="1" class="text-center align-middle" style="vertical-align : middle;text-align:center;">Mid-term</th>
+                            <th class="text-center align-middle" style="vertical-align : middle;text-align:center;">R (20%)</th>
                             <th colspan="1" class="text-center align-middle" style="vertical-align : middle;text-align:center;">Final</th>
-                            <th class="text-center align-middle" style="vertical-align : middle;text-align:center;">R (40%)</th>
+                            <th class="text-center align-middle" style="vertical-align : middle;text-align:center;">R (35%)</th>
                             <th class="text-center align-middle" style="vertical-align : middle;text-align:center;">Total</th>
                             <th rowspan="2" class="text-center align-middle" style="vertical-align : middle;text-align:center;">Remedial</th>
                             <th rowspan="2" class="text-center align-middle" style="vertical-align : middle;text-align:center;width: 20%;">Comment</th>
@@ -136,6 +138,8 @@
                             @endfor
                             <td class="text-center align-middle">Avg</td>
                             <td style="background-color:beige;" class="text-center align-middle">Quiz</td>
+                            <td class="text-center align-middle">Assessment</td>
+                            <td class="text-center align-middle">M-T.E</td>
                             <td class="text-center align-middle">Exam</td>
                             <td style="background-color:beige;" class="text-center align-middle">F.E</td>
                             <td style="background-color:beige;" class="text-center align-middle">100%</td>
@@ -153,6 +157,8 @@
                                 <!-- COUNT HOMEWORK -->
                                 @foreach ($student['scores'] as $index => $score)
                                     @if($score['type_exam'] == 1)
+                                        <td class="text-center align-middle">{{ $score['score'] }}</td>
+                                    @elseif($score['type_exam'] == 21)
                                         <td class="text-center align-middle">{{ $score['score'] }}</td>
                                     @endif
                                 @endforeach
@@ -200,6 +206,20 @@
                                 <td class="text-center align-middle" style="background-color:beige;">{{ $student['percent_quiz'] }}</td>
                                 <!-- END COUNT QUIZ -->
         
+                                <!-- COUNT MID-TERM  -->
+                                @php $foundMidTerm = false; @endphp
+                                @foreach ($student['scores'] as $score)
+                                    @if($score['type_exam'] == 20)
+                                        <td class="text-center align-middle">{{ $score['score'] }}</td>
+                                        @php $foundMidTerm = true; @endphp
+                                    @endif
+                                @endforeach
+                                @if(!$foundMidTerm)
+                                    <td class="text-center align-middle">&nbsp;</td>
+                                @endif
+                                <td class="text-center align-middle" style="background-color:beige;">{{ $student['percent_midterm'] ?? '&nbsp;' }}</td>
+                                <!-- END COUNT MID-TERM -->
+                                
                                 <!-- COUNT F.EXAM -->
                                 @php $foundFinalExam = false; @endphp
                                 @foreach ($student['scores'] as $score)

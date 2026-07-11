@@ -925,7 +925,7 @@ class GradeController extends Controller
             'gradeTeacher' => $gradeTeacher,
          ];
 
-         dd($data);
+         // dd($data);
          return view('components.teacher.data-grade-teacher', [
             'data' => $data,
             'subjects' => $subject,

@@ -288,36 +288,54 @@
                             <tr>
                                 <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">S/N</th>
                                 <th rowspan="2 class="text-center" style="vertical-align : middle;text-align:center;">First Name</th>
-                                <th colspan="{{ $data['grade']->total_tasks + 2 }}" class="text-center" style="vertical-align : middle;text-align:center;"> Homework/Exercise</th>
+                                <th colspan="{{ $data['grade']->total_homework + 2 }}" class="text-center" style="vertical-align : middle;text-align:center;"> Homework</th>
+                                <th colspan="{{ $data['grade']->total_exercise + 2 }}" class="text-center" style="vertical-align : middle;text-align:center;"> Exercise</th>
                                 <th colspan="{{ $data['grade']->total_mid + 2 }}" class="text-center" style="vertical-align : middle;text-align:center;">Quiz/Practical/Project</th>
+                                <th colspan="{{ $data['grade']->total_mid_term + 2 }}" class="text-center" style="vertical-align : middle;text-align:center;">Mid-Term</th>
                                 <th colspan="{{ $data['grade']->total_final_exam + 2 }}" class="text-center" style="vertical-align : middle;text-align:center;">Final Exam</th>
                                 <th class="text-center">Total</th>
                                 <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Remedial</th>
                                 <th rowspan="2" class="text-center" style="vertical-align : middle;text-align:center;">Comment</th>
                             </tr>
                             <tr>
-                                <!-- TASKS -->
-                                @for ($i=1; $i <= $data['grade']->total_tasks; $i++)
+                                <!-- HOMEWORK -->
+                                @for ($i=1; $i <= $data['grade']->total_homework; $i++)
                                     <td class="text-center">{{ $i }}</td>
                                 @endfor
                                 <td class="text-center">Avg</td>
-                                <td style="background-color:beige;" class="text-center">25%</td>
-                                <!-- END TASKS -->
+                                <td style="background-color:beige;" class="text-center">10%</td>
+                                <!-- END HOMEWORK -->
+                                
+                                <!-- EXERCISE -->
+                                @for ($i=1; $i <= $data['grade']->total_exercise; $i++)
+                                    <td class="text-center">{{ $i }}</td>
+                                @endfor
+                                <td class="text-center">Avg</td>
+                                <td style="background-color:beige;" class="text-center">10%</td>
+                                <!-- END EXERCISE -->
         
                                 <!-- QUIZ -->
                                 @for ($j=1; $j <= $data['grade']->total_mid; $j++)
                                     <td class="text-center">{{ $j }}</td>
                                 @endfor
                                 <td class="text-center">Avg</td>
-                                <td style="background-color:beige;" class="text-center">35%</td>
+                                <td style="background-color:beige;" class="text-center">20%</td>
                                 <!-- END QUIZ -->
         
+                                <!-- MID TERM -->
+                                @for ($j=1; $j <= $data['grade']->total_mid_term; $j++)
+                                    <td class="text-center">{{ $j }}</td>
+                                @endfor
+                                <td class="text-center">Avg</td>
+                                <td style="background-color:beige;" class="text-center">25%</td>
+                                <!-- END MID TERM -->
+
                                 <!-- FINAL EXAM -->
                                 @for ($j=1; $j <= $data['grade']->total_final_exam; $j++)
                                     <td class="text-center">{{ $j }}</td>
                                 @endfor
                                 <td class="text-center">Avg</td>
-                                <td style="background-color:beige;" class="text-center">40%</td>
+                                <td style="background-color:beige;" class="text-center">35%</td>
                                 <!-- END FINAL EXAM -->
         
                                 <td style="background-color:beige;" class="text-center">100%</td>
@@ -333,16 +351,27 @@
                                     <td>{{ $loop->iteration }}</td>  <!-- nomer -->
                                     <td style="position: sticky; left: 0; background: #ffffff; z-index: 99;">{{ $student['student_name'] }}</td> <!-- name -->
                             
-                                    <!-- COUNT TASKS -->
+                                    <!-- COUNT HOMEWORK -->
                                     @foreach ($student['scores'] as $index => $score)
-                                        @if(in_array($score['type_exam'], $data['tasks']))
+                                        @if($score['type_exam'] == $data['homework'])
                                             <td class="text-center">{{ $score['score'] }}</td>
                                         @endif
                                     @endforeach
         
-                                    <td>{{ $student['avg_tasks'] }} </td>
-                                    <td style="background-color:beige;">{{ $student['percent_tasks'] }} </td>
-                                    <!-- END TASKS -->
+                                    <td>{{ $student['avg_homework'] }} </td>
+                                    <td style="background-color:beige;">{{ $student['percent_homework'] }} </td>
+                                    <!-- END HOMEWORK -->
+                                    
+                                    <!-- COUNT EXERCISE -->
+                                    @foreach ($student['scores'] as $index => $score)
+                                        @if($score['type_exam'] == $data['exercise'])
+                                            <td class="text-center">{{ $score['score'] }}</td>
+                                        @endif
+                                    @endforeach
+        
+                                    <td>{{ $student['avg_exercise'] }} </td>
+                                    <td style="background-color:beige;">{{ $student['percent_exercise'] }} </td>
+                                    <!-- END EXERCISE -->
         
         
                                     <!-- COUNT QUIZ -->
@@ -357,6 +386,18 @@
                                     <!-- END COUNT QUIZ -->
         
         
+                                    <!-- COUNT Mid-Term -->
+                                    @php $foundMidTerm = false; @endphp
+                                    @foreach ($student['scores'] as $score)
+                                        @if($score['type_exam'] == $data['midTerm'])
+                                            <td class="text-center">{{ $score['score'] }}</td>
+                                            @php $foundMidTerm = true; @endphp
+                                        @endif
+                                    @endforeach
+                                    <td>{{ $student['avg_midterm'] ?? '&nbsp;' }}</td>
+                                    <td style="background-color:beige;">{{ $student['percent_midterm'] ?? '&nbsp;' }}</td>
+                                    <!-- END COUNT Mid-Term -->
+
                                     <!-- COUNT F.EXAM -->
                                     @php $foundFinalExam = false; @endphp
                                     @foreach ($student['scores'] as $score)

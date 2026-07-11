@@ -208,6 +208,7 @@ class CourseController extends Controller
             // For teachers, show their assigned subjects
             else if ($role == 'teacher') {
                 $teacherId = Teacher::where('user_id', session('id_user'))->value('id');
+                // dd($teacherId);
 
                 // Get the teacher's assigned grade
                 $gradeId = DB::table('teacher_subjects')
@@ -484,6 +485,7 @@ class CourseController extends Controller
                 'page' => 'course',
                 'child' => 'detail course',
             ]);
+
             $masterAcademic = Master_academic::where('is_use', true)->first(); 
 
             if(session('semester') == 1){

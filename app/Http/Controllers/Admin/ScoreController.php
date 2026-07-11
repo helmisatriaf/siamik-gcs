@@ -595,6 +595,7 @@ class ScoreController extends Controller
             $gradeId = $request->grade_id;
             $subjectId = $request->subject_id;
 
+            // Untuk Kindergarten-A and Kindergarten-B
             if($gradeId == 3  || $gradeId == 4){
                 $exercise       = Type_exam::where('name', 'exercise')->value('id');
                 $quiz           = Type_exam::where('name', 'quiz')->value('id');
@@ -684,7 +685,7 @@ class ScoreController extends Controller
 
                 $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) use($participation, $exercise, $quiz) {
 
-                    $student = $scores->first();
+                    $student        = $scores->first();
                     $exercise       = $scores->where('type_exam', $exercise)->pluck('score');
                     $quiz           = $scores->where('type_exam', $quiz)->pluck('score');
                     $participation  = $scores->where('type_exam', $participation)->pluck('score');
@@ -768,6 +769,9 @@ class ScoreController extends Controller
                 }
 
                 $homework = Type_exam::where('name', '=', 'homework')->value('id');
+                $dailyAssessment = Type_exam::where('name', '=', 'daily assessment')->value('id');
+                $homedaily = Type_exam::whereIn('name', ['homework', 'daily assessment'])->value('id');
+                $midterm = Type_exam::where('name', '=', 'mid-term assessment')->value('id');
                 $exercise = Type_exam::where('name', '=', 'exercise')->value('id');
                 $participation = Type_exam::where('name', '=', 'participation')->value('id');
                 $quiz = Type_exam::where('name', '=', 'quiz')->value('id');
@@ -1014,18 +1018,18 @@ class ScoreController extends Controller
                 if ($gradeId <= 10){
                     // Perhitungan ACAR Primary Major Subject
                     if ($isMajorSubject) {
-                        $totalExam = Grade::with(['student', 'exam' => function ($query) use ($subjectId, $homework, $exercise, $participation, $quiz, $finalExam) {
+                        $totalExam = Grade::with(['student', 'exam' => function ($query) use ($subjectId, $homework, $exercise, $participation, $quiz, $finalExam, $homedaily, $midterm) {
                             $query->whereHas('subject', function ($subQuery) use ($subjectId) {
                                 $subQuery->where('subject_id', $subjectId);
                             });
                         }])
                         ->where('grades.id', $gradeId)
                         ->withCount([
-                            'exam as total_homework' => function ($query) use ($subjectId, $homework, $semester, $academic_year) {
+                            'exam as total_homework_daily' => function ($query) use ($subjectId, $homework, $dailyAssessment, $semester, $academic_year) {
                                 $query->whereHas('subject', function ($subQuery) use ($subjectId) {
                                     $subQuery->where('subject_id', $subjectId);
                                 })
-                                ->where('type_exam', $homework)
+                                ->whereIn('type_exam', [$homework, $dailyAssessment])
                                 ->where('semester', $semester)
                                 ->where('exams.academic_year', $academic_year);
                             },
@@ -1050,6 +1054,14 @@ class ScoreController extends Controller
                                     $subQuery->where('subject_id', $subjectId);
                                 })
                                 ->where('type_exam', $finalExam)
+                                ->where('semester', $semester)
+                                ->where('exams.academic_year', $academic_year);
+                            },
+                            'exam as total_mid_term' => function ($query) use ($subjectId, $midterm, $semester, $academic_year) {
+                                $query->whereHas('subject', function ($subQuery) use ($subjectId) {
+                                    $subQuery->where('subject_id', $subjectId);
+                                })
+                                ->where('type_exam', $midterm)
                                 ->where('semester', $semester)
                                 ->where('exams.academic_year', $academic_year);
                             },
@@ -1098,17 +1110,19 @@ class ScoreController extends Controller
                         // dd($results);
     
                         $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) {
-                            $homework = Type_exam::where('name', '=', 'homework')->value('id');
+                            $homedaily = Type_exam::whereIn('name', ['homework', 'daily assessment'])->value('id');
                             $exercise = Type_exam::where('name', '=', 'exercise')->value('id');
-                            $participation = Type_exam::where('name', '=', 'participation')->value('id');
                             $quiz = Type_exam::where('name', '=', 'quiz')->value('id');
+                            $midterm = Type_exam::where('name', '=', 'mid-term assessment')->value('id');
+                            $participation = Type_exam::where('name', '=', 'participation')->value('id');
                             $finalExam = Type_exam::where('name', '=', 'final exam')->value('id');
     
                             $student            = $scores->first();
-                            $homeworkScores     = $scores->where('type_exam', $homework)->pluck('score');
+                            $homeworkScores     = $scores->whereIn('type_exam', $homedaily)->pluck('score');
                             $exerciseScores     = $scores->where('type_exam', $exercise)->pluck('score');
-                            $participationScore = $scores->where('type_exam', $participation)->pluck('score');
                             $quizScores         = $scores->where('type_exam', $quiz)->pluck('score');
+                            $midtermScores      = $scores->where('type_exam', $midterm)->pluck('score');
+                            $participationScore = $scores->where('type_exam', $participation)->pluck('score');
                             $finalExamScores    = $scores->where('type_exam', $finalExam)->pluck('score');
                             
                             return [
@@ -1125,15 +1139,17 @@ class ScoreController extends Controller
                                 'avg_exercise'      => round($exerciseScores->avg()),
                                 'avg_participation' => round($participationScore->avg()),
                                 'avg_quiz'          => round($quizScores->avg()),
-    
+                                'avg_midterm'       => round($midtermScores->avg()),
+
                                 'percent_homework'      => round($homeworkScores->avg() * 0.1),
                                 'percent_exercise'      => round($exerciseScores->avg() * 0.15),
                                 'percent_participation' => round($participationScore->avg() * 0.05),
                                 'h+e+p'                 => (round($homeworkScores->avg() * 0.1)) + round(($exerciseScores->avg() * 0.15)) + round(($participationScore->avg() * 0.05)),
-                            
-                                'percent_quiz' => round($quizScores->avg() * 0.3),
-                                'percent_fe'   => round($finalExamScores->avg() * 0.4),
-                                'total_score'  => round(($homeworkScores->avg() * 0.1) + ($exerciseScores->avg() * 0.15) + ($participationScore->avg() * 0.05) + ($quizScores->avg() * 0.3) + ($finalExamScores->avg() * 0.4)),
+
+                                'percent_quiz' => round($quizScores->avg() * 0.15),
+                                'percent_midterm' => round($midtermScores->avg() * 0.2),
+                                'percent_fe'   => round($finalExamScores->avg() * 0.35),
+                                'total_score'  => round(($homeworkScores->avg() * 0.1) + ($exerciseScores->avg() * 0.15) + ($participationScore->avg() * 0.05) + ($quizScores->avg() * 0.15) + ($midtermScores->avg() * 0.2) + ($finalExamScores->avg() * 0.35)),
                                 
                                 // 'comment' => '',
                             ];
@@ -1423,12 +1439,15 @@ class ScoreController extends Controller
                     }
                     // Perhitungan ACAR Secondary Major Subject
                     else{
-                        $tasks = Type_exam::whereIn('name', ['homework', 'exercice', 'Exercise'])
+                        $homework = Type_exam::where('name', '=', 'homework')->value('id');
+                        $exercise = Type_exam::where('name', '=', 'exercise')->value('id');
+                        // $tasks = Type_exam::whereIn('name', ['homework', 'exercice', 'Exercise'])
+                        //     ->pluck('id')
+                        //     ->toArray();
+                        $combine = Type_exam::whereIn('name', ['quiz', 'practical', 'project'])
                             ->pluck('id')
                             ->toArray();
-                        $mid = Type_exam::whereIn('name', ['quiz', 'practical', 'project'])
-                            ->pluck('id')
-                            ->toArray();
+                        $midTerm = Type_exam::where('name','=', 'mid-term assessment')->value('id');
                         $finalExam = Type_exam::whereIn('name', ['written tes', 'big project', 'final assessment', 'final exam'])
                             ->pluck('id')
                             ->toArray();
@@ -1491,17 +1510,21 @@ class ScoreController extends Controller
                                 ->get();
                         }
     
-                        $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) use($tasks, $mid, $finalExam) {
+                        $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) use($homework, $exercise, $midTerm,$combine, $finalExam) {
                             $student            = $scores->first();
-                            $tasks              = $scores->whereIn('type_exam', $tasks)->pluck('score');
-                            $mid                = $scores->whereIn('type_exam', $mid)->pluck('score');
+                            $homeworkScores     = $scores->where('type_exam', $homework)->pluck('score');
+                            $exerciseScores     = $scores->where('type_exam', $exercise)->pluck('score');
+                            $midTermScores      = $scores->where('type_exam', $midTerm)->pluck('score');
+                            $combineScores      = $scores->whereIn('type_exam', $combine)->pluck('score');
                             $finalExamScores    = $scores->whereIn('type_exam', $finalExam)->pluck('score');
 
-                            $scoreTask = round($tasks->avg() * 0.25);
-                            $percentMid = round($mid->avg() * 0.35);
-                            $percentFE =  round($finalExamScores->avg() * 0.4);
+                            $homework   = round($homeworkScores->avg() * 0.1);
+                            $exercise   = round($exerciseScores->avg() * 0.1);
+                            $combine    = round($combineScores->avg() * 0.20);
+                            $midTerm    = round($midTermScores->avg() * 0.25);
+                            $finalExam  = round($finalExamScores->avg() * 0.35);
 
-                            $totalScore = round($scoreTask + $percentMid + $percentFE);
+                            $totalScore = round($homework + $exercise + $midTerm + $combine + $finalExam);
                             
                             return [
                                 'student_id' => $student->student_id,
@@ -1513,8 +1536,10 @@ class ScoreController extends Controller
                                         'score' => $score->score,
                                     ];
                                 })->all(),
-                                'avg_tasks' => round($tasks->avg()),
-                                'avg_mid'   => round($mid->avg()),
+                                'avg_homework' => round($homeworkScores->avg()),
+                                'avg_exercise' => round($exerciseScores->avg()),
+                                'avg_midterm' => round($midTermScores->avg()),
+                                'avg_combine'   => round($combineScores->avg()),
                                 'avg_fe'    => round($finalExamScores->avg()),
             
                                 // 'percent_tasks' => round($tasks->avg() * 0.25),
@@ -1522,9 +1547,11 @@ class ScoreController extends Controller
                                 // 'percent_fe'    => round($finalExamScores->avg() * 0.4),
                                 // 'total_score'   => (round(($tasks->avg() * 0.25)) +  round(($mid->avg() * 0.35)) + round(($finalExamScores->avg() * 0.4))),
                                 
-                                'percent_tasks' => $scoreTask,
-                                'percent_mid'  => $percentMid,
-                                'percent_fe'    => $percentFE,
+                                'percent_homework' => $homework,
+                                'percent_exercise' => $exercise,
+                                'percent_mid'  => $combine,
+                                'percent_midterm' => $midTerm,
+                                'percent_fe'    => $finalExam,
                                 'total_score'   => $totalScore,
                                 // 'comment' => '',
                             ];
