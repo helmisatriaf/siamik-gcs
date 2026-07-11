@@ -1098,7 +1098,7 @@ class GradeController extends Controller
 
    public function previousData(){
       try {
-         $earlierAcademicYear = "2024-2025";
+         $earlierAcademicYear = "2025-2026";
          $earlierGradeSubject = Grade_subject::where('academic_year', $earlierAcademicYear)->get();
          $earlierTeacherGrade = Teacher_grade::where('academic_year', $earlierAcademicYear)->get();
          $earlierTeacherSubject = Teacher_subject::where('academic_year', $earlierAcademicYear)->get();
