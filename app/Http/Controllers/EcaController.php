@@ -500,11 +500,11 @@ class EcaController extends Controller
             ->where('student_id', $studentId)
             ->delete();
 
-            return redirect('/'.session('role').'/eca/view' . '/' . $ecaId);
+            return redirect('/eca/view' . '/' . $ecaId);
         } 
         catch (Exception $err) {
             dd($err);
-            return redirect('/'.session('role').'/eca/view' . '/' . $ecaId)->with('error', 'Terjadi kesalahan saat menghapus data student eca.');
+            return redirect('/eca/view' . '/' . $ecaId)->with('error', 'Terjadi kesalahan saat menghapus data student eca.');
         }
     }
 

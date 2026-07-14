@@ -988,6 +988,11 @@ Route::middleware(['auth.login', 'role:superadmin'])->prefix('/superadmin')->gro
       Route::get('reportCard/decline/{gradeId}/{teacherId}/{semester}', [ReportController::class, 'reportCardDecline']);
       Route::get('tcop/decline/{gradeId}/{teacherId}', [ReportController::class, 'tcopDecline']);
    });
+
+   Route::prefix('/eca')->group(function () {
+      Route::get('/delete/{id}', [EcaController::class, 'delete'])->name('delete-eca-super');
+      Route::get('/delete/student/{ecaId}/{studentId}', [EcaController::class, 'deleteStudent'])->name('delete-eca-student-superadmin');
+   });
 });
 
 Route::middleware(['auth.login', 'role:admin'])->prefix('/admin')->group(function () {
@@ -1079,7 +1084,7 @@ Route::middleware(['auth.login', 'role:admin'])->prefix('/admin')->group(functio
 
    Route::prefix('/eca')->group(function () {
       Route::get('/delete/{id}', [EcaController::class, 'delete'])->name('delete-eca');
-      Route::get('/delete/student/{ecaId}/{studentId}', [EcaController::class, 'deleteStudent'])->name('delete-eca-student');
+      Route::get('/delete/student/{ecaId}/{studentId}', [EcaController::class, 'deleteStudent'])->name('delete-eca-student-admin');
    });
 
    Route::prefix('/exams')->group(function () {
@@ -1560,7 +1565,7 @@ Route::middleware(['auth.login', 'role:superadmin,admin'])->group(function () {
       Route::put('/{id}', [EcaController::class, 'actionPut'])->name('actionAdminUpdateEca');
       Route::post('/changeIcon', [EcaController::class, 'changeIcon'])->name('change.icon.eca');
       // Route::put('/delete/{id}', [EcaController::class, 'delete'])->name('delete-eca');
-      // Route::get('/delete/student/{ecaId}/{studentId}', [EcaController::class, 'deleteStudent'])->name('delete-eca-student');
+      Route::post('/delete/student/{ecaId}/{studentId}', [EcaController::class, 'deleteStudent'])->name('delete-eca-student');
    });
 
    Route::prefix('{role}')->group(function () {

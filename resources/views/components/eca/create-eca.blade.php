@@ -21,7 +21,7 @@
                 <!-- general form elements -->
                 <div>
                     @if (session('role') == 'superadmin')
-                        <form method="POST" action={{route('actionSuperCreateEca')}}>
+                        <form method="POST" action={{route('actionAdminCreateEca')}}>
                     @elseif (session('role') == 'admin')
                         <form method="POST" action={{route('actionAdminCreateEca')}}>
                     @endif
