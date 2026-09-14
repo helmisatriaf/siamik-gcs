@@ -288,9 +288,9 @@ $grade_name = $student->grade_name;
                             <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="4" rowspan="2"><b>Subject</b> <br> <span class="noto-serif-sc-simbol" style="font-size: 8px;">科目</span></td>
                             <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Homework</b> <br> <span class="noto-serif-sc-simbol" style="font-size: 8px;">家庭作业 </span></td>
                             <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Exercise</b> <br> <span class="noto-serif-sc-simbol" style="font-size: 8px;">课堂练习</span></td>
-                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Quiz</b> <br> <span class="noto-serif-sc-simbol" style="font-size: 8px;">小测验</span></td>
-                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Project    </b> <br> <span class="noto-serif-sc-simbol" style="font-size: 8px;">项目作业</span></td>
-                            {{-- <th style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3">Practical</td> --}}
+                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Quiz</b><br><span class="noto-serif-sc-simbol" style="font-size: 8px;">小测验</span></td>
+                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Project</b><br><span class="noto-serif-sc-simbol" style="font-size: 8px;">项目作业</span></td>
+                            <th style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="1">Mid-Terms</td>
                         </tr>
 
                         <tr>
@@ -306,13 +306,13 @@ $grade_name = $student->grade_name;
                             <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;width:5%;">1</td>
                             <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;width:5%;">2</td>
                             <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;width:5%;">3</td>
-                            {{-- <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;width:5%;">1</td>
-                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;width:5%;">2</td>
+                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;width:5%;">1</td>
+                            {{-- <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;width:5%;">2</td>
                             <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;width:5%;">3</td> --}}
                         </tr>
 
                         <tr>
-                            <td style="border: 1px solid black;text-align:center;font-style:semibold" colspan="17">Academic Performance</td>
+                            <td style="border: 1px solid black;text-align:center;font-style:semibold" colspan="18">Academic Performance</td>
                         </tr>
 
                         @if (count($subjectReports) == 0)
@@ -388,7 +388,7 @@ $grade_name = $student->grade_name;
                                     $exerciseScores = array_fill(0, 3, '&nbsp;');
                                     $quizScores = array_fill(0, 3, '&nbsp;');
                                     $projectScores = array_fill(0, 3, '&nbsp;');
-                                    // $practicalScores = array_fill(0, 3, '&nbsp;');
+                                    $midScores = array_fill(0, 1, '&nbsp;');
 
                                     if (!empty($rs['scores'])) {
                                         if (isset($rs['scores']['homework']) && count($rs['scores']['homework']) > 0) {
@@ -423,13 +423,13 @@ $grade_name = $student->grade_name;
                                             }
                                         }
 
-                                        // if (isset($rs['scores']['practical']) && count($rs['scores']['practical']) > 0) {
-                                        //     foreach ($rs['scores']['practical'] as $index => $score) {
-                                        //         if ($index < 3) {
-                                        //             $practicalScores[$index] = $score;
-                                        //         }
-                                        //     }
-                                        // }
+                                        if (isset($rs['scores']['midTerms']) && count($rs['scores']['midTerms']) > 0) {
+                                            foreach ($rs['scores']['midTerms'] as $index => $score) {
+                                                if ($index < 1) {
+                                                    $midScores[$index] = $score;
+                                                }
+                                            }
+                                        }
                                     }
                                 @endphp
 
@@ -449,9 +449,9 @@ $grade_name = $student->grade_name;
                                     <td style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">{!! $projectScores[$l] !!}</td>
                                     @endfor
                                     
-                                    {{-- @for ($m = 0; $m < 3; $m++)
-                                    <td style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">{!! $practicalScores[$m] !!}</td>
-                                    @endfor --}}
+                                    @for ($m = 0; $m < 1; $m++)
+                                    <td style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">{!! $midScores[$m] !!}</td>
+                                    @endfor
                             </tr>
                             @endforeach
                         @endif

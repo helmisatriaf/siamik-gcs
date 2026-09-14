@@ -2104,6 +2104,7 @@ class ReportController extends Controller
             $participation   = Type_exam::where('name', '=', 'participation')->value('id');
             $quiz            = Type_exam::where('name', '=', 'quiz')->value('id');
             $finalExam       = Type_exam::where('name', '=', 'final exam')->value('id');
+            $midAssessment   = Type_exam::where('name', '=', 'mid assessment')->value('id');
             $finalAssessment = Type_exam::whereIn('name', ['project', 'practical', 'final assessment', 'final exam'])
                 ->pluck('id')
                 ->toArray();
@@ -2415,6 +2416,14 @@ class ReportController extends Controller
                                 ->where('semester', $semester)
                                 ->where('exams.academic_year', $academic_year);
                         },
+                        'exam as total_mid_assessment' => function ($query) use ($subjectId, $midAssessment, $semester, $academic_year) {
+                            $query->whereHas('subject', function ($subQuery) use ($subjectId) {
+                                $subQuery->where('subject_id', $subjectId);
+                            })
+                                ->where('type_exam', $midAssessment)
+                                ->where('semester', $semester)
+                                ->where('exams.academic_year', $academic_year);
+                        },
                         'exam as total_participation' => function ($query) use ($subjectId, $participation, $semester, $academic_year) {
                             $query->whereHas('subject', function ($subQuery) use ($subjectId) {
                                 $subQuery->where('subject_id', $subjectId);
@@ -2446,6 +2455,7 @@ class ReportController extends Controller
                     $participation = Type_exam::where('name', '=', 'participation')->value('id');
                     $quiz = Type_exam::where('name', '=', 'quiz')->value('id');
                     $midTerm = Type_exam::where('name', '=', 'mid-term assessment')->value('id');
+                    $midAssessment = Type_exam::where('name', '=', 'mid assessment')->value('id');
                     $finalExam = Type_exam::where('name', '=', 'final exam')->value('id');
 
                     $student            = $scores->first();
@@ -5064,6 +5074,8 @@ class ReportController extends Controller
                 ->where('attendances.academic_year', session('academic_year'))
                 ->get();
 
+            
+
             $attendancesByStudent = $resultsAttendance->groupBy('student_id')->map(function ($attendances) {
 
                 $totalPresent     = $attendances->where('present', 1)->count();
@@ -5088,6 +5100,9 @@ class ReportController extends Controller
             $quiz      = Type_exam::where('name', 'quiz')->value('id');
             $project   = Type_exam::where('name', 'project')->value('id');
             $practical = Type_exam::where('name', 'practical')->value('id');
+            $midTerms = Type_exam::where('name', 'mid-term assessment')->value('id');
+
+            // dd($midTerms);
 
             if (strtolower($student->grade_name) === "primary") {
                 $chineseHigher = Chinese_higher::where('student_id', $id)->exists();
@@ -5170,8 +5185,8 @@ class ReportController extends Controller
                     ];
                 }
 
-                //dd($order);
-
+                // dd($cutOffMidSemester);
+                
                 $results = Grade::join('students', 'students.grade_id', '=', 'grades.id')
                     ->join('grade_exams', 'grade_exams.grade_id', '=', 'grades.id')
                     ->join('exams', 'exams.id', '=', 'grade_exams.exam_id')
@@ -5198,21 +5213,22 @@ class ReportController extends Controller
                     ->where('exams.academic_year', $academic_year)
                     ->where('students.id', $id)
                     ->where('students.is_active', true)
-                    ->whereIn('exams.type_exam', [$homework, $exercise, $quiz, $project, $practical])
+                    ->whereIn('exams.type_exam', [$homework, $exercise, $quiz, $project, $midTerms])
                     ->where('exams.date_exam', '<=', $cutOffMidSemester)
                     ->orderBy('students.name', 'asc')
                     ->get();
 
                 // dd($results);
 
-                $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) use ($order, $homework, $exercise, $quiz, $project, $practical) {
+                $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) use ($order, $homework, $exercise, $quiz, $project, $practical, $midTerms) {
                     $student = $scores->first();
-                    $scoresBySubject = $scores->groupBy('subject_name')->map(function ($subjectScores) use ($homework, $exercise, $quiz, $project, $practical) {
+                    $scoresBySubject = $scores->groupBy('subject_name')->map(function ($subjectScores) use ($homework, $exercise, $quiz, $project, $practical, $midTerms) {
                         $homeworkScores = $subjectScores->where('type_exam', $homework)->pluck('score');
                         $exerciseScores = $subjectScores->where('type_exam', $exercise)->pluck('score');
                         $quizScores = $subjectScores->where('type_exam', $quiz)->pluck('score');
                         $projectScores = $subjectScores->whereIn('type_exam', [$practical, $project])->pluck('score');
                         $practicalScores = $subjectScores->where('type_exam', $practical)->pluck('score');
+                        $midScores = $subjectScores->where('type_exam', $midTerms)->pluck('score');
 
                         return [
                             'subject_name' => $subjectScores->first()->subject_name,
@@ -5221,7 +5237,8 @@ class ReportController extends Controller
                                 'exercise' => $exerciseScores->all(),
                                 'quiz' => $quizScores->all(),
                                 'project' => $projectScores->all(),
-                                'practical' => $practicalScores->all()
+                                'practical' => $practicalScores->all(),
+                                'midTerms' => $midScores->all(),
                             ],
                         ];
                     });
@@ -5273,6 +5290,8 @@ class ReportController extends Controller
                         'isRestricted' => $isRestricted,
                     ];
                 })->values()->all();
+
+                // dd($scoresByStudent);
 
             } elseif (strtolower($student->grade_name) === "secondary") {
                 $chineseLower  = Chinese_lower::where('student_id', $id)->exists();
@@ -5342,21 +5361,22 @@ class ReportController extends Controller
                     ->where('exams.semester', $semester)
                     ->where('exams.academic_year', $academic_year)
                     ->where('students.id', $id)
-                    ->whereIn('exams.type_exam', [$homework, $exercise, $quiz, $project, $practical])
+                    ->whereIn('exams.type_exam', [$homework, $exercise, $quiz, $project, $practical, $midTerms])
                     ->where('students.is_active', true)
                     ->where('exams.date_exam', '<=', $cutOffMidSemester)
                     ->orderBy('students.name', 'asc')
                     ->get();
 
-                $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) use ($order, $homework, $exercise, $quiz, $project, $practical) {
-                    $student = $scores->first();
-                    $scoresBySubject = $scores->groupBy('subject_name')->map(function ($subjectScores) use ($homework, $exercise, $quiz, $project, $practical) {
 
+                $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) use ($order, $homework, $exercise, $quiz, $project, $practical, $midTerms) {
+                    $student = $scores->first();
+                    $scoresBySubject = $scores->groupBy('subject_name')->map(function ($subjectScores) use ($homework, $exercise, $quiz, $project, $practical, $midTerms) {
                         $homeworkScores = $subjectScores->where('type_exam', $homework)->pluck('score');
                         $exerciseScores = $subjectScores->where('type_exam', $exercise)->pluck('score');
                         $quizScores = $subjectScores->where('type_exam', $quiz)->pluck('score');
                         $projectScores = $subjectScores->whereIn('type_exam', [$practical, $project])->pluck('score');
                         $practicalScores = $subjectScores->where('type_exam', $practical)->pluck('score');
+                        $midScores = $subjectScores->where('type_exam', $midTerms)->pluck('score');
 
                         return [
                             'subject_name' => $subjectScores->first()->subject_name,
@@ -5365,7 +5385,8 @@ class ReportController extends Controller
                                 'exercise' => $exerciseScores->all(),
                                 'quiz' => $quizScores->all(),
                                 'project' => $projectScores->all(),
-                                'practical' => $practicalScores->all()
+                                'practical' => $practicalScores->all(),
+                                'midTerms' => $midScores->all()
                             ],
                         ];
                     });
@@ -5464,7 +5485,6 @@ class ReportController extends Controller
                 ->orderBy('students.name', 'asc')
                 ->get();
 
-            // dd($scoresByStudent);
             $data = [
                 'semester'      => $semester,
                 'student'       => $student,
@@ -5477,6 +5497,7 @@ class ReportController extends Controller
                 'quiz'          => $quiz,
                 'project'       => $project,
                 'practical'     => $practical,
+                'midTerms'      => $midTerms,
                 'ct'            => $ct,
                 'cs'            => $cs,
                 'ls'            => $ls,
@@ -5487,13 +5508,16 @@ class ReportController extends Controller
                 'scoreMonthly'  => $studentMonthlyActivity,
             ];
 
+            // dd($data);
+
             $pdf = app('dompdf.wrapper');
             $pdf->set_option('isRemoteEnabled', true);
             $pdf->set_option('isHtml5ParserEnabled', true);
             $pdf->loadView('components.report.pdf.mid_semester-pdf', $data)->setPaper('a5', 'portrait');
+            return $pdf->stream($student->student_name . '_midsemester' . $semester . '.pdf');
 
             // if(session('role') == 'admin' || session('role') == 'superadmin'){
-            return $pdf->stream($student->student_name . '_semester' . $semester . '.pdf');
+            //     return $pdf->stream($student->student_name . '_semester' . $semester . '.pdf');
             // }
             // else{
             //     return view('components.report.pdf.mid_semester-pdf-viewonly', $data);

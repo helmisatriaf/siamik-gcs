@@ -209,7 +209,7 @@
                                 <!-- COUNT MID-TERM  -->
                                 @php $foundMidTerm = false; @endphp
                                 @foreach ($student['scores'] as $score)
-                                    @if($score['type_exam'] == 20)
+                                    @if($score['type_exam'] == 18)
                                         <td class="text-center align-middle">{{ $score['score'] }}</td>
                                         @php $foundMidTerm = true; @endphp
                                     @endif
