@@ -361,7 +361,35 @@ class CourseController extends Controller
                     ->where('grade_subjects.academic_year', session('academic_year'));
             }])->findOrFail($id);
 
-            $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->get();
+
+            if($grade_id >= 11){
+                switch($grade_id){
+                    // Secondary 1
+                    case 11:
+                        $grade_subject_id = Grade_subject::where('subject_id', $id)
+                            ->where('grade_id', 11)
+                            ->where('academic_year', "2025-2026")
+                            ->value('id');
+                        break;
+                    case 12:
+                        $grade_subject_id = Grade_subject::where('subject_id', $id)
+                            ->where('grade_id', 12)
+                            ->where('academic_year', "2025-2026")
+                            ->value('id');
+                        break;
+                    case 13:
+                        $grade_subject_id = Grade_subject::where('subject_id', $id)
+                            ->where('grade_id', 13)
+                            ->where('academic_year', "2025-2026")
+                            ->value('id');
+                        break;
+                }
+                $ebook = Ebook::where('grade_subject_id', $grade_subject_id)->get();
+            }else{
+                $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->get();
+            }
+
+
             $material = CourseActivities::where('grade_subject_id', $gradeSubject->id)->count();
             
             $assessment = Exam::select('exams.*', 'grades.name as grade_name', 'subjects.name_subject')
@@ -390,6 +418,7 @@ class CourseController extends Controller
                 ->where('exams.academic_year', session('academic_year'))
                 ->where('exams.is_active', TRUE)
                 ->count();
+
 
             return view('components.course.sections', compact('subject', 'grade_id', 'gradeSubject', 'course', 'ebook',
             'material', 'assessment', 'assessmentActive'));
@@ -548,6 +577,7 @@ class CourseController extends Controller
 
             $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->get();
             $material = CourseActivities::where('grade_subject_id', $gradeSubject->id)->count();
+
             
             $assessment = Exam::select('exams.*', 'grades.name as grade_name', 'subjects.name_subject')
                 ->join('grade_exams', 'exams.id', '=', 'grade_exams.exam_id')
@@ -1325,7 +1355,34 @@ class CourseController extends Controller
                     $weekNumber++;
                 }
 
-                $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->get();
+                if($grade_id >= 11){
+                    switch($grade_id){
+                        // Secondary 1
+                        case 11:
+                            $grade_subject_id = Grade_subject::where('subject_id', session('id_course'))
+                                ->where('grade_id', 11)
+                                ->where('academic_year', "2025-2026")
+                                ->value('id');
+                            break;
+                        case 12:
+                            $grade_subject_id = Grade_subject::where('subject_id', session('id_course'))
+                                ->where('grade_id', 12)
+                                ->where('academic_year', "2025-2026")
+                                ->value('id');
+                            break;
+                        case 13:
+                            $grade_subject_id = Grade_subject::where('subject_id', session('id_course'))
+                                ->where('grade_id', 13)
+                                ->where('academic_year', "2025-2026")
+                                ->value('id');
+                            break;
+                    }
+                    $ebook = Ebook::where('grade_subject_id', $grade_subject_id)->get();
+                }else{
+                    $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->get();
+                }
+
+                // $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->get();
                 $material = CourseActivities::where('grade_subject_id', $gradeSubject->id)->count();
                 
                 $assessment = Exam::select('exams.*', 'grades.name as grade_name', 'subjects.name_subject')
@@ -1423,7 +1480,34 @@ class CourseController extends Controller
                     $weekNumber++;
                 }
 
-                $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->get();
+                if($grade_id >= 11){
+                    switch($grade_id){
+                        // Secondary 1
+                        case 11:
+                            $grade_subject_id = Grade_subject::where('subject_id', session('id_course'))
+                                ->where('grade_id', 11)
+                                ->where('academic_year', "2025-2026")
+                                ->value('id');
+                            break;
+                        case 12:
+                            $grade_subject_id = Grade_subject::where('subject_id', session('id_course'))
+                                ->where('grade_id', 12)
+                                ->where('academic_year', "2025-2026")
+                                ->value('id');
+                            break;
+                        case 13:
+                            $grade_subject_id = Grade_subject::where('subject_id', session('id_course'))
+                                ->where('grade_id', 13)
+                                ->where('academic_year', "2025-2026")
+                                ->value('id');
+                            break;
+                    }
+                    $ebook = Ebook::where('grade_subject_id', $grade_subject_id)->get();
+                }else{
+                    $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->get();
+                }
+
+                // $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->get();
                 $material = CourseActivities::where('grade_subject_id', $gradeSubject->id)->count();
                 
                 $assessment = Exam::select('exams.*', 'grades.name as grade_name', 'subjects.name_subject')
