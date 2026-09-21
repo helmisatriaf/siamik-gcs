@@ -366,31 +366,25 @@ class CourseController extends Controller
                 switch($grade_id){
                     // Secondary 1
                     case 11:
-                        $grade_subject_id = Grade_subject::where('subject_id', $id)
+                        $gradePrevious = Grade_subject::where('subject_id', $id)
                             ->where('grade_id', 11)
                             ->where('academic_year', "2025-2026")
                             ->value('id');
                         break;
                     case 12:
-                        $grade_subject_id = Grade_subject::where('subject_id', $id)
+                        $gradePrevious = Grade_subject::where('subject_id', $id)
                             ->where('grade_id', 12)
                             ->where('academic_year', "2025-2026")
                             ->value('id');
                         break;
                     case 13:
-                        // Khusus IPS Bukunya terbaru
-                        if($id == 32){
-                            $grade_subject_id = $gradeSubject->id;
-                        }
-                        else{
-                            $grade_subject_id = Grade_subject::where('subject_id', $id)
-                                ->where('grade_id', 13)
-                                ->where('academic_year', "2025-2026")
-                                ->value('id');
-                        }
-                    break;
+                        $gradePrevious = Grade_subject::where('subject_id', $id)
+                            ->where('grade_id', 13)
+                            ->where('academic_year', "2025-2026")
+                            ->value('id');
+                        break;
                 }
-                $ebook = Ebook::where('grade_subject_id', $grade_subject_id)->get();
+                $ebook = Ebook::whereIn('grade_subject_id', [$gradeSubject->id, $gradePrevious])->get();
             }else{
                 $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->get();
             }
@@ -1365,31 +1359,25 @@ class CourseController extends Controller
                     switch($grade_id){
                         // Secondary 1
                         case 11:
-                            $grade_subject_id = Grade_subject::where('subject_id', session('id_course'))
+                            $gradePrevious = Grade_subject::where('subject_id', $id)
                                 ->where('grade_id', 11)
                                 ->where('academic_year', "2025-2026")
                                 ->value('id');
                             break;
                         case 12:
-                            $grade_subject_id = Grade_subject::where('subject_id', session('id_course'))
+                            $gradePrevious = Grade_subject::where('subject_id', $id)
                                 ->where('grade_id', 12)
                                 ->where('academic_year', "2025-2026")
                                 ->value('id');
                             break;
                         case 13:
-                            // Khusus IPS menggunakan buku terbaru
-                            if(session('id_course') == 32){
-                                $grade_subject_id = $gradeSubject->id;
-                            }
-                            else{
-                                $grade_subject_id = Grade_subject::where('subject_id', session('id_course'))
-                                    ->where('grade_id', 13)
-                                    ->where('academic_year', "2025-2026")
-                                    ->value('id');
-                            }
-                        break;
+                            $gradePrevious = Grade_subject::where('subject_id', $id)
+                                ->where('grade_id', 13)
+                                ->where('academic_year', "2025-2026")
+                                ->value('id');
+                            break;
                     }
-                    $ebook = Ebook::where('grade_subject_id', $grade_subject_id)->get();
+                    $ebook = Ebook::whereIn('grade_subject_id', [$gradeSubject->id, $gradePrevious])->get();
                 }else{
                     $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->get();
                 }
@@ -1496,31 +1484,25 @@ class CourseController extends Controller
                     switch($grade_id){
                         // Secondary 1
                         case 11:
-                            $grade_subject_id = Grade_subject::where('subject_id', session('id_course'))
+                            $gradePrevious = Grade_subject::where('subject_id', $id)
                                 ->where('grade_id', 11)
                                 ->where('academic_year', "2025-2026")
                                 ->value('id');
                             break;
                         case 12:
-                            $grade_subject_id = Grade_subject::where('subject_id', session('id_course'))
+                            $gradePrevious = Grade_subject::where('subject_id', $id)
                                 ->where('grade_id', 12)
                                 ->where('academic_year', "2025-2026")
                                 ->value('id');
                             break;
                         case 13:
-                            // Khusus IPS menggunakan buku terbaru
-                            if(session('id_course') == 32){
-                                $grade_subject_id = $gradeSubject->id;
-                            }
-                            else{
-                                $grade_subject_id = Grade_subject::where('subject_id', session('id_course'))
+                            $gradePrevious = Grade_subject::where('subject_id', $id)
                                 ->where('grade_id', 13)
                                 ->where('academic_year', "2025-2026")
                                 ->value('id');
-                            }
-                        break;
+                            break;
                     }
-                    $ebook = Ebook::where('grade_subject_id', $grade_subject_id)->get();
+                    $ebook = Ebook::whereIn('grade_subject_id', [$gradeSubject->id, $gradePrevious])->get();
                 }else{
                     $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->get();
                 }
