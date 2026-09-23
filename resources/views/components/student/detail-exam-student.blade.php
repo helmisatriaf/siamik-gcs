@@ -656,7 +656,7 @@
              
 
               @if ($getStatus !== null)
-                @if ($typeExam !== 'Final Exam')
+                @if ($typeExam !== 'Final Exam' && $typeExam !== 'Mid-Term Assessment')
                   <p class="text-muted">Score  
                     <span class="text-bold text-danger">
                       {{ $getStatus->score }}

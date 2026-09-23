@@ -982,7 +982,7 @@
                                                         <br>
                                                     </span>
                                                     <i class="fas fa-info-circle"></i>
-                                                    Model : 
+                                                    Model :
                                                     <span>
                                                         @switch($assessment->model)
                                                             @case("mce")
@@ -1034,7 +1034,11 @@
                                                             @if ($status)
                                                                 <span class="badge badge-success text-md">completed</span>
                                                             @else
+                                                                @if ($assessment->model == "")
+                                                                <span class="badge badge-danger text-md">teacher check your work</span>
+                                                                @else
                                                                 <span class="badge badge-danger text-md">you haven't completed this exam</span>
+                                                                @endif
                                                             @endif
                                                         @else
                                                         <span class="badge badge-warning">Active</span>

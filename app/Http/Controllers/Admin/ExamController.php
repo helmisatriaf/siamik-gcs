@@ -1311,6 +1311,7 @@ class ExamController extends Controller
          $sort = $request->order ?? 'all';
          $type = $request->type ?? 'all';
          $selectType    = Type_exam::get();
+         $excludeExam = Type_exam::whereIn('name', ['Final Exam', 'Mid-Term Assessment'])->pluck('id');
 
          if (session('role') == 'parent') {
             $getIdUser         = session('id_user');
@@ -1342,7 +1343,7 @@ class ExamController extends Controller
                ->when($type !== 'all', function ($query) use ($type) {
                return $query->where('type_exams.id', $type);
                })
-               ->where('type_exams.id', '!=', 4) // ⬅️ exclude Final Exam
+               ->whereNotIn('type_exams.id', $excludeExam) // ⬅️ exclude Final Exam
                ->select('exams.*', 'grades.name as grade_name', 'grades.class as grade_class',
                   'subjects.name_subject as subject_name', 'teachers.name as teacher_name',
                   'type_exams.name as type_exam' , 'scores.score as score', 'students.name as student_name',
@@ -1375,7 +1376,7 @@ class ExamController extends Controller
                ->when($type !== 'all', function ($query) use ($type) {
                   return $query->where('type_exams.id', $type);
                })
-               ->where('type_exams.id', '!=', 4) // ⬅️ exclude Final Exam
+               ->whereNotIn('type_exams.id', $excludeExam) // ⬅️ exclude Final Exam
                ->select('exams.*', 'grades.name as grade_name', 'grades.class as grade_class',
                   'subjects.name_subject as subject_name', 'teachers.name as teacher_name',
                   'type_exams.name as type_exam' , 'scores.score as score', 'students.name as student_name',
