@@ -8,7 +8,7 @@ $typelogo = pathinfo($pathlogo, PATHINFO_EXTENSION);
 $datalogo = file_get_contents($pathlogo);
 $logo = 'data:image/' . $typelogo . ';base64,' . base64_encode($datalogo);
 
-$pathcambridge = public_path('images/lcnew.png');
+$pathcambridge = public_path('images/pearson.png');
 $typecambridge = pathinfo($pathcambridge, PATHINFO_EXTENSION);
 $datacambridge = file_get_contents($pathcambridge);
 $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($datacambridge);
@@ -388,7 +388,7 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
 
             <table class="table">
                 <tr>
-                    <td style="height:30px;" colspan="2"></td>
+                    <td style="height:50px;" colspan="2"></td>
                 </tr>
                 <tr>
                     <td style="text-align:center;" colspan="2">
@@ -405,8 +405,8 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
                     <td style="text-align:center;" colspan="2"><b><span class="noto-serif-sc-chinese">老师签名</span></b></td>
                 </tr> --}}
             </table>
-            <div class="footer" style="margin-top: 25px;text-align:center;">
-                <img src="<?= $cambridge ?>" style="width:45%;height:6%;">
+            <div class="footer" style="text-align:center;">
+                <img src="<?= $cambridge ?>" style="width:20%;height:auto;">
             </div>
         </div>
         {{-- END PAGE 2 --}}

@@ -4316,10 +4316,12 @@ class ReportController extends Controller
             $studentMonthlyActivity = Student_Monthly_Activity::join('students', 'students.id', '=', 'student_monthly_activities.student_id')
                 ->join('monthly_activities', 'monthly_activities.id', '=', 'student_monthly_activities.monthly_activity_id')
                 ->where('student_monthly_activities.grade_id', $gradeId)
-                ->where('student_monthly_activities.semester', $semester)
+                ->where('student_monthly_activities.semester', $mid)
                 ->where('student_monthly_activities.academic_year', $academic_year)
                 ->select('student_monthly_activities.*', 'monthly_activities.name as name_activity')
                 ->get();
+
+            // dd($studentMonthlyActivity);
 
             $scoresByStudent = $results->groupBy('student_id')->map(function ($scores) use ($studentMonthlyActivity) {
                 $student = $scores->first();
@@ -4375,9 +4377,29 @@ class ReportController extends Controller
                 ->where('class_teacher_id', $classTeacher->teacher_id)
                 ->first();
 
-            $monthly = MonthlyActivity::where('grades', '=', 'lower')->get();
-            $monthlyTitle = MonthlyActivity::where('grades', '=', 'lower')->pluck('name')->toArray();
+            $getRangeDateSemester = Master_academic::where('is_use', true)->first();
+            $startSemester = Carbon::parse($getRangeDateSemester->semester1);
+            $endSemester = Carbon::parse($getRangeDateSemester->end_semester1);
 
+            // Ambil semua nama bulan di antara dua tanggal
+            $monthsInRange = [];
+            $current = $startSemester->copy();
+            while ($current <= $endSemester) {
+                $monthsInRange[] = $current->format('F'); // 'F' = nama bulan full, contoh: 'July'
+                $current->addMonth();
+            }
+
+            // Query monthly_activities
+            $monthly = MonthlyActivity::where('grades', '=', 'lower')
+                ->whereIn('month', $monthsInRange)
+                ->where('academic_year', session('academic_year'))
+                ->get();
+            $monthlyTitle = MonthlyActivity::where('grades', '=', 'lower')
+                ->whereIn('month', $monthsInRange)
+                ->where('academic_year', session('academic_year'))
+                ->pluck('name')
+                ->toArray();
+            
             foreach ($monthlyTitle as &$title) {
                 $title = str_replace(' ', '_', trim($title));
             }
@@ -4395,7 +4417,7 @@ class ReportController extends Controller
                 'title' => $monthlyTitle,
             ];
 
-            // dd($data['result']);
+            // dd($data);
 
             return view('components.report.toddler')->with('data', $data);
         } catch (Exception $err) {
@@ -4901,8 +4923,8 @@ class ReportController extends Controller
                 $monthActivity[] = ucfirst($date->translatedFormat('F'));
             }
 
-            $monthly = MonthlyActivity::where('grades', '=', 'lower')->where('semester', '=', $semester)->where('academic_year', '=', $academic_year)->whereIn('month', $monthActivity)->take(3)->get();
-            $monthlyTitle = MonthlyActivity::where('grades', '=', 'lower')->where('semester', '=', $semester)->where('academic_year', '=', $academic_year)->whereIn('month', $monthActivity)->take(3)->pluck('name')->toArray();
+            $monthly = MonthlyActivity::where('grades', '=', 'lower')->where('semester', '=', $semester)->where('academic_year', '=', $academic_year)->whereIn('month', $monthActivity)->get();
+            $monthlyTitle = MonthlyActivity::where('grades', '=', 'lower')->where('semester', '=', $semester)->where('academic_year', '=', $academic_year)->whereIn('month', $monthActivity)->pluck('name')->toArray();
 
             //dd($monthlyTitle);
             foreach ($monthlyTitle as &$title) {
@@ -4924,7 +4946,7 @@ class ReportController extends Controller
                 'title' => $monthlyTitle,
             ];
 
-            //dd($data);
+            // dd($data);
             return view('components.report.mid_kindergarten')->with('data', $data);
         } catch (Exception $err) {
             dd($err);
@@ -6476,7 +6498,24 @@ class ReportController extends Controller
                 ->where('attendances.academic_year', $academic_year)
                 ->get();
 
-            $monthlyActivity = MonthlyActivity::where('grades', '=', 'lower')->get();
+            // $monthlyActivity = MonthlyActivity::where('grades', '=', 'lower')->get();
+            $getRangeDateSemester = Master_academic::where('is_use', true)->first();
+            $startSemester = Carbon::parse($getRangeDateSemester->semester1);
+            $endSemester = Carbon::parse($getRangeDateSemester->end_semester1);
+
+            // Ambil semua nama bulan di antara dua tanggal
+            $monthsInRange = [];
+            $current = $startSemester->copy();
+            while ($current <= $endSemester) {
+                $monthsInRange[] = $current->format('F'); // 'F' = nama bulan full, contoh: 'July'
+                $current->addMonth();
+            }
+
+            // Query monthly_activities
+            $monthlyActivity = MonthlyActivity::where('grades', '=', 'lower')
+                ->whereIn('month', $monthsInRange)
+                ->where('academic_year', session('academic_year'))
+                ->get();
 
             $studentMonthlyActivity = Student_Monthly_Activity::join('students', 'students.id', '=', 'student_monthly_activities.student_id')
                 ->join('monthly_activities', 'monthly_activities.id', '=', 'student_monthly_activities.monthly_activity_id')
@@ -6619,12 +6658,33 @@ class ReportController extends Controller
 
             $academicYear = Master_academic::where('is_use', true)->value('academic_year');
 
-            $monthlyActivity = MonthlyActivity::where('grades', '=', 'lower')->get();
+            $getRangeDateSemester = Master_academic::where('is_use', true)->first();
+            $startSemester = Carbon::parse($getRangeDateSemester->semester1);
+            $endSemester = Carbon::parse($getRangeDateSemester->end_semester1);
+
+            // Ambil semua nama bulan di antara dua tanggal
+            $monthsInRange = [];
+            $current = $startSemester->copy();
+            while ($current <= $endSemester) {
+                $monthsInRange[] = $current->format('F'); // 'F' = nama bulan full, contoh: 'July'
+                $current->addMonth();
+            }
+
+            // Query monthly_activities
+            $monthlyActivity = MonthlyActivity::where('grades', '=', 'lower')
+                ->whereIn('month', $monthsInRange)
+                ->where('academic_year', session('academic_year'))
+                ->get();
+            $monthlyTitle = MonthlyActivity::where('grades', '=', 'lower')
+                ->whereIn('month', $monthsInRange)
+                ->where('academic_year', session('academic_year'))
+                ->pluck('name')
+                ->toArray();
 
             $studentMonthlyActivity = Student_Monthly_Activity::join('students', 'students.id', '=', 'student_monthly_activities.student_id')
                 ->join('monthly_activities', 'monthly_activities.id', '=', 'student_monthly_activities.monthly_activity_id')
                 ->where('student_monthly_activities.student_id', $id)
-                ->where('student_monthly_activities.semester', $semester)
+                ->where('student_monthly_activities.semester', $mid)
                 ->where('student_monthly_activities.academic_year', $academic_year)
                 ->select('student_monthly_activities.*', 'monthly_activities.name as name_activity')
                 ->get();
@@ -6657,6 +6717,8 @@ class ReportController extends Controller
                     'scoreMonthly'  => $studentMonthlyActivity,
                 ];
             }
+
+            // dd($data);
 
             $pdf = app('dompdf.wrapper');
             $pdf->set_option('isRemoteEnabled', true);
@@ -7819,9 +7881,9 @@ class ReportController extends Controller
             $pdf = app('dompdf.wrapper');
             $pdf->set_option('isRemoteEnabled', true);
             $pdf->set_option('isHtml5ParserEnabled', true);
-            // $pdf->loadView('components.report.pdf.mid_semester-pdf', $data)->setPaper('a5', 'portrait');
+            $pdf->loadView('components.report.pdf.mid_semester-pdf', $data)->setPaper('a5', 'portrait');
             
-            return view('components.report.pdf.mid_semester-pdf-viewonly', $data);
+            // return view('components.report.pdf.mid_semester-pdf-viewonly', $data);
 
             return $pdf->stream($data['student']->student_name . '_midsemester' . $semester . '.pdf');
         } catch (Exception $err) {

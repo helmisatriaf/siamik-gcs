@@ -1122,7 +1122,23 @@ class ScoringController extends Controller
     public function actionPostReportCardToddler(Request $request)
     {
         try {
-            $monthlyActivity = MonthlyActivity::where('grades', '=', 'lower')->get();
+            $getRangeDateSemester = Master_academic::where('is_use', true)->first();
+            $startSemester = Carbon::parse($getRangeDateSemester->semester1);
+            $endSemester = Carbon::parse($getRangeDateSemester->end_semester1);
+
+            // Ambil semua nama bulan di antara dua tanggal
+            $monthsInRange = [];
+            $current = $startSemester->copy();
+            while ($current <= $endSemester) {
+                $monthsInRange[] = $current->format('F'); // 'F' = nama bulan full, contoh: 'July'
+                $current->addMonth();
+            }
+
+            // Query monthly_activities
+            $monthlyActivity = MonthlyActivity::where('grades', '=', 'lower')
+                ->whereIn('month', $monthsInRange)
+                ->where('academic_year', session('academic_year'))
+                ->get();
             
             for($i=0; $i < count($request->student_id); $i++){
 
@@ -1415,7 +1431,7 @@ class ScoringController extends Controller
                     'created_at' => now(),
                 ];
 
-                //dd($monthlyActivity);
+                // dd($monthlyActivity);
                 foreach($monthlyActivity as $ma){
                     $name = str_replace(' ', '_', trim($ma->name));
                     $monthly = [

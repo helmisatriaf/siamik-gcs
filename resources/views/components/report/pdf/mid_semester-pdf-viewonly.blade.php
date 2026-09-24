@@ -8,7 +8,7 @@ $typelogo = pathinfo($pathlogo, PATHINFO_EXTENSION);
 $datalogo = file_get_contents($pathlogo);
 $logo = 'data:image/' . $typelogo . ';base64,' . base64_encode($datalogo);
 
-$pathcambridge = public_path('images/lcnew.png');
+$pathcambridge = public_path('images/pearson.png');
 $typecambridge = pathinfo($pathcambridge, PATHINFO_EXTENSION);
 $datacambridge = file_get_contents($pathcambridge);
 $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($datacambridge);

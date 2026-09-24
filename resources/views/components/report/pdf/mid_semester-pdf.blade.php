@@ -8,7 +8,7 @@ $typelogo = pathinfo($pathlogo, PATHINFO_EXTENSION);
 $datalogo = file_get_contents($pathlogo);
 $logo = 'data:image/' . $typelogo . ';base64,' . base64_encode($datalogo);
 
-$pathcambridge = public_path('images/lcnew.png');
+$pathcambridge = public_path('images/pearson.png');
 $typecambridge = pathinfo($pathcambridge, PATHINFO_EXTENSION);
 $datacambridge = file_get_contents($pathcambridge);
 $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($datacambridge);
@@ -213,7 +213,7 @@ $grade_name = $student->grade_name;
         }
 
         @page {
-            margin: 0mm 10mm 5mm 10mm;
+            margin: 0mm 10mm 0mm 10mm;
         }
 
         @media print {
@@ -239,6 +239,25 @@ $grade_name = $student->grade_name;
                 font-optical-sizing: auto;
                 font-style: normal;
             }
+        }
+
+        .report-footer {
+            position: fixed;
+            bottom: 15px;
+            left: 0;
+            right: 0;
+            text-align: center;
+        }
+
+        .report-footer p {
+            margin: 0 0 4px 0;
+            font-size: 8px;
+            font-style: italic;
+        }
+
+        .report-footer img {
+            width: 10%;
+            height: auto;
         }
     </style>
 </head>
@@ -290,7 +309,7 @@ $grade_name = $student->grade_name;
                             <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Exercise</b> <br> <span class="noto-serif-sc-simbol" style="font-size: 8px;">课堂练习</span></td>
                             <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Quiz</b><br><span class="noto-serif-sc-simbol" style="font-size: 8px;">小测验</span></td>
                             <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="3"><b>Project</b><br><span class="noto-serif-sc-simbol" style="font-size: 8px;">项目作业</span></td>
-                            <th style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="1">Mid-Terms</td>
+                            <td style="text-align:center;vertical-align : middle;font-size:10px;border: 1px solid black;" colspan="1"><b>Mid-Terms</b><br><span class="noto-serif-sc-simbol" style="font-size: 8px;">期中考试</span></td>
                         </tr>
 
                         <tr>
@@ -377,6 +396,9 @@ $grade_name = $student->grade_name;
                                         @case($rs['subject_name'] == 'IPS')
                                             <span class="noto-serif-sc-simbol">社会科学</span>
                                             @break
+                                        @case($rs['subject_name'] == 'Art and Design')
+                                            <span class="noto-serif-sc-simbol">艺术与设计</span>
+                                            @break
                                         @default
                                             
                                     @endswitch
@@ -458,6 +480,22 @@ $grade_name = $student->grade_name;
 
                     </table>
                 </div>
+
+                {{-- <table class="table">
+                    <tbody>
+                        <tr>
+                            <td style="text-align:center;padding-top:5px;font-size:8px;font-color:orange;"><i>This report card is for internal circulation only.</i></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;padding-top:5px;"> <img src="<?= $cambridge ?>" style="width:10%;height auto;"></td>
+                        </tr>
+                    </tbody>
+                </table> --}}
+
+                {{-- <div class="report-footer">
+                    <p>This report card is for internal circulation only.</p>
+                    <img src="<?= $cambridge ?>" style="width:10%;height:auto;" alt="Pearson">
+                </div> --}}
 
                
     
@@ -727,7 +765,7 @@ $grade_name = $student->grade_name;
                 </table>
             </div>
 
-            <div>
+            {{-- <div>
                 <table class="table" style="margin-top:50px;">
                     @if(strtolower($student->grade_name) == "primary")
                         <tr>
@@ -745,9 +783,34 @@ $grade_name = $student->grade_name;
                         <td style="text-align:center;padding-top:5px;font-size:8px;font-color:orange;"><i>This report card is for internal circulation only.</i></td>
                     </tr>
                     <tr>
-                        <td style="text-align:center;padding-top:5px;"> <img src="<?= $cambridge ?>" style="width:120px;height:20px;"></td>
+                        <td style="text-align:center;padding-top:5px;"> <img src="<?= $cambridge ?>" style="width:10%;height auto;"></td>
                     </tr>
                 </table>
+            </div> --}}
+
+            <div class="report-footer">
+               <div>
+                    <table class="table" style="margin-top:50px;">
+                        @if(strtolower($student->grade_name) == "primary")
+                            <tr>
+                                <td style="text-align:center;text-decoration:underline;">Yuliana Harijanto, B.Eng (Hons)</td>
+                            </tr>
+                        @elseif (strtolower($student->grade_name) == "secondary")
+                            <tr>
+                                <td style="text-align:center;text-decoration:underline;">Donny Prasetya, S.Kom.</td>
+                            </tr>
+                        @endif
+                        <tr>
+                            <td style="text-align:center;"><b>Principal's Signature'</b></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;padding-top:5px;font-size:8px;font-color:orange;"><i>This report card is for internal circulation only.</i></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;padding-top:5px;"> <img src="<?= $cambridge ?>" style="width:20%;height auto;"></td>
+                        </tr>
+                    </table>
+                </div>    
             </div>
 
             {{-- END PAGE 2 --}}
