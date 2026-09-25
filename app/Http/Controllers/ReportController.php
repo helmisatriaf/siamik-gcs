@@ -5120,7 +5120,7 @@ class ReportController extends Controller
             $homework  = Type_exam::where('name', 'homework')->value('id');
             $exercise  = Type_exam::where('name', 'exercise')->value('id');
             $quiz      = Type_exam::where('name', 'quiz')->value('id');
-            $project   = Type_exam::where('name', 'project')->value('id');
+            $project   = Type_exam::whereIn('name', ['project', 'practical'])->value('id');
             $practical = Type_exam::where('name', 'practical')->value('id');
             $midTerms = Type_exam::where('name', 'mid-term assessment')->value('id');
 
@@ -5163,7 +5163,7 @@ class ReportController extends Controller
                         'Science',
                         $religion,
                         'Bahasa Indonesia',
-                        'CB & Manner',
+                        'Character Building',
                         'PE',
                         'IT',
                         'Financial Literacy',
@@ -5180,7 +5180,7 @@ class ReportController extends Controller
                         'Science',
                         $religion,
                         'Bahasa Indonesia',
-                        'CB & Manner',
+                        'Character Building',
                         'PE',
                         'IT',
                         'Financial Literacy',
@@ -5197,7 +5197,7 @@ class ReportController extends Controller
                         'Science',
                         $religion,
                         'Bahasa Indonesia',
-                        'CB & Manner',
+                        'Character Building',
                         'PE',
                         'IT',
                         'Financial Literacy',
@@ -5313,7 +5313,7 @@ class ReportController extends Controller
                     ];
                 })->values()->all();
 
-                // dd($scoresByStudent);
+                dd($scoresByStudent);
 
             } elseif (strtolower($student->grade_name) === "secondary") {
                 $chineseLower  = Chinese_lower::where('student_id', $id)->exists();
@@ -5699,7 +5699,7 @@ class ReportController extends Controller
                     $order = [
                         'Religion',
                         'PPKn',
-                        'CB & Manner',
+                        'Character Building',
                         'Bahasa Indonesia',
                         'Mathematics',
                         'Science',
@@ -5715,7 +5715,7 @@ class ReportController extends Controller
                     $order = [
                         'Religion',
                         'PPKn',
-                        'CB & Manner',
+                        'Character Building',
                         'Bahasa Indonesia',
                         'Mathematics',
                         'Science',
@@ -6127,7 +6127,7 @@ class ReportController extends Controller
                     $order = [
                         'Religion',
                         'PPKn',
-                        'CB & Manner',
+                        'Character Building',
                         'Bahasa Indonesia',
                         'Mathematics',
                         'Science',
@@ -6143,7 +6143,7 @@ class ReportController extends Controller
                     $order = [
                         'Religion',
                         'PPKn',
-                        'CB & Manner',
+                        'Character Building',
                         'Bahasa Indonesia',
                         'Mathematics',
                         'Science',
@@ -7141,7 +7141,7 @@ class ReportController extends Controller
                 ['name' => 'Reading Skills', 'field' => 'reading_skill'],
                 ['name' => 'Phonics', 'field' => 'phonic'],
                 // ['name' => 'Science', 'field' => 'science'],
-                ['name' => 'CB & Manner', 'field' => 'character_building'],
+                ['name' => 'Character Building', 'field' => 'character_building'],
                 ['name' => 'Art and Craft', 'field' => 'art_and_craft'],
                 ['name' => 'Physical Education', 'field' => 'physical_education'],
                 ['name' => 'Able to sit quietly', 'field' => 'able_to_sit_quietly'],
@@ -8203,7 +8203,7 @@ class ReportController extends Controller
                 $order = [
                     'Religion',
                     'PPKn',
-                    'CB & Manner',
+                    'Character Building',
                     'Bahasa Indonesia',
                     'Mathematics',
                     'Science',
@@ -8231,7 +8231,7 @@ class ReportController extends Controller
                 $order = [
                     'Religion',
                     'PPKn',
-                    'CB & Manner',
+                    'Character Building',
                     'Bahasa Indonesia',
                     'Mathematics',
                     'Science',
@@ -8572,7 +8572,7 @@ class ReportController extends Controller
                 $order = [
                     'Religion',
                     'PPKn',
-                    'CB & Manner',
+                    'Character Building',
                     'Bahasa Indonesia',
                     'Mathematics',
                     'Science',
@@ -8587,7 +8587,7 @@ class ReportController extends Controller
                 $order = [
                     'Religion',
                     'PPKn',
-                    'CB & Manner',
+                    'Character Building',
                     'Bahasa Indonesia',
                     'Mathematics',
                     'Science',
@@ -8868,7 +8868,7 @@ class ReportController extends Controller
                         'Science',
                         $religion,
                         'Bahasa Indonesia',
-                        'CB & Manner',
+                        'Character Building',
                         'PE',
                         'IT',
                         'Financial Literacy',
@@ -8885,7 +8885,7 @@ class ReportController extends Controller
                         'Science',
                         $religion,
                         'Bahasa Indonesia',
-                        'CB & Manner',
+                        'Character Building',
                         'PE',
                         'IT',
                         'Financial Literacy',
@@ -8902,7 +8902,7 @@ class ReportController extends Controller
                         'Science',
                         $religion,
                         'Bahasa Indonesia',
-                        'CB & Manner',
+                        'Character Building',
                         'PE',
                         'IT',
                         'Financial Literacy',
