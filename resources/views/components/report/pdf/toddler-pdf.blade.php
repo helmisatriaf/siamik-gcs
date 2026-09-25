@@ -606,7 +606,7 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
 
         </div>
         <div class="footer" style="margin-top: 10px;text-align:center;">
-            <img src="<?= $cambridge ?>" style="width:30%;height:7%;">
+            <img src="<?= $cambridge ?>" style="width:30%;height:10%;">
         </div>
         <!-- END PAGE 2 -->
     </div>
