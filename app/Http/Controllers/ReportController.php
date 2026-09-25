@@ -5313,7 +5313,7 @@ class ReportController extends Controller
                     ];
                 })->values()->all();
 
-                dd($scoresByStudent);
+                // dd($scoresByStudent);
 
             } elseif (strtolower($student->grade_name) === "secondary") {
                 $chineseLower  = Chinese_lower::where('student_id', $id)->exists();
