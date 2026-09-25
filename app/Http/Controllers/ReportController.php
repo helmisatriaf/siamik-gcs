@@ -5358,6 +5358,7 @@ class ReportController extends Controller
                     'Art and Design',
                     'PPKn',
                     'IPS',
+                    'Global Citizenship',
                 ];
 
                 $results = Grade::join('students', 'students.grade_id', '=', 'grades.id')
