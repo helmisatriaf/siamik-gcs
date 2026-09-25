@@ -399,6 +399,9 @@ $grade_name = $student->grade_name;
                                         @case($rs['subject_name'] == 'Art and Design')
                                             <span class="noto-serif-sc-simbol">艺术与设计</span>
                                             @break
+                                        @case($rs['subject_name'] == 'Global Citizenship')
+                                            <span class="noto-serif-sc-simbol">全球公民</span>
+                                            @break
                                         @default
                                             
                                     @endswitch

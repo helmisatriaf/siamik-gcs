@@ -5117,12 +5117,12 @@ class ReportController extends Controller
                 ];
             })->values()->all();
 
-            $homework  = Type_exam::where('name', 'homework')->value('id');
-            $exercise  = Type_exam::where('name', 'exercise')->value('id');
-            $quiz      = Type_exam::where('name', 'quiz')->value('id');
-            $project   = Type_exam::whereIn('name', ['project', 'practical'])->value('id');
-            $practical = Type_exam::where('name', 'practical')->value('id');
-            $midTerms = Type_exam::where('name', 'mid-term assessment')->value('id');
+            $homework   = Type_exam::where('name', 'homework')->value('id');
+            $exercise   = Type_exam::where('name', 'exercise')->value('id');
+            $quiz       = Type_exam::where('name', 'quiz')->value('id');
+            $project    = Type_exam::whereIn('name', ['project', 'practical'])->value('id');
+            $practical  = Type_exam::where('name', 'practical')->value('id');
+            $midTerms   = Type_exam::where('name', 'mid-term assessment')->value('id');
 
             // dd($midTerms);
 
@@ -5170,6 +5170,7 @@ class ReportController extends Controller
                         'PPKn',
                         'Art and Craft',
                         'Health Education',
+                        'Global Citizenship',
                     ];
                 }
                 else if ($gradeId == 6 || $gradeId == 7) {
@@ -5188,6 +5189,7 @@ class ReportController extends Controller
                         'Art and Craft',
                         'General Knowledge',
                         'Health Education',
+                        'Global Citizenship',
                     ];
                 } else {
                     $order = [
@@ -5204,6 +5206,7 @@ class ReportController extends Controller
                         'PPKn',
                         'Art and Craft',
                         'General Knowledge',
+                        'Global Citizenship',
                     ];
                 }
 
@@ -5235,7 +5238,7 @@ class ReportController extends Controller
                     ->where('exams.academic_year', $academic_year)
                     ->where('students.id', $id)
                     ->where('students.is_active', true)
-                    ->whereIn('exams.type_exam', [$homework, $exercise, $quiz, $project, $midTerms])
+                    ->whereIn('exams.type_exam', [$homework, $exercise, $quiz, $project, $practical, $midTerms])
                     ->where('exams.date_exam', '<=', $cutOffMidSemester)
                     ->orderBy('students.name', 'asc')
                     ->get();
@@ -5251,6 +5254,7 @@ class ReportController extends Controller
                         $projectScores = $subjectScores->whereIn('type_exam', [$practical, $project])->pluck('score');
                         $practicalScores = $subjectScores->where('type_exam', $practical)->pluck('score');
                         $midScores = $subjectScores->where('type_exam', $midTerms)->pluck('score');
+
 
                         return [
                             'subject_name' => $subjectScores->first()->subject_name,
@@ -5301,9 +5305,7 @@ class ReportController extends Controller
                         return [$subjectKey => $subjectData];
                     });
 
-
                     // dd($orderedSubjects);
-
 
                     return [
                         'student_id' => $student->student_id,
