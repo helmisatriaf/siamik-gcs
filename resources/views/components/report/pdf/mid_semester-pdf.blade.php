@@ -341,7 +341,12 @@ $grade_name = $student->grade_name;
                             <tr>
                                 <td style="text-align: center; vertical-align: middle; font-size: 10px; border: 1px solid black;" colspan="1">{{ $loop->index + 1 }}.</td>
                                 <td style="text-align: left;vertical-align : middle;font-size:10px;padding-left: 5px;border: 1px solid black;" colspan="4">
-                                    {{ $rs['subject_name'] }} @switch($rs['subject_name'])
+                                    @if ($rs['subject_name'] == 'Character Building')
+                                        CB
+                                    @else
+                                        {{ $rs['subject_name'] }}
+                                    @endif
+                                    @switch($rs['subject_name'])
                                         @case($rs['subject_name'] == 'English')
                                             <span class="noto-serif-sc-simbol">英语</span>
                                             @break
