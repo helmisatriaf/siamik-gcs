@@ -182,6 +182,16 @@
                                 </tbody>
                                 <input name="grade_id" type="number" class="form-control d-none" id="grade_id" value="{{ $data['grade']->grade_id }}">  
                                 <input name="teacher_id" type="number" class="form-control d-none" value="{{ $data['classTeacher']->teacher_id }}">  
+                                @if ($data['mid'] == 0)
+                                <input name="semester" type="number" class="form-control d-none" value="{{ $data['semester'] }}">
+                                @else
+                                    @if ($data['mid'] == 0.5)
+                                        <input name="semester" type="number" class="form-control d-none" value="0.5">
+                                    @elseif ($data['mid'] == 1.5)
+                                        <input name="semester" type="number" class="form-control d-none" value="1.5">
+                                    @endif
+                                @endif
+
                             
                                 <!-- JIKA TEACHER BELUM INPUT NILAI -->
                             @else 
@@ -466,7 +476,7 @@
          Swal.fire({
             icon: 'success',
             title: 'Successfully',
-            text: 'Successfully decline report card toddler.',
+            text: 'Successfully submitted report card toddler.',
             timer: 1000, // Swal akan hilang dalam 2000ms (2 detik)
             showConfirmButton: false // Sembunyikan tombol "OK",
         });

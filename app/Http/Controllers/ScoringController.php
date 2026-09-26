@@ -1139,7 +1139,7 @@ class ScoringController extends Controller
                 ->whereIn('month', $monthsInRange)
                 ->where('academic_year', session('academic_year'))
                 ->get();
-            
+
             for($i=0; $i < count($request->student_id); $i++){
 
                 $student_id = $request->student_id[$i];
@@ -1163,14 +1163,12 @@ class ScoringController extends Controller
                     'demonstrates_importance_of_self_control' => $request->demonstrates_importance_of_self_control[$student_id],
                     'management_emotional_problem_solving' => $request->management_emotional_problem_solving[$student_id],
                     'remarks' => $request->remarks[$student_id],
-                    'semester' => session('semester'),
+                    'semester' => $request->semester,
                     'academic_year' => session('academic_year'),
                     'created_at' => now()
                 ];
-
-                // dd(session('semester'));
                 
-                if(session('semester') == 0.5 || session('semester') == 1.5){
+                if($request->semester == 0.5 || $request->semester == 1.5){
                     foreach($monthlyActivity as $ma){
                         $name = str_replace(' ', '_', trim($ma->name));
                         $monthly = [
@@ -1180,7 +1178,7 @@ class ScoringController extends Controller
                         ];
                         
                         Student_Monthly_Activity::updateOrCreate(
-                            ['student_id' => $request->student_id[$i], 'grade_id' => $request->grade_id, 'semester' => session('semester'),
+                            ['student_id' => $request->student_id[$i], 'grade_id' => $request->grade_id, 'semester' => $request->semester,
                             'monthly_activity_id' => $ma->id, 'academic_year' => session('academic_year')], 
                             $monthly
                         );
@@ -1188,7 +1186,7 @@ class ScoringController extends Controller
                 }
                 
                 Nursery_toddler::updateOrCreate(
-                    ['student_id' => $request->student_id[$i], 'grade_id' => $request->grade_id, 'semester' => session('semester'),
+                    ['student_id' => $request->student_id[$i], 'grade_id' => $request->grade_id, 'semester' => $request->semester,
                     'class_teacher_id' => $request->teacher_id, 'academic_year' => session('academic_year')],
                     $scoring
                 );
@@ -1198,12 +1196,13 @@ class ScoringController extends Controller
                 'grade_id'         => $request->grade_id,
                 'class_teacher_id' => $request->teacher_id,
                 'status'           => 1,
-                'semester'         => session('semester'),
+                'semester'         => $request->semester,
                 'academic_year'    => session('academic_year'),
                 'created_at'       => now()
             ];
 
             Report_card_status::create($status);
+
 
             session()->flash('after_post_report_card_toddler');
 
