@@ -367,7 +367,11 @@ $grade_name = $student->grade_name;
                                             <span class="noto-serif-sc-simbol">中文（初级）</span>
                                             @break
                                         @case($rs['subject_name'] == 'Chinese')
-                                            <span class="noto-serif-sc-simbol">汉语</span>
+                                            @if (ucwords(strtolower($student['student_name'])) == 'Nur Almira Abd Aziz')
+                                                <span class="noto-serif-sc-simbol">基础汉语</span>
+                                            @else
+                                                <span class="noto-serif-sc-simbol">汉语</span>
+                                            @endif
                                             @break
                                         @case($rs['subject_name'] == 'Mathematics')
                                             <span class="noto-serif-sc-simbol">数学</span>
