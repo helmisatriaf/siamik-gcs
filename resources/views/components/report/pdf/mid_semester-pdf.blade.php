@@ -348,7 +348,7 @@ $grade_name = $student->grade_name;
                                     @else
                                         @if (ucwords(strtolower($student['student_name'])) == 'Nur Almira Abd Aziz')
                                             @if ($rs['subject_name'] == 'Chinese')
-                                                Chinese - basic
+                                                Chinese - Basic
                                             @else
                                                 {{ $rs['subject_name'] }}
                                             @endif    
