@@ -343,6 +343,8 @@ $grade_name = $student->grade_name;
                                 <td style="text-align: left;vertical-align : middle;font-size:10px;padding-left: 5px;border: 1px solid black;" colspan="4">
                                     @if ($rs['subject_name'] == 'Character Building')
                                         CB
+                                    @elseif ($rs['subject_name'] == 'Health Education')
+                                        HE
                                     @else
                                         {{ $rs['subject_name'] }}
                                     @endif
