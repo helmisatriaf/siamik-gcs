@@ -295,7 +295,7 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
                     <td style="padding:0px;text-align:left;width:70%;border: 1px solid black;padding-left:3px;font-size:10px;">Object <span class="noto-serif-sc-chinese">物体</span></td>
                     <td style="padding:0px;text-align:center;width:10%;border: 1px solid black;padding-left:3px;" class="noto-serif-sc-simbol">
                         @if ($score->object == 1)
-                            
+                            √
                         @endif
                     </td>
                     <td style="padding:0px;text-align:center;width:10%;border: 1px solid black;padding-left:3px;" class="noto-serif-sc-simbol">
@@ -417,17 +417,17 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
                 <tr>
                     <td style="padding:0px;text-align:left;width:70%;border: 1px solid black;padding-left:3px;font-size:10px;">Ability to recognize the objects <span class="noto-serif-sc-chinese">识别物体能力</span></td>
                     <td style="padding:0px;text-align:center;width:10%;border: 1px solid black;padding-left:3px;" class="noto-serif-sc-simbol">
-                        @if ($score->ability_to_recognize_objects == 1)
+                        @if ($score->ability_to_recognize_the_objects == 1)
                             √
                         @endif
                     </td>
                     <td style="padding:0px;text-align:center;width:10%;border: 1px solid black;padding-left:3px;" class="noto-serif-sc-simbol">
-                        @if ($score->ability_to_recognize_objects == 2)
+                        @if ($score->ability_to_recognize_the_objects == 2)
                             √
                         @endif
                     </td>
                     <td style="padding:0px;text-align:center;width:10%;border: 1px solid black;padding-left:3px;" class="noto-serif-sc-simbol">
-                        @if ($score->ability_to_recognize_objects == 3)
+                        @if ($score->ability_to_recognize_the_objects == 3)
                             √
                         @endif
                     </td>
@@ -606,7 +606,7 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
 
         </div>
         <div class="footer" style="margin-top: 10px;text-align:center;">
-            <img src="<?= $cambridge ?>" style="width:30%;height:17%;">
+            <img src="<?= $cambridge ?>" style="width:30%;height:20%;">
         </div>
         <!-- END PAGE 2 -->
     </div>

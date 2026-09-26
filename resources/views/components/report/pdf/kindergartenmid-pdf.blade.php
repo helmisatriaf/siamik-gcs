@@ -296,35 +296,6 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
                 </table>
             </div>
 
-            <div>
-                <table class="table" style="margin-top:2px;">
-                    <tr>
-                        <th style="text-align: left;vertical-align : middle;font-size:10px;" colspan="5"> Monthly Activities</th>
-                    </tr>
-                    <tr>
-                        <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;width:27%;">Theme</th>
-                        <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">Excellent</th>
-                        <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">Good</th>
-                        <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">Satisfactory</th>
-                        <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;width:27%;">Needs Improvement</th>
-                    </tr>
-                    @foreach($scoreMonthly as $monthly)
-                    <tr>
-                        <td style="text-align: left;border:1px solid black;padding-left: 5px;">
-                            {{ $monthly['name_activity'] }}
-                        </td>
-                        @for ($i = 1; $i <= 4; $i++)
-                            <td style="text-align:center;border: 1px solid black;padding-left:3px;" class="noto-serif-sc-simbol">
-                                @if ($monthly['score'] == $i)
-                                    √
-                                @endif
-                            </td>
-                        @endfor
-                    </tr>
-                    @endforeach
-                </table>
-            </div>
-
             {{-- <div>
                 <table class="table" style="margin-top:10px;">
                     <tr>
@@ -355,25 +326,36 @@ $cambridge = 'data:image/' . $typecambridge . ';base64,' . base64_encode($dataca
             </div> --}}
         </div>
 
-        {{-- <div class="footer">
-            <table class="table" style="">
-                <tr>
-                    <td style="text-align:center;text-decoration:underline;">Yuliana Harijanto, B.Eng (Hons).</td>
-                </tr>
-                <tr>
-                    <td style="text-align:center;font-size:10px;"><b>Head of Preschool and KG</b></td>
-                </tr>
-                <tr>
-                    <td style="text-align:center;padding-top:5px;font-size:10px;font-color:gray;"><i>This report card is for internal circulation only.</i></td>
-                </tr>
-                <tr>
-                    <td style="text-align:center;padding-top:5px;"> <img src="<?= $cambridge ?>" style="width:23%;height:2,5%;"></td>
-                </tr>
-            </table>
-        </div> --}}
-        <!-- END PAGE 1 -->
-
         <div class="page-break"></div>
+
+        <div>
+            <table class="table" style="margin-top:2px;">
+                <tr>
+                    <th style="text-align: left;vertical-align : middle;font-size:10px;" colspan="5"> Monthly Activities</th>
+                </tr>
+                <tr>
+                    <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;width:27%;">Theme</th>
+                    <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">Excellent</th>
+                    <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">Good</th>
+                    <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;">Satisfactory</th>
+                    <th style="text-align: center;vertical-align : middle;font-size:10px;border: 1px solid black;width:27%;">Needs Improvement</th>
+                </tr>
+                @foreach($scoreMonthly as $monthly)
+                <tr>
+                    <td style="text-align: left;border:1px solid black;padding-left: 5px;">
+                        {{ $monthly['name_activity'] }}
+                    </td>
+                    @for ($i = 1; $i <= 4; $i++)
+                        <td style="text-align:center;border: 1px solid black;padding-left:3px;" class="noto-serif-sc-simbol">
+                            @if ($monthly['score'] == $i)
+                                √
+                            @endif
+                        </td>
+                    @endfor
+                </tr>
+                @endforeach
+            </table>
+        </div>
 
         {{-- PAGE 2 --}}
         <div class="">

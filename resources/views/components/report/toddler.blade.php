@@ -180,7 +180,8 @@
                                     </tr>
                                     @endforeach
                                 </tbody>
-                                <input name="grade_id" type="number" class="form-control d-none" id="grade_id" value="{{ $data['grade']->grade_id }}">    
+                                <input name="grade_id" type="number" class="form-control d-none" id="grade_id" value="{{ $data['grade']->grade_id }}">  
+                                <input name="teacher_id" type="number" class="form-control d-none" value="{{ $data['classTeacher']->teacher_id }}">  
                             
                                 <!-- JIKA TEACHER BELUM INPUT NILAI -->
                             @else 
