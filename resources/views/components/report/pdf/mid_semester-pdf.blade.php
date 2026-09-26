@@ -345,6 +345,8 @@ $grade_name = $student->grade_name;
                                         CB
                                     @elseif ($rs['subject_name'] == 'Health Education')
                                         HE
+                                    @elseif ($rs['subject_name'] == 'General Knowledge')
+                                        GK
                                     @else
                                         @if (ucwords(strtolower($student['student_name'])) == 'Nur Almira Abd Aziz')
                                             @if ($rs['subject_name'] == 'Chinese')
