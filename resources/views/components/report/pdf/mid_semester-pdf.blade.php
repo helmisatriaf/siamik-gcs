@@ -346,7 +346,15 @@ $grade_name = $student->grade_name;
                                     @elseif ($rs['subject_name'] == 'Health Education')
                                         HE
                                     @else
+                                        @if (ucwords(strtolower($student['student_name'])) == 'Nur Almira Abd Aziz')
+                                            @if ($rs['subject_name'] == 'Chinese')
+                                                Chinese - basic
+                                            @else
+                                                {{ $rs['subject_name'] }}
+                                            @endif    
+                                        @else
                                         {{ $rs['subject_name'] }}
+                                        @endif
                                     @endif
                                     @switch($rs['subject_name'])
                                         @case($rs['subject_name'] == 'English')
