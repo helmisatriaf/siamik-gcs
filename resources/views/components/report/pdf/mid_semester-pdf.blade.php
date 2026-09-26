@@ -817,7 +817,7 @@ $grade_name = $student->grade_name;
                             <td style="text-align:center;padding-top:5px;font-size:8px;font-color:orange;"><i>This report card is for internal circulation only.</i></td>
                         </tr>
                         <tr>
-                            <td style="text-align:center;padding-top:5px;"> <img src="<?= $cambridge ?>" style="width:20%;height auto;"></td>
+                            <td style="text-align:center;padding-top:5px;"> <img src="<?= $cambridge ?>" style="width:20%;height: auto;"></td>
                         </tr>
                     </table>
                 </div>    
