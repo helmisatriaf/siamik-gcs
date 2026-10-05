@@ -319,7 +319,7 @@ class UserController extends Controller
 
          if ($checkRole == 'student') {
             $id           = Student::where('user_id', session('id_user'))->value('id');
-            $getIdStudent = Student::where('id', $id)->value('id');:
+            $getIdStudent = Student::where('id', $id)->value('id');
 
             session()->put([
                'studentId' => $getIdStudent,
