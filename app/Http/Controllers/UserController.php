@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 use App\Models\Roles;
 use App\Models\Teacher;
@@ -28,7 +29,7 @@ class UserController extends Controller
 
          $data = Master_academic::first();
 
-         Auth::logout();
+         // Auth::logout();
          return view('layouts.login')->with('data', $data);
       } catch (Exception $err) {
 
@@ -88,10 +89,13 @@ class UserController extends Controller
             }
          } elseif ($user->role_id == 3) {
             $nameUser = Teacher::where('user_id', $user->id)->value('name');
+            Log::info("User {$nameUser} ID {$user->id} Successfully login as teacher");
          } elseif ($user->role_id == 4) {
             $nameUser = Student::where('user_id', $user->id)->value('name');
+            Log::info("User {$nameUser} ID {$user->id} Successfully login as student");
          } elseif ($user->role_id == 5) {
             $nameUser = Relationship::where('user_id', $user->id)->value('name');
+            Log::info("User {$nameUser} ID {$user->id} Successfully login as parent");
          } elseif ($user->role_id == 6) {
             $nameUser = "library";
          }
@@ -315,7 +319,7 @@ class UserController extends Controller
 
          if ($checkRole == 'student') {
             $id           = Student::where('user_id', session('id_user'))->value('id');
-            $getIdStudent = Student::where('id', $id)->value('id');
+            $getIdStudent = Student::where('id', $id)->value('id');:
 
             session()->put([
                'studentId' => $getIdStudent,
@@ -332,6 +336,7 @@ class UserController extends Controller
    public function logout(Request $request)
    {
       try {
+         Log::info("User " . session('name_user') . " with ID " . session('id_user') . " is logging out.");
          Auth::logout();
          $request->session()->invalidate();
          $request->session()->regenerateToken();
