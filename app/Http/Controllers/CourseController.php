@@ -1298,6 +1298,8 @@ class CourseController extends Controller
                     ->where('academic_year', session('academic_year'))
                     ->firstOrFail();
 
+                // dd($gradeSubject);
+
                 // Ambil data subject berdasarkan grade tertentu
                 $subject = Subject::with(['grade' => function ($query) use ($grade_id) {
                     $query->where('grades.id', $grade_id)
@@ -1359,19 +1361,19 @@ class CourseController extends Controller
                     switch($grade_id){
                         // Secondary 1
                         case 11:
-                            $gradePrevious = Grade_subject::where('subject_id', $id)
+                            $gradePrevious = Grade_subject::where('subject_id', session('id_course'))
                                 ->where('grade_id', 11)
                                 ->where('academic_year', "2025-2026")
                                 ->value('id');
                             break;
-                        case 12:
-                            $gradePrevious = Grade_subject::where('subject_id', $id)
+                            case 12:
+                                $gradePrevious = Grade_subject::where('subject_id', session('id_course'))
                                 ->where('grade_id', 12)
                                 ->where('academic_year', "2025-2026")
                                 ->value('id');
-                            break;
+                                break;
                         case 13:
-                            $gradePrevious = Grade_subject::where('subject_id', $id)
+                            $gradePrevious = Grade_subject::where('subject_id', session('id_course'))
                                 ->where('grade_id', 13)
                                 ->where('academic_year', "2025-2026")
                                 ->value('id');
@@ -1381,7 +1383,6 @@ class CourseController extends Controller
                 }else{
                     $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->get();
                 }
-
                 // $ebook = Ebook::where('grade_subject_id', $gradeSubject->id)->get();
                 $material = CourseActivities::where('grade_subject_id', $gradeSubject->id)->count();
                 
@@ -1398,7 +1399,7 @@ class CourseController extends Controller
                     ->where('exams.academic_year', session('academic_year'))
                     ->count();
 
-                $assessmentActive = $data = Exam::select('exams.*', 'grades.name as grade_name', 'subjects.name_subject')
+                $assessmentActive = Exam::select('exams.*', 'grades.name as grade_name', 'subjects.name_subject')
                     ->join('grade_exams', 'exams.id', '=', 'grade_exams.exam_id')
                     ->join('grades', 'grade_exams.grade_id', '=', 'grades.id')
                     ->join('subject_exams', 'exams.id', '=', 'subject_exams.exam_id')
@@ -1484,19 +1485,19 @@ class CourseController extends Controller
                     switch($grade_id){
                         // Secondary 1
                         case 11:
-                            $gradePrevious = Grade_subject::where('subject_id', $id)
+                            $gradePrevious = Grade_subject::where('subject_id', session('id_course'))
                                 ->where('grade_id', 11)
                                 ->where('academic_year', "2025-2026")
                                 ->value('id');
                             break;
                         case 12:
-                            $gradePrevious = Grade_subject::where('subject_id', $id)
+                            $gradePrevious = Grade_subject::where('subject_id', session('id_course'))
                                 ->where('grade_id', 12)
                                 ->where('academic_year', "2025-2026")
                                 ->value('id');
                             break;
                         case 13:
-                            $gradePrevious = Grade_subject::where('subject_id', $id)
+                            $gradePrevious = Grade_subject::where('subject_id', session('id_course'))
                                 ->where('grade_id', 13)
                                 ->where('academic_year', "2025-2026")
                                 ->value('id');
@@ -1523,7 +1524,7 @@ class CourseController extends Controller
                     ->where('exams.academic_year', session('academic_year'))
                     ->count();
 
-                $assessmentActive = $data = Exam::select('exams.*', 'grades.name as grade_name', 'subjects.name_subject')
+                $assessmentActive = Exam::select('exams.*', 'grades.name as grade_name', 'subjects.name_subject')
                     ->join('grade_exams', 'exams.id', '=', 'grade_exams.exam_id')
                     ->join('grades', 'grade_exams.grade_id', '=', 'grades.id')
                     ->join('subject_exams', 'exams.id', '=', 'subject_exams.exam_id')
