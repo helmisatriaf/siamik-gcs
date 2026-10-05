@@ -17,12 +17,12 @@ class BillingService
     public function checkPaymentStatus($uniqueId)
     {
         try {
-            Log::info("Checking payment status for ID: {$uniqueId}");
+            // Log::info("Checking payment status for ID: {$uniqueId}");
             $response = Http::timeout(5)->get("{$this->baseUrl}/check-payment-status/{$uniqueId}");
 
             if ($response->successful()) {
                 $data = $response->json();
-                Log::info("Payment status response: " . json_encode($data));
+                // Log::info("Payment status response: " . json_encode($data));
                 return $data;
             }
 
@@ -37,12 +37,12 @@ class BillingService
     public function getPaymentHistory($uniqueId)
     {
         try {
-            Log::info("Getting payment history for ID: {$uniqueId}");
+            // Log::info("Getting payment history for ID: {$uniqueId}");
             $response = Http::timeout(5)->get("{$this->baseUrl}/payment-history/{$uniqueId}");
 
             if ($response->successful()) {
                 $data = $response->json();
-                Log::info("Payment history response: " . json_encode($data));
+                // Log::info("Payment history response: " . json_encode($data));
                 // return $data;
                 return array_slice($data, 0, 5);
             }
