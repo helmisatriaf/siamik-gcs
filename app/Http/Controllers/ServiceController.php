@@ -13,7 +13,6 @@ use App\Models\Relationship;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class ServiceController extends Controller
 {
@@ -31,16 +30,20 @@ class ServiceController extends Controller
         }])
         ->get();
 
+        // dd($chat);
+
         foreach($chat as $c){
             if($c->user['role_id'] == 4){
                 $c->name = ucwords(strtolower(Student::where('user_id', $c->user_id)->value('name')));
-                $c->profil = ucwords(strtolower(Student::where('user_id', $c->user_id)->value('profil')));
+                $c->profil = Student::where('user_id', $c->user_id)->value('profil');
             }
             elseif($c->user['role_id'] == 5){
                 $c->name = ucwords(strtolower(Relationship::where('user_id', $c->user_id)->value('name')));
                 $c->profil = NULL;
             }
         }
+
+        // dd($chat);
 
         $tutorials = Chat_bot::with('page')->paginate(5);
         $admin = User::where('username', '=', 'administrator')->first();
@@ -57,7 +60,7 @@ class ServiceController extends Controller
         $chat = Chat::with(['user','history'])->where('id', $id)->first();
         if($chat->user['role_id'] == 4){
             $chat->name = ucwords(strtolower(Student::where('user_id', $chat->user_id)->value('name')));
-            $chat->profil = ucwords(strtolower(Student::where('user_id', $chat->user_id)->value('profil')));
+            $chat->profil = Student::where('user_id', $chat->user_id)->value('profil');
         }
         elseif($chat->user['role_id'] == 5){
             $chat->name = ucwords(strtolower(Relationship::where('user_id', $chat->user_id)->value('name')));
@@ -82,7 +85,7 @@ class ServiceController extends Controller
 
         if($chat && optional($chat->user)->role_id == 4){
             $chat->name = ucwords(strtolower(Student::where('user_id', $chat->user_id)->value('name')));
-            $chat->profil = ucwords(strtolower(Student::where('user_id', $chat->user_id)->value('profil')));
+            $chat->profil = Student::where('user_id', $chat->user_id)->value('profil');
         }
         elseif($chat && optional($chat->user)->role_id == 5){
             $chat->name = ucwords(strtolower(Relationship::where('user_id', $chat->user_id)->value('name')));
@@ -156,7 +159,7 @@ class ServiceController extends Controller
 
         if($chat->user['role_id'] == 4){
             $chat->name = ucwords(strtolower(Student::where('user_id', $chat->user_id)->value('name')));
-            $chat->profil = ucwords(strtolower(Student::where('user_id', $chat->user_id)->value('profil')));
+            $chat->profil = Student::where('user_id', $chat->user_id)->value('profil');
         }
         elseif($chat->user['role_id'] == 5){
             $chat->name = ucwords(strtolower(Relationship::where('user_id', $chat->user_id)->value('name')));
@@ -177,7 +180,7 @@ class ServiceController extends Controller
 
         if($chat->user['role_id'] == 4){
             $chat->name = ucwords(strtolower(Student::where('user_id', $chat->user_id)->value('name')));
-            $chat->profil = ucwords(strtolower(Student::where('user_id', $chat->user_id)->value('profil')));
+            $chat->profil = Student::where('user_id', $chat->user_id)->value('profil');
         }
         elseif($chat->user['role_id'] == 5){
             $chat->name = ucwords(strtolower(Relationship::where('user_id', $chat->user_id)->value('name')));

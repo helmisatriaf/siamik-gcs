@@ -1025,7 +1025,6 @@
                                                                 $status = !is_null($info); // true jika file_name terisi
                                                             }
                                                         }
-                                                        //  echo $status ? 'Sudah Mengerjakan' : 'Belum';
                                                     @endphp
                                                     <i class="fas fa-info-circle"></i>
                                                     Status :

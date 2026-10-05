@@ -8,7 +8,7 @@
                     @if ($chat != null)
                         @foreach ($chat->history as $history)
                         @if(session('role') == 'superadmin' || session('role') == 'admin')
-                            @if ($history->user_id == auth()->id())
+                            @if ($history->user_id == 1 || $history->user_id == 2)
                                 <div class="direct-chat-msg right">
                                     <div class="direct-chat-infos clearfix">
                                         <span class="direct-chat-name float-right">You</span>
