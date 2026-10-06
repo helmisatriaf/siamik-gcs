@@ -42,6 +42,7 @@ use App\Services\BillingService;
 use Illuminate\Support\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
