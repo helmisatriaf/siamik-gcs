@@ -7894,9 +7894,28 @@ class ReportController extends Controller
             $pdf = app('dompdf.wrapper');
             $pdf->set_option('isRemoteEnabled', true);
             $pdf->set_option('isHtml5ParserEnabled', true);
-            $pdf->loadView('components.report.pdf.mid_semester-pdf', $data)->setPaper('a5', 'portrait');
+            // $pdf->loadView('components.report.pdf.mid_semester-pdf', $data)->setPaper('a5', 'portrait');
             
-            return view('components.report.pdf.mid_semester-pdf-viewonly', $data);
+            $pdf->loadView(
+                'components.report.pdf.mid_semester-pdf',
+                $data
+            )->setPaper('a5', 'portrait');
+
+            $pdfContent = $pdf->output();
+
+            return response($pdfContent, 200)
+                ->header('Content-Type', 'application/pdf')
+                ->header(
+                    'Content-Disposition',
+                    'inline; filename="mid-semester-' . $getIdStudent . '.pdf"'
+                )
+                ->header(
+                    'Cache-Control',
+                    'no-store, no-cache, must-revalidate, max-age=0'
+                )
+                ->header('Pragma', 'no-cache')
+                ->header('Expires', '0');
+            // return view('components.report.pdf.mid_semester-pdf-viewonly', $data);
 
             return $pdf->stream($data['student']->student_name . '_midsemester' . $semester . '.pdf');
         } catch (Exception $err) {
