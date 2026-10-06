@@ -7881,6 +7881,7 @@ class ReportController extends Controller
 
             $data = $this->reportmid($getIdStudent);
 
+            Log::info('Generating mid-semester report for student ID: ' . $getIdStudent . ' with data: ' . json_encode($data));
             // dd($data);
 
             $pdf = app('dompdf.wrapper');
