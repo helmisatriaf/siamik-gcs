@@ -7881,6 +7881,7 @@ class ReportController extends Controller
             }
 
             $data = $this->reportmid($getIdStudent);
+            $data['pdf_generated_at'] = now()->format('Y-m-d H:i:s');
 
             Log::info('Generating mid-semester report for student ID: ' . $getIdStudent . ' with data: ' . json_encode($data));
             // dd($data);

@@ -837,6 +837,9 @@ $grade_name = $student->grade_name;
                 </div>    
             </div>
 
+            <div style="font-size: 8px;">
+                PDF Generated: {{ $pdf_generated_at }}
+            </div>
             {{-- END PAGE 2 --}}
         </div>
     </div>
