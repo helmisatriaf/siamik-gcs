@@ -7883,13 +7883,19 @@ class ReportController extends Controller
 
             Log::info('Generating mid-semester report for student ID: ' . $getIdStudent . ' with data: ' . json_encode($data));
             // dd($data);
+            Log::info('Report generation details', [
+                'user' => Auth::user()?->id,
+                'semester' => session('semester'),
+                'academic_year' => session('academic_year'),
+                'student_id' => $getIdStudent,
+            ]);
 
             $pdf = app('dompdf.wrapper');
             $pdf->set_option('isRemoteEnabled', true);
             $pdf->set_option('isHtml5ParserEnabled', true);
             $pdf->loadView('components.report.pdf.mid_semester-pdf', $data)->setPaper('a5', 'portrait');
             
-            // return view('components.report.pdf.mid_semester-pdf-viewonly', $data);
+            return view('components.report.pdf.mid_semester-pdf-viewonly', $data);
 
             return $pdf->stream($data['student']->student_name . '_midsemester' . $semester . '.pdf');
         } catch (Exception $err) {
