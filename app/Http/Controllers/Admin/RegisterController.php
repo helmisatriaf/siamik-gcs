@@ -551,6 +551,8 @@ class RegisterController extends Controller
                'exam_id' => $exam,
             ]);
             Score::create($score);
+
+            DB::commit();
          }
 
          // return 'post';
